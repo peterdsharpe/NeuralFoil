@@ -12,7 +12,7 @@ ray.init()
 datafile = "data.csv"
 n_procs = int(ray.cluster_resources()["CPU"])
 print(f"Running on {n_procs} processes.")
-n_weights_per_side = 10
+n_weights_per_side = 8
 
 airfoil_database_path = asb._asb_root / "geometry" / "airfoil" / "airfoil_database"
 
@@ -40,20 +40,27 @@ class CSVActor:
     def __init__(self, filename):
         self.filename = filename
 
+    @staticmethod
+    def float_to_str(f: float) -> str:
+        s = f"{f:.8g}"
+
+        if len(s) > 2 and s[:2] == "0.":
+            s = s[1:]
+
+        if "." in s:
+            s = s.rstrip("0")
+
+        if s[-1] == ".":
+            s = s[:-1]
+
+        if s == "." or s == "" or s == "-0":
+            s = "0"
+
+        return s
+
     def append_row(self, row: List[float]):
-        def float_to_str(f: float) -> str:
-            if 0 < abs(f) < 1:
-                s = f"{f:.8f}"
-                s = s.lstrip("0")
-            else:
-                s = f"{f:.7g}"
 
-            if "." in s:
-                s = s.rstrip("0")
-
-            return s
-
-        row = [float_to_str(item) for item in row]
+        row = [self.float_to_str(item) for item in row]
 
         with open(self.filename, 'a', newline='') as file:
             writer = csv.writer(file)
@@ -88,7 +95,7 @@ def worker(csv_actor):
         )
         af = asb.Airfoil(
             name="Reconstructed Airfoil",
-            coordinates = get_kulfan_coordinates(
+            coordinates=get_kulfan_coordinates(
                 **kulfan_params
             )
         )
@@ -96,7 +103,7 @@ def worker(csv_actor):
         if not af.as_shapely_polygon().is_valid:
             continue
 
-        alphas = np.linspace(-8, 10, 5) + np.random.randn()
+        alphas = np.linspace(-10, 10, 5) + np.random.uniform(-2.5, 2.5) + np.random.randn()
         Re = float(10 ** (5.5 + np.random.randn()))
         xf = asb.XFoil(
             airfoil=af,
