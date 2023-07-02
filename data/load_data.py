@@ -38,7 +38,25 @@ df = pl.read_csv(
         col: pl.Float32
         for col in all_cols
     }
+).sample(
+    fraction=1,
+    with_replacement=False,
+    shuffle=True,
+    seed=0
 )
+
+test_train_split_index = int(len(df) * 0.90)
+df_train = df[:test_train_split_index]
+df_test = df[test_train_split_index:]
+
+
+def get_weight(row: pl.Series):
+    alpha_center = 4
+    alpha_width = 8
+    return np.exp(-((row["alpha"] - alpha_center) / alpha_width) ** 2)
+
+
+weights = get_weight(df_train)
 
 
 def make_airfoil(row_index):
