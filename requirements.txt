@@ -1,3 +1,4 @@
 aerosandbox[full]
 ray[default]
 polars
+tqdm
