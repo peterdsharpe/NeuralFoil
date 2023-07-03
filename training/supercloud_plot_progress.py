@@ -64,4 +64,5 @@ plt.plot(
 )
 
 plt.yscale('log')
+plt.ylim(5e-2, 1e-1)
 p.show_plot("Training Progress", "Epoch", "Training Loss")

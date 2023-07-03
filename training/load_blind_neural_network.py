@@ -99,5 +99,9 @@ if __name__ == '__main__':
     })
     df = pl.concat([df_test, df_outputs], how="horizontal")
 
-    CL_mae = pl.mean((df["CL"] - df["CL_model"]).abs())
-    print(f"CL MAE: {CL_mae}")
+    print(f"CL MAE: {pl.median((df['CL'] - df['CL_model']).abs())}")
+    print(f"CD MAE: {pl.median((df['CD'] - df['CD_model']).abs())}")
+    print(f"CM MAE: {pl.median((df['CM'] - df['CM_model']).abs())}")
+    print(f"Cpmin MAE: {pl.median((df['Cpmin'] - df['Cpmin_model']).abs())}")
+    print(f"Top_Xtr MAE: {pl.median((df['Top_Xtr'] - df['Top_Xtr_model']).abs())}")
+    print(f"Bot_Xtr MAE: {pl.median((df['Bot_Xtr'] - df['Bot_Xtr_model']).abs())}")
