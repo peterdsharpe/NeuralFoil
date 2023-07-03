@@ -45,6 +45,8 @@ df = pl.read_csv(
     seed=0
 )
 
+df_mean_and_std_info = pl.concat((df.mean(), df.std())).to_pandas()
+
 test_train_split_index = int(len(df) * 0.90)
 df_train = df[:test_train_split_index]
 df_test = df[test_train_split_index:]

@@ -75,12 +75,20 @@ fit = asb.FittedModel(
     },
     # verbose=False,
 )
-y_model = fit(fit.x_data)
 
 print(fit.parameters)
-print(fit.goodness_of_fit("mean_absolute_error"))
+print(f"MAE on train set: {fit.goodness_of_fit('mean_absolute_error')}")
 
 if __name__ == '__main__':
+    ### Get the MAE on the test set
+    y_test_data = df_test["CL"].to_numpy()
+    y_test_model = fit({
+        k: v.to_numpy()
+        for k, v in df_test[input_cols].to_dict().items()
+    })
+    mae_test = np.mean(np.abs(y_test_data - y_test_model))
+    print(f"MAE on test set: {mae_test}")
+
     import matplotlib.pyplot as plt
     import aerosandbox.tools.pretty_plots as p
 
