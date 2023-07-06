@@ -83,13 +83,15 @@ def worker(csv_actor):
 
         rand_airfoil = lambda: np.random.choice(UIUC_airfoils)
 
-        af = rand_airfoil().blend_with_another_airfoil(
+        af: asb.Airfoil = rand_airfoil().blend_with_another_airfoil(
             rand_airfoil(),
             blend_fraction=np.random.rand()
         ).blend_with_another_airfoil(
             rand_airfoil(),
             blend_fraction=np.random.rand()
         )
+
+        af = af.scale(1, np.random.lognormal(0, 0.15))
 
         kulfan_params = get_kulfan_parameters(
             coordinates=af.normalize().coordinates,
