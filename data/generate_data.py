@@ -81,18 +81,36 @@ def worker(csv_actor):
         # # Send the result to the actor for writing to the CSV
         # ray.get(csv_actor.append_row.remote(result))
 
-        af_1: asb.Airfoil = np.random.choice(UIUC_airfoils)
-        af_2: asb.Airfoil = np.random.choice(UIUC_airfoils)
+        rand_airfoil = lambda: np.random.choice(UIUC_airfoils)
 
-        af = af_1.blend_with_another_airfoil(af_2, blend_fraction=np.random.rand()).normalize()
-
-        if not af.as_shapely_polygon().is_valid:
-            continue
+        af = rand_airfoil().blend_with_another_airfoil(
+            rand_airfoil(),
+            blend_fraction=np.random.rand()
+        ).blend_with_another_airfoil(
+            rand_airfoil(),
+            blend_fraction=np.random.rand()
+        )
 
         kulfan_params = get_kulfan_parameters(
-            coordinates=af.coordinates,
+            coordinates=af.normalize().coordinates,
             n_weights_per_side=n_weights_per_side,
         )
+
+        deviance = np.random.exponential(0.05)
+        kulfan_params["lower_weights"] += np.random.randn(n_weights_per_side) * deviance
+        kulfan_params["upper_weights"] += np.random.randn(n_weights_per_side) * deviance
+        kulfan_params["leading_edge_weight"] += np.random.randn() * deviance
+        kulfan_params["TE_thickness"] += np.random.exponential(0.005)
+
+        if np.random.rand() < 0.5:
+            kulfan_params["TE_thickness"] = 0
+
+        if np.random.rand() < 0.75:
+            if np.random.rand() < 0.5:
+                kulfan_params["lower_weights"][0] = -kulfan_params["upper_weights"][0]
+            else:
+                kulfan_params["upper_weights"][0] = -kulfan_params["lower_weights"][0]
+
         af = asb.Airfoil(
             name="Reconstructed Airfoil",
             coordinates=get_kulfan_coordinates(

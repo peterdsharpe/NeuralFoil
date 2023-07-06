@@ -8,7 +8,7 @@ def get_CL(
         airfoil: asb.Airfoil,
         alpha: Union[float, np.ndarray],
         Re: Union[float, np.ndarray],
-):
+) -> Union[float, np.ndarray]:
     p = {
         'CLa_low'            : 5.604249275478053,
         'CLa_high'           : 6.415488049299007,
@@ -85,3 +85,9 @@ def get_CL(
     )
 
     return CL0 + CLa * np.radians(x["alpha"])
+
+if __name__ == '__main__':
+    af = asb.Airfoil("ag36")
+    alpha = np.linspace(-10, 10, 100)
+    Re = 1e6
+    CL = get_CL(af, alpha, Re)

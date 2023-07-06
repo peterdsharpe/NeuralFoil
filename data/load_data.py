@@ -38,7 +38,13 @@ df = pl.read_csv(
         col: pl.Float32
         for col in all_cols
     }
-).sample(
+)
+
+df = df.concat(
+
+)
+
+df = df.sample(
     fraction=1,
     with_replacement=False,
     shuffle=True,

@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import List
 import numpy as np
+from scipy import interpolate, ndimage
 
 log_files = {
     f.name: int(f.suffix.split("-")[-1])
@@ -8,7 +9,53 @@ log_files = {
 }
 
 # get dictioanry key where value is highest
-log_file = max(log_files, key=log_files.get)
+# log_file = max(log_files, key=log_files.get)
+# log_file = "log.log-23266380"
+# log_file = "log.log-23266454"
+# log_file = "log.log-23266738"
+# log_file = "log.log-23266740"
+
+# log_file = "log.log-23266893"
+# log_file = "log.log-23266894"
+# log_file = "log.log-23266896"
+# log_file = "log.log-23266897"
+
+# log_file = "log.log-23266906"
+# log_file = "log.log-23266914"
+# log_file = "log.log-23266999"
+
+# log_file = "log.log-23267000"
+# log_file = "log.log-23267001"
+
+# log_file = "log.log-23267375"
+# log_file = "log.log-23267376"
+
+# log_file = "log.log-23267378"
+# log_file = "log.log-23267379"
+
+# log_file = "log.log-23267380"
+# log_file = "log.log-23267381"
+
+# log_file = "log.log-23267841"
+
+# log_file = "log.log-23267842"
+
+# log_file = "log.log-23272184"
+# log_file = "log.log-23272186"
+# log_file = "log.log-23272188"
+# log_file = "log.log-23272190"
+# log_file = "log.log-23272191"
+
+# log_file = "log.log-23272198"
+# log_file = "log.log-23272199"
+
+log_file = "log.log-23277974"
+log_file = "log.log-23277977"
+log_file = "log.log-23277979"
+log_file = "log.log-23277981"
+log_file = "log.log-23277983"
+log_file = "log.log-23277984"
+log_file = "log.log-23277987"
 
 with open(Path(__file__).parent / log_file, "r") as f:
     lines = f.readlines()
@@ -34,35 +81,29 @@ for line in lines:
             data[k].append(v)
 
 data = {k: np.array(v) for k, v in data.items()}
-data_epoch = {
-    k: np.array([
-        np.mean(v[np.array(data["Epoch"]) == epoch])
-        for epoch in np.unique(data["Epoch"])
-        ])
-    for k, v in data.items()
-}
 
 import matplotlib.pyplot as plt
 import aerosandbox.tools.pretty_plots as p
 
 fig, ax = plt.subplots()
-loss = data_epoch["Loss"]
-t = np.arange(len(loss))
 
-plt.plot(
-    t, loss,
-    ".",
-    markersize=5,
-    alpha=0.8,
-    markeredgewidth=0,
-)
-from scipy import interpolate
+for key in ["Train Loss", "Test Loss"]:
+    lines = plt.plot(
+        data[key],
+        ".",
+        markersize=5,
+        alpha=0.2,
+        markeredgewidth=0,
+    )
 
-plt.plot(
-    t, np.exp(interpolate.UnivariateSpline(t, np.log(loss))(t)),
-    color="C0", alpha=0.8,
-)
+    plt.plot(
+        np.exp(ndimage.gaussian_filter1d(np.log(data[key]), sigma=6)),
+        color=lines[0].get_color(), alpha=0.6,
+        label=key
+    )
 
 plt.yscale('log')
-plt.ylim(5e-2, 1e-1)
-p.show_plot("Training Progress", "Epoch", "Training Loss")
+plt.ylim(5e-3, 5e-2)
+p.show_plot(f"Training Progress ({log_file})", "Epoch", "Loss")
+
+print(np.exp(ndimage.gaussian_filter1d(np.log(data[key]), sigma=10)[-1]))
