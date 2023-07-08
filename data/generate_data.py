@@ -102,7 +102,7 @@ def worker(csv_actor):
         kulfan_params["lower_weights"] += np.random.randn(n_weights_per_side) * deviance
         kulfan_params["upper_weights"] += np.random.randn(n_weights_per_side) * deviance
         kulfan_params["leading_edge_weight"] += np.random.randn() * deviance
-        kulfan_params["TE_thickness"] += np.random.exponential(0.005)
+        kulfan_params["TE_thickness"] += np.random.exponential(0.003)
 
         if np.random.rand() < 0.5:
             kulfan_params["TE_thickness"] = 0
