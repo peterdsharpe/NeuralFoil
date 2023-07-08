@@ -130,6 +130,7 @@ def worker(csv_actor):
             Re=Re,
             mach=0,
             timeout=5,
+            # xfoil_command="~/NeuralFoil/data/xfoil_supercloud"
         )
         try:
             aero = xf.alpha(alphas)
