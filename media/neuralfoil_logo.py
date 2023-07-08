@@ -4,17 +4,18 @@ import matplotlib.pyplot as plt
 import aerosandbox.tools.pretty_plots as p
 from matplotlib.colors import LinearSegmentedColormap
 
-fig = plt.figure(figsize=(6, 3))
+fig = plt.figure(figsize=(6, 2), dpi=600)
 ax = fig.add_axes([0, 0, 1, 1])
 ax.axis('off')
 
 ##### Draw the NN
 n_nodes_per_side = 20
 n_nodes = 2 * n_nodes_per_side
-n_layers = 10
+n_layers = 12
 n_neighbors_to_connect = 2
 
-cmap = LinearSegmentedColormap.from_list("custom_cmap", ["crimson", "dodgerblue"])
+colors = ["crimson", "dodgerblue"]
+cmap = LinearSegmentedColormap.from_list("custom_cmap", colors)
 
 af = asb.Airfoil("dae11").repanel(n_nodes_per_side)
 
@@ -43,7 +44,7 @@ nodes_end_direction = np.stack([
 from scipy import interpolate
 
 xs = nodes_start[:, 0].reshape(-1, 1)
-nodes_start_direction = 1. * nodes_start_direction * (1 - xs ** 8)# + (1 - xs) ** 2)
+nodes_start_direction = 1. * nodes_start_direction * (1 - xs ** 8 + 0.5 *(1 - xs) ** 4)
 
 nodes_interpolator = interpolate.CubicSpline(
     x=[0, 1],
@@ -75,22 +76,23 @@ for i, (layer_nodes, layer_color) in enumerate(zip(all_nodes, layer_colors)):
         markeredgewidth=0.5
     )
 
-    # Connect this layer's nodes
+    # Connect this layer's nodes into a ring / line, depending on how far from airfoil-to-line you are
     layer_nodes_for_ring = interpolate.CubicSpline(
         x=np.linspace(0, 1, len(layer_nodes)),
         y=layer_nodes,
         axis=0,
     )(np.linspace(0, 1, 500))
 
+    if i <= np.argmin(all_nodes[:,:,0].min(axis=1)):
+        layer_nodes_for_ring = np.append(layer_nodes_for_ring, layer_nodes_for_ring[0, :].reshape(1, -1), axis=0)
+
     ax.plot(
         layer_nodes_for_ring[:, 0],
         layer_nodes_for_ring[:, 1],
         color=layer_color,
         linewidth=1,
-        alpha=0.4 if i != 0 else 1
+        alpha=1 if i == 0 or i == n_layers else 0.4
     )
-    # if i == 0:
-    #     plt.fill(x, y, color="white", zorder=2.5)
 
     # Plot connections to the next layer, if applicable
     if i != len(all_nodes) - 1:
@@ -130,10 +132,14 @@ plt.text(
 )
 plt.text(
     x_offset, y_offset, "Foil", ha="right", va="top",
-    color=p.adjust_lightness(colors[1], 0.75), **text_kwargs
+    color=p.adjust_lightness(colors[1], 0.6), **text_kwargs
 )
 
 plt.gca().set_aspect("equal", adjustable='box')
 plt.xlim(-1.35, 2.1)
+
+plt.savefig("neuralfoil.png", dpi=600)
+plt.savefig("neuralfoil.pdf")
+plt.savefig("neuralfoil.svg")
 
 plt.show()
