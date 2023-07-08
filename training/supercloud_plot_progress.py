@@ -49,15 +49,16 @@ log_files = {
 # log_file = "log.log-23272198"
 # log_file = "log.log-23272199"
 
-log_file = "log.log-23277974"
-log_file = "log.log-23277977"
-log_file = "log.log-23277979"
-log_file = "log.log-23277981"
-log_file = "log.log-23277983"
-log_file = "log.log-23277984"
-log_file = "log.log-23277987"
+log_file = "log.log-23296397"
+log_file = "log.log-23296400"
+log_file = "log.log-23296405"
+log_file = "log.log-23296406"
+log_file = "log.log-23296413"
+log_file = "log.log-23296435"
+log_file = "log.log-23296439"
+log_file = "log.log-23296446"
 
-with open(Path(__file__).parent / log_file, "r") as f:
+with open(Path(__file__).parent / log_file, "r", encoding="utf8") as f:
     lines = f.readlines()
 
 def parse_line(row):
@@ -103,7 +104,7 @@ for key in ["Train Loss", "Test Loss"]:
     )
 
 plt.yscale('log')
-plt.ylim(5e-3, 5e-2)
+plt.ylim(2e-3, 2e-2)
 p.show_plot(f"Training Progress ({log_file})", "Epoch", "Loss")
 
 print(np.exp(ndimage.gaussian_filter1d(np.log(data[key]), sigma=10)[-1]))

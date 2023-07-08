@@ -56,10 +56,23 @@ Baselines going forward:
 
 Recommended final model for minimum test loss:
 
-xxsmall: 2 layers,  32 wide. 23277974. Test loss
-xsmall:  3 layers,  32 wide. 23277977. Test loss
-small:   3 layers,  48 wide. 23277979. Test loss
-medium:  4 layers,  64 wide. 23277981. Test loss
-large:   4 layers, 128 wide. 23277983. Test loss
-xlarge:  5 layers, 256 wide. 23277984. Test loss
-xxlarge: 5 layers, 512 wide. 23277987. Test loss
+xxsmall: 2 layers,  32 wide. 23277974.
+xsmall:  3 layers,  32 wide. 23277977.
+small:   3 layers,  48 wide. 23277979.
+medium:  4 layers,  64 wide. 23277981.
+large:   4 layers, 128 wide. 23277983.
+xlarge:  5 layers, 256 wide. 23277984.
+xxlarge: 5 layers, 512 wide. 23277987.
+
+Results: Found significant errors when analyzing out-of-sample airfoils. Need to make some changes:
+    a) Need more data beyond the UIUC two-combination airfoils. Added 3-combination + variance from random deviation.
+    b) Net training / evaluation needs to embed the invariant of symmetry w.r.t. alpha and shape, targeting symmetric / antisymmetric outputs.
+
+xxsmall: 2 layers,  32 wide. 23296397.
+xsmall:  3 layers,  32 wide. 23296400.
+small:   3 layers,  48 wide. 23296405.
+medium:  4 layers,  64 wide. 23296406.
+large:   4 layers, 128 wide. 23296413.
+xlarge:  4 layers, 256 wide. 23296435.
+xxlarge: 5 layers, 256 wide. 23296439.
+xxxlarge:5 layers, 512 wide. 23296446.

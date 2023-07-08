@@ -1,0 +1,529 @@
+Reading /home/gridsan/pds/NeuralFoil/data/data_simple.csv...
+Reading /home/gridsan/pds/NeuralFoil/data/data_complex_1.csv...
+Reading /home/gridsan/pds/NeuralFoil/data/data_complex_2.csv...
+Dataset:
+shape: (12_017_333, 26)
+┌─────────┬────────────┬─────────┬─────────┬───┬────────────┬────────────┬────────────┬────────────┐
+│ alpha   ┆ Re         ┆ CL      ┆ CD      ┆ … ┆ kulfan_upp ┆ kulfan_upp ┆ kulfan_TE_ ┆ kulfan_LE_ │
+│ ---     ┆ ---        ┆ ---     ┆ ---     ┆   ┆ er_6       ┆ er_7       ┆ thickness  ┆ weight     │
+│ f32     ┆ f32        ┆ f32     ┆ f32     ┆   ┆ ---        ┆ ---        ┆ ---        ┆ ---        │
+│         ┆            ┆         ┆         ┆   ┆ f32        ┆ f32        ┆ f32        ┆ f32        │
+╞═════════╪════════════╪═════════╪═════════╪═══╪════════════╪════════════╪════════════╪════════════╡
+│ 3.601   ┆ 926519.187 ┆ 0.5429  ┆ 0.00794 ┆ … ┆ 0.411071   ┆ 0.210973   ┆ 0.003677   ┆ 0.723309   │
+│         ┆ 5          ┆         ┆         ┆   ┆            ┆            ┆            ┆            │
+│ 11.042  ┆ 253065.953 ┆ 1.0296  ┆ 0.07226 ┆ … ┆ 0.32383    ┆ 0.304917   ┆ 0.0        ┆ 0.21471    │
+│         ┆ 125        ┆         ┆         ┆   ┆            ┆            ┆            ┆            │
+│ 4.156   ┆ 90136.0078 ┆ 0.6099  ┆ 0.01592 ┆ … ┆ 0.106046   ┆ 0.041865   ┆ 0.0        ┆ 0.274193   │
+│         ┆ 12         ┆         ┆         ┆   ┆            ┆            ┆            ┆            │
+│ -7.374  ┆ 76112.0625 ┆ -0.2924 ┆ 0.10526 ┆ … ┆ 0.25097    ┆ 0.207321   ┆ 0.0        ┆ 0.343406   │
+│ …       ┆ …          ┆ …       ┆ …       ┆ … ┆ …          ┆ …          ┆ …          ┆ …          │
+│ -4.817  ┆ 547123.062 ┆ -0.2567 ┆ 0.01213 ┆ … ┆ 0.13569    ┆ 0.16327    ┆ 0.001063   ┆ 0.097115   │
+│         ┆ 5          ┆         ┆         ┆   ┆            ┆            ┆            ┆            │
+│ 8.33    ┆ 28315.8203 ┆ 0.2834  ┆ 0.12065 ┆ … ┆ 0.146646   ┆ 0.131237   ┆ 0.000294   ┆ 0.07096    │
+│         ┆ 12         ┆         ┆         ┆   ┆            ┆            ┆            ┆            │
+│ -9.175  ┆ 4098.96191 ┆ -0.1281 ┆ 0.11531 ┆ … ┆ 0.233123   ┆ 0.227473   ┆ 0.00927    ┆ 0.453028   │
+│         ┆ 4          ┆         ┆         ┆   ┆            ┆            ┆            ┆            │
+│ -12.109 ┆ 10824.4111 ┆ -0.0999 ┆ 0.13479 ┆ … ┆ 0.274675   ┆ 0.398608   ┆ 0.003788   ┆ 0.243389   │
+│         ┆ 33         ┆         ┆         ┆   ┆            ┆            ┆            ┆            │
+└─────────┴────────────┴─────────┴─────────┴───┴────────────┴────────────┴────────────┴────────────┘
+Dataset statistics:
+shape: (9, 27)
+┌──────────┬──────────┬──────────┬─────────┬───┬────────────┬────────────┬────────────┬────────────┐
+│ describe ┆ alpha    ┆ Re       ┆ CL      ┆ … ┆ kulfan_upp ┆ kulfan_upp ┆ kulfan_TE_ ┆ kulfan_LE_ │
+│ ---      ┆ ---      ┆ ---      ┆ ---     ┆   ┆ er_6       ┆ er_7       ┆ thickness  ┆ weight     │
+│ str      ┆ f64      ┆ f64      ┆ f64     ┆   ┆ ---        ┆ ---        ┆ ---        ┆ ---        │
+│          ┆          ┆          ┆         ┆   ┆ f64        ┆ f64        ┆ f64        ┆ f64        │
+╞══════════╪══════════╪══════════╪═════════╪═══╪════════════╪════════════╪════════════╪════════════╡
+│ count    ┆ 1.201733 ┆ 1.201733 ┆ 1.20173 ┆ … ┆ 1.2017333e ┆ 1.2017333e ┆ 1.2017333e ┆ 1.2017333e │
+│          ┆ 3e7      ┆ 3e7      ┆ 33e7    ┆   ┆ 7          ┆ 7          ┆ 7          ┆ 7          │
+│ null_cou ┆ 0.0      ┆ 0.0      ┆ 0.0     ┆ … ┆ 0.0        ┆ 0.0        ┆ 0.0        ┆ 0.0        │
+│ nt       ┆          ┆          ┆         ┆   ┆            ┆            ┆            ┆            │
+│ mean     ┆ 0.173512 ┆ 4.436167 ┆ 0.29438 ┆ … ┆ 0.191469   ┆ 0.231354   ┆ 0.00294    ┆ 0.119897   │
+│          ┆          ┆ e6       ┆ 8       ┆   ┆            ┆            ┆            ┆            │
+│ std      ┆ 7.109475 ┆ 4.265247 ┆ 0.66506 ┆ … ┆ 0.120992   ┆ 0.150222   ┆ 0.008045   ┆ 0.194608   │
+│          ┆          ┆ 2e7      ┆ 2       ┆   ┆            ┆            ┆            ┆            │
+│ min      ┆ -16.2830 ┆ 10.31059 ┆ -1.8642 ┆ … ┆ -3.61271   ┆ -0.801643  ┆ 0.0        ┆ -1.808112  │
+│          ┆ 01       ┆ 3        ┆         ┆   ┆            ┆            ┆            ┆            │
+│ max      ┆ 17.093   ┆ 8.8406e9 ┆ 3.2815  ┆ … ┆ 2.515735   ┆ 7.338421   ┆ 0.99827    ┆ 2.398047   │
+│ median   ┆ 0.285    ┆ 288724.4 ┆ 0.2416  ┆ … ┆ 0.187657   ┆ 0.216125   ┆ 0.000743   ┆ 0.11051    │
+│          ┆          ┆ 375      ┆         ┆   ┆            ┆            ┆            ┆            │
+│ 25%      ┆ -5.746   ┆ 58623.17 ┆ -0.2479 ┆ … ┆ 0.131041   ┆ 0.146434   ┆ 0.0        ┆ 0.008139   │
+│          ┆          ┆ 5781     ┆         ┆   ┆            ┆            ┆            ┆            │
+│ 75%      ┆ 6.14     ┆ 1.4844e6 ┆ 0.8179  ┆ … ┆ 0.249612   ┆ 0.292619   ┆ 0.003759   ┆ 0.22973    │
+└──────────┴──────────┴──────────┴─────────┴───┴────────────┴────────────┴────────────┴────────────┘
+cuda
+No existing model found, starting fresh.
+Preparing data...
+Training...
+Epoch: 0 | Train Loss: 0.0256397 | Test Loss: 0.0102895 | CL: 0.0542909 | ln_CD: 0.104331 | CM: 0.00830274 | u_max_over_u: 0.164781 | Top_Xtr: 0.054489 | Bot_Xtr: 0.0732536
+Epoch: 1 | Train Loss: 0.00881249 | Test Loss: 0.0077163 | CL: 0.0466875 | ln_CD: 0.0860351 | CM: 0.00730227 | u_max_over_u: 0.132739 | Top_Xtr: 0.0430126 | Bot_Xtr: 0.05782
+Epoch: 2 | Train Loss: 0.00712467 | Test Loss: 0.00660409 | CL: 0.0414238 | ln_CD: 0.0780464 | CM: 0.00677189 | u_max_over_u: 0.121957 | Top_Xtr: 0.0376108 | Bot_Xtr: 0.0508597
+Epoch: 3 | Train Loss: 0.00626682 | Test Loss: 0.00594708 | CL: 0.038554 | ln_CD: 0.0717193 | CM: 0.00636431 | u_max_over_u: 0.112397 | Top_Xtr: 0.0341781 | Bot_Xtr: 0.0468045
+Epoch: 4 | Train Loss: 0.00572372 | Test Loss: 0.00548408 | CL: 0.0363388 | ln_CD: 0.0687741 | CM: 0.00595318 | u_max_over_u: 0.108629 | Top_Xtr: 0.0323478 | Bot_Xtr: 0.0441501
+Epoch: 5 | Train Loss: 0.00533787 | Test Loss: 0.00522701 | CL: 0.0352469 | ln_CD: 0.066803 | CM: 0.00573177 | u_max_over_u: 0.103952 | Top_Xtr: 0.0309665 | Bot_Xtr: 0.0422744
+Epoch: 6 | Train Loss: 0.00505639 | Test Loss: 0.00492997 | CL: 0.0337258 | ln_CD: 0.06444 | CM: 0.00544821 | u_max_over_u: 0.100486 | Top_Xtr: 0.0294299 | Bot_Xtr: 0.0403384
+Epoch: 7 | Train Loss: 0.00484455 | Test Loss: 0.00474292 | CL: 0.0326885 | ln_CD: 0.0624743 | CM: 0.00525306 | u_max_over_u: 0.100105 | Top_Xtr: 0.028814 | Bot_Xtr: 0.0392999
+Epoch: 8 | Train Loss: 0.00467778 | Test Loss: 0.00457154 | CL: 0.0315413 | ln_CD: 0.0601487 | CM: 0.00513022 | u_max_over_u: 0.096894 | Top_Xtr: 0.0278937 | Bot_Xtr: 0.0380862
+Epoch: 9 | Train Loss: 0.00454531 | Test Loss: 0.0045893 | CL: 0.0308332 | ln_CD: 0.0648122 | CM: 0.0050406 | u_max_over_u: 0.0962682 | Top_Xtr: 0.0277544 | Bot_Xtr: 0.0374218
+Epoch: 10 | Train Loss: 0.0044373 | Test Loss: 0.00436 | CL: 0.0309954 | ln_CD: 0.0577629 | CM: 0.00494322 | u_max_over_u: 0.0939232 | Top_Xtr: 0.0265647 | Bot_Xtr: 0.036261
+Epoch: 11 | Train Loss: 0.00434759 | Test Loss: 0.00431426 | CL: 0.0304595 | ln_CD: 0.0594222 | CM: 0.00482055 | u_max_over_u: 0.0934947 | Top_Xtr: 0.0258493 | Bot_Xtr: 0.035502
+Epoch: 12 | Train Loss: 0.00427151 | Test Loss: 0.00421376 | CL: 0.0301827 | ln_CD: 0.0558718 | CM: 0.00480702 | u_max_over_u: 0.0920491 | Top_Xtr: 0.0253297 | Bot_Xtr: 0.0347684
+Epoch: 13 | Train Loss: 0.00420626 | Test Loss: 0.00417061 | CL: 0.0294307 | ln_CD: 0.0555066 | CM: 0.00483068 | u_max_over_u: 0.0921803 | Top_Xtr: 0.0252407 | Bot_Xtr: 0.0349605
+Epoch: 14 | Train Loss: 0.00415155 | Test Loss: 0.00408657 | CL: 0.0294803 | ln_CD: 0.0542638 | CM: 0.00465437 | u_max_over_u: 0.0908606 | Top_Xtr: 0.0246028 | Bot_Xtr: 0.0339145
+Epoch: 15 | Train Loss: 0.00410359 | Test Loss: 0.00413758 | CL: 0.0293715 | ln_CD: 0.0585056 | CM: 0.00470774 | u_max_over_u: 0.091396 | Top_Xtr: 0.0242356 | Bot_Xtr: 0.0335086
+Epoch: 16 | Train Loss: 0.00406317 | Test Loss: 0.00399349 | CL: 0.0285422 | ln_CD: 0.0528944 | CM: 0.00457523 | u_max_over_u: 0.0900376 | Top_Xtr: 0.0243649 | Bot_Xtr: 0.0332993
+Epoch: 17 | Train Loss: 0.00402757 | Test Loss: 0.0040318 | CL: 0.0287936 | ln_CD: 0.0541349 | CM: 0.00476485 | u_max_over_u: 0.0904205 | Top_Xtr: 0.0238212 | Bot_Xtr: 0.0328904
+Epoch: 18 | Train Loss: 0.00399445 | Test Loss: 0.00396815 | CL: 0.0283705 | ln_CD: 0.0529763 | CM: 0.00452638 | u_max_over_u: 0.0897846 | Top_Xtr: 0.0235739 | Bot_Xtr: 0.0328568
+Epoch: 19 | Train Loss: 0.00396798 | Test Loss: 0.00395482 | CL: 0.0283139 | ln_CD: 0.0524903 | CM: 0.00462627 | u_max_over_u: 0.0910261 | Top_Xtr: 0.0234253 | Bot_Xtr: 0.0325996
+Epoch: 20 | Train Loss: 0.00394255 | Test Loss: 0.0039204 | CL: 0.0277199 | ln_CD: 0.0518719 | CM: 0.00454721 | u_max_over_u: 0.091615 | Top_Xtr: 0.0231267 | Bot_Xtr: 0.0324136
+Epoch: 21 | Train Loss: 0.00391801 | Test Loss: 0.00387974 | CL: 0.0275865 | ln_CD: 0.0521887 | CM: 0.00448304 | u_max_over_u: 0.0890673 | Top_Xtr: 0.0230666 | Bot_Xtr: 0.0321425
+Epoch: 22 | Train Loss: 0.00389657 | Test Loss: 0.00395771 | CL: 0.02764 | ln_CD: 0.0563303 | CM: 0.00442354 | u_max_over_u: 0.0889743 | Top_Xtr: 0.0229836 | Bot_Xtr: 0.0320977
+Epoch: 23 | Train Loss: 0.00387881 | Test Loss: 0.00384232 | CL: 0.0276946 | ln_CD: 0.0511926 | CM: 0.00442103 | u_max_over_u: 0.08804 | Top_Xtr: 0.0227012 | Bot_Xtr: 0.0320488
+Epoch: 24 | Train Loss: 0.00386057 | Test Loss: 0.0038658 | CL: 0.0275051 | ln_CD: 0.0528237 | CM: 0.00449771 | u_max_over_u: 0.0880219 | Top_Xtr: 0.022875 | Bot_Xtr: 0.0318721
+Epoch: 25 | Train Loss: 0.00384357 | Test Loss: 0.00379255 | CL: 0.0271868 | ln_CD: 0.0501136 | CM: 0.00441144 | u_max_over_u: 0.0886282 | Top_Xtr: 0.0229341 | Bot_Xtr: 0.0320498
+Epoch: 26 | Train Loss: 0.00382819 | Test Loss: 0.00380461 | CL: 0.0272452 | ln_CD: 0.0517819 | CM: 0.00438587 | u_max_over_u: 0.0881316 | Top_Xtr: 0.0226121 | Bot_Xtr: 0.0319744
+Epoch: 27 | Train Loss: 0.00381444 | Test Loss: 0.00383464 | CL: 0.0272501 | ln_CD: 0.0526499 | CM: 0.00437558 | u_max_over_u: 0.0884967 | Top_Xtr: 0.0221126 | Bot_Xtr: 0.0317093
+Epoch: 28 | Train Loss: 0.00380179 | Test Loss: 0.00384653 | CL: 0.0269819 | ln_CD: 0.0548166 | CM: 0.00435578 | u_max_over_u: 0.0917686 | Top_Xtr: 0.0222087 | Bot_Xtr: 0.0314774
+Epoch: 29 | Train Loss: 0.00378962 | Test Loss: 0.00379637 | CL: 0.0276069 | ln_CD: 0.0520295 | CM: 0.00432585 | u_max_over_u: 0.0880916 | Top_Xtr: 0.0218625 | Bot_Xtr: 0.0311414
+Epoch: 30 | Train Loss: 0.00377749 | Test Loss: 0.00381169 | CL: 0.0267676 | ln_CD: 0.0524327 | CM: 0.00432759 | u_max_over_u: 0.0867276 | Top_Xtr: 0.0218825 | Bot_Xtr: 0.031491
+Epoch: 31 | Train Loss: 0.00376695 | Test Loss: 0.00373432 | CL: 0.026619 | ln_CD: 0.0501016 | CM: 0.00428674 | u_max_over_u: 0.0873533 | Top_Xtr: 0.0217675 | Bot_Xtr: 0.0311784
+Epoch: 32 | Train Loss: 0.00375747 | Test Loss: 0.00374198 | CL: 0.026964 | ln_CD: 0.0509616 | CM: 0.00434832 | u_max_over_u: 0.086142 | Top_Xtr: 0.0216079 | Bot_Xtr: 0.031035
+Epoch: 33 | Train Loss: 0.00374709 | Test Loss: 0.00376328 | CL: 0.0264763 | ln_CD: 0.0527129 | CM: 0.00429536 | u_max_over_u: 0.0863019 | Top_Xtr: 0.0217864 | Bot_Xtr: 0.0312813
+Epoch: 34 | Train Loss: 0.00373893 | Test Loss: 0.00371174 | CL: 0.0266374 | ln_CD: 0.0488531 | CM: 0.00428885 | u_max_over_u: 0.0863489 | Top_Xtr: 0.0217579 | Bot_Xtr: 0.0309616
+Epoch: 35 | Train Loss: 0.0037307 | Test Loss: 0.0037061 | CL: 0.0266579 | ln_CD: 0.0492316 | CM: 0.00429872 | u_max_over_u: 0.0857446 | Top_Xtr: 0.0216899 | Bot_Xtr: 0.0310586
+Epoch: 36 | Train Loss: 0.0037234 | Test Loss: 0.0036721 | CL: 0.0263003 | ln_CD: 0.0486012 | CM: 0.00427425 | u_max_over_u: 0.0873878 | Top_Xtr: 0.0214399 | Bot_Xtr: 0.0312388
+Epoch: 37 | Train Loss: 0.00371647 | Test Loss: 0.00370912 | CL: 0.0279234 | ln_CD: 0.049245 | CM: 0.00428023 | u_max_over_u: 0.0865037 | Top_Xtr: 0.0214676 | Bot_Xtr: 0.0308537
+Epoch: 38 | Train Loss: 0.00370996 | Test Loss: 0.00373512 | CL: 0.026315 | ln_CD: 0.0539216 | CM: 0.00423859 | u_max_over_u: 0.085839 | Top_Xtr: 0.0213961 | Bot_Xtr: 0.0308373
+Epoch: 39 | Train Loss: 0.00370254 | Test Loss: 0.00366543 | CL: 0.0262031 | ln_CD: 0.0490153 | CM: 0.00430196 | u_max_over_u: 0.0852217 | Top_Xtr: 0.021279 | Bot_Xtr: 0.0308642
+Epoch: 40 | Train Loss: 0.0036965 | Test Loss: 0.00368714 | CL: 0.0268759 | ln_CD: 0.0499192 | CM: 0.00431442 | u_max_over_u: 0.0865363 | Top_Xtr: 0.0212252 | Bot_Xtr: 0.030902
+Epoch: 41 | Train Loss: 0.00369128 | Test Loss: 0.00365077 | CL: 0.0259939 | ln_CD: 0.0486415 | CM: 0.00429785 | u_max_over_u: 0.0850494 | Top_Xtr: 0.0213487 | Bot_Xtr: 0.0315225
+Epoch: 42 | Train Loss: 0.00368516 | Test Loss: 0.00366853 | CL: 0.0261539 | ln_CD: 0.0494354 | CM: 0.00420761 | u_max_over_u: 0.0866875 | Top_Xtr: 0.0211675 | Bot_Xtr: 0.0306948
+Epoch: 43 | Train Loss: 0.00368062 | Test Loss: 0.00366564 | CL: 0.0264549 | ln_CD: 0.0499294 | CM: 0.00419554 | u_max_over_u: 0.0851796 | Top_Xtr: 0.0213601 | Bot_Xtr: 0.0306622
+Epoch: 44 | Train Loss: 0.00367387 | Test Loss: 0.00367796 | CL: 0.0261235 | ln_CD: 0.0497308 | CM: 0.00420841 | u_max_over_u: 0.0849511 | Top_Xtr: 0.0211392 | Bot_Xtr: 0.0308634
+Epoch: 45 | Train Loss: 0.00366999 | Test Loss: 0.00364876 | CL: 0.0265615 | ln_CD: 0.0493314 | CM: 0.00425671 | u_max_over_u: 0.085591 | Top_Xtr: 0.0208796 | Bot_Xtr: 0.030847
+Epoch: 46 | Train Loss: 0.00366513 | Test Loss: 0.00366998 | CL: 0.0259583 | ln_CD: 0.0511959 | CM: 0.0042209 | u_max_over_u: 0.0858067 | Top_Xtr: 0.0210227 | Bot_Xtr: 0.030589
+Epoch: 47 | Train Loss: 0.00366048 | Test Loss: 0.00365338 | CL: 0.0261184 | ln_CD: 0.0500539 | CM: 0.00420614 | u_max_over_u: 0.0850533 | Top_Xtr: 0.021074 | Bot_Xtr: 0.0306345
+Epoch: 48 | Train Loss: 0.00365614 | Test Loss: 0.00361637 | CL: 0.0261458 | ln_CD: 0.0484321 | CM: 0.00421404 | u_max_over_u: 0.0845851 | Top_Xtr: 0.0208042 | Bot_Xtr: 0.030496
+Epoch: 49 | Train Loss: 0.00365136 | Test Loss: 0.00363564 | CL: 0.0261403 | ln_CD: 0.0484304 | CM: 0.00418503 | u_max_over_u: 0.0848029 | Top_Xtr: 0.021183 | Bot_Xtr: 0.0307138
+Epoch: 50 | Train Loss: 0.00364728 | Test Loss: 0.00362777 | CL: 0.0261189 | ln_CD: 0.0493786 | CM: 0.00421989 | u_max_over_u: 0.0863906 | Top_Xtr: 0.0208658 | Bot_Xtr: 0.0309262
+Epoch: 51 | Train Loss: 0.00364503 | Test Loss: 0.00360544 | CL: 0.0259787 | ln_CD: 0.0482083 | CM: 0.00421251 | u_max_over_u: 0.0837512 | Top_Xtr: 0.0208472 | Bot_Xtr: 0.0305357
+Epoch: 52 | Train Loss: 0.00363962 | Test Loss: 0.00372083 | CL: 0.026219 | ln_CD: 0.0541321 | CM: 0.00419152 | u_max_over_u: 0.0849824 | Top_Xtr: 0.0212366 | Bot_Xtr: 0.030799
+Epoch: 53 | Train Loss: 0.00363708 | Test Loss: 0.00363191 | CL: 0.0262341 | ln_CD: 0.0491457 | CM: 0.00421268 | u_max_over_u: 0.0857814 | Top_Xtr: 0.0209525 | Bot_Xtr: 0.0308961
+Epoch: 54 | Train Loss: 0.00363141 | Test Loss: 0.00359658 | CL: 0.0264358 | ln_CD: 0.0480554 | CM: 0.00416239 | u_max_over_u: 0.0831383 | Top_Xtr: 0.0207451 | Bot_Xtr: 0.0306321
+Epoch: 55 | Train Loss: 0.00362902 | Test Loss: 0.00363755 | CL: 0.0266473 | ln_CD: 0.0492401 | CM: 0.00425454 | u_max_over_u: 0.084822 | Top_Xtr: 0.0211574 | Bot_Xtr: 0.0313973
+Epoch: 56 | Train Loss: 0.00362503 | Test Loss: 0.0035951 | CL: 0.0259529 | ln_CD: 0.0483798 | CM: 0.00413962 | u_max_over_u: 0.0832632 | Top_Xtr: 0.0212702 | Bot_Xtr: 0.0310172
+Epoch: 57 | Train Loss: 0.00362124 | Test Loss: 0.00361767 | CL: 0.0269185 | ln_CD: 0.0493012 | CM: 0.00414428 | u_max_over_u: 0.0853383 | Top_Xtr: 0.020696 | Bot_Xtr: 0.0307496
+Epoch: 58 | Train Loss: 0.00361893 | Test Loss: 0.00358027 | CL: 0.0257518 | ln_CD: 0.0477137 | CM: 0.00414828 | u_max_over_u: 0.0856794 | Top_Xtr: 0.0211642 | Bot_Xtr: 0.0308214
+Epoch: 59 | Train Loss: 0.00361511 | Test Loss: 0.00358885 | CL: 0.0262799 | ln_CD: 0.0480581 | CM: 0.0041577 | u_max_over_u: 0.0841015 | Top_Xtr: 0.021065 | Bot_Xtr: 0.0304913
+Epoch: 60 | Train Loss: 0.00361153 | Test Loss: 0.00357424 | CL: 0.025385 | ln_CD: 0.0474357 | CM: 0.00413391 | u_max_over_u: 0.0829154 | Top_Xtr: 0.0208937 | Bot_Xtr: 0.0307278
+Epoch: 61 | Train Loss: 0.00360863 | Test Loss: 0.00356577 | CL: 0.0259633 | ln_CD: 0.047203 | CM: 0.00420163 | u_max_over_u: 0.0843321 | Top_Xtr: 0.0206447 | Bot_Xtr: 0.0306897
+Epoch: 62 | Train Loss: 0.00360612 | Test Loss: 0.00356562 | CL: 0.0257081 | ln_CD: 0.0473107 | CM: 0.00412255 | u_max_over_u: 0.0844279 | Top_Xtr: 0.0206301 | Bot_Xtr: 0.0304174
+Epoch: 63 | Train Loss: 0.00360281 | Test Loss: 0.00359817 | CL: 0.0259552 | ln_CD: 0.0475778 | CM: 0.00425742 | u_max_over_u: 0.0835313 | Top_Xtr: 0.0210234 | Bot_Xtr: 0.0306222
+Epoch: 64 | Train Loss: 0.00360071 | Test Loss: 0.0035674 | CL: 0.0256191 | ln_CD: 0.0480567 | CM: 0.00415075 | u_max_over_u: 0.0838442 | Top_Xtr: 0.020477 | Bot_Xtr: 0.0304108
+Epoch: 65 | Train Loss: 0.00359773 | Test Loss: 0.00363103 | CL: 0.026803 | ln_CD: 0.0481424 | CM: 0.00446164 | u_max_over_u: 0.0839032 | Top_Xtr: 0.0212259 | Bot_Xtr: 0.0307257
+Epoch: 66 | Train Loss: 0.00359627 | Test Loss: 0.00358037 | CL: 0.0264819 | ln_CD: 0.0483003 | CM: 0.00412155 | u_max_over_u: 0.0825839 | Top_Xtr: 0.0210827 | Bot_Xtr: 0.030358
+Epoch: 67 | Train Loss: 0.00359296 | Test Loss: 0.00358355 | CL: 0.025464 | ln_CD: 0.0482973 | CM: 0.00416371 | u_max_over_u: 0.0840506 | Top_Xtr: 0.0206234 | Bot_Xtr: 0.0304028
+Epoch: 68 | Train Loss: 0.00359004 | Test Loss: 0.00359747 | CL: 0.0256319 | ln_CD: 0.0499992 | CM: 0.00409165 | u_max_over_u: 0.0827822 | Top_Xtr: 0.020367 | Bot_Xtr: 0.0302178
+Epoch: 69 | Train Loss: 0.00358817 | Test Loss: 0.00360385 | CL: 0.0255424 | ln_CD: 0.048515 | CM: 0.00415117 | u_max_over_u: 0.0828602 | Top_Xtr: 0.020613 | Bot_Xtr: 0.0302546
+Epoch: 70 | Train Loss: 0.00358571 | Test Loss: 0.00360452 | CL: 0.0257533 | ln_CD: 0.0504038 | CM: 0.00417729 | u_max_over_u: 0.0853485 | Top_Xtr: 0.0209558 | Bot_Xtr: 0.0303824
+Epoch: 71 | Train Loss: 0.00358319 | Test Loss: 0.00358447 | CL: 0.0252452 | ln_CD: 0.0473601 | CM: 0.00408134 | u_max_over_u: 0.0829795 | Top_Xtr: 0.0204687 | Bot_Xtr: 0.0302437
+Epoch: 72 | Train Loss: 0.00358067 | Test Loss: 0.00355249 | CL: 0.0258038 | ln_CD: 0.0473142 | CM: 0.00415325 | u_max_over_u: 0.0831776 | Top_Xtr: 0.0209716 | Bot_Xtr: 0.0304195
+Epoch: 73 | Train Loss: 0.00357788 | Test Loss: 0.00357357 | CL: 0.0257978 | ln_CD: 0.0474148 | CM: 0.00420491 | u_max_over_u: 0.0831902 | Top_Xtr: 0.0207747 | Bot_Xtr: 0.0303799
+Epoch: 74 | Train Loss: 0.00357486 | Test Loss: 0.00361542 | CL: 0.0268868 | ln_CD: 0.0512443 | CM: 0.00411939 | u_max_over_u: 0.0838444 | Top_Xtr: 0.0205083 | Bot_Xtr: 0.0305398
+Epoch: 75 | Train Loss: 0.00357283 | Test Loss: 0.0036632 | CL: 0.0254178 | ln_CD: 0.0541258 | CM: 0.00409689 | u_max_over_u: 0.0875742 | Top_Xtr: 0.0202944 | Bot_Xtr: 0.030276
+Epoch: 76 | Train Loss: 0.00356968 | Test Loss: 0.00358109 | CL: 0.0255665 | ln_CD: 0.0498648 | CM: 0.00410857 | u_max_over_u: 0.0840082 | Top_Xtr: 0.0203941 | Bot_Xtr: 0.0302782
+Epoch: 77 | Train Loss: 0.00356717 | Test Loss: 0.00356625 | CL: 0.0262935 | ln_CD: 0.0474527 | CM: 0.00412887 | u_max_over_u: 0.0824141 | Top_Xtr: 0.0202455 | Bot_Xtr: 0.0301485
+Epoch: 78 | Train Loss: 0.00356571 | Test Loss: 0.00356098 | CL: 0.0262083 | ln_CD: 0.0475362 | CM: 0.00412898 | u_max_over_u: 0.0866041 | Top_Xtr: 0.0204212 | Bot_Xtr: 0.0302253
+Epoch: 79 | Train Loss: 0.00356311 | Test Loss: 0.00357056 | CL: 0.0266818 | ln_CD: 0.0470603 | CM: 0.00415921 | u_max_over_u: 0.0828284 | Top_Xtr: 0.020452 | Bot_Xtr: 0.0303983
+Epoch: 80 | Train Loss: 0.00355902 | Test Loss: 0.00357183 | CL: 0.0266499 | ln_CD: 0.0476887 | CM: 0.00409321 | u_max_over_u: 0.0834878 | Top_Xtr: 0.0201826 | Bot_Xtr: 0.0301461
+Epoch: 81 | Train Loss: 0.00355692 | Test Loss: 0.00353727 | CL: 0.0253845 | ln_CD: 0.0485318 | CM: 0.00409645 | u_max_over_u: 0.0821827 | Top_Xtr: 0.0202669 | Bot_Xtr: 0.0302503
+Epoch: 82 | Train Loss: 0.00355526 | Test Loss: 0.0035821 | CL: 0.0257166 | ln_CD: 0.0499319 | CM: 0.00410115 | u_max_over_u: 0.0830285 | Top_Xtr: 0.020299 | Bot_Xtr: 0.0301625
+Epoch: 83 | Train Loss: 0.00355135 | Test Loss: 0.00353038 | CL: 0.0255454 | ln_CD: 0.0473135 | CM: 0.00409924 | u_max_over_u: 0.0835134 | Top_Xtr: 0.0209188 | Bot_Xtr: 0.030902
+Epoch: 84 | Train Loss: 0.00354927 | Test Loss: 0.00354735 | CL: 0.0252994 | ln_CD: 0.0476129 | CM: 0.00401518 | u_max_over_u: 0.0828959 | Top_Xtr: 0.0203818 | Bot_Xtr: 0.030412
+Epoch: 85 | Train Loss: 0.00354594 | Test Loss: 0.00356015 | CL: 0.0251249 | ln_CD: 0.0497726 | CM: 0.00412741 | u_max_over_u: 0.0828741 | Top_Xtr: 0.0204972 | Bot_Xtr: 0.0301096
+Epoch: 86 | Train Loss: 0.00354362 | Test Loss: 0.00351093 | CL: 0.0249096 | ln_CD: 0.0475792 | CM: 0.00403069 | u_max_over_u: 0.0822277 | Top_Xtr: 0.02028 | Bot_Xtr: 0.0306137
+Epoch: 87 | Train Loss: 0.00354182 | Test Loss: 0.00352286 | CL: 0.0250664 | ln_CD: 0.0482326 | CM: 0.00404367 | u_max_over_u: 0.0827132 | Top_Xtr: 0.0206194 | Bot_Xtr: 0.0304385
+Epoch: 88 | Train Loss: 0.00353949 | Test Loss: 0.00353649 | CL: 0.0250668 | ln_CD: 0.0493847 | CM: 0.00405697 | u_max_over_u: 0.0822152 | Top_Xtr: 0.0201222 | Bot_Xtr: 0.0301609
+Epoch: 89 | Train Loss: 0.00353869 | Test Loss: 0.00355946 | CL: 0.0256441 | ln_CD: 0.0496322 | CM: 0.00404476 | u_max_over_u: 0.0814511 | Top_Xtr: 0.0205309 | Bot_Xtr: 0.0303564
+Epoch: 90 | Train Loss: 0.00353475 | Test Loss: 0.00353351 | CL: 0.0252888 | ln_CD: 0.048211 | CM: 0.00407587 | u_max_over_u: 0.085053 | Top_Xtr: 0.0200775 | Bot_Xtr: 0.0302631
+Epoch: 91 | Train Loss: 0.00353397 | Test Loss: 0.00352473 | CL: 0.0255529 | ln_CD: 0.0483484 | CM: 0.00405245 | u_max_over_u: 0.0825201 | Top_Xtr: 0.0201989 | Bot_Xtr: 0.0301205
+Epoch: 92 | Train Loss: 0.00353183 | Test Loss: 0.00351011 | CL: 0.0252024 | ln_CD: 0.0469927 | CM: 0.0040241 | u_max_over_u: 0.0844228 | Top_Xtr: 0.0203361 | Bot_Xtr: 0.0301203
+Epoch: 93 | Train Loss: 0.0035305 | Test Loss: 0.00353152 | CL: 0.025957 | ln_CD: 0.0477355 | CM: 0.00405047 | u_max_over_u: 0.0881895 | Top_Xtr: 0.020508 | Bot_Xtr: 0.0305116
+Epoch: 94 | Train Loss: 0.00352886 | Test Loss: 0.00350235 | CL: 0.0252503 | ln_CD: 0.0474712 | CM: 0.00401238 | u_max_over_u: 0.0826794 | Top_Xtr: 0.0200783 | Bot_Xtr: 0.0300287
+Epoch: 95 | Train Loss: 0.00352653 | Test Loss: 0.00353534 | CL: 0.0251828 | ln_CD: 0.0493551 | CM: 0.00400493 | u_max_over_u: 0.0839451 | Top_Xtr: 0.0205485 | Bot_Xtr: 0.0301764
+Epoch: 96 | Train Loss: 0.00352633 | Test Loss: 0.00350974 | CL: 0.0250023 | ln_CD: 0.0477773 | CM: 0.00399261 | u_max_over_u: 0.082468 | Top_Xtr: 0.0200641 | Bot_Xtr: 0.0300246
+Epoch: 97 | Train Loss: 0.00352396 | Test Loss: 0.00353395 | CL: 0.0252711 | ln_CD: 0.049367 | CM: 0.00408597 | u_max_over_u: 0.0838165 | Top_Xtr: 0.0202322 | Bot_Xtr: 0.030222
+Epoch: 98 | Train Loss: 0.00352226 | Test Loss: 0.00355602 | CL: 0.025262 | ln_CD: 0.0506512 | CM: 0.00401941 | u_max_over_u: 0.0827997 | Top_Xtr: 0.0202189 | Bot_Xtr: 0.0302877
+Epoch: 99 | Train Loss: 0.00352109 | Test Loss: 0.00350055 | CL: 0.0252401 | ln_CD: 0.0471284 | CM: 0.00399257 | u_max_over_u: 0.0828203 | Top_Xtr: 0.0200896 | Bot_Xtr: 0.0299941
+Epoch: 100 | Train Loss: 0.00351908 | Test Loss: 0.00353128 | CL: 0.0252879 | ln_CD: 0.0495192 | CM: 0.00403284 | u_max_over_u: 0.0829654 | Top_Xtr: 0.0204544 | Bot_Xtr: 0.0301788
+Epoch: 101 | Train Loss: 0.00351757 | Test Loss: 0.00351486 | CL: 0.0250114 | ln_CD: 0.0488843 | CM: 0.00398282 | u_max_over_u: 0.0821885 | Top_Xtr: 0.0203419 | Bot_Xtr: 0.030251
+Epoch: 102 | Train Loss: 0.003516 | Test Loss: 0.00350051 | CL: 0.0251279 | ln_CD: 0.0477283 | CM: 0.0039883 | u_max_over_u: 0.0828753 | Top_Xtr: 0.020732 | Bot_Xtr: 0.0308556
+Epoch: 103 | Train Loss: 0.00351556 | Test Loss: 0.00347875 | CL: 0.0248235 | ln_CD: 0.0469033 | CM: 0.00398429 | u_max_over_u: 0.0831582 | Top_Xtr: 0.0201447 | Bot_Xtr: 0.0300149
+Epoch: 104 | Train Loss: 0.00351346 | Test Loss: 0.00353356 | CL: 0.0259675 | ln_CD: 0.048513 | CM: 0.00400577 | u_max_over_u: 0.0864787 | Top_Xtr: 0.0203539 | Bot_Xtr: 0.0300582
+Epoch: 105 | Train Loss: 0.00351375 | Test Loss: 0.00347241 | CL: 0.0248994 | ln_CD: 0.0468745 | CM: 0.00399866 | u_max_over_u: 0.0821654 | Top_Xtr: 0.0199921 | Bot_Xtr: 0.0298817
+Epoch: 106 | Train Loss: 0.00351223 | Test Loss: 0.00349582 | CL: 0.025273 | ln_CD: 0.0471922 | CM: 0.003984 | u_max_over_u: 0.0818801 | Top_Xtr: 0.0203052 | Bot_Xtr: 0.0302347
+Epoch: 107 | Train Loss: 0.00351002 | Test Loss: 0.00350651 | CL: 0.0259518 | ln_CD: 0.0474221 | CM: 0.00407946 | u_max_over_u: 0.0817425 | Top_Xtr: 0.0199124 | Bot_Xtr: 0.0299503
+Epoch: 108 | Train Loss: 0.00350886 | Test Loss: 0.00350837 | CL: 0.024951 | ln_CD: 0.0483219 | CM: 0.00397767 | u_max_over_u: 0.0815177 | Top_Xtr: 0.02019 | Bot_Xtr: 0.0302614
+Epoch: 109 | Train Loss: 0.00350755 | Test Loss: 0.00348544 | CL: 0.0253297 | ln_CD: 0.0468809 | CM: 0.00401357 | u_max_over_u: 0.0818158 | Top_Xtr: 0.0205818 | Bot_Xtr: 0.0303585
+Epoch: 110 | Train Loss: 0.00350662 | Test Loss: 0.00353781 | CL: 0.0259337 | ln_CD: 0.0506023 | CM: 0.00398699 | u_max_over_u: 0.084628 | Top_Xtr: 0.0204514 | Bot_Xtr: 0.0303267
+Epoch: 111 | Train Loss: 0.00350614 | Test Loss: 0.00352125 | CL: 0.0249204 | ln_CD: 0.0494405 | CM: 0.00395567 | u_max_over_u: 0.0839457 | Top_Xtr: 0.020086 | Bot_Xtr: 0.0300253
+Epoch: 112 | Train Loss: 0.00350548 | Test Loss: 0.00348783 | CL: 0.0261683 | ln_CD: 0.0472427 | CM: 0.003962 | u_max_over_u: 0.0824185 | Top_Xtr: 0.0199992 | Bot_Xtr: 0.0299034
+Epoch: 113 | Train Loss: 0.00350501 | Test Loss: 0.00350475 | CL: 0.0255145 | ln_CD: 0.0479457 | CM: 0.0039851 | u_max_over_u: 0.0830164 | Top_Xtr: 0.0202681 | Bot_Xtr: 0.0300962
+Epoch: 114 | Train Loss: 0.00350242 | Test Loss: 0.00353743 | CL: 0.025484 | ln_CD: 0.0494943 | CM: 0.00405599 | u_max_over_u: 0.0830371 | Top_Xtr: 0.0203254 | Bot_Xtr: 0.0303389
+Epoch: 115 | Train Loss: 0.00350249 | Test Loss: 0.00348241 | CL: 0.0259117 | ln_CD: 0.0479902 | CM: 0.0039672 | u_max_over_u: 0.0814532 | Top_Xtr: 0.0203319 | Bot_Xtr: 0.0301657
+Epoch: 116 | Train Loss: 0.00350053 | Test Loss: 0.0034902 | CL: 0.0272634 | ln_CD: 0.0477559 | CM: 0.00396505 | u_max_over_u: 0.0823598 | Top_Xtr: 0.0201854 | Bot_Xtr: 0.0305164
+Epoch: 117 | Train Loss: 0.00350071 | Test Loss: 0.00348605 | CL: 0.0248003 | ln_CD: 0.0472562 | CM: 0.00402871 | u_max_over_u: 0.0828956 | Top_Xtr: 0.0204648 | Bot_Xtr: 0.0301579
+Epoch: 118 | Train Loss: 0.00349843 | Test Loss: 0.00347783 | CL: 0.0256554 | ln_CD: 0.0464121 | CM: 0.00395347 | u_max_over_u: 0.0806947 | Top_Xtr: 0.020297 | Bot_Xtr: 0.0302813
+Epoch: 119 | Train Loss: 0.00349827 | Test Loss: 0.0035336 | CL: 0.0258283 | ln_CD: 0.0477975 | CM: 0.00407557 | u_max_over_u: 0.0827497 | Top_Xtr: 0.0203059 | Bot_Xtr: 0.03008
+Epoch: 120 | Train Loss: 0.0034972 | Test Loss: 0.0035193 | CL: 0.0253648 | ln_CD: 0.0477953 | CM: 0.00403117 | u_max_over_u: 0.0834807 | Top_Xtr: 0.020131 | Bot_Xtr: 0.030143
+Epoch: 121 | Train Loss: 0.00349631 | Test Loss: 0.00348118 | CL: 0.0251559 | ln_CD: 0.0469398 | CM: 0.00406907 | u_max_over_u: 0.0853866 | Top_Xtr: 0.0209138 | Bot_Xtr: 0.0309432
+Epoch: 122 | Train Loss: 0.00349542 | Test Loss: 0.00350351 | CL: 0.0251833 | ln_CD: 0.0490218 | CM: 0.00403278 | u_max_over_u: 0.080841 | Top_Xtr: 0.020258 | Bot_Xtr: 0.0310637
+Epoch: 123 | Train Loss: 0.00349513 | Test Loss: 0.00350192 | CL: 0.0250733 | ln_CD: 0.047801 | CM: 0.00400693 | u_max_over_u: 0.0844223 | Top_Xtr: 0.0200728 | Bot_Xtr: 0.0301297
+Epoch: 124 | Train Loss: 0.00349427 | Test Loss: 0.00348252 | CL: 0.0250799 | ln_CD: 0.0477419 | CM: 0.00396088 | u_max_over_u: 0.0813087 | Top_Xtr: 0.0202637 | Bot_Xtr: 0.030201
+Epoch: 125 | Train Loss: 0.00349229 | Test Loss: 0.00346756 | CL: 0.0249934 | ln_CD: 0.046775 | CM: 0.00395532 | u_max_over_u: 0.0812444 | Top_Xtr: 0.0206346 | Bot_Xtr: 0.0307815
+Epoch: 126 | Train Loss: 0.00349361 | Test Loss: 0.00345979 | CL: 0.025731 | ln_CD: 0.0464609 | CM: 0.00394097 | u_max_over_u: 0.0819462 | Top_Xtr: 0.0202031 | Bot_Xtr: 0.0299482
+Epoch: 127 | Train Loss: 0.00349079 | Test Loss: 0.00349412 | CL: 0.0251597 | ln_CD: 0.0460938 | CM: 0.00408056 | u_max_over_u: 0.0815111 | Top_Xtr: 0.0202202 | Bot_Xtr: 0.030292
+Epoch: 128 | Train Loss: 0.0034906 | Test Loss: 0.00348655 | CL: 0.0248864 | ln_CD: 0.0496114 | CM: 0.00394332 | u_max_over_u: 0.0809975 | Top_Xtr: 0.0202314 | Bot_Xtr: 0.029943
+Epoch: 129 | Train Loss: 0.00348923 | Test Loss: 0.00348039 | CL: 0.0247063 | ln_CD: 0.0467473 | CM: 0.00398769 | u_max_over_u: 0.0807293 | Top_Xtr: 0.0200707 | Bot_Xtr: 0.0299874
+Epoch: 130 | Train Loss: 0.00348954 | Test Loss: 0.00346762 | CL: 0.0250575 | ln_CD: 0.0470404 | CM: 0.00394722 | u_max_over_u: 0.0811817 | Top_Xtr: 0.0205181 | Bot_Xtr: 0.0300431
+Epoch: 131 | Train Loss: 0.00348814 | Test Loss: 0.0035071 | CL: 0.0273371 | ln_CD: 0.0482032 | CM: 0.00402401 | u_max_over_u: 0.081408 | Top_Xtr: 0.0210331 | Bot_Xtr: 0.0305483
+Epoch: 132 | Train Loss: 0.00348778 | Test Loss: 0.00344611 | CL: 0.0248772 | ln_CD: 0.0459242 | CM: 0.0039364 | u_max_over_u: 0.08077 | Top_Xtr: 0.0201367 | Bot_Xtr: 0.0297671
+Epoch: 133 | Train Loss: 0.00348681 | Test Loss: 0.003458 | CL: 0.0253508 | ln_CD: 0.0465604 | CM: 0.00398695 | u_max_over_u: 0.0831572 | Top_Xtr: 0.0206023 | Bot_Xtr: 0.0302462
+Epoch: 134 | Train Loss: 0.00348677 | Test Loss: 0.00349619 | CL: 0.0249316 | ln_CD: 0.0485587 | CM: 0.004026 | u_max_over_u: 0.0862132 | Top_Xtr: 0.020312 | Bot_Xtr: 0.0302328
+Epoch: 135 | Train Loss: 0.00348539 | Test Loss: 0.00345941 | CL: 0.024765 | ln_CD: 0.0470202 | CM: 0.00399166 | u_max_over_u: 0.0815322 | Top_Xtr: 0.0202983 | Bot_Xtr: 0.0300136
+Epoch: 136 | Train Loss: 0.00348547 | Test Loss: 0.003492 | CL: 0.0251369 | ln_CD: 0.0475105 | CM: 0.00401721 | u_max_over_u: 0.0824337 | Top_Xtr: 0.0199539 | Bot_Xtr: 0.0299919
+Epoch: 137 | Train Loss: 0.00348491 | Test Loss: 0.00347403 | CL: 0.0247525 | ln_CD: 0.0482441 | CM: 0.00401267 | u_max_over_u: 0.0809438 | Top_Xtr: 0.0205533 | Bot_Xtr: 0.0300994
+Epoch: 138 | Train Loss: 0.00348349 | Test Loss: 0.00346229 | CL: 0.0251497 | ln_CD: 0.0463394 | CM: 0.00409603 | u_max_over_u: 0.0815115 | Top_Xtr: 0.0199208 | Bot_Xtr: 0.0303002
+Epoch: 139 | Train Loss: 0.00348249 | Test Loss: 0.00349483 | CL: 0.0255991 | ln_CD: 0.0486295 | CM: 0.00396594 | u_max_over_u: 0.0814696 | Top_Xtr: 0.0201214 | Bot_Xtr: 0.0299125
+Epoch: 140 | Train Loss: 0.00348201 | Test Loss: 0.00345895 | CL: 0.0246771 | ln_CD: 0.0474768 | CM: 0.00393827 | u_max_over_u: 0.081491 | Top_Xtr: 0.0206172 | Bot_Xtr: 0.029993
+Epoch: 141 | Train Loss: 0.00348158 | Test Loss: 0.00350408 | CL: 0.0253737 | ln_CD: 0.0495456 | CM: 0.00394774 | u_max_over_u: 0.0812257 | Top_Xtr: 0.0203773 | Bot_Xtr: 0.0303175
+Epoch: 142 | Train Loss: 0.00348083 | Test Loss: 0.00344873 | CL: 0.0248584 | ln_CD: 0.0464646 | CM: 0.00392595 | u_max_over_u: 0.0812364 | Top_Xtr: 0.0215039 | Bot_Xtr: 0.0306033
+Epoch: 143 | Train Loss: 0.00348092 | Test Loss: 0.00347322 | CL: 0.0247729 | ln_CD: 0.0482825 | CM: 0.00393859 | u_max_over_u: 0.0822533 | Top_Xtr: 0.020298 | Bot_Xtr: 0.0301981
+Epoch: 144 | Train Loss: 0.00348054 | Test Loss: 0.00344805 | CL: 0.0249401 | ln_CD: 0.0467607 | CM: 0.00396813 | u_max_over_u: 0.0815771 | Top_Xtr: 0.020531 | Bot_Xtr: 0.0299683
+Epoch: 145 | Train Loss: 0.00347862 | Test Loss: 0.0034585 | CL: 0.0248089 | ln_CD: 0.0470621 | CM: 0.00405227 | u_max_over_u: 0.0807755 | Top_Xtr: 0.0205973 | Bot_Xtr: 0.0299342
+Epoch: 146 | Train Loss: 0.00347823 | Test Loss: 0.00354125 | CL: 0.0272509 | ln_CD: 0.0480646 | CM: 0.00394432 | u_max_over_u: 0.0899316 | Top_Xtr: 0.0212612 | Bot_Xtr: 0.0303098
+Epoch: 147 | Train Loss: 0.00347796 | Test Loss: 0.00344541 | CL: 0.0251694 | ln_CD: 0.0468519 | CM: 0.00390598 | u_max_over_u: 0.0831412 | Top_Xtr: 0.0201666 | Bot_Xtr: 0.0302549
+Epoch: 148 | Train Loss: 0.00347774 | Test Loss: 0.00343791 | CL: 0.0247552 | ln_CD: 0.0460407 | CM: 0.00393433 | u_max_over_u: 0.0820354 | Top_Xtr: 0.02028 | Bot_Xtr: 0.0299793
+Epoch: 149 | Train Loss: 0.00347688 | Test Loss: 0.00347838 | CL: 0.0249921 | ln_CD: 0.0467434 | CM: 0.00396755 | u_max_over_u: 0.0808087 | Top_Xtr: 0.020256 | Bot_Xtr: 0.030133
+Epoch: 150 | Train Loss: 0.00347605 | Test Loss: 0.00356698 | CL: 0.0249623 | ln_CD: 0.0536627 | CM: 0.00397375 | u_max_over_u: 0.0819698 | Top_Xtr: 0.0200225 | Bot_Xtr: 0.0302389
+Epoch: 151 | Train Loss: 0.00347687 | Test Loss: 0.00346562 | CL: 0.0252255 | ln_CD: 0.0475811 | CM: 0.00393103 | u_max_over_u: 0.0806649 | Top_Xtr: 0.0206056 | Bot_Xtr: 0.0304711
+Epoch: 152 | Train Loss: 0.00347598 | Test Loss: 0.00345828 | CL: 0.0250166 | ln_CD: 0.0468515 | CM: 0.00402961 | u_max_over_u: 0.0813907 | Top_Xtr: 0.0201326 | Bot_Xtr: 0.0300131
+Epoch: 153 | Train Loss: 0.00347556 | Test Loss: 0.00346669 | CL: 0.0250465 | ln_CD: 0.0477868 | CM: 0.00393694 | u_max_over_u: 0.0818467 | Top_Xtr: 0.0201331 | Bot_Xtr: 0.0299545
+Epoch: 154 | Train Loss: 0.00347459 | Test Loss: 0.00346919 | CL: 0.0256576 | ln_CD: 0.0472922 | CM: 0.00392726 | u_max_over_u: 0.0808254 | Top_Xtr: 0.0206048 | Bot_Xtr: 0.0307679
+Epoch: 155 | Train Loss: 0.00347404 | Test Loss: 0.00350978 | CL: 0.025049 | ln_CD: 0.0483751 | CM: 0.00404921 | u_max_over_u: 0.0805323 | Top_Xtr: 0.0199368 | Bot_Xtr: 0.0298759
+Epoch: 156 | Train Loss: 0.00347279 | Test Loss: 0.00346048 | CL: 0.0248972 | ln_CD: 0.0478065 | CM: 0.00392922 | u_max_over_u: 0.0809835 | Top_Xtr: 0.0201552 | Bot_Xtr: 0.0298555
+Epoch: 157 | Train Loss: 0.00347278 | Test Loss: 0.00347139 | CL: 0.0246939 | ln_CD: 0.0493332 | CM: 0.00395986 | u_max_over_u: 0.0811738 | Top_Xtr: 0.0202604 | Bot_Xtr: 0.0300466
+Epoch: 158 | Train Loss: 0.00347318 | Test Loss: 0.00346972 | CL: 0.0246246 | ln_CD: 0.0478791 | CM: 0.00398778 | u_max_over_u: 0.082689 | Top_Xtr: 0.020344 | Bot_Xtr: 0.0304187
+Epoch: 159 | Train Loss: 0.003473 | Test Loss: 0.00345183 | CL: 0.0247218 | ln_CD: 0.0464019 | CM: 0.0040036 | u_max_over_u: 0.0811181 | Top_Xtr: 0.0201754 | Bot_Xtr: 0.0300812
+Epoch: 160 | Train Loss: 0.00347144 | Test Loss: 0.00345059 | CL: 0.0248362 | ln_CD: 0.0470039 | CM: 0.00393614 | u_max_over_u: 0.0829651 | Top_Xtr: 0.0204649 | Bot_Xtr: 0.0305348
+Epoch: 161 | Train Loss: 0.00347143 | Test Loss: 0.00347322 | CL: 0.0246451 | ln_CD: 0.0484186 | CM: 0.003949 | u_max_over_u: 0.0809612 | Top_Xtr: 0.0203565 | Bot_Xtr: 0.0299372
+Epoch: 162 | Train Loss: 0.00347178 | Test Loss: 0.00345018 | CL: 0.0249049 | ln_CD: 0.0465159 | CM: 0.00407563 | u_max_over_u: 0.080507 | Top_Xtr: 0.0202909 | Bot_Xtr: 0.0298356
+Epoch: 163 | Train Loss: 0.00347127 | Test Loss: 0.00347089 | CL: 0.0247207 | ln_CD: 0.0487585 | CM: 0.00397244 | u_max_over_u: 0.0803818 | Top_Xtr: 0.0200277 | Bot_Xtr: 0.0299401
+Epoch: 164 | Train Loss: 0.00347042 | Test Loss: 0.00350345 | CL: 0.0259179 | ln_CD: 0.0488032 | CM: 0.0039701 | u_max_over_u: 0.0830096 | Top_Xtr: 0.0199592 | Bot_Xtr: 0.0299029
+Epoch: 165 | Train Loss: 0.00347005 | Test Loss: 0.0035277 | CL: 0.02499 | ln_CD: 0.0492123 | CM: 0.00405865 | u_max_over_u: 0.0827405 | Top_Xtr: 0.02004 | Bot_Xtr: 0.0309213
+Epoch: 166 | Train Loss: 0.00346957 | Test Loss: 0.00344421 | CL: 0.0245213 | ln_CD: 0.0466614 | CM: 0.00393489 | u_max_over_u: 0.083579 | Top_Xtr: 0.0200358 | Bot_Xtr: 0.0300871
+Epoch: 167 | Train Loss: 0.00347089 | Test Loss: 0.00346868 | CL: 0.0257524 | ln_CD: 0.0476943 | CM: 0.00395396 | u_max_over_u: 0.0808658 | Top_Xtr: 0.0200378 | Bot_Xtr: 0.0299881
+Epoch: 168 | Train Loss: 0.00346895 | Test Loss: 0.00343587 | CL: 0.0247312 | ln_CD: 0.0467276 | CM: 0.00397373 | u_max_over_u: 0.0822746 | Top_Xtr: 0.0198938 | Bot_Xtr: 0.0298685
+Epoch: 169 | Train Loss: 0.00346898 | Test Loss: 0.00345041 | CL: 0.0244398 | ln_CD: 0.0471168 | CM: 0.00392293 | u_max_over_u: 0.082058 | Top_Xtr: 0.0199927 | Bot_Xtr: 0.029916
+Epoch: 170 | Train Loss: 0.00346821 | Test Loss: 0.00345901 | CL: 0.0246811 | ln_CD: 0.0480251 | CM: 0.0039148 | u_max_over_u: 0.0811102 | Top_Xtr: 0.0205061 | Bot_Xtr: 0.0298882
+Epoch: 171 | Train Loss: 0.00346802 | Test Loss: 0.00345299 | CL: 0.0260133 | ln_CD: 0.0468861 | CM: 0.00394954 | u_max_over_u: 0.0804095 | Top_Xtr: 0.0204459 | Bot_Xtr: 0.0298383
+Epoch: 172 | Train Loss: 0.00346818 | Test Loss: 0.00350216 | CL: 0.0244272 | ln_CD: 0.0470798 | CM: 0.00394666 | u_max_over_u: 0.0817718 | Top_Xtr: 0.0201816 | Bot_Xtr: 0.0297393
+Epoch: 173 | Train Loss: 0.00346728 | Test Loss: 0.00351514 | CL: 0.025761 | ln_CD: 0.0485414 | CM: 0.0039612 | u_max_over_u: 0.0856052 | Top_Xtr: 0.0201497 | Bot_Xtr: 0.0299002
+Epoch: 174 | Train Loss: 0.00346676 | Test Loss: 0.00344552 | CL: 0.0252507 | ln_CD: 0.0461331 | CM: 0.00396126 | u_max_over_u: 0.0822038 | Top_Xtr: 0.0202064 | Bot_Xtr: 0.0300661
+Epoch: 175 | Train Loss: 0.00346685 | Test Loss: 0.0034824 | CL: 0.0257646 | ln_CD: 0.0466395 | CM: 0.00393341 | u_max_over_u: 0.0858135 | Top_Xtr: 0.0202832 | Bot_Xtr: 0.0299207
+Epoch: 176 | Train Loss: 0.00346672 | Test Loss: 0.00345488 | CL: 0.0249982 | ln_CD: 0.0473918 | CM: 0.00399252 | u_max_over_u: 0.0807258 | Top_Xtr: 0.020795 | Bot_Xtr: 0.0301577
+Epoch: 177 | Train Loss: 0.00346588 | Test Loss: 0.0034511 | CL: 0.02484 | ln_CD: 0.0466168 | CM: 0.00398667 | u_max_over_u: 0.0809973 | Top_Xtr: 0.0202542 | Bot_Xtr: 0.0301095
+Epoch: 178 | Train Loss: 0.00346555 | Test Loss: 0.00345275 | CL: 0.0247424 | ln_CD: 0.0474253 | CM: 0.00392983 | u_max_over_u: 0.0815218 | Top_Xtr: 0.0202352 | Bot_Xtr: 0.0300291
+Epoch: 179 | Train Loss: 0.00346574 | Test Loss: 0.00344993 | CL: 0.0256052 | ln_CD: 0.0465183 | CM: 0.00400387 | u_max_over_u: 0.0803545 | Top_Xtr: 0.0202845 | Bot_Xtr: 0.0301629
+Epoch: 180 | Train Loss: 0.00346399 | Test Loss: 0.00344188 | CL: 0.0245526 | ln_CD: 0.046605 | CM: 0.00395841 | u_max_over_u: 0.0811547 | Top_Xtr: 0.0201698 | Bot_Xtr: 0.0300347
+Epoch: 181 | Train Loss: 0.00346637 | Test Loss: 0.00346941 | CL: 0.0249912 | ln_CD: 0.0480502 | CM: 0.00397597 | u_max_over_u: 0.0806138 | Top_Xtr: 0.0203221 | Bot_Xtr: 0.0299877
+Epoch: 182 | Train Loss: 0.00346468 | Test Loss: 0.00343726 | CL: 0.02558 | ln_CD: 0.046543 | CM: 0.00394614 | u_max_over_u: 0.0825044 | Top_Xtr: 0.020082 | Bot_Xtr: 0.0302923
+Epoch: 183 | Train Loss: 0.00346474 | Test Loss: 0.00347641 | CL: 0.0248181 | ln_CD: 0.0474368 | CM: 0.00392994 | u_max_over_u: 0.0808972 | Top_Xtr: 0.0200204 | Bot_Xtr: 0.0297908
+Epoch: 184 | Train Loss: 0.00346389 | Test Loss: 0.0034727 | CL: 0.0244364 | ln_CD: 0.0484111 | CM: 0.00391381 | u_max_over_u: 0.0823396 | Top_Xtr: 0.0200182 | Bot_Xtr: 0.0297906
+Epoch: 185 | Train Loss: 0.00346457 | Test Loss: 0.00346453 | CL: 0.0244203 | ln_CD: 0.047 | CM: 0.00397789 | u_max_over_u: 0.0837302 | Top_Xtr: 0.0203818 | Bot_Xtr: 0.0299829
+Epoch: 186 | Train Loss: 0.00346377 | Test Loss: 0.00351107 | CL: 0.0247398 | ln_CD: 0.0502227 | CM: 0.00407051 | u_max_over_u: 0.0814869 | Top_Xtr: 0.0200589 | Bot_Xtr: 0.0297913
+Epoch: 187 | Train Loss: 0.00346313 | Test Loss: 0.00345895 | CL: 0.024531 | ln_CD: 0.0486019 | CM: 0.00392656 | u_max_over_u: 0.0809999 | Top_Xtr: 0.0200204 | Bot_Xtr: 0.0299436
+Epoch: 188 | Train Loss: 0.00346256 | Test Loss: 0.00345819 | CL: 0.0250328 | ln_CD: 0.048045 | CM: 0.00391063 | u_max_over_u: 0.0871959 | Top_Xtr: 0.0199704 | Bot_Xtr: 0.0296863
+Epoch: 189 | Train Loss: 0.00346326 | Test Loss: 0.00342142 | CL: 0.0245882 | ln_CD: 0.046479 | CM: 0.00391153 | u_max_over_u: 0.0807339 | Top_Xtr: 0.0203204 | Bot_Xtr: 0.0301902
+Epoch: 190 | Train Loss: 0.00346279 | Test Loss: 0.00342787 | CL: 0.0249051 | ln_CD: 0.0465364 | CM: 0.00394352 | u_max_over_u: 0.0808636 | Top_Xtr: 0.0199567 | Bot_Xtr: 0.0300416
+Epoch: 191 | Train Loss: 0.00346319 | Test Loss: 0.00341551 | CL: 0.0247914 | ln_CD: 0.0460741 | CM: 0.00390667 | u_max_over_u: 0.0806498 | Top_Xtr: 0.0200368 | Bot_Xtr: 0.0299151
+Epoch: 192 | Train Loss: 0.00346192 | Test Loss: 0.00344203 | CL: 0.0244958 | ln_CD: 0.0467514 | CM: 0.00399943 | u_max_over_u: 0.0810784 | Top_Xtr: 0.0199645 | Bot_Xtr: 0.0298261
+Epoch: 193 | Train Loss: 0.00346144 | Test Loss: 0.0034356 | CL: 0.0247139 | ln_CD: 0.0466923 | CM: 0.00391908 | u_max_over_u: 0.0805283 | Top_Xtr: 0.019867 | Bot_Xtr: 0.0296816
+Epoch: 194 | Train Loss: 0.00346107 | Test Loss: 0.0034394 | CL: 0.0244758 | ln_CD: 0.0467291 | CM: 0.00401384 | u_max_over_u: 0.0816239 | Top_Xtr: 0.0200235 | Bot_Xtr: 0.0300298
+Epoch: 195 | Train Loss: 0.00346105 | Test Loss: 0.00347589 | CL: 0.0246574 | ln_CD: 0.0491708 | CM: 0.00396673 | u_max_over_u: 0.0816687 | Top_Xtr: 0.0201631 | Bot_Xtr: 0.0303531
+Epoch: 196 | Train Loss: 0.00346216 | Test Loss: 0.00344744 | CL: 0.0246089 | ln_CD: 0.0472073 | CM: 0.0039169 | u_max_over_u: 0.0814381 | Top_Xtr: 0.019908 | Bot_Xtr: 0.0297582
+Epoch: 197 | Train Loss: 0.00346058 | Test Loss: 0.00354022 | CL: 0.0246513 | ln_CD: 0.0513088 | CM: 0.0040178 | u_max_over_u: 0.0810688 | Top_Xtr: 0.019982 | Bot_Xtr: 0.0297635
+Epoch: 198 | Train Loss: 0.00345928 | Test Loss: 0.00342204 | CL: 0.0245216 | ln_CD: 0.0458315 | CM: 0.00392273 | u_max_over_u: 0.0801606 | Top_Xtr: 0.0200963 | Bot_Xtr: 0.0300789
+Epoch: 199 | Train Loss: 0.00346059 | Test Loss: 0.00345689 | CL: 0.0263884 | ln_CD: 0.0469735 | CM: 0.00394486 | u_max_over_u: 0.0826207 | Top_Xtr: 0.0199617 | Bot_Xtr: 0.0298888
+Epoch: 200 | Train Loss: 0.00346032 | Test Loss: 0.00349985 | CL: 0.0263966 | ln_CD: 0.0487636 | CM: 0.00398367 | u_max_over_u: 0.081026 | Top_Xtr: 0.020064 | Bot_Xtr: 0.0299737
+Epoch: 201 | Train Loss: 0.00345968 | Test Loss: 0.00348049 | CL: 0.0255506 | ln_CD: 0.0496891 | CM: 0.00392255 | u_max_over_u: 0.0820201 | Top_Xtr: 0.0199564 | Bot_Xtr: 0.0296381
+Epoch: 202 | Train Loss: 0.00345923 | Test Loss: 0.00345636 | CL: 0.0243986 | ln_CD: 0.0486134 | CM: 0.0038894 | u_max_over_u: 0.0807917 | Top_Xtr: 0.0201365 | Bot_Xtr: 0.0297838
+Epoch: 203 | Train Loss: 0.00346011 | Test Loss: 0.00343926 | CL: 0.0249696 | ln_CD: 0.0466569 | CM: 0.00396904 | u_max_over_u: 0.0814745 | Top_Xtr: 0.020699 | Bot_Xtr: 0.0304222
+Epoch: 204 | Train Loss: 0.00345813 | Test Loss: 0.003427 | CL: 0.0247156 | ln_CD: 0.045763 | CM: 0.00392522 | u_max_over_u: 0.0804548 | Top_Xtr: 0.0200372 | Bot_Xtr: 0.0298126
+Epoch: 205 | Train Loss: 0.00345892 | Test Loss: 0.00341736 | CL: 0.0249395 | ln_CD: 0.0461747 | CM: 0.00390888 | u_max_over_u: 0.0824058 | Top_Xtr: 0.0203416 | Bot_Xtr: 0.0298929
+Epoch: 206 | Train Loss: 0.00345847 | Test Loss: 0.00344854 | CL: 0.0246406 | ln_CD: 0.046427 | CM: 0.003947 | u_max_over_u: 0.08198 | Top_Xtr: 0.0199734 | Bot_Xtr: 0.0299509
+Epoch: 207 | Train Loss: 0.00345897 | Test Loss: 0.0035176 | CL: 0.0254692 | ln_CD: 0.048488 | CM: 0.00404241 | u_max_over_u: 0.0847833 | Top_Xtr: 0.0199615 | Bot_Xtr: 0.0296053
+Epoch: 208 | Train Loss: 0.0034577 | Test Loss: 0.00344945 | CL: 0.0253001 | ln_CD: 0.0477196 | CM: 0.00390243 | u_max_over_u: 0.0809142 | Top_Xtr: 0.0200751 | Bot_Xtr: 0.0299083
+Epoch: 209 | Train Loss: 0.00345841 | Test Loss: 0.00341706 | CL: 0.0248734 | ln_CD: 0.0461291 | CM: 0.00391589 | u_max_over_u: 0.0812375 | Top_Xtr: 0.0200406 | Bot_Xtr: 0.0298095
+Epoch: 210 | Train Loss: 0.00345768 | Test Loss: 0.0034728 | CL: 0.0246703 | ln_CD: 0.0477544 | CM: 0.00391404 | u_max_over_u: 0.0826444 | Top_Xtr: 0.0200375 | Bot_Xtr: 0.0300101
+Epoch: 211 | Train Loss: 0.00345795 | Test Loss: 0.00346126 | CL: 0.0246388 | ln_CD: 0.0473081 | CM: 0.00391854 | u_max_over_u: 0.0814923 | Top_Xtr: 0.0211368 | Bot_Xtr: 0.0307225
+Epoch: 212 | Train Loss: 0.00345686 | Test Loss: 0.00344895 | CL: 0.0248723 | ln_CD: 0.0479371 | CM: 0.00392682 | u_max_over_u: 0.0813837 | Top_Xtr: 0.0206399 | Bot_Xtr: 0.030514
+Epoch: 213 | Train Loss: 0.00345719 | Test Loss: 0.00343343 | CL: 0.0246849 | ln_CD: 0.0463473 | CM: 0.00395413 | u_max_over_u: 0.0805235 | Top_Xtr: 0.0201013 | Bot_Xtr: 0.0297642
+Epoch: 214 | Train Loss: 0.00345804 | Test Loss: 0.00346729 | CL: 0.0252718 | ln_CD: 0.0484123 | CM: 0.00405072 | u_max_over_u: 0.0808533 | Top_Xtr: 0.0201828 | Bot_Xtr: 0.0299071
+Epoch: 215 | Train Loss: 0.00345725 | Test Loss: 0.0034146 | CL: 0.0243905 | ln_CD: 0.0461303 | CM: 0.00391396 | u_max_over_u: 0.0810902 | Top_Xtr: 0.0198963 | Bot_Xtr: 0.0296744
+Epoch: 216 | Train Loss: 0.00345681 | Test Loss: 0.00344704 | CL: 0.0244757 | ln_CD: 0.0480854 | CM: 0.00392499 | u_max_over_u: 0.0813965 | Top_Xtr: 0.0201324 | Bot_Xtr: 0.0297262
+Epoch: 217 | Train Loss: 0.00345711 | Test Loss: 0.00342924 | CL: 0.0249705 | ln_CD: 0.0461655 | CM: 0.00397408 | u_max_over_u: 0.0814696 | Top_Xtr: 0.0203028 | Bot_Xtr: 0.0297675
+Epoch: 218 | Train Loss: 0.00345636 | Test Loss: 0.0034486 | CL: 0.0246395 | ln_CD: 0.0468557 | CM: 0.00397444 | u_max_over_u: 0.0814243 | Top_Xtr: 0.0203409 | Bot_Xtr: 0.0301898
+Epoch: 219 | Train Loss: 0.00345668 | Test Loss: 0.00342555 | CL: 0.0248872 | ln_CD: 0.0458919 | CM: 0.00391711 | u_max_over_u: 0.0809319 | Top_Xtr: 0.0200361 | Bot_Xtr: 0.029806
+Epoch: 220 | Train Loss: 0.00345576 | Test Loss: 0.0034522 | CL: 0.0250233 | ln_CD: 0.0479389 | CM: 0.00392135 | u_max_over_u: 0.0827127 | Top_Xtr: 0.0198541 | Bot_Xtr: 0.0296985
+Epoch: 221 | Train Loss: 0.00345576 | Test Loss: 0.00344123 | CL: 0.0245045 | ln_CD: 0.0475715 | CM: 0.0039234 | u_max_over_u: 0.0825607 | Top_Xtr: 0.0207469 | Bot_Xtr: 0.0302897
+Epoch: 222 | Train Loss: 0.00345698 | Test Loss: 0.00342835 | CL: 0.0249328 | ln_CD: 0.0461329 | CM: 0.00396407 | u_max_over_u: 0.0817752 | Top_Xtr: 0.0203896 | Bot_Xtr: 0.0302365
+Epoch: 223 | Train Loss: 0.00345548 | Test Loss: 0.00342489 | CL: 0.024463 | ln_CD: 0.0460406 | CM: 0.0039372 | u_max_over_u: 0.0818286 | Top_Xtr: 0.020602 | Bot_Xtr: 0.0304495
+Epoch: 224 | Train Loss: 0.00345562 | Test Loss: 0.00346697 | CL: 0.0245023 | ln_CD: 0.0474367 | CM: 0.00392971 | u_max_over_u: 0.0805614 | Top_Xtr: 0.0199802 | Bot_Xtr: 0.0296898
+Epoch: 225 | Train Loss: 0.00345625 | Test Loss: 0.0034605 | CL: 0.0258181 | ln_CD: 0.0475457 | CM: 0.00394213 | u_max_over_u: 0.0801768 | Top_Xtr: 0.0200689 | Bot_Xtr: 0.0298013
+Epoch: 226 | Train Loss: 0.00345499 | Test Loss: 0.00344955 | CL: 0.025232 | ln_CD: 0.0475539 | CM: 0.00393801 | u_max_over_u: 0.0831504 | Top_Xtr: 0.0201341 | Bot_Xtr: 0.0296802
+Epoch: 227 | Train Loss: 0.00345585 | Test Loss: 0.00342985 | CL: 0.0255977 | ln_CD: 0.0462848 | CM: 0.00389523 | u_max_over_u: 0.0827377 | Top_Xtr: 0.0201524 | Bot_Xtr: 0.0299229
+Epoch: 228 | Train Loss: 0.00345453 | Test Loss: 0.00343387 | CL: 0.0245351 | ln_CD: 0.0463333 | CM: 0.00394709 | u_max_over_u: 0.081589 | Top_Xtr: 0.0200044 | Bot_Xtr: 0.0298017
+Epoch: 229 | Train Loss: 0.0034546 | Test Loss: 0.00344686 | CL: 0.0247776 | ln_CD: 0.0476616 | CM: 0.00398548 | u_max_over_u: 0.0806553 | Top_Xtr: 0.0200658 | Bot_Xtr: 0.0297341
+Epoch: 230 | Train Loss: 0.00345533 | Test Loss: 0.00340845 | CL: 0.0247356 | ln_CD: 0.0458137 | CM: 0.00391276 | u_max_over_u: 0.0807444 | Top_Xtr: 0.0198395 | Bot_Xtr: 0.0297981
+Epoch: 231 | Train Loss: 0.00345435 | Test Loss: 0.00347068 | CL: 0.0249812 | ln_CD: 0.049377 | CM: 0.00393491 | u_max_over_u: 0.0808855 | Top_Xtr: 0.0200739 | Bot_Xtr: 0.0298629
+Epoch: 232 | Train Loss: 0.00345445 | Test Loss: 0.00349825 | CL: 0.0256875 | ln_CD: 0.0512579 | CM: 0.00390403 | u_max_over_u: 0.0808822 | Top_Xtr: 0.0204096 | Bot_Xtr: 0.0307437
+Epoch: 233 | Train Loss: 0.00345428 | Test Loss: 0.00345309 | CL: 0.0242556 | ln_CD: 0.0475989 | CM: 0.00391628 | u_max_over_u: 0.0805126 | Top_Xtr: 0.0197893 | Bot_Xtr: 0.0297775
+Epoch: 234 | Train Loss: 0.0034546 | Test Loss: 0.00344697 | CL: 0.0244232 | ln_CD: 0.0478549 | CM: 0.00392041 | u_max_over_u: 0.080644 | Top_Xtr: 0.0198129 | Bot_Xtr: 0.0298156
+Epoch: 235 | Train Loss: 0.0034537 | Test Loss: 0.00344993 | CL: 0.0245682 | ln_CD: 0.0478375 | CM: 0.0039175 | u_max_over_u: 0.0807413 | Top_Xtr: 0.0199503 | Bot_Xtr: 0.0298221
+Epoch: 236 | Train Loss: 0.00345321 | Test Loss: 0.00342242 | CL: 0.0246901 | ln_CD: 0.0461025 | CM: 0.00395538 | u_max_over_u: 0.0806161 | Top_Xtr: 0.0201821 | Bot_Xtr: 0.030044
+Epoch: 237 | Train Loss: 0.00345289 | Test Loss: 0.00342485 | CL: 0.024637 | ln_CD: 0.0468124 | CM: 0.00393186 | u_max_over_u: 0.0801122 | Top_Xtr: 0.0199345 | Bot_Xtr: 0.0298979
+Epoch: 238 | Train Loss: 0.00345346 | Test Loss: 0.00347433 | CL: 0.0247842 | ln_CD: 0.0491731 | CM: 0.00390274 | u_max_over_u: 0.0819009 | Top_Xtr: 0.0199809 | Bot_Xtr: 0.0297963
+Epoch: 239 | Train Loss: 0.00345425 | Test Loss: 0.0034264 | CL: 0.0249378 | ln_CD: 0.0461755 | CM: 0.00397843 | u_max_over_u: 0.0807017 | Top_Xtr: 0.0202096 | Bot_Xtr: 0.0301324
+Epoch: 240 | Train Loss: 0.0034525 | Test Loss: 0.00346933 | CL: 0.0248768 | ln_CD: 0.0463587 | CM: 0.00393891 | u_max_over_u: 0.0807746 | Top_Xtr: 0.0202618 | Bot_Xtr: 0.0300639
+Epoch: 241 | Train Loss: 0.00345281 | Test Loss: 0.00344454 | CL: 0.0249077 | ln_CD: 0.0467943 | CM: 0.0039273 | u_max_over_u: 0.0808967 | Top_Xtr: 0.0200946 | Bot_Xtr: 0.0300636
+Epoch: 242 | Train Loss: 0.00345189 | Test Loss: 0.00342484 | CL: 0.0246192 | ln_CD: 0.0461897 | CM: 0.00389903 | u_max_over_u: 0.0810559 | Top_Xtr: 0.0200165 | Bot_Xtr: 0.0297
+Epoch: 243 | Train Loss: 0.0034523 | Test Loss: 0.00343562 | CL: 0.0255511 | ln_CD: 0.046238 | CM: 0.0039348 | u_max_over_u: 0.0814922 | Top_Xtr: 0.0204326 | Bot_Xtr: 0.0304549
+Epoch: 244 | Train Loss: 0.00345205 | Test Loss: 0.00343298 | CL: 0.025194 | ln_CD: 0.0461989 | CM: 0.00395014 | u_max_over_u: 0.0811024 | Top_Xtr: 0.0198592 | Bot_Xtr: 0.0298824
+Epoch: 245 | Train Loss: 0.00345229 | Test Loss: 0.00342622 | CL: 0.0255006 | ln_CD: 0.0462602 | CM: 0.00392331 | u_max_over_u: 0.0829 | Top_Xtr: 0.0201187 | Bot_Xtr: 0.0302484
+Epoch: 246 | Train Loss: 0.00345207 | Test Loss: 0.00345583 | CL: 0.0245448 | ln_CD: 0.0464154 | CM: 0.0039848 | u_max_over_u: 0.0820931 | Top_Xtr: 0.0199278 | Bot_Xtr: 0.0296965
+Epoch: 247 | Train Loss: 0.00345127 | Test Loss: 0.00342088 | CL: 0.0249974 | ln_CD: 0.0459248 | CM: 0.00393529 | u_max_over_u: 0.080964 | Top_Xtr: 0.0198587 | Bot_Xtr: 0.0301783
+Epoch: 248 | Train Loss: 0.00345172 | Test Loss: 0.00348482 | CL: 0.0243765 | ln_CD: 0.0504089 | CM: 0.00389553 | u_max_over_u: 0.0820988 | Top_Xtr: 0.0201695 | Bot_Xtr: 0.0300418
+Epoch: 249 | Train Loss: 0.00345221 | Test Loss: 0.0035047 | CL: 0.0248062 | ln_CD: 0.0505698 | CM: 0.00398417 | u_max_over_u: 0.0813543 | Top_Xtr: 0.0201148 | Bot_Xtr: 0.0298068
+Epoch: 250 | Train Loss: 0.00345125 | Test Loss: 0.00345278 | CL: 0.0245418 | ln_CD: 0.0473091 | CM: 0.0039043 | u_max_over_u: 0.0805028 | Top_Xtr: 0.0200641 | Bot_Xtr: 0.0297856
+Epoch: 251 | Train Loss: 0.00345112 | Test Loss: 0.0034445 | CL: 0.024593 | ln_CD: 0.0475861 | CM: 0.00398587 | u_max_over_u: 0.0809217 | Top_Xtr: 0.0204441 | Bot_Xtr: 0.0301363
+Epoch: 252 | Train Loss: 0.00345154 | Test Loss: 0.00346003 | CL: 0.0262214 | ln_CD: 0.0481385 | CM: 0.00393315 | u_max_over_u: 0.0812017 | Top_Xtr: 0.0199114 | Bot_Xtr: 0.0298695
+Epoch: 253 | Train Loss: 0.00345125 | Test Loss: 0.00344446 | CL: 0.0245545 | ln_CD: 0.0483306 | CM: 0.00391243 | u_max_over_u: 0.0815341 | Top_Xtr: 0.0198804 | Bot_Xtr: 0.0297589
+Epoch: 254 | Train Loss: 0.00345139 | Test Loss: 0.00345947 | CL: 0.0251516 | ln_CD: 0.0469697 | CM: 0.00394962 | u_max_over_u: 0.0824907 | Top_Xtr: 0.0202373 | Bot_Xtr: 0.0298725
+Epoch: 255 | Train Loss: 0.00344993 | Test Loss: 0.00342598 | CL: 0.0254819 | ln_CD: 0.0460406 | CM: 0.003885 | u_max_over_u: 0.0813205 | Top_Xtr: 0.0198781 | Bot_Xtr: 0.0296594
+Epoch: 256 | Train Loss: 0.0034518 | Test Loss: 0.00345147 | CL: 0.0245953 | ln_CD: 0.0458835 | CM: 0.00388647 | u_max_over_u: 0.0853494 | Top_Xtr: 0.0199894 | Bot_Xtr: 0.0300421
+Epoch: 257 | Train Loss: 0.00345104 | Test Loss: 0.00343065 | CL: 0.0260887 | ln_CD: 0.0461493 | CM: 0.0039407 | u_max_over_u: 0.0806428 | Top_Xtr: 0.0200947 | Bot_Xtr: 0.0300191
+Epoch: 258 | Train Loss: 0.00345106 | Test Loss: 0.00344182 | CL: 0.0246658 | ln_CD: 0.0467055 | CM: 0.003949 | u_max_over_u: 0.0809397 | Top_Xtr: 0.0199223 | Bot_Xtr: 0.0298516
+Epoch: 259 | Train Loss: 0.00345093 | Test Loss: 0.00346943 | CL: 0.0245286 | ln_CD: 0.0487799 | CM: 0.00394021 | u_max_over_u: 0.0820519 | Top_Xtr: 0.0202576 | Bot_Xtr: 0.0300647
+Epoch: 260 | Train Loss: 0.00345163 | Test Loss: 0.00347769 | CL: 0.0249232 | ln_CD: 0.0494037 | CM: 0.00394511 | u_max_over_u: 0.0807494 | Top_Xtr: 0.020289 | Bot_Xtr: 0.0306449
+Epoch: 261 | Train Loss: 0.00345011 | Test Loss: 0.00342462 | CL: 0.0246391 | ln_CD: 0.0461201 | CM: 0.00396222 | u_max_over_u: 0.080996 | Top_Xtr: 0.0203077 | Bot_Xtr: 0.0303588
+Epoch: 262 | Train Loss: 0.0034506 | Test Loss: 0.00350398 | CL: 0.0255059 | ln_CD: 0.050317 | CM: 0.00398322 | u_max_over_u: 0.0798906 | Top_Xtr: 0.0199147 | Bot_Xtr: 0.029793
+Epoch: 263 | Train Loss: 0.00345012 | Test Loss: 0.00346987 | CL: 0.0247187 | ln_CD: 0.0493664 | CM: 0.00388693 | u_max_over_u: 0.0819557 | Top_Xtr: 0.0210198 | Bot_Xtr: 0.030848
+Epoch: 264 | Train Loss: 0.003451 | Test Loss: 0.00344661 | CL: 0.0246382 | ln_CD: 0.0465676 | CM: 0.00401404 | u_max_over_u: 0.0824124 | Top_Xtr: 0.0217175 | Bot_Xtr: 0.0305028
+Epoch: 265 | Train Loss: 0.00344988 | Test Loss: 0.00344847 | CL: 0.0248649 | ln_CD: 0.0479661 | CM: 0.00391988 | u_max_over_u: 0.0809602 | Top_Xtr: 0.0199826 | Bot_Xtr: 0.0299772
+Epoch: 266 | Train Loss: 0.00344959 | Test Loss: 0.00343437 | CL: 0.0247057 | ln_CD: 0.0477535 | CM: 0.00391944 | u_max_over_u: 0.0806528 | Top_Xtr: 0.020153 | Bot_Xtr: 0.0297933
+Epoch: 267 | Train Loss: 0.00344899 | Test Loss: 0.00341584 | CL: 0.0245413 | ln_CD: 0.0459638 | CM: 0.003952 | u_max_over_u: 0.0801057 | Top_Xtr: 0.0199622 | Bot_Xtr: 0.0297943
+Epoch: 268 | Train Loss: 0.0034496 | Test Loss: 0.00341744 | CL: 0.0249933 | ln_CD: 0.0465229 | CM: 0.00390086 | u_max_over_u: 0.0804307 | Top_Xtr: 0.0199877 | Bot_Xtr: 0.0295193
+Epoch: 269 | Train Loss: 0.00344965 | Test Loss: 0.0035236 | CL: 0.0250567 | ln_CD: 0.0538011 | CM: 0.00391822 | u_max_over_u: 0.0811519 | Top_Xtr: 0.0199726 | Bot_Xtr: 0.0297338
+Epoch: 270 | Train Loss: 0.00344862 | Test Loss: 0.0034458 | CL: 0.0249736 | ln_CD: 0.0473877 | CM: 0.00395045 | u_max_over_u: 0.0803001 | Top_Xtr: 0.020293 | Bot_Xtr: 0.0297318
+Epoch: 271 | Train Loss: 0.00344957 | Test Loss: 0.0034895 | CL: 0.0250202 | ln_CD: 0.049504 | CM: 0.00397375 | u_max_over_u: 0.0815265 | Top_Xtr: 0.0199551 | Bot_Xtr: 0.0298914
+Epoch: 272 | Train Loss: 0.00344943 | Test Loss: 0.00341802 | CL: 0.0244941 | ln_CD: 0.04641 | CM: 0.00388352 | u_max_over_u: 0.0836075 | Top_Xtr: 0.0199989 | Bot_Xtr: 0.0298105
+Epoch: 273 | Train Loss: 0.00344941 | Test Loss: 0.00341686 | CL: 0.0244012 | ln_CD: 0.0462822 | CM: 0.00389524 | u_max_over_u: 0.081492 | Top_Xtr: 0.0198407 | Bot_Xtr: 0.0298222
+Epoch: 274 | Train Loss: 0.00345035 | Test Loss: 0.00351507 | CL: 0.0251325 | ln_CD: 0.0489082 | CM: 0.0040572 | u_max_over_u: 0.0839828 | Top_Xtr: 0.0199718 | Bot_Xtr: 0.0299223
+Epoch: 275 | Train Loss: 0.00344946 | Test Loss: 0.0034489 | CL: 0.0250247 | ln_CD: 0.0490123 | CM: 0.00390513 | u_max_over_u: 0.0817881 | Top_Xtr: 0.0200905 | Bot_Xtr: 0.0296783
+Epoch: 276 | Train Loss: 0.00344834 | Test Loss: 0.00346313 | CL: 0.0261028 | ln_CD: 0.0482429 | CM: 0.00396865 | u_max_over_u: 0.0808658 | Top_Xtr: 0.0201933 | Bot_Xtr: 0.0298285
+Epoch: 277 | Train Loss: 0.0034487 | Test Loss: 0.0034323 | CL: 0.0245664 | ln_CD: 0.0476952 | CM: 0.00390462 | u_max_over_u: 0.0804271 | Top_Xtr: 0.0202654 | Bot_Xtr: 0.0299224
+Epoch: 278 | Train Loss: 0.00344878 | Test Loss: 0.00343643 | CL: 0.0244346 | ln_CD: 0.0479485 | CM: 0.00388045 | u_max_over_u: 0.0800261 | Top_Xtr: 0.019976 | Bot_Xtr: 0.0296359
+Epoch: 279 | Train Loss: 0.00344878 | Test Loss: 0.00341971 | CL: 0.0247173 | ln_CD: 0.0466121 | CM: 0.00388713 | u_max_over_u: 0.0823425 | Top_Xtr: 0.0201763 | Bot_Xtr: 0.0298395
+Epoch: 280 | Train Loss: 0.00344803 | Test Loss: 0.00350673 | CL: 0.0266653 | ln_CD: 0.048925 | CM: 0.00393612 | u_max_over_u: 0.0830456 | Top_Xtr: 0.0199802 | Bot_Xtr: 0.0298226
+Epoch: 281 | Train Loss: 0.00344927 | Test Loss: 0.00344985 | CL: 0.0247192 | ln_CD: 0.0457648 | CM: 0.003966 | u_max_over_u: 0.0801488 | Top_Xtr: 0.0199303 | Bot_Xtr: 0.0296838
+Epoch: 282 | Train Loss: 0.00344812 | Test Loss: 0.00343658 | CL: 0.0253497 | ln_CD: 0.0464117 | CM: 0.00391962 | u_max_over_u: 0.0806877 | Top_Xtr: 0.0199296 | Bot_Xtr: 0.0297838
+Epoch: 283 | Train Loss: 0.00344757 | Test Loss: 0.00341797 | CL: 0.0245111 | ln_CD: 0.0459708 | CM: 0.00391252 | u_max_over_u: 0.080944 | Top_Xtr: 0.0200285 | Bot_Xtr: 0.0297742
+Epoch: 284 | Train Loss: 0.00344765 | Test Loss: 0.00343353 | CL: 0.024668 | ln_CD: 0.0468401 | CM: 0.00392628 | u_max_over_u: 0.0805207 | Top_Xtr: 0.0198936 | Bot_Xtr: 0.0295902
+Epoch: 285 | Train Loss: 0.00344732 | Test Loss: 0.00342838 | CL: 0.0246121 | ln_CD: 0.0476349 | CM: 0.00390112 | u_max_over_u: 0.0803371 | Top_Xtr: 0.020008 | Bot_Xtr: 0.0297281
+Epoch: 286 | Train Loss: 0.00344812 | Test Loss: 0.00343408 | CL: 0.0247662 | ln_CD: 0.0470051 | CM: 0.00390413 | u_max_over_u: 0.0813206 | Top_Xtr: 0.0200219 | Bot_Xtr: 0.0298329
+Epoch: 287 | Train Loss: 0.00344806 | Test Loss: 0.00342791 | CL: 0.0245041 | ln_CD: 0.0456862 | CM: 0.00389387 | u_max_over_u: 0.0802603 | Top_Xtr: 0.0199169 | Bot_Xtr: 0.0296213
+Epoch: 288 | Train Loss: 0.00344806 | Test Loss: 0.00346171 | CL: 0.0246023 | ln_CD: 0.0484679 | CM: 0.00391861 | u_max_over_u: 0.081752 | Top_Xtr: 0.0212262 | Bot_Xtr: 0.0305215
+Epoch: 289 | Train Loss: 0.00344855 | Test Loss: 0.00353473 | CL: 0.0262512 | ln_CD: 0.052089 | CM: 0.00401432 | u_max_over_u: 0.0834508 | Top_Xtr: 0.0200357 | Bot_Xtr: 0.0296988
+Epoch: 290 | Train Loss: 0.00344652 | Test Loss: 0.00344149 | CL: 0.025974 | ln_CD: 0.04659 | CM: 0.00398098 | u_max_over_u: 0.0807287 | Top_Xtr: 0.0202106 | Bot_Xtr: 0.0300698
+Epoch: 291 | Train Loss: 0.0034481 | Test Loss: 0.00344401 | CL: 0.0248731 | ln_CD: 0.0468571 | CM: 0.00393694 | u_max_over_u: 0.0819126 | Top_Xtr: 0.020018 | Bot_Xtr: 0.0297042
+Epoch: 292 | Train Loss: 0.00344625 | Test Loss: 0.00346297 | CL: 0.0260805 | ln_CD: 0.0487833 | CM: 0.00394468 | u_max_over_u: 0.0812295 | Top_Xtr: 0.020133 | Bot_Xtr: 0.0298005
+Epoch: 293 | Train Loss: 0.00344728 | Test Loss: 0.00349432 | CL: 0.0247026 | ln_CD: 0.0480637 | CM: 0.00392124 | u_max_over_u: 0.0845891 | Top_Xtr: 0.0201395 | Bot_Xtr: 0.0296829
+Epoch: 294 | Train Loss: 0.00344665 | Test Loss: 0.00345863 | CL: 0.0246469 | ln_CD: 0.0458481 | CM: 0.00393051 | u_max_over_u: 0.0800095 | Top_Xtr: 0.0200135 | Bot_Xtr: 0.0297726
+Epoch: 295 | Train Loss: 0.00344646 | Test Loss: 0.00343959 | CL: 0.0249408 | ln_CD: 0.0468229 | CM: 0.00397455 | u_max_over_u: 0.0825103 | Top_Xtr: 0.0200647 | Bot_Xtr: 0.0296328
+Epoch: 296 | Train Loss: 0.00344707 | Test Loss: 0.00342308 | CL: 0.0244441 | ln_CD: 0.0469454 | CM: 0.0038963 | u_max_over_u: 0.0808277 | Top_Xtr: 0.0205466 | Bot_Xtr: 0.0300652
+Epoch: 297 | Train Loss: 0.00344653 | Test Loss: 0.00348237 | CL: 0.0270755 | ln_CD: 0.0472401 | CM: 0.00393692 | u_max_over_u: 0.0810045 | Top_Xtr: 0.0201366 | Bot_Xtr: 0.0301236
+Epoch: 298 | Train Loss: 0.00344664 | Test Loss: 0.00340251 | CL: 0.0243336 | ln_CD: 0.0458698 | CM: 0.0038667 | u_max_over_u: 0.0800957 | Top_Xtr: 0.0199578 | Bot_Xtr: 0.0296191
+Epoch: 299 | Train Loss: 0.00344719 | Test Loss: 0.00344555 | CL: 0.0266543 | ln_CD: 0.046149 | CM: 0.00393628 | u_max_over_u: 0.0832835 | Top_Xtr: 0.0204557 | Bot_Xtr: 0.0299943
+Epoch: 300 | Train Loss: 0.00344709 | Test Loss: 0.00343371 | CL: 0.0257689 | ln_CD: 0.0469188 | CM: 0.00392208 | u_max_over_u: 0.0818196 | Top_Xtr: 0.0201976 | Bot_Xtr: 0.0300727
+Epoch: 301 | Train Loss: 0.00344514 | Test Loss: 0.0035339 | CL: 0.0245196 | ln_CD: 0.047609 | CM: 0.00388982 | u_max_over_u: 0.0818084 | Top_Xtr: 0.0201436 | Bot_Xtr: 0.0297509
+Epoch: 302 | Train Loss: 0.00344656 | Test Loss: 0.00348708 | CL: 0.0250605 | ln_CD: 0.0457127 | CM: 0.00395359 | u_max_over_u: 0.0815631 | Top_Xtr: 0.0204785 | Bot_Xtr: 0.0301309
+Epoch: 303 | Train Loss: 0.00344544 | Test Loss: 0.00340663 | CL: 0.024932 | ln_CD: 0.0453428 | CM: 0.00390633 | u_max_over_u: 0.0804021 | Top_Xtr: 0.0201541 | Bot_Xtr: 0.0299143
+Epoch: 304 | Train Loss: 0.00344645 | Test Loss: 0.00347223 | CL: 0.0249896 | ln_CD: 0.0461033 | CM: 0.00395367 | u_max_over_u: 0.0810327 | Top_Xtr: 0.0199057 | Bot_Xtr: 0.0296609
+Epoch: 305 | Train Loss: 0.00344591 | Test Loss: 0.00345408 | CL: 0.0241336 | ln_CD: 0.047925 | CM: 0.00402725 | u_max_over_u: 0.0816599 | Top_Xtr: 0.0199243 | Bot_Xtr: 0.0298216
+Epoch: 306 | Train Loss: 0.00344512 | Test Loss: 0.00341072 | CL: 0.0244731 | ln_CD: 0.0460036 | CM: 0.00390283 | u_max_over_u: 0.0808878 | Top_Xtr: 0.0201711 | Bot_Xtr: 0.0297398
+Epoch: 307 | Train Loss: 0.00344611 | Test Loss: 0.00341399 | CL: 0.0246045 | ln_CD: 0.0465445 | CM: 0.00388508 | u_max_over_u: 0.0805741 | Top_Xtr: 0.0199441 | Bot_Xtr: 0.0296868
+Epoch: 308 | Train Loss: 0.00344527 | Test Loss: 0.0034264 | CL: 0.0245813 | ln_CD: 0.0462052 | CM: 0.00389774 | u_max_over_u: 0.0833639 | Top_Xtr: 0.0207434 | Bot_Xtr: 0.029872
+Epoch: 309 | Train Loss: 0.00344592 | Test Loss: 0.00343729 | CL: 0.0253811 | ln_CD: 0.0470188 | CM: 0.00389619 | u_max_over_u: 0.0813889 | Top_Xtr: 0.0199063 | Bot_Xtr: 0.0296929
+Epoch: 310 | Train Loss: 0.00344604 | Test Loss: 0.00346871 | CL: 0.0243636 | ln_CD: 0.049265 | CM: 0.00389402 | u_max_over_u: 0.0803584 | Top_Xtr: 0.0201996 | Bot_Xtr: 0.0301223
+Epoch: 311 | Train Loss: 0.00344542 | Test Loss: 0.0034491 | CL: 0.0245289 | ln_CD: 0.0461188 | CM: 0.00390369 | u_max_over_u: 0.0799615 | Top_Xtr: 0.0199188 | Bot_Xtr: 0.0297277
+Epoch: 312 | Train Loss: 0.0034448 | Test Loss: 0.00343613 | CL: 0.025113 | ln_CD: 0.0469247 | CM: 0.00393254 | u_max_over_u: 0.0804958 | Top_Xtr: 0.0202567 | Bot_Xtr: 0.0298537
+Epoch: 313 | Train Loss: 0.00344553 | Test Loss: 0.00347263 | CL: 0.0247918 | ln_CD: 0.0473288 | CM: 0.00398033 | u_max_over_u: 0.0799485 | Top_Xtr: 0.0198618 | Bot_Xtr: 0.0298041
+Epoch: 314 | Train Loss: 0.00344507 | Test Loss: 0.00347176 | CL: 0.0256977 | ln_CD: 0.0491297 | CM: 0.00396463 | u_max_over_u: 0.0826139 | Top_Xtr: 0.0199129 | Bot_Xtr: 0.0296028
+Epoch: 315 | Train Loss: 0.00344525 | Test Loss: 0.00344443 | CL: 0.0250257 | ln_CD: 0.0472576 | CM: 0.00395033 | u_max_over_u: 0.0812027 | Top_Xtr: 0.0206848 | Bot_Xtr: 0.0296862
+Epoch: 316 | Train Loss: 0.00344483 | Test Loss: 0.00344697 | CL: 0.0256154 | ln_CD: 0.0469511 | CM: 0.00394722 | u_max_over_u: 0.0812249 | Top_Xtr: 0.0202408 | Bot_Xtr: 0.0298287
+Epoch: 317 | Train Loss: 0.00344641 | Test Loss: 0.00342253 | CL: 0.0245152 | ln_CD: 0.0463695 | CM: 0.00389501 | u_max_over_u: 0.0814637 | Top_Xtr: 0.0202431 | Bot_Xtr: 0.0298479
+Epoch: 318 | Train Loss: 0.00344536 | Test Loss: 0.00345026 | CL: 0.0245526 | ln_CD: 0.0479329 | CM: 0.00394966 | u_max_over_u: 0.0818607 | Top_Xtr: 0.0203291 | Bot_Xtr: 0.0299038
+Epoch: 319 | Train Loss: 0.00344363 | Test Loss: 0.00341993 | CL: 0.024957 | ln_CD: 0.0461747 | CM: 0.00389221 | u_max_over_u: 0.0808379 | Top_Xtr: 0.0200299 | Bot_Xtr: 0.0296636
+Epoch: 320 | Train Loss: 0.00344439 | Test Loss: 0.00342623 | CL: 0.0244419 | ln_CD: 0.0466037 | CM: 0.00394922 | u_max_over_u: 0.0814084 | Top_Xtr: 0.020105 | Bot_Xtr: 0.0302279
+Epoch: 321 | Train Loss: 0.00344411 | Test Loss: 0.00342339 | CL: 0.024511 | ln_CD: 0.0467181 | CM: 0.00388864 | u_max_over_u: 0.0811148 | Top_Xtr: 0.0201886 | Bot_Xtr: 0.0299483
+Epoch: 322 | Train Loss: 0.00344395 | Test Loss: 0.00348484 | CL: 0.0243982 | ln_CD: 0.0484011 | CM: 0.00395445 | u_max_over_u: 0.0804135 | Top_Xtr: 0.0200351 | Bot_Xtr: 0.0296031
+Epoch: 323 | Train Loss: 0.00344402 | Test Loss: 0.00342623 | CL: 0.0255923 | ln_CD: 0.0465368 | CM: 0.00394432 | u_max_over_u: 0.080515 | Top_Xtr: 0.0200057 | Bot_Xtr: 0.029825
+Epoch: 324 | Train Loss: 0.00344482 | Test Loss: 0.00340117 | CL: 0.0245711 | ln_CD: 0.04586 | CM: 0.0038946 | u_max_over_u: 0.0814575 | Top_Xtr: 0.0199043 | Bot_Xtr: 0.0297709
+Epoch: 325 | Train Loss: 0.00344362 | Test Loss: 0.00342787 | CL: 0.0247807 | ln_CD: 0.0466245 | CM: 0.0039349 | u_max_over_u: 0.0809716 | Top_Xtr: 0.0207111 | Bot_Xtr: 0.0307412
+Epoch: 326 | Train Loss: 0.00344434 | Test Loss: 0.00346868 | CL: 0.0266626 | ln_CD: 0.0487816 | CM: 0.00392453 | u_max_over_u: 0.0813644 | Top_Xtr: 0.0202676 | Bot_Xtr: 0.0299664
+Epoch: 327 | Train Loss: 0.00344404 | Test Loss: 0.00343118 | CL: 0.0250049 | ln_CD: 0.0464558 | CM: 0.00400065 | u_max_over_u: 0.0826389 | Top_Xtr: 0.0200839 | Bot_Xtr: 0.0297248
+Epoch: 328 | Train Loss: 0.00344321 | Test Loss: 0.00352356 | CL: 0.0244911 | ln_CD: 0.0508054 | CM: 0.00401795 | u_max_over_u: 0.0824787 | Top_Xtr: 0.020423 | Bot_Xtr: 0.0314211
+Epoch: 329 | Train Loss: 0.00344459 | Test Loss: 0.00341755 | CL: 0.0243426 | ln_CD: 0.0463746 | CM: 0.00390405 | u_max_over_u: 0.082237 | Top_Xtr: 0.0198349 | Bot_Xtr: 0.0296555
+Epoch: 330 | Train Loss: 0.00344371 | Test Loss: 0.00344217 | CL: 0.0251743 | ln_CD: 0.0485598 | CM: 0.00394901 | u_max_over_u: 0.081608 | Top_Xtr: 0.0203551 | Bot_Xtr: 0.0299471
+Epoch: 331 | Train Loss: 0.00344296 | Test Loss: 0.00343126 | CL: 0.0245016 | ln_CD: 0.047334 | CM: 0.00389906 | u_max_over_u: 0.0802452 | Top_Xtr: 0.0201169 | Bot_Xtr: 0.0298513
+Epoch: 332 | Train Loss: 0.0034444 | Test Loss: 0.00343157 | CL: 0.0248904 | ln_CD: 0.0473311 | CM: 0.00396528 | u_max_over_u: 0.0808062 | Top_Xtr: 0.0202739 | Bot_Xtr: 0.029734
+Epoch: 333 | Train Loss: 0.00344296 | Test Loss: 0.00346717 | CL: 0.0248493 | ln_CD: 0.0485587 | CM: 0.00395414 | u_max_over_u: 0.0832044 | Top_Xtr: 0.0202265 | Bot_Xtr: 0.0298957
+Epoch: 334 | Train Loss: 0.00344355 | Test Loss: 0.00342121 | CL: 0.0258096 | ln_CD: 0.0459697 | CM: 0.00391205 | u_max_over_u: 0.0805403 | Top_Xtr: 0.0198973 | Bot_Xtr: 0.0294857
+Epoch: 335 | Train Loss: 0.00344238 | Test Loss: 0.00342093 | CL: 0.0245121 | ln_CD: 0.0463443 | CM: 0.00391647 | u_max_over_u: 0.0808562 | Top_Xtr: 0.0202862 | Bot_Xtr: 0.029791
+Epoch: 336 | Train Loss: 0.00344302 | Test Loss: 0.00341278 | CL: 0.0244121 | ln_CD: 0.0465787 | CM: 0.00386738 | u_max_over_u: 0.0804432 | Top_Xtr: 0.0201153 | Bot_Xtr: 0.0296923
+Epoch: 337 | Train Loss: 0.00344192 | Test Loss: 0.00342113 | CL: 0.0246682 | ln_CD: 0.0465163 | CM: 0.00389585 | u_max_over_u: 0.0806722 | Top_Xtr: 0.0202872 | Bot_Xtr: 0.0296413
+Epoch: 338 | Train Loss: 0.00344296 | Test Loss: 0.0034301 | CL: 0.0244232 | ln_CD: 0.0474731 | CM: 0.003895 | u_max_over_u: 0.0802029 | Top_Xtr: 0.0199235 | Bot_Xtr: 0.0295802
+Epoch: 339 | Train Loss: 0.00344328 | Test Loss: 0.00340825 | CL: 0.0246076 | ln_CD: 0.0455455 | CM: 0.0039569 | u_max_over_u: 0.0815981 | Top_Xtr: 0.0199225 | Bot_Xtr: 0.0296324
+Epoch: 340 | Train Loss: 0.0034428 | Test Loss: 0.00347097 | CL: 0.0244601 | ln_CD: 0.048057 | CM: 0.00396377 | u_max_over_u: 0.0818503 | Top_Xtr: 0.0200374 | Bot_Xtr: 0.0298307
+Epoch: 341 | Train Loss: 0.00344231 | Test Loss: 0.00342707 | CL: 0.0248106 | ln_CD: 0.0467683 | CM: 0.00390739 | u_max_over_u: 0.0806362 | Top_Xtr: 0.0207661 | Bot_Xtr: 0.0297956
+Epoch: 342 | Train Loss: 0.00344407 | Test Loss: 0.00344119 | CL: 0.0247723 | ln_CD: 0.0477506 | CM: 0.00390589 | u_max_over_u: 0.081871 | Top_Xtr: 0.0200692 | Bot_Xtr: 0.0297389
+Epoch: 343 | Train Loss: 0.0034434 | Test Loss: 0.00342701 | CL: 0.0243873 | ln_CD: 0.0470235 | CM: 0.00390276 | u_max_over_u: 0.0811105 | Top_Xtr: 0.0204746 | Bot_Xtr: 0.0298878
+Epoch: 344 | Train Loss: 0.00344247 | Test Loss: 0.00341585 | CL: 0.0246548 | ln_CD: 0.0467938 | CM: 0.00391826 | u_max_over_u: 0.0809247 | Top_Xtr: 0.0203384 | Bot_Xtr: 0.0298399
+Epoch: 345 | Train Loss: 0.00344235 | Test Loss: 0.00344254 | CL: 0.0246864 | ln_CD: 0.0476575 | CM: 0.00393935 | u_max_over_u: 0.0811117 | Top_Xtr: 0.020001 | Bot_Xtr: 0.0299187
+Epoch: 346 | Train Loss: 0.00344325 | Test Loss: 0.00342546 | CL: 0.025814 | ln_CD: 0.0462113 | CM: 0.00390721 | u_max_over_u: 0.0808353 | Top_Xtr: 0.0199738 | Bot_Xtr: 0.0296506
+Epoch: 347 | Train Loss: 0.00344218 | Test Loss: 0.00343124 | CL: 0.0245955 | ln_CD: 0.0469289 | CM: 0.00391108 | u_max_over_u: 0.0831684 | Top_Xtr: 0.0203318 | Bot_Xtr: 0.029911
+Epoch: 348 | Train Loss: 0.00344251 | Test Loss: 0.00342377 | CL: 0.0243599 | ln_CD: 0.047119 | CM: 0.00390841 | u_max_over_u: 0.080195 | Top_Xtr: 0.0203496 | Bot_Xtr: 0.0297236
+Epoch: 349 | Train Loss: 0.00344278 | Test Loss: 0.00348437 | CL: 0.0248342 | ln_CD: 0.0496345 | CM: 0.00393203 | u_max_over_u: 0.0808417 | Top_Xtr: 0.0203365 | Bot_Xtr: 0.0299046
+Epoch: 350 | Train Loss: 0.00344288 | Test Loss: 0.00347392 | CL: 0.0255229 | ln_CD: 0.0497856 | CM: 0.00390829 | u_max_over_u: 0.0809837 | Top_Xtr: 0.0204039 | Bot_Xtr: 0.029753
+Epoch: 351 | Train Loss: 0.00344313 | Test Loss: 0.00342105 | CL: 0.0247128 | ln_CD: 0.0468057 | CM: 0.0039507 | u_max_over_u: 0.0811229 | Top_Xtr: 0.0217588 | Bot_Xtr: 0.0304581
+Epoch: 352 | Train Loss: 0.00344081 | Test Loss: 0.00346398 | CL: 0.0247138 | ln_CD: 0.0468084 | CM: 0.00397841 | u_max_over_u: 0.0816726 | Top_Xtr: 0.0212122 | Bot_Xtr: 0.0298941
+Epoch: 353 | Train Loss: 0.00344145 | Test Loss: 0.00340858 | CL: 0.0249687 | ln_CD: 0.045633 | CM: 0.00394249 | u_max_over_u: 0.0820678 | Top_Xtr: 0.0199973 | Bot_Xtr: 0.0297122
+Epoch: 354 | Train Loss: 0.00344122 | Test Loss: 0.00339724 | CL: 0.024421 | ln_CD: 0.0457405 | CM: 0.00391031 | u_max_over_u: 0.08024 | Top_Xtr: 0.0200474 | Bot_Xtr: 0.0295228
+Epoch: 355 | Train Loss: 0.00344198 | Test Loss: 0.00341354 | CL: 0.0246399 | ln_CD: 0.0461278 | CM: 0.00399701 | u_max_over_u: 0.0814313 | Top_Xtr: 0.0198815 | Bot_Xtr: 0.0298872
+Epoch: 356 | Train Loss: 0.00344145 | Test Loss: 0.00345301 | CL: 0.0246967 | ln_CD: 0.0482925 | CM: 0.0039314 | u_max_over_u: 0.0812119 | Top_Xtr: 0.0207478 | Bot_Xtr: 0.0297453
+Epoch: 357 | Train Loss: 0.0034422 | Test Loss: 0.00341278 | CL: 0.0243988 | ln_CD: 0.0464979 | CM: 0.00393391 | u_max_over_u: 0.0806346 | Top_Xtr: 0.0204382 | Bot_Xtr: 0.0301885
+Epoch: 358 | Train Loss: 0.00344166 | Test Loss: 0.00342828 | CL: 0.0248593 | ln_CD: 0.0473342 | CM: 0.00388518 | u_max_over_u: 0.0810852 | Top_Xtr: 0.0202277 | Bot_Xtr: 0.0300225
+Epoch: 359 | Train Loss: 0.00344245 | Test Loss: 0.00347173 | CL: 0.0247307 | ln_CD: 0.0500878 | CM: 0.00389212 | u_max_over_u: 0.0804999 | Top_Xtr: 0.0202652 | Bot_Xtr: 0.029584
+Epoch: 360 | Train Loss: 0.0034428 | Test Loss: 0.00342328 | CL: 0.0251714 | ln_CD: 0.0469693 | CM: 0.00388678 | u_max_over_u: 0.0808175 | Top_Xtr: 0.0201968 | Bot_Xtr: 0.0301819
+Epoch: 361 | Train Loss: 0.0034412 | Test Loss: 0.003523 | CL: 0.0245849 | ln_CD: 0.0521987 | CM: 0.0039464 | u_max_over_u: 0.0803761 | Top_Xtr: 0.0203593 | Bot_Xtr: 0.02992
+Epoch: 362 | Train Loss: 0.00344161 | Test Loss: 0.00342567 | CL: 0.0243112 | ln_CD: 0.0460249 | CM: 0.00389037 | u_max_over_u: 0.0814525 | Top_Xtr: 0.020592 | Bot_Xtr: 0.0296149
+Epoch: 363 | Train Loss: 0.00344173 | Test Loss: 0.00342847 | CL: 0.024832 | ln_CD: 0.0466182 | CM: 0.00391279 | u_max_over_u: 0.0808657 | Top_Xtr: 0.0199482 | Bot_Xtr: 0.0298267
+Epoch: 364 | Train Loss: 0.00344069 | Test Loss: 0.0034436 | CL: 0.0248936 | ln_CD: 0.0471604 | CM: 0.00389205 | u_max_over_u: 0.0802118 | Top_Xtr: 0.0209041 | Bot_Xtr: 0.0299981
+Epoch: 365 | Train Loss: 0.00344101 | Test Loss: 0.00340797 | CL: 0.0243353 | ln_CD: 0.045518 | CM: 0.0039306 | u_max_over_u: 0.0799482 | Top_Xtr: 0.0202063 | Bot_Xtr: 0.0297391
+Epoch: 366 | Train Loss: 0.00344106 | Test Loss: 0.00343586 | CL: 0.0246991 | ln_CD: 0.0465525 | CM: 0.00397458 | u_max_over_u: 0.0809805 | Top_Xtr: 0.020205 | Bot_Xtr: 0.0297283
+Epoch: 367 | Train Loss: 0.00344099 | Test Loss: 0.00343421 | CL: 0.0243108 | ln_CD: 0.0480485 | CM: 0.00391572 | u_max_over_u: 0.0812421 | Top_Xtr: 0.0200009 | Bot_Xtr: 0.0297893
+Epoch: 368 | Train Loss: 0.00344103 | Test Loss: 0.00343221 | CL: 0.026937 | ln_CD: 0.0458937 | CM: 0.00399568 | u_max_over_u: 0.0804013 | Top_Xtr: 0.0201845 | Bot_Xtr: 0.0301569
+Epoch: 369 | Train Loss: 0.00344032 | Test Loss: 0.00339709 | CL: 0.0244414 | ln_CD: 0.04558 | CM: 0.00388503 | u_max_over_u: 0.0801493 | Top_Xtr: 0.0201493 | Bot_Xtr: 0.0298691
+Epoch: 370 | Train Loss: 0.00344089 | Test Loss: 0.00341888 | CL: 0.0247625 | ln_CD: 0.0462179 | CM: 0.00393012 | u_max_over_u: 0.0815857 | Top_Xtr: 0.0208373 | Bot_Xtr: 0.0301091
+Epoch: 371 | Train Loss: 0.00344075 | Test Loss: 0.003422 | CL: 0.0248935 | ln_CD: 0.0462868 | CM: 0.00387138 | u_max_over_u: 0.0817109 | Top_Xtr: 0.0204292 | Bot_Xtr: 0.030075
+Epoch: 372 | Train Loss: 0.00344055 | Test Loss: 0.00343298 | CL: 0.0253235 | ln_CD: 0.0468631 | CM: 0.00401493 | u_max_over_u: 0.0806335 | Top_Xtr: 0.0202343 | Bot_Xtr: 0.0297434
+Epoch: 373 | Train Loss: 0.00344062 | Test Loss: 0.00343839 | CL: 0.0250701 | ln_CD: 0.0465095 | CM: 0.00392973 | u_max_over_u: 0.0827999 | Top_Xtr: 0.0198819 | Bot_Xtr: 0.0295827
+Epoch: 374 | Train Loss: 0.00343953 | Test Loss: 0.00343713 | CL: 0.0251109 | ln_CD: 0.0464808 | CM: 0.00388048 | u_max_over_u: 0.0810459 | Top_Xtr: 0.0201905 | Bot_Xtr: 0.0297471
+Epoch: 375 | Train Loss: 0.00344015 | Test Loss: 0.00342471 | CL: 0.0241492 | ln_CD: 0.0456618 | CM: 0.00387426 | u_max_over_u: 0.0845309 | Top_Xtr: 0.0205027 | Bot_Xtr: 0.0302268
+Epoch: 376 | Train Loss: 0.00344116 | Test Loss: 0.00343862 | CL: 0.0248683 | ln_CD: 0.0468136 | CM: 0.00406016 | u_max_over_u: 0.0806218 | Top_Xtr: 0.0206564 | Bot_Xtr: 0.0303205
+Epoch: 377 | Train Loss: 0.00343959 | Test Loss: 0.00341483 | CL: 0.0245804 | ln_CD: 0.045843 | CM: 0.00390463 | u_max_over_u: 0.084502 | Top_Xtr: 0.0199057 | Bot_Xtr: 0.0295315
+Epoch: 378 | Train Loss: 0.00344 | Test Loss: 0.00342179 | CL: 0.0250021 | ln_CD: 0.0464492 | CM: 0.0039091 | u_max_over_u: 0.0806702 | Top_Xtr: 0.0201615 | Bot_Xtr: 0.0298533
+Epoch: 379 | Train Loss: 0.00344045 | Test Loss: 0.00339947 | CL: 0.0246696 | ln_CD: 0.0458952 | CM: 0.00391089 | u_max_over_u: 0.0801468 | Top_Xtr: 0.0202475 | Bot_Xtr: 0.0295875
+Epoch: 380 | Train Loss: 0.0034401 | Test Loss: 0.00341343 | CL: 0.0248689 | ln_CD: 0.0462289 | CM: 0.00394378 | u_max_over_u: 0.0819626 | Top_Xtr: 0.0201348 | Bot_Xtr: 0.0301152
+Epoch: 381 | Train Loss: 0.00344039 | Test Loss: 0.00348275 | CL: 0.0249818 | ln_CD: 0.0493005 | CM: 0.00387043 | u_max_over_u: 0.0797146 | Top_Xtr: 0.0205376 | Bot_Xtr: 0.0302655
+Epoch: 382 | Train Loss: 0.00343965 | Test Loss: 0.00344236 | CL: 0.0244127 | ln_CD: 0.0481049 | CM: 0.00392946 | u_max_over_u: 0.0803545 | Top_Xtr: 0.0215505 | Bot_Xtr: 0.030405
+Epoch: 383 | Train Loss: 0.0034407 | Test Loss: 0.00344822 | CL: 0.0245989 | ln_CD: 0.0477032 | CM: 0.00391603 | u_max_over_u: 0.0821409 | Top_Xtr: 0.0201681 | Bot_Xtr: 0.0295578
+Epoch: 384 | Train Loss: 0.00343985 | Test Loss: 0.00343703 | CL: 0.0244979 | ln_CD: 0.0479866 | CM: 0.00388057 | u_max_over_u: 0.0799957 | Top_Xtr: 0.0200325 | Bot_Xtr: 0.0295852
+Epoch: 385 | Train Loss: 0.00344016 | Test Loss: 0.00340461 | CL: 0.024832 | ln_CD: 0.0457901 | CM: 0.00389702 | u_max_over_u: 0.0832248 | Top_Xtr: 0.0201263 | Bot_Xtr: 0.0295689
+Epoch: 386 | Train Loss: 0.00343981 | Test Loss: 0.00341836 | CL: 0.0244338 | ln_CD: 0.0461253 | CM: 0.00393627 | u_max_over_u: 0.0807132 | Top_Xtr: 0.0203538 | Bot_Xtr: 0.030165
+Epoch: 387 | Train Loss: 0.003439 | Test Loss: 0.00356956 | CL: 0.0248239 | ln_CD: 0.055292 | CM: 0.00387612 | u_max_over_u: 0.0856609 | Top_Xtr: 0.0203184 | Bot_Xtr: 0.0296306
+Epoch: 388 | Train Loss: 0.00343884 | Test Loss: 0.00343023 | CL: 0.0247721 | ln_CD: 0.0466289 | CM: 0.00392958 | u_max_over_u: 0.0800214 | Top_Xtr: 0.0203831 | Bot_Xtr: 0.0298514
+Epoch: 389 | Train Loss: 0.00343996 | Test Loss: 0.00342966 | CL: 0.024574 | ln_CD: 0.047455 | CM: 0.00392343 | u_max_over_u: 0.0801554 | Top_Xtr: 0.0203952 | Bot_Xtr: 0.030028
+Epoch: 390 | Train Loss: 0.00343887 | Test Loss: 0.00342455 | CL: 0.0248943 | ln_CD: 0.0463489 | CM: 0.00389949 | u_max_over_u: 0.0817261 | Top_Xtr: 0.0200024 | Bot_Xtr: 0.0295466
+Epoch: 391 | Train Loss: 0.00343848 | Test Loss: 0.00344412 | CL: 0.0246681 | ln_CD: 0.0465629 | CM: 0.00394869 | u_max_over_u: 0.0819114 | Top_Xtr: 0.0203409 | Bot_Xtr: 0.0300371
+Epoch: 392 | Train Loss: 0.00343857 | Test Loss: 0.00344225 | CL: 0.0255406 | ln_CD: 0.0470912 | CM: 0.00400221 | u_max_over_u: 0.0815462 | Top_Xtr: 0.0199928 | Bot_Xtr: 0.0300534
+Epoch: 393 | Train Loss: 0.00343966 | Test Loss: 0.00345981 | CL: 0.0246528 | ln_CD: 0.0473012 | CM: 0.00393315 | u_max_over_u: 0.0802271 | Top_Xtr: 0.0201787 | Bot_Xtr: 0.0295771
+Epoch: 394 | Train Loss: 0.00343921 | Test Loss: 0.00348122 | CL: 0.0257785 | ln_CD: 0.0490504 | CM: 0.00392948 | u_max_over_u: 0.0824065 | Top_Xtr: 0.0200351 | Bot_Xtr: 0.0295995
+Epoch: 395 | Train Loss: 0.00343853 | Test Loss: 0.00340941 | CL: 0.0246435 | ln_CD: 0.0457065 | CM: 0.00386557 | u_max_over_u: 0.0813174 | Top_Xtr: 0.0210284 | Bot_Xtr: 0.0302106
+Epoch: 396 | Train Loss: 0.003438 | Test Loss: 0.0034325 | CL: 0.0253517 | ln_CD: 0.0474664 | CM: 0.0039536 | u_max_over_u: 0.0812152 | Top_Xtr: 0.0204594 | Bot_Xtr: 0.0298089
+Epoch: 397 | Train Loss: 0.00343916 | Test Loss: 0.00345626 | CL: 0.0243127 | ln_CD: 0.0479628 | CM: 0.00394014 | u_max_over_u: 0.0832305 | Top_Xtr: 0.0200534 | Bot_Xtr: 0.0297055
+Epoch: 398 | Train Loss: 0.00343948 | Test Loss: 0.0034231 | CL: 0.025101 | ln_CD: 0.0465609 | CM: 0.00392072 | u_max_over_u: 0.0804068 | Top_Xtr: 0.0197996 | Bot_Xtr: 0.029481
+Epoch: 399 | Train Loss: 0.00343874 | Test Loss: 0.0034366 | CL: 0.0246404 | ln_CD: 0.0468028 | CM: 0.0039603 | u_max_over_u: 0.0822595 | Top_Xtr: 0.0203667 | Bot_Xtr: 0.0295607
+Epoch: 400 | Train Loss: 0.00343659 | Test Loss: 0.00342826 | CL: 0.0253268 | ln_CD: 0.0474023 | CM: 0.00388829 | u_max_over_u: 0.0811182 | Top_Xtr: 0.0202418 | Bot_Xtr: 0.029663
+Epoch: 401 | Train Loss: 0.0034386 | Test Loss: 0.0034561 | CL: 0.0254988 | ln_CD: 0.046221 | CM: 0.0038679 | u_max_over_u: 0.0799093 | Top_Xtr: 0.0199642 | Bot_Xtr: 0.0295578
+Epoch: 402 | Train Loss: 0.00343884 | Test Loss: 0.00346463 | CL: 0.0258831 | ln_CD: 0.0467039 | CM: 0.0041125 | u_max_over_u: 0.0814628 | Top_Xtr: 0.0202606 | Bot_Xtr: 0.0300462
+Epoch: 403 | Train Loss: 0.00343818 | Test Loss: 0.00350114 | CL: 0.025308 | ln_CD: 0.0516063 | CM: 0.00392955 | u_max_over_u: 0.0815267 | Top_Xtr: 0.0200204 | Bot_Xtr: 0.0296378
+Epoch: 404 | Train Loss: 0.00343832 | Test Loss: 0.00342199 | CL: 0.0245122 | ln_CD: 0.0474603 | CM: 0.0038814 | u_max_over_u: 0.082627 | Top_Xtr: 0.0207594 | Bot_Xtr: 0.0304338
+Epoch: 405 | Train Loss: 0.00343808 | Test Loss: 0.00341274 | CL: 0.0245605 | ln_CD: 0.0461132 | CM: 0.00392579 | u_max_over_u: 0.0801528 | Top_Xtr: 0.0199709 | Bot_Xtr: 0.0295839
+Epoch: 406 | Train Loss: 0.00343717 | Test Loss: 0.00343351 | CL: 0.0248086 | ln_CD: 0.0467078 | CM: 0.00395506 | u_max_over_u: 0.0808753 | Top_Xtr: 0.0203058 | Bot_Xtr: 0.0296547
+Epoch: 407 | Train Loss: 0.00343857 | Test Loss: 0.00343714 | CL: 0.0250441 | ln_CD: 0.0460038 | CM: 0.00397646 | u_max_over_u: 0.081614 | Top_Xtr: 0.020026 | Bot_Xtr: 0.0296001
+Epoch: 408 | Train Loss: 0.00343787 | Test Loss: 0.00346 | CL: 0.0248942 | ln_CD: 0.0471451 | CM: 0.00397131 | u_max_over_u: 0.0828386 | Top_Xtr: 0.0200915 | Bot_Xtr: 0.0297632
+Epoch: 409 | Train Loss: 0.00343782 | Test Loss: 0.00341755 | CL: 0.0252221 | ln_CD: 0.0462838 | CM: 0.00393322 | u_max_over_u: 0.0805667 | Top_Xtr: 0.0203106 | Bot_Xtr: 0.0298994
+Epoch: 410 | Train Loss: 0.00343878 | Test Loss: 0.00341939 | CL: 0.0246091 | ln_CD: 0.0461033 | CM: 0.00392252 | u_max_over_u: 0.0821351 | Top_Xtr: 0.020345 | Bot_Xtr: 0.0296799
+Epoch: 411 | Train Loss: 0.00343779 | Test Loss: 0.0034444 | CL: 0.0244614 | ln_CD: 0.0481605 | CM: 0.00390292 | u_max_over_u: 0.0822219 | Top_Xtr: 0.0215511 | Bot_Xtr: 0.031049
+Epoch: 412 | Train Loss: 0.0034384 | Test Loss: 0.00341319 | CL: 0.0242745 | ln_CD: 0.046231 | CM: 0.00389627 | u_max_over_u: 0.0811157 | Top_Xtr: 0.0202808 | Bot_Xtr: 0.0301006
+Epoch: 413 | Train Loss: 0.00343783 | Test Loss: 0.00344227 | CL: 0.0253051 | ln_CD: 0.0476085 | CM: 0.00392382 | u_max_over_u: 0.0812646 | Top_Xtr: 0.0200616 | Bot_Xtr: 0.0298814
+Epoch: 414 | Train Loss: 0.00343819 | Test Loss: 0.00342553 | CL: 0.025557 | ln_CD: 0.0460922 | CM: 0.00390955 | u_max_over_u: 0.0800717 | Top_Xtr: 0.0200875 | Bot_Xtr: 0.0296281
+Epoch: 415 | Train Loss: 0.00343781 | Test Loss: 0.0034249 | CL: 0.024669 | ln_CD: 0.0466889 | CM: 0.00391282 | u_max_over_u: 0.080603 | Top_Xtr: 0.0202866 | Bot_Xtr: 0.0295293
+Epoch: 416 | Train Loss: 0.00343709 | Test Loss: 0.0034125 | CL: 0.0249927 | ln_CD: 0.0465434 | CM: 0.0038857 | u_max_over_u: 0.0805823 | Top_Xtr: 0.0202118 | Bot_Xtr: 0.0299142
+Epoch: 417 | Train Loss: 0.00343709 | Test Loss: 0.00341473 | CL: 0.0245471 | ln_CD: 0.0456751 | CM: 0.00395167 | u_max_over_u: 0.0814021 | Top_Xtr: 0.0201581 | Bot_Xtr: 0.0297685
+Epoch: 418 | Train Loss: 0.00343788 | Test Loss: 0.00341202 | CL: 0.0247786 | ln_CD: 0.0464689 | CM: 0.0038996 | u_max_over_u: 0.0803842 | Top_Xtr: 0.0199868 | Bot_Xtr: 0.0296416
+Epoch: 419 | Train Loss: 0.00343695 | Test Loss: 0.00344632 | CL: 0.024788 | ln_CD: 0.0487275 | CM: 0.00395762 | u_max_over_u: 0.0806669 | Top_Xtr: 0.0202929 | Bot_Xtr: 0.0297552
+Epoch: 420 | Train Loss: 0.00343724 | Test Loss: 0.00346576 | CL: 0.0250349 | ln_CD: 0.0498807 | CM: 0.00392067 | u_max_over_u: 0.0803973 | Top_Xtr: 0.0203402 | Bot_Xtr: 0.0300434
+Epoch: 421 | Train Loss: 0.00343722 | Test Loss: 0.00340399 | CL: 0.0257232 | ln_CD: 0.045928 | CM: 0.00387697 | u_max_over_u: 0.0813035 | Top_Xtr: 0.0201263 | Bot_Xtr: 0.0299645
+Epoch 00422: reducing learning rate of group 0 to 5.0000e-05.
+Epoch: 422 | Train Loss: 0.00339877 | Test Loss: 0.00338 | CL: 0.0244971 | ln_CD: 0.045365 | CM: 0.00388824 | u_max_over_u: 0.0800969 | Top_Xtr: 0.0197701 | Bot_Xtr: 0.0295294
+Epoch: 423 | Train Loss: 0.0033989 | Test Loss: 0.00339018 | CL: 0.0240368 | ln_CD: 0.0458994 | CM: 0.00389218 | u_max_over_u: 0.0801 | Top_Xtr: 0.0198447 | Bot_Xtr: 0.0295075
+Epoch: 424 | Train Loss: 0.0033987 | Test Loss: 0.00342709 | CL: 0.0241102 | ln_CD: 0.0483589 | CM: 0.00391289 | u_max_over_u: 0.0798378 | Top_Xtr: 0.0200975 | Bot_Xtr: 0.0295458
+Epoch: 425 | Train Loss: 0.00339817 | Test Loss: 0.00338138 | CL: 0.0246763 | ln_CD: 0.0454514 | CM: 0.00385377 | u_max_over_u: 0.0796502 | Top_Xtr: 0.0199567 | Bot_Xtr: 0.0295718
+Epoch: 426 | Train Loss: 0.00339763 | Test Loss: 0.00340895 | CL: 0.0243735 | ln_CD: 0.0462976 | CM: 0.00388425 | u_max_over_u: 0.0801604 | Top_Xtr: 0.0198309 | Bot_Xtr: 0.0295025
+Epoch: 427 | Train Loss: 0.00339725 | Test Loss: 0.00337998 | CL: 0.0243939 | ln_CD: 0.0458474 | CM: 0.00386981 | u_max_over_u: 0.0798341 | Top_Xtr: 0.020118 | Bot_Xtr: 0.029509
+Epoch: 428 | Train Loss: 0.00339718 | Test Loss: 0.00339391 | CL: 0.0248473 | ln_CD: 0.0464756 | CM: 0.00385619 | u_max_over_u: 0.0808155 | Top_Xtr: 0.019851 | Bot_Xtr: 0.0295481
+Epoch: 429 | Train Loss: 0.00339701 | Test Loss: 0.00337468 | CL: 0.0240871 | ln_CD: 0.0454805 | CM: 0.00385341 | u_max_over_u: 0.0803901 | Top_Xtr: 0.0199249 | Bot_Xtr: 0.0296162
+Epoch: 430 | Train Loss: 0.00339713 | Test Loss: 0.00338148 | CL: 0.0244023 | ln_CD: 0.0453348 | CM: 0.00387071 | u_max_over_u: 0.0810946 | Top_Xtr: 0.0198973 | Bot_Xtr: 0.0295021
+Epoch: 431 | Train Loss: 0.00339701 | Test Loss: 0.00341716 | CL: 0.0242113 | ln_CD: 0.047694 | CM: 0.00386238 | u_max_over_u: 0.0807152 | Top_Xtr: 0.0198756 | Bot_Xtr: 0.0295694
+Epoch: 432 | Train Loss: 0.00339728 | Test Loss: 0.00339145 | CL: 0.0241775 | ln_CD: 0.0463575 | CM: 0.0038715 | u_max_over_u: 0.080534 | Top_Xtr: 0.0199942 | Bot_Xtr: 0.0296615
+Epoch: 433 | Train Loss: 0.00339586 | Test Loss: 0.00339145 | CL: 0.0241396 | ln_CD: 0.045692 | CM: 0.00389954 | u_max_over_u: 0.0812455 | Top_Xtr: 0.0200259 | Bot_Xtr: 0.0300369
+Epoch: 434 | Train Loss: 0.00339647 | Test Loss: 0.00339543 | CL: 0.0245595 | ln_CD: 0.0463331 | CM: 0.00385212 | u_max_over_u: 0.0800532 | Top_Xtr: 0.0197951 | Bot_Xtr: 0.0294293
+Epoch: 435 | Train Loss: 0.00339581 | Test Loss: 0.00338461 | CL: 0.0241788 | ln_CD: 0.0460467 | CM: 0.00384969 | u_max_over_u: 0.0798489 | Top_Xtr: 0.0199649 | Bot_Xtr: 0.0296096
+Epoch: 436 | Train Loss: 0.00339613 | Test Loss: 0.0033942 | CL: 0.024617 | ln_CD: 0.0462304 | CM: 0.00389134 | u_max_over_u: 0.08093 | Top_Xtr: 0.0199114 | Bot_Xtr: 0.0295098
+Epoch: 437 | Train Loss: 0.00339629 | Test Loss: 0.00338988 | CL: 0.0247736 | ln_CD: 0.0458943 | CM: 0.00388144 | u_max_over_u: 0.0799671 | Top_Xtr: 0.0199988 | Bot_Xtr: 0.0296353
+Epoch: 438 | Train Loss: 0.00339581 | Test Loss: 0.00339293 | CL: 0.0242943 | ln_CD: 0.0459697 | CM: 0.00390412 | u_max_over_u: 0.0815307 | Top_Xtr: 0.0198618 | Bot_Xtr: 0.0294527
+Epoch: 439 | Train Loss: 0.0033957 | Test Loss: 0.00343681 | CL: 0.0243157 | ln_CD: 0.0485218 | CM: 0.0038782 | u_max_over_u: 0.0811689 | Top_Xtr: 0.0202526 | Bot_Xtr: 0.0299842
+Epoch: 440 | Train Loss: 0.00339601 | Test Loss: 0.0033751 | CL: 0.0240921 | ln_CD: 0.0454389 | CM: 0.00385476 | u_max_over_u: 0.0797704 | Top_Xtr: 0.0198336 | Bot_Xtr: 0.0294175
+Epoch: 441 | Train Loss: 0.00339527 | Test Loss: 0.00342728 | CL: 0.0249549 | ln_CD: 0.0466359 | CM: 0.00395656 | u_max_over_u: 0.0820975 | Top_Xtr: 0.0200929 | Bot_Xtr: 0.0297746
+Epoch: 442 | Train Loss: 0.00339522 | Test Loss: 0.00341411 | CL: 0.0241761 | ln_CD: 0.0472465 | CM: 0.00387415 | u_max_over_u: 0.0808995 | Top_Xtr: 0.0198729 | Bot_Xtr: 0.029673
+Epoch: 443 | Train Loss: 0.0033958 | Test Loss: 0.00338691 | CL: 0.0243289 | ln_CD: 0.0461143 | CM: 0.00386698 | u_max_over_u: 0.0805459 | Top_Xtr: 0.0200763 | Bot_Xtr: 0.029626
+Epoch: 444 | Train Loss: 0.00339577 | Test Loss: 0.00337698 | CL: 0.0242592 | ln_CD: 0.0457115 | CM: 0.00386252 | u_max_over_u: 0.0799862 | Top_Xtr: 0.0199866 | Bot_Xtr: 0.0295272
+Epoch: 445 | Train Loss: 0.00339536 | Test Loss: 0.00340016 | CL: 0.0241577 | ln_CD: 0.0467451 | CM: 0.00392023 | u_max_over_u: 0.0804142 | Top_Xtr: 0.0199515 | Bot_Xtr: 0.0294984
+Epoch: 446 | Train Loss: 0.00339502 | Test Loss: 0.00340194 | CL: 0.0243483 | ln_CD: 0.0470134 | CM: 0.00386328 | u_max_over_u: 0.0805235 | Top_Xtr: 0.0198424 | Bot_Xtr: 0.0295164
+Epoch: 447 | Train Loss: 0.0033955 | Test Loss: 0.00338776 | CL: 0.0246454 | ln_CD: 0.0458027 | CM: 0.0038509 | u_max_over_u: 0.0797482 | Top_Xtr: 0.0204696 | Bot_Xtr: 0.0298173
+Epoch: 448 | Train Loss: 0.00339477 | Test Loss: 0.003375 | CL: 0.0241843 | ln_CD: 0.0454059 | CM: 0.00388179 | u_max_over_u: 0.0799402 | Top_Xtr: 0.0197946 | Bot_Xtr: 0.0295211
+Epoch: 449 | Train Loss: 0.00339518 | Test Loss: 0.0033753 | CL: 0.024043 | ln_CD: 0.045141 | CM: 0.0039029 | u_max_over_u: 0.0806798 | Top_Xtr: 0.0198594 | Bot_Xtr: 0.0295602
+Epoch: 450 | Train Loss: 0.00339513 | Test Loss: 0.0033761 | CL: 0.0240791 | ln_CD: 0.0454501 | CM: 0.00384847 | u_max_over_u: 0.0795882 | Top_Xtr: 0.0198137 | Bot_Xtr: 0.0294178
+Epoch: 451 | Train Loss: 0.00339466 | Test Loss: 0.00340308 | CL: 0.02549 | ln_CD: 0.0453629 | CM: 0.00385954 | u_max_over_u: 0.0805885 | Top_Xtr: 0.0198615 | Bot_Xtr: 0.0295135
+Epoch: 452 | Train Loss: 0.00339567 | Test Loss: 0.00338193 | CL: 0.0248036 | ln_CD: 0.0455174 | CM: 0.00388157 | u_max_over_u: 0.0808055 | Top_Xtr: 0.0198652 | Bot_Xtr: 0.0293915
+Epoch: 453 | Train Loss: 0.00339492 | Test Loss: 0.00338697 | CL: 0.0246492 | ln_CD: 0.0453897 | CM: 0.00393642 | u_max_over_u: 0.0803196 | Top_Xtr: 0.0202675 | Bot_Xtr: 0.0295521
+Epoch: 454 | Train Loss: 0.00339457 | Test Loss: 0.00342694 | CL: 0.0243486 | ln_CD: 0.0489485 | CM: 0.00386354 | u_max_over_u: 0.0806875 | Top_Xtr: 0.019876 | Bot_Xtr: 0.0297172
+Epoch: 455 | Train Loss: 0.00339447 | Test Loss: 0.00340009 | CL: 0.0248456 | ln_CD: 0.04619 | CM: 0.00387635 | u_max_over_u: 0.0799394 | Top_Xtr: 0.0199732 | Bot_Xtr: 0.0295567
+Epoch: 456 | Train Loss: 0.00339477 | Test Loss: 0.00337904 | CL: 0.024249 | ln_CD: 0.0453222 | CM: 0.00388396 | u_max_over_u: 0.0809211 | Top_Xtr: 0.0200561 | Bot_Xtr: 0.0296329
+Epoch: 457 | Train Loss: 0.0033942 | Test Loss: 0.00337853 | CL: 0.0239798 | ln_CD: 0.0456184 | CM: 0.00386822 | u_max_over_u: 0.079919 | Top_Xtr: 0.0197676 | Bot_Xtr: 0.0293966
+Epoch: 458 | Train Loss: 0.00339469 | Test Loss: 0.00337434 | CL: 0.0243083 | ln_CD: 0.0454564 | CM: 0.00387597 | u_max_over_u: 0.0799073 | Top_Xtr: 0.0199736 | Bot_Xtr: 0.0295084
+Epoch: 459 | Train Loss: 0.0033946 | Test Loss: 0.00338426 | CL: 0.0243213 | ln_CD: 0.0451405 | CM: 0.00385409 | u_max_over_u: 0.0800135 | Top_Xtr: 0.019923 | Bot_Xtr: 0.0294938
+Epoch: 460 | Train Loss: 0.00339453 | Test Loss: 0.00342473 | CL: 0.0241227 | ln_CD: 0.0477763 | CM: 0.00387616 | u_max_over_u: 0.0809162 | Top_Xtr: 0.0202792 | Bot_Xtr: 0.029725
+Epoch: 461 | Train Loss: 0.00339447 | Test Loss: 0.0033743 | CL: 0.0240835 | ln_CD: 0.04542 | CM: 0.00386618 | u_max_over_u: 0.0803532 | Top_Xtr: 0.0198255 | Bot_Xtr: 0.0295103
+Epoch: 462 | Train Loss: 0.0033943 | Test Loss: 0.00337598 | CL: 0.0243361 | ln_CD: 0.0456228 | CM: 0.00385403 | u_max_over_u: 0.0799165 | Top_Xtr: 0.0197906 | Bot_Xtr: 0.029499
+Epoch: 463 | Train Loss: 0.00339427 | Test Loss: 0.00338723 | CL: 0.02417 | ln_CD: 0.0454891 | CM: 0.00391179 | u_max_over_u: 0.0809714 | Top_Xtr: 0.0200597 | Bot_Xtr: 0.0299063
+Epoch: 464 | Train Loss: 0.00339365 | Test Loss: 0.0033805 | CL: 0.0242702 | ln_CD: 0.0451812 | CM: 0.00391338 | u_max_over_u: 0.0798169 | Top_Xtr: 0.0199173 | Bot_Xtr: 0.0296013
+Epoch: 465 | Train Loss: 0.00339367 | Test Loss: 0.00343397 | CL: 0.025114 | ln_CD: 0.0481275 | CM: 0.00388793 | u_max_over_u: 0.0834678 | Top_Xtr: 0.0198224 | Bot_Xtr: 0.0294747
+Epoch: 466 | Train Loss: 0.00339435 | Test Loss: 0.00341002 | CL: 0.024489 | ln_CD: 0.0460665 | CM: 0.00390809 | u_max_over_u: 0.0818425 | Top_Xtr: 0.0200945 | Bot_Xtr: 0.0296115
+Epoch: 467 | Train Loss: 0.00339413 | Test Loss: 0.00338106 | CL: 0.0244538 | ln_CD: 0.0456246 | CM: 0.00386657 | u_max_over_u: 0.0798248 | Top_Xtr: 0.0201118 | Bot_Xtr: 0.0295596
+Epoch: 468 | Train Loss: 0.00339407 | Test Loss: 0.00337593 | CL: 0.024414 | ln_CD: 0.0451587 | CM: 0.00386582 | u_max_over_u: 0.0803005 | Top_Xtr: 0.019826 | Bot_Xtr: 0.0295667
+Epoch: 469 | Train Loss: 0.00339388 | Test Loss: 0.00338426 | CL: 0.0246042 | ln_CD: 0.0454973 | CM: 0.0039057 | u_max_over_u: 0.0798539 | Top_Xtr: 0.0197661 | Bot_Xtr: 0.0297769
+Epoch: 470 | Train Loss: 0.0033938 | Test Loss: 0.003437 | CL: 0.0251578 | ln_CD: 0.0482558 | CM: 0.00398657 | u_max_over_u: 0.080112 | Top_Xtr: 0.0197963 | Bot_Xtr: 0.0294614

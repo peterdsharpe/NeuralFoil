@@ -7,7 +7,7 @@
 #SBATCH -o log.log-%j --gres=gpu:volta:1 -c 20
 
 # Loading the required module
-module unload anaconda/2021b
+module unload anaconda
 module load cuda/11.8
 module load anaconda/2023a-pytorch
 

@@ -8,12 +8,14 @@ from data.load_data import df_train, df_test, weights, kulfan_cols, aero_input_c
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 import polars as pl
+from typing import List
 
 
 def convert_dataframe_to_inputs_outputs(df):
     df_inputs = pl.DataFrame({
-        "alpha / 10"               : df_train["alpha"] / 10,
-        "log10_Re - 5"             : np.log10(df_train["Re"]) - 5,
+        "4 * sin(2 * alpha)"       : 4 * np.sind(2 * df_train["alpha"]),
+        "20 * (1 - cos^2(alpha))"  : 20 * (1 - np.cosd(df_train["alpha"]) ** 2),
+        "(ln_Re - 12.5) / 2"       : (np.log(df_train["Re"]) - 12.5) / 2,
         'kulfan_lower_0 * 5'       : df_train['kulfan_lower_0'] * 5,
         'kulfan_lower_1 * 5'       : df_train['kulfan_lower_1'] * 5,
         'kulfan_lower_2 * 5'       : df_train['kulfan_lower_2'] * 5,
@@ -35,21 +37,31 @@ def convert_dataframe_to_inputs_outputs(df):
     })
 
     df_outputs = pl.DataFrame({
-        "CL"          : df_train["CL"],
-        "log10_CD + 2": np.log10(df_train["CD"]) + 2,
-        "CM * 20"     : df_train["CM"] * 20,
-        "Cpmin / 2"   : df_train["Cpmin"] / 2,
-        "Top_Xtr"     : df_train["Top_Xtr"],
-        "Bot_Xtr"     : df_train["Bot_Xtr"],
+        "CL"              : df_train["CL"],
+        "ln_CD + 4"       : np.log(df_train["CD"]) + 4,
+        "CM * 20"         : df_train["CM"] * 20,
+        "u_max_over_u - 1": (1 - df_train["Cpmin"]) ** 0.5,
+        "Top_Xtr"         : df_train["Top_Xtr"],
+        "Bot_Xtr"         : df_train["Bot_Xtr"],
     })
 
     return df_inputs, df_outputs
 
 
+loss_weights = torch.tensor(list({
+                                     "CL"          : 1,
+                                     "ln_CD + 4"   : 1,
+                                     "CM * 20"     : 0.25,
+                                     "u_max_over_u": 0.25,
+                                     "Top_Xtr"     : 0.25,
+                                     "Bot_Xtr"     : 0.25,
+                                 }.values())).reshape(1, -1)
+
 df_train_inputs, df_train_outputs = convert_dataframe_to_inputs_outputs(df_train)
 df_test_inputs, df_test_outputs = convert_dataframe_to_inputs_outputs(df_test)
 
-cache_file = Path(__file__).parent / "nn-xxlarge.pth"
+cache_file = Path(__file__).parent / "nn-xxxlarge.pth"
+
 
 # Define the model
 class Net(torch.nn.Module):
@@ -70,8 +82,31 @@ class Net(torch.nn.Module):
             torch.nn.Linear(width, len(df_train_outputs.columns)),
         )
 
-    def forward(self, x):
-        return self.net(x)
+    def forward(self, x: torch.Tensor):
+        ### First, evaluate the network normally
+        y = self.net(x)
+
+        ### Then, flip the inputs and evaluate the network again.
+        # The goal here is to embed the invariant of "symmetry across alpha" into the network evaluation.
+
+        x_flipped = x.clone()
+        x_flipped[:, 0] *= -1  # flip sin(alpha)
+        x_flipped[:, 3:11] = x[:, 11:19] * -1  # Replace kulfan_lower with a flipped kulfan_upper
+        x_flipped[:, 11:19] = x[:, 3:11] * -1  # Replace kulfan_upper with a flipped kulfan_lower
+        x_flipped[:, 19] *= -1  # flip kulfan_LE_weight
+
+        y_flipped = self.net(x_flipped)
+
+        ### The resulting outputs will also be flipped, so we need to flip them back to their normal orientation
+        y_flipped[:, 0] *= -1  # CL
+        y_flipped[:, 2] *= -1  # CM
+        temp = y_flipped[:,
+               4].clone()  # This is just here to facilitate swapping the top / bottom Xtr (transition x) values
+        y_flipped[:, 4] = y_flipped[:, 5]  # Replace top Xtr with bottom Xtr
+        y_flipped[:, 5] = temp  # Replace bottom Xtr with top Xtr
+
+        ### Then, average the two outputs to get the "symmetric" result
+        return (y + y_flipped) / 2
 
 
 if __name__ == '__main__':
@@ -80,11 +115,11 @@ if __name__ == '__main__':
 
     net = Net().to(device)
 
-    # try:
-    #     net.load_state_dict(torch.load(cache_file))
-    #     print("Model found, resuming training.")
-    # except FileNotFoundError:
-    #     print("No existing model found, starting fresh.")
+    try:
+        net.load_state_dict(torch.load(cache_file))
+        print("Model found, resuming training.")
+    except FileNotFoundError:
+        print("No existing model found, starting fresh.")
 
     # Define the optimizer
     learning_rate = 1e-4
@@ -113,28 +148,33 @@ if __name__ == '__main__':
         dataset=TensorDataset(train_inputs, train_outputs),
         batch_size=batch_size,
         shuffle=True,
-        num_workers=20,
+        num_workers=16,
     )
 
     test_inputs = torch.tensor(
         df_test_inputs.to_numpy(),
         dtype=torch.float32,
-        device=device,
     )
     test_outputs = torch.tensor(
         df_test_outputs.to_numpy(),
         dtype=torch.float32,
-        device=device,
+    )
+    test_loader = DataLoader(
+        dataset=TensorDataset(test_inputs, test_outputs),
+        batch_size=65536,
+        num_workers=16,
     )
 
     # raise Exception
     print(f"Training...")
 
     n_batches_per_epoch = len(train_loader)
+    loss_weights = loss_weights.to(device)
 
-    # Train the model
     num_epochs = 10000
     for epoch in range(num_epochs):
+
+        # Train the model
         net.train()
 
         batch_losses = []
@@ -146,7 +186,7 @@ if __name__ == '__main__':
 
             y_pred = net(x)
 
-            loss = torch.mean((y_pred - y) ** 2)
+            loss = torch.mean(loss_weights * (y_pred - y) ** 2)
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -157,23 +197,40 @@ if __name__ == '__main__':
 
         # Evaluate the model
         net.eval()
-        with torch.no_grad():
-            y_test_pred = net(test_inputs)
-            test_residuals = y_test_pred - test_outputs
-            test_loss = torch.mean(test_residuals ** 2)
-            errors = {
-                "CL"     : test_residuals[:, 0],
-                "CD"     : 10 ** (y_test_pred[:, 1] - 2) - 10 ** (test_outputs[:, 1] - 2),
-                "CM"     : test_residuals[:, 2] / 20,
-                "Cpmin"  : test_residuals[:, 3] * 2,
-                "Top_Xtr": test_residuals[:, 4],
-                "Bot_Xtr": test_residuals[:, 5],
-            }
+
+        batch_losses = []
+        batch_residual_mae = []  # Residual mean absolute error (MAE, L1 norm) of each test batch
+
+        for i, (x, y) in enumerate(test_loader):
+            with torch.no_grad():
+                x = x.to(device)
+                y = y.to(device)
+
+                y_pred = net(x)
+
+                batch_losses.append(
+                    torch.mean(loss_weights * (y_pred - y) ** 2).item()
+                )
+                batch_residual_mae.append(
+                    torch.mean(torch.abs(y_pred - y), dim=0).cpu().numpy()
+                )
+
+        test_loss = np.mean(batch_losses)
+        test_residual_mae = np.mean(np.stack(batch_residual_mae, axis=0), axis=0)
+
+        labeled_maes = {
+            "CL"          : test_residual_mae[0],
+            "ln_CD"       : test_residual_mae[1],
+            "CM"          : test_residual_mae[2] / 20,
+            "u_max_over_u": test_residual_mae[3] * 2,
+            "Top_Xtr"     : test_residual_mae[4],
+            "Bot_Xtr"     : test_residual_mae[5],
+        }
         print(
             f"Epoch: {epoch} | Train Loss: {train_loss.item():.6g} | Test Loss: {test_loss.item():.6g} | " + " | ".join(
                 [
-                    f"{k}: {v.abs().median():.6g}"
-                    for k, v in errors.items()
+                    f"{k}: {v:.6g}"
+                    for k, v in labeled_maes.items()
                 ]))
 
         scheduler.step(train_loss)
