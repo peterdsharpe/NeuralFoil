@@ -1,6 +1,5 @@
 import aerosandbox as asb
 import aerosandbox.numpy as np
-from aerosandbox.geometry.airfoil.airfoil_families import get_kulfan_parameters
 from typing import Union
 
 
@@ -36,6 +35,7 @@ def get_CL(
         'delta_CLa_low_area' : -1.1624132224547112
     }
 
+    from aerosandbox.geometry.airfoil.airfoil_families import get_kulfan_parameters
     kulfan_params = get_kulfan_parameters(airfoil.coordinates, n_weights_per_side=8)
 
     x = {
