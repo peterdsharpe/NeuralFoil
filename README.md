@@ -103,7 +103,7 @@ Why not use a neural network trained on wind tunnel data?
 <a name="compressibility-question"></a>
 NeuralFoil is trained on incompressible ($M=0$) XFoil data. Why not train on compressible ($M>0$) XFoil data? Also, how can I use NeuralFoil to predict compressible airfoil performance?
 
-> To be written. But basically: $u_\max / u_\infty \longrightarrow C_{p, \min, M=0} \longrightarrow C_{p, \min}$ using Prandtl-Glauert correction $\longrightarrow$ compare to $C_{p,\mathrm{sonic}}$ to determine the extent to which $M_\mathrm{crit}$ is exceeded.
+> To be written. But basically: $u_\max / u_\infty$ from NeuralFoil $\longrightarrow C_{p, \min, M=0} \longrightarrow C_{p, \min}$ using Prandtl-Glauert correction $\longrightarrow$ compare to $C_{p,\mathrm{sonic}}$ to determine the extent to which $M_\mathrm{crit}$ is exceeded.
 
 <a name="parameterization-question"></a>
 Why parameterize the airfoil geometry using the CST (Kulfan) parameterization? What exactly does the CST parameterization mean, and how can I convert this parameterization to/from actual airfoil coordinates? Why discretize with 8 CST modes per side? Can NeuralFoil accurately analyze airfoils with thick trailing edges?
