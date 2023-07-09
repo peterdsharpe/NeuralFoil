@@ -1,4 +1,4 @@
-aerosandbox[full]
+aerosandbox
 ray[default]
 polars
 tqdm
