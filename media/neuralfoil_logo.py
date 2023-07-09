@@ -17,7 +17,7 @@ n_neighbors_to_connect = 2
 colors = ["crimson", "dodgerblue"]
 cmap = LinearSegmentedColormap.from_list("custom_cmap", colors)
 
-af = asb.Airfoil("dae11").repanel(n_nodes_per_side)
+af = asb.Airfoil("dae11").repanel(n_nodes_per_side).normalize()
 
 ### Compute where the Neural Network nodes should be drawn, and the directions to propagate them in
 nodes_start = np.concatenate([
