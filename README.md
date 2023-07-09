@@ -30,18 +30,21 @@ NeuralFoil comes with 8 different neural network models, with increasing levels 
 
 [//]: # (* "xxxlarge")
 
-<table border="0">
- <tr>
-    <td>"xxsmall"</td>
-    <td>"xsmall"</td>
-    <td>"small"</td>
-    <td>"medium"</td>
-    <td>"large"</td>
-    <td>"xlarge"</td>
-    <td>"xxlarge"</td>
-    <td>"xxxlarge"</td>
- </tr>
-</table>
+
+<div style="display: flex; justify-content: center;">
+	<table border="0">
+	 <tr>
+		<td>"xxsmall"</td>
+		<td>"xsmall"</td>
+		<td>"small"</td>
+		<td>"medium"</td>
+		<td>"large"</td>
+		<td>"xlarge"</td>
+		<td>"xxlarge"</td>
+		<td>"xxxlarge"</td>
+	 </tr>
+	</table>
+</div>
 
 This spectrum offers a tradeoff between accuracy and computational cost.
 
