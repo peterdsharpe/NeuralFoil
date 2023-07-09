@@ -6,11 +6,11 @@ by Peter Sharpe
 
 -----
 
-NeuralFoil is a small, simple tool for rapid aerodynamics analysis of airfoils. Under the hood, it consists of a neural network trained on tens of millions of XFoil runs. 
+NeuralFoil is a small tool for rapid aerodynamics analysis of airfoils. Under the hood, it consists of a neural network trained on tens of millions of XFoil runs. It aims to be lightweight, with minimal dependencies. 
 
  It is ~10x faster than XFoil for a single analysis, and ~1000x faster for multipoint analysis, all with minimal loss in accuracy compared to XFoil. It also has many nice features (smoothness, vectorization, all in Python/NumPy, etc.) that make it much easier to use—[see below for more info](#xfoil-benefit-question).
 
-## Features
+## Overview
 
 NeuralFoil comes with 8 different neural network models, with increasing levels of complexity:
 
@@ -29,7 +29,9 @@ NeuralFoil comes with 8 different neural network models, with increasing levels 
 	</table>
 </div>
 
-This spectrum offers a tradeoff between accuracy and computational cost.
+This spectrum offers a tradeoff between accuracy and computational cost. 
+
+In addition to its neural network models, NeuralFoil also has an bonus "Linear $C_L$ model" that predicts lift coefficient $C_L$ as a purely-linear function of angle of attack $\alpha$. This model is well-suited for linear lifting-line or blade-element-method analyses, where the $C_L(\alpha)$ linearity can be used to solve the resulting system of equations "in one shot" as a linear solve, rather than a less-numerically-robust iterative nonlinear solve.
 
 ## Performance
 
@@ -51,6 +53,14 @@ Based on these performance numbers, you can select the right tradeoff between ac
 Notably, most of the overhead of NeuralFoil is actually in the airfoil preprocessing step, where the airfoil is converted from a set of points to a CST (Kulfan) parameterization (See .
 
 ## Installation and Usage
+
+To run models, NeuralFoil currently requires minimal dependencies:
+
+* Python 3.7+
+* [NumPy](https://numpy.org/)
+* [AeroSandbox](https://github.com/peterdsharpe/AeroSandbox)
+
+Currently, NeuralFoil only uses AeroSandbox for airfoil geometry parameterization (i.e., converting from a set of points to a CST parameterization, which is solved as a optimization problem) - the actual math is implemented in pure NumPy. Recent progress on this CST parameterization fitting problem has allowed it to be recast as a least-squares problem, which is potentially amenable to a pure-NumPy implementation. That being said, AeroSandbox provides a bunch of nice peripheral utilities (e.g., geometry manipulation, visualization, etc.), so it's a nice dependency to have anyway. However, if you'd like to work on a pure-NumPy implementation, open an issue and let me know!
 
 ## Geometry Parameterization and Training Data
 
