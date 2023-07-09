@@ -4,7 +4,7 @@ from pathlib import Path
 import sys, os
 
 sys.path.append(str(Path(__file__).parent.parent))
-from data.load_data import df_train, df_test, weights, kulfan_cols, aero_input_cols, aero_output_cols, all_cols
+from training_data.load_data import df_train, df_test, weights, kulfan_cols, aero_input_cols, aero_output_cols, all_cols
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 import polars as pl
