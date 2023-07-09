@@ -8,14 +8,14 @@ by Peter Sharpe
 
 NeuralFoil is a small, simple tool for rapid aerodynamics analysis of airfoils. Under the hood, it consists of a neural network trained on tens of millions of XFoil runs. 
 
- It is ~10x faster than XFoil for a single analysis, and ~1000x faster for multipoint analysis, all with minimal loss in accuracy compared to XFoil. It also has many nice features (smoothness, vectorization, all in Python/NumPy, etc.) that make it much easier to use - [see below for more info](#xfoil-benefit-question).
+ It is ~10x faster than XFoil for a single analysis, and ~1000x faster for multipoint analysis, all with minimal loss in accuracy compared to XFoil. It also has many nice features (smoothness, vectorization, all in Python/NumPy, etc.) that make it much easier to use—[see below for more info](#xfoil-benefit-question).
 
 ## Features
 
 NeuralFoil comes with 8 different neural network models, with increasing levels of complexity:
 
-<div style="display: flex; justify-content: center;">
-	<table border="0">
+<div align="center">
+	<table>
 	 <tr>
 		<td>"xxsmall"</td>
 		<td>"xsmall"</td>
