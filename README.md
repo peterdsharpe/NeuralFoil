@@ -41,7 +41,7 @@ NeuralFoil is a small, simple tool for rapid aerodynamics analysis of airfoils. 
     <td class="tg-0lax"></td>
     <td class="tg-0pky">Analysis Method</td>
     <td class="tg-0pky">$C_L$</td>
-    <td class="tg-0pky">ln($C_D$)</td>
+    <td class="tg-0pky">$ln(C_D)$&lt;span&gt;&amp;#8224;&lt;/span&gt;</td>
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
