@@ -108,3 +108,5 @@ plt.ylim(2e-3, 2e-2)
 p.show_plot(f"Training Progress ({log_file})", "Epoch", "Loss")
 
 print(np.exp(ndimage.gaussian_filter1d(np.log(data[key]), sigma=10)[-1]))
+from pprint import pprint
+pprint({k: v[-1] for k, v in data.items()})
