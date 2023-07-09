@@ -14,23 +14,6 @@ NeuralFoil is a small, simple tool for rapid aerodynamics analysis of airfoils. 
 
 NeuralFoil comes with 8 different neural network models, with increasing levels of complexity:
 
-[//]: # (* "xxsmall")
-
-[//]: # (* "xsmall")
-
-[//]: # (* "small")
-
-[//]: # (* "medium")
-
-[//]: # (* "large")
-
-[//]: # (* "xlarge")
-
-[//]: # (* "xxlarge")
-
-[//]: # (* "xxxlarge")
-
-
 <div style="display: flex; justify-content: center;">
 	<table border="0">
 	 <tr>
