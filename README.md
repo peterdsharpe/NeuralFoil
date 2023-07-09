@@ -1,6 +1,6 @@
 
 <p align="center">
-    <img src="./media/neuralfoil.svg" width="800" />
+    <img src="./media/neuralfoil_logo.svg" width="800" />
 </p>
 
 by Peter Sharpe

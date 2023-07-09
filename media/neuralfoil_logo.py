@@ -138,8 +138,8 @@ plt.text(
 plt.gca().set_aspect("equal", adjustable='box')
 plt.xlim(-1.35, 2.1)
 
-plt.savefig("neuralfoil.png", dpi=600)
-plt.savefig("neuralfoil.pdf")
-plt.savefig("neuralfoil.svg")
+plt.savefig("neuralfoil_logo.png", dpi=600)
+plt.savefig("neuralfoil_logo.pdf")
+plt.savefig("neuralfoil_logo.svg")
 
 plt.show()
