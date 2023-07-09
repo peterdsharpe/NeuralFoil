@@ -67,6 +67,10 @@ Currently, NeuralFoil only uses AeroSandbox for airfoil geometry parameterizatio
 
 ## FAQs
 
+Will NeuralFoil be integrated directly into [AeroSandbox](https://github.com/peterdsharpe/AeroSandbox)?
+
+> Yes, absolutely. However, the goal is to keep this NeuralFoil repository also available as a stand-alone module, if desired. This simplifies dependencies for people using NeuralFoil in other applications (e.g., flight simulation, real-time control on embedded systems, etc.), and makes it easier if someone wanted to port NeuralFoil to another language (e.g., C++, for use on an Arduino).
+
 <a name="xfoil-benefit-question"></a>
 Why not just use XFoil directly?
 
