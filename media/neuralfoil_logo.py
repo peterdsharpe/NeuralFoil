@@ -44,7 +44,7 @@ nodes_end_direction = np.stack([
 from scipy import interpolate
 
 xs = nodes_start[:, 0].reshape(-1, 1)
-nodes_start_direction = 1. * nodes_start_direction * (1 - xs ** 8 + 0.5 *(1 - xs) ** 4)
+nodes_start_direction = 1. * nodes_start_direction * (1 - xs ** 8 + 0.5 * (1 - xs) ** 4)
 
 nodes_interpolator = interpolate.CubicSpline(
     x=[0, 1],
@@ -83,7 +83,7 @@ for i, (layer_nodes, layer_color) in enumerate(zip(all_nodes, layer_colors)):
         axis=0,
     )(np.linspace(0, 1, 500))
 
-    if i <= np.argmin(all_nodes[:,:,0].min(axis=1)):
+    if i <= np.argmin(all_nodes[:, :, 0].min(axis=1)):
         layer_nodes_for_ring = np.append(layer_nodes_for_ring, layer_nodes_for_ring[0, :].reshape(1, -1), axis=0)
 
     ax.plot(
