@@ -198,7 +198,7 @@ if __name__ == '__main__':
     #         asb.Airfoil("e376").upper_coordinates()[::-1][1:] * np.array([[1, -1]]),
     #     ]),
     # )
-    airfoil = asb.Airfoil("dae51")
+    airfoil = asb.Airfoil("dae11")
 
     airfoil = airfoil.repanel().normalize()
 
