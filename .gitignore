@@ -1,5 +1,6 @@
 ### Peter's Template template
 dist/
+NeuralFoil.egg-info/
 .idea/
 __pycache__/
 *.pkl
