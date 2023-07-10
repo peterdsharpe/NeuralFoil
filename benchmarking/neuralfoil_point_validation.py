@@ -14,7 +14,7 @@ alphas_xfoil = np.linspace(-5, 15, 50)
 #     np.sinspace(2.5, 15)
 # ])
 alphas_nf = np.linspace(alphas_xfoil.min(), alphas_xfoil.max(), 1000)
-Re_values_to_test = [1e4, 1e5, 1e6, 1e7, 1e8]
+Re_values_to_test = [1e4, 5e4, 9e4, 2e5, 1e6, 1e7, 1e8]
 # Re_values_to_test = [10e3, 50e3, 200e3, 500e3, 5e6, 1e8]
 # Re_values_to_test = [1e4, 1e8]
 
@@ -39,7 +39,7 @@ transparency = 0.7
 
 for Re, color in tqdm(zip(Re_values_to_test, colors)):
 
-    nf_aero = get_aero_from_airfoil(
+    nf_aero_xl = get_aero_from_airfoil(
         airfoil=af,
         alpha=alphas_nf,
         Re=Re,
@@ -47,13 +47,13 @@ for Re, color in tqdm(zip(Re_values_to_test, colors)):
     )
 
     plt.plot(
-        nf_aero["CD"],
-        nf_aero["CL"],
+        nf_aero_xl["CD"],
+        nf_aero_xl["CL"],
         "--",
         color=color, alpha=transparency
     )
 
-    nf_aero = get_aero_from_airfoil(
+    nf_aero_m = get_aero_from_airfoil(
         airfoil=af,
         alpha=alphas_nf,
         Re=Re,
@@ -61,8 +61,8 @@ for Re, color in tqdm(zip(Re_values_to_test, colors)):
     )
 
     plt.plot(
-        nf_aero["CD"],
-        nf_aero["CL"],
+        nf_aero_m["CD"],
+        nf_aero_m["CL"],
         ":",
         color=color, alpha=transparency
     )
@@ -79,9 +79,20 @@ for Re, color in tqdm(zip(Re_values_to_test, colors)):
     )
     # xfoil_aero = nf_aero
 
+    annotate_x = np.max(np.array([
+        nf_aero_xl["CD"][-1],
+        nf_aero_m["CD"][-1],
+        xfoil_aero["CD"][-1]
+    ]))
+    annotate_y = np.median(np.array([
+        nf_aero_xl["CL"][-1],
+        nf_aero_m["CL"][-1],
+        xfoil_aero["CL"][-1]
+    ]))
+
     plt.annotate(
         f" $Re = \\mathrm{{{eng_string(Re)}}}$",
-        xy=(xfoil_aero["CD"][-1], xfoil_aero["CL"][-1]),
+        xy=(annotate_x, annotate_y),
         color=p.adjust_lightness(color, 0.8),
         ha="left", va="center", fontsize=10
     )
