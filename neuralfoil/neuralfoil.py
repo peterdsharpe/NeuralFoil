@@ -181,26 +181,8 @@ def get_aero_from_dat_file(
 
 
 if __name__ == '__main__':
-    # airfoil = asb.Airfoil("dae11").normalize()
-    # alpha = 4#np.linspace(-10, 10, 100)
-    # Re = 1e5
-    # aero = get_aero_from_airfoil(
-    #     airfoil=airfoil,
-    #     alpha=alpha,
-    #     Re=Re,
-    #     model_size="xxlarge"
-    # )
-    # print(aero)
 
-    # airfoil = asb.Airfoil(
-    #     coordinates=np.concatenate([
-    #         asb.Airfoil("e376").upper_coordinates(),
-    #         asb.Airfoil("e376").upper_coordinates()[::-1][1:] * np.array([[1, -1]]),
-    #     ]),
-    # )
-    airfoil = asb.Airfoil("dae11")
-
-    airfoil = airfoil.repanel().normalize()
+    airfoil = asb.Airfoil("dae11").repanel().normalize()
 
     alpha = np.linspace(-15, 15, 100)
     Re = 1e6
