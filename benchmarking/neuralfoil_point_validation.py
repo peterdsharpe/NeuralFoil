@@ -165,7 +165,7 @@ afax.set_aspect("equal", adjustable='box')
 
 
 plt.suptitle("Comparison of $C_L$-$C_D$ Polar for NeuralFoil vs. XFoil", fontsize=16,y=0.94)
-plt.title("On HALE_03 Airfoil (out of sample)", fontsize=12, alpha=0.7)
+plt.title("On HALE_03 Airfoil (out-of-sample)", fontsize=12, alpha=0.7)
 
 p.show_plot(
     None,
