@@ -7,7 +7,7 @@ npz_file_directory = Path(__file__).parent.parent / "training"
 
 
 def get_aero_from_kulfan_parameters(
-        kulfan_parameters: dict[str, Union[float, np.ndarray]],
+        kulfan_parameters: Dict[str, Union[float, np.ndarray]],
         alpha: Union[float, np.ndarray],
         Re: Union[float, np.ndarray],
         model_size="medium"
