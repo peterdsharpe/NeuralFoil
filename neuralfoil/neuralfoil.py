@@ -3,7 +3,7 @@ import aerosandbox.numpy as np
 from typing import Union, Dict, Set, List
 from pathlib import Path
 
-npz_file_directory = Path(__file__).parent.parent / "training"
+npz_file_directory = Path(__file__).parent / "nn_weights_and_biases"
 
 
 def get_aero_from_kulfan_parameters(
