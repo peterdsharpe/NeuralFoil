@@ -14,7 +14,9 @@ n_nodes = 2 * n_nodes_per_side
 n_layers = 12
 n_neighbors_to_connect = 2
 
-colors = ["crimson", "dodgerblue"][::-1]
+# colors = ["crimson", "dodgerblue"][::-1]
+# colors = ["hotpink", "mediumblue"][::-1]
+colors = ["orange", "darkseagreen", "dodgerblue"]#[::-1]
 cmap = LinearSegmentedColormap.from_list("custom_cmap", colors)
 
 af = asb.Airfoil("dae11").repanel(n_nodes_per_side).normalize()
@@ -35,7 +37,7 @@ nodes_start_direction[-1] = np.array([-1, 0])
 theta_deg = 30 *np.linspace(1, -1, n_nodes)
 
 nodes_end = np.stack([
-    1 + 1 * np.cosd(theta_deg),
+    0.6 + 1 * np.cosd(theta_deg),
     0 + 1 * np.sind(theta_deg)
 ], axis=1)
 nodes_end_direction = np.stack([
@@ -59,8 +61,8 @@ nodes_interpolator = interpolate.CubicSpline(
     axis=0,
     bc_type=(
         (1, nodes_start_direction),
-        # (2, np.zeros_like(nodes_end))
-        (1, nodes_end_direction * 1)
+        (2, np.zeros_like(nodes_end))
+        # (1, nodes_end_direction * 1)
     )
 )
 
@@ -78,10 +80,10 @@ for i, (layer_nodes, layer_color) in enumerate(zip(all_nodes, layer_colors)):
         y,
         ".",
         alpha=0.6,
-        markersize=5,
+        markersize=4,
         color=layer_color,
         markeredgecolor="white",
-        markeredgewidth=0.5
+        markeredgewidth=0#.5
     )
 
     # Connect this layer's nodes into a ring / line, depending on how far from airfoil-to-line you are
@@ -126,8 +128,15 @@ for i, (layer_nodes, layer_color) in enumerate(zip(all_nodes, layer_colors)):
                 alpha=0.4
             )
 
+# plt.fill(
+#     af.x(),
+#     af.y(),
+#     color=layer_colors[0],
+#     alpha=0.2,
+# )
+
 text_kwargs = dict(
-    fontsize=48,
+    fontsize=56,
     fontname="Raleway",
 )
 
@@ -140,11 +149,11 @@ plt.text(
 )
 plt.text(
     x_offset, y_offset, "Foil", ha="right", va="top",
-    color=p.adjust_lightness(colors[1], 0.6), **text_kwargs
+    color=p.adjust_lightness(colors[-1], 0.75), **text_kwargs
 )
 
 plt.gca().set_aspect("equal", adjustable='box')
-plt.xlim(-1.35, 2.1)
+plt.xlim(-1.5, 1.8)
 
 plt.savefig("neuralfoil_logo.png", dpi=600)
 plt.savefig("neuralfoil_logo.pdf")
