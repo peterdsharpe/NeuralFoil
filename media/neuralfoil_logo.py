@@ -14,10 +14,12 @@ n_nodes = 2 * n_nodes_per_side
 n_layers = 12
 n_neighbors_to_connect = 2
 
-colors = ["crimson", "dodgerblue"]
+colors = ["crimson", "dodgerblue"][::-1]
 cmap = LinearSegmentedColormap.from_list("custom_cmap", colors)
 
 af = asb.Airfoil("dae11").repanel(n_nodes_per_side).normalize()
+
+af = af.translate(translate_y=-af.local_camber(x_over_c=0.5)).rotate(angle=np.radians(-10), x_center=0.5)
 
 ### Compute where the Neural Network nodes should be drawn, and the directions to propagate them in
 nodes_start = np.concatenate([
@@ -30,7 +32,7 @@ nodes_start_direction = nodes_start_normal / np.linalg.norm(nodes_start_normal, 
 nodes_start_direction[0] = np.array([-1, 0])
 nodes_start_direction[-1] = np.array([-1, 0])
 
-theta_deg = np.linspace(30, -30, n_nodes)
+theta_deg = 30 *np.linspace(1, -1, n_nodes)
 
 nodes_end = np.stack([
     1 + 1 * np.cosd(theta_deg),
@@ -43,8 +45,13 @@ nodes_end_direction = np.stack([
 
 from scipy import interpolate
 
+
+nodes_start_direction = np.stack([
+    np.zeros(n_nodes),
+    np.where(np.arange(n_nodes) < n_nodes_per_side, 1, -1)
+], axis=1)
 xs = nodes_start[:, 0].reshape(-1, 1)
-nodes_start_direction = 1. * nodes_start_direction * (1 - xs ** 8 + 0.5 * (1 - xs) ** 4)
+nodes_start_direction *= (1 - xs ** 3 + 0.5 * (1 - xs) ** 4)
 
 nodes_interpolator = interpolate.CubicSpline(
     x=[0, 1],
@@ -52,8 +59,8 @@ nodes_interpolator = interpolate.CubicSpline(
     axis=0,
     bc_type=(
         (1, nodes_start_direction),
-        (2, np.zeros_like(nodes_end))
-        # (1, nodes_end_direction * 2)
+        # (2, np.zeros_like(nodes_end))
+        (1, nodes_end_direction * 1)
     )
 )
 
@@ -71,6 +78,7 @@ for i, (layer_nodes, layer_color) in enumerate(zip(all_nodes, layer_colors)):
         y,
         ".",
         alpha=0.6,
+        markersize=5,
         color=layer_color,
         markeredgecolor="white",
         markeredgewidth=0.5
@@ -115,7 +123,7 @@ for i, (layer_nodes, layer_color) in enumerate(zip(all_nodes, layer_colors)):
                 np.stack([roll_truncate(y, -neighbor_offset), roll_truncate(yn, neighbor_offset)]),
                 color=layer_color,
                 linewidth=0.5,
-                alpha=0.5
+                alpha=0.4
             )
 
 text_kwargs = dict(
