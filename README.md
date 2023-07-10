@@ -96,6 +96,10 @@ Notably, most of the computational overhead of calling NeuralFoil is actually in
 
 ## Installation
 
+[Install from PyPI](https://pypi.org/project/NeuralFoil/) with:
+
+`pip install neuralfoil`
+
 <a name="dependencies-question"></a>
 To run models, NeuralFoil currently requires minimal dependencies:
 
