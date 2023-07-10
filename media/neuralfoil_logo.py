@@ -21,7 +21,7 @@ cmap = LinearSegmentedColormap.from_list("custom_cmap", colors)
 
 af = asb.Airfoil("dae11").repanel(n_nodes_per_side).normalize()
 
-af = af.translate(translate_y=-af.local_camber(x_over_c=0.5)).rotate(angle=np.radians(-10), x_center=0.5)
+af = af.translate(translate_y=-af.local_camber(x_over_c=0.5)).rotate(angle=np.radians(-6), x_center=0.5)
 
 ### Compute where the Neural Network nodes should be drawn, and the directions to propagate them in
 nodes_start = np.concatenate([
