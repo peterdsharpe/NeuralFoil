@@ -16,7 +16,7 @@ def get_aero_from_kulfan_parameters(
     ### Load the neural network parameters
     filename = npz_file_directory / f"nn-{model_size}.npz"
     if not filename.exists():
-        raise FileNotFoundError(f"Could not find the neural network file {filename}.")
+        raise FileNotFoundError(f"Could not find the neural network file {filename}, which contains the weights and biases.")
 
     data: Dict[str, np.ndarray] = np.load(filename)
 
@@ -31,6 +31,7 @@ def get_aero_from_kulfan_parameters(
         kulfan_parameters["TE_thickness"] * 100,
     ]
 
+    ### Handle the vectorization, where here we figure out how many cases the user wants to run
     N_cases = 1  # TODO rework this with np.atleast1d
     for row in input_rows:
         if np.length(row) > 1:
