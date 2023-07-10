@@ -73,7 +73,7 @@ Qualitatively, NeuralFoil tracks XFoil very closely across a wide range of $\alp
 	<img src="./benchmarking/neuralfoil_point_validation.svg" width="1000" />
 </p>
 
-NeuralFoil is typically accurate to within a few percent of XFoil's predictions. Note that this figure is on an truly out-of-sample airfoil, so airfoils that are closer to the UIUC-database training set will have even more accurate results. The error is largest at transitional $Re$ where the physics is the most nuanced, but is still quite close. NeuralFoil also [has the benefit of smoothing out XFoil's "jagged" predictions](#xfoil-benefit-question) (for example, near $C_L=0.75$ in the $Re=\mathrm{1M}$ case, where the bottom-surface boundary layer suddenly laminarizes, and the drag plummets), which would otherwise make optimization difficult. 
+NeuralFoil is typically accurate to within a few percent of XFoil's predictions. Note that this figure is on a truly out-of-sample airfoil, so airfoils that are closer to the UIUC-database training set will have even more accurate results. The error is largest at transitional $Re$ where the physics is the most nuanced, but is still quite close. NeuralFoil also [has the benefit of smoothing out XFoil's "jagged" predictions](#xfoil-benefit-question) (for example, near $C_L=0.75$ in the $Re=\mathrm{1M}$ case, where the bottom-surface boundary layer suddenly laminarizes, and the drag plummets), which would otherwise make optimization difficult. 
 
 In the table below, we quantify the performance of the NeuralFoil ("NF") models with respect to XFoil more precisely. At a basic level, we care about two things:
 
