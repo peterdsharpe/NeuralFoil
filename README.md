@@ -5,7 +5,7 @@
 by Peter Sharpe
 
 
-[![PyPI version](https://badge.fury.io/py/neuralfoil.svg)](https://badge.fury.io/py/neuralfoil)
+[![PyPI version](https://badge.fury.io/py/NeuralFoil.svg)](https://badge.fury.io/py/NeuralFoil)
 [![Build Status](https://github.com/peterdsharpe/NeuralFoil/workflows/Tests/badge.svg)](https://github.com/peterdsharpe/NeuralFoil/actions/workflows/run-pytest.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-g.svg)](https://opensource.org/licenses/MIT)
 
