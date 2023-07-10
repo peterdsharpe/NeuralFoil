@@ -76,7 +76,7 @@ setup(
     },
     include_package_data=True,
     package_data={
-        'NN parameters': ['*.npz'],  # include the weights and biases for the neural networks
+        'NN parameters': ['nn_weights_and_biases/*.npz'],  # include the weights and biases for the neural networks
     },
     project_urls={  # Optional
         'Source'     : 'https://github.com/peterdsharpe/NeuralFoil',
