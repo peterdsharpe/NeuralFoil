@@ -59,7 +59,7 @@ setup(
     ],
     extras_require={
         "training": [
-            'pytorch',
+            'torch',
             'ray',
             'polars',
             'tqdm'

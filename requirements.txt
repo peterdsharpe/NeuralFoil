@@ -1,4 +1,6 @@
-aerosandbox
-ray[default]
-polars
-tqdm
+numpy~=1.24.3
+aerosandbox~=4.0.10
+torch~=2.0.1
+ray[default]~=2.5.1
+polars~=0.18.4
+tqdm~=4.65.0
