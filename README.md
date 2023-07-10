@@ -4,6 +4,11 @@
 
 by Peter Sharpe
 
+
+[![PyPI version](https://badge.fury.io/py/neuralfoil.svg)](https://badge.fury.io/py/neuralfoil)
+[![Build Status](https://github.com/peterdsharpe/NeuralFoil/workflows/Tests/badge.svg)](https://github.com/peterdsharpe/NeuralFoil/actions/workflows/run-pytest.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-g.svg)](https://opensource.org/licenses/MIT)
+
 -----
 
 NeuralFoil is a small Python/NumPy tool for rapid aerodynamics analysis of airfoils. Under the hood, it consists of a neural network trained on tens of millions of [XFoil](https://web.mit.edu/drela/Public/web/xfoil/) runs. NeuralFoil aims to be lightweight, with [minimal dependencies](#dependencies-question) and a [tight, efficient code-base](./neuralfoil).
@@ -166,9 +171,3 @@ If you use NeuralFoil in your research, please cite it as follows:
   journal = {GitHub repository},
   howpublished = {\url{https://github.com/peterdsharpe/NeuralFoil}},
 ```
-
-[![Build Status](https://travis-ci.org/NeuralFoil/NeuralFoil.svg?branch=master)](https://travis-ci.org/NeuralFoil/NeuralFoil)
-[![codecov](https://codecov.io/gh/NeuralFoil/NeuralFoil/branch/master/graph/badge.svg)](https://codecov.io/gh/NeuralFoil/NeuralFoil)
-[![Documentation Status](https://readthedocs.org/projects/neuralfoil/badge/?version=latest)](https://neuralfoil.readthedocs.io/en/latest/?badge=latest)
-[![PyPI version](https://badge.fury.io/py/neuralfoil.svg)](https://badge.fury.io/py/neuralfoil)
-[![License: MIT](https://img.shields.io/badge/License-MIT-g.svg)](https://opensource.org/licenses/MIT)
