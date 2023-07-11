@@ -10,7 +10,7 @@ def get_aero_from_kulfan_parameters(
         kulfan_parameters: Dict[str, Union[float, np.ndarray]],
         alpha: Union[float, np.ndarray],
         Re: Union[float, np.ndarray],
-        model_size="medium"
+        model_size="large"
 ) -> Dict[str, Union[float, np.ndarray]]:
 
     ### Load the neural network parameters
@@ -130,7 +130,7 @@ def get_aero_from_airfoil(
         airfoil: asb.Airfoil,
         alpha: Union[float, np.ndarray],
         Re: Union[float, np.ndarray],
-        model_size="medium",
+        model_size="large",
 ) -> Dict[str, Union[float, np.ndarray]]:
     from aerosandbox.geometry.airfoil.airfoil_families import get_kulfan_parameters
 
@@ -151,7 +151,7 @@ def get_aero_from_coordinates(
         coordinates: np.ndarray,
         alpha: Union[float, np.ndarray],
         Re: Union[float, np.ndarray],
-        model_size="medium",
+        model_size="large",
 ):
     return get_aero_from_airfoil(
         airfoil=asb.Airfoil(
@@ -167,7 +167,7 @@ def get_aero_from_dat_file(
         filename,
         alpha: Union[float, np.ndarray],
         Re: Union[float, np.ndarray],
-        model_size="medium",
+        model_size="large",
 ):
     with open(filename, "r") as f:
         raw_text = f.readlines()
