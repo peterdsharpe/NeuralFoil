@@ -22,11 +22,12 @@ for model_size in ["xxsmall", "xsmall", "small", "medium", "large", "xlarge", "x
         )
 
 
-    time_total, _ = time_function(func)
+    time_total, _ = time_function(func, desired_runtime=0.2)
     print(model_size, time_total)
 
 def func():
-    alpha = np.linspace(0, 10, 1)
+    alpha = np.linspace(0, 10, 200)
+    np.random.shuffle(alpha)
     xf = asb.XFoil(
         airfoil=airfoil,
         Re=Re
