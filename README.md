@@ -171,6 +171,23 @@ Why parameterize the airfoil geometry using the CST (Kulfan) parameterization? W
 > - [D. A. Masters, "Geometric Comparison of Aerofoil Shape Parameterization Methods", AIAA Journal, 2017.](https://arc.aiaa.org/doi/pdf/10.2514/1.J054943)
 > - The seminal paper on the CST (Kulfan) parameterization technique: [Brenda Kulfan, "Universal Parametric Geometry Representation Method"](http://mx1.brendakulfan.com/docs/CST6.pdf)
 
+What's the underlying neural network architecture used in NeuralFoil?
+
+> To be written, but it is essentially a feed-forward neural network with a varying number of total layers and layer width depending on model size. Layer counts and widths were [determined through extensive trial and error](./training/supercloud_job_id_notes.log), in conjunction with observed test- and train-loss values. All layers are dense (fully connected, with weights and biases). All activation functions between layers are $\tanh$, to preserve $C^\infty$-continuity. The number of layers and layer width are as follows:
+>
+> * xxsmall: 2 layers,  32 wide.
+> * xsmall:  3 layers,  32 wide.
+> * small:   3 layers,  48 wide.
+> * medium:  4 layers,  64 wide.
+> * large:   4 layers, 128 wide.
+> * xlarge:  4 layers, 256 wide.
+> * xxlarge: 5 layers, 256 wide.
+> * xxxlarge:5 layers, 512 wide.
+
+## Acknowledgements
+
+NeuralFoil was trained on MIT Supercloud, a high-performance computing cluster operated by the MIT Lincoln Laboratory Supercomputing Center (LLSC). 
+
 ## License
 
 NeuralFoil is licensed under the MIT license. Please see the [LICENSE](LICENSE.txt) file for details.
