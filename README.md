@@ -41,7 +41,7 @@ In addition to its neural network models, NeuralFoil also has a bonus "Linear $C
 Using NeuralFoil is dead-simple, and also offers several possible "entry points" for inputs. Here's an example showing this:
 
 ```python
-import neuralfoil as nf
+import neuralfoil as nf  # `pip install neuralfoil`
 import numpy as np
 
 aero = nf.get_aero_from_dat_file(  # You can use a .dat file as an entry point
