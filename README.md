@@ -74,7 +74,7 @@ Qualitatively, NeuralFoil tracks XFoil very closely across a wide range of $\alp
 	<img src="./benchmarking/neuralfoil_point_validation.svg" width="1000" />
 </p>
 
-NeuralFoil is typically accurate to within a few percent of XFoil's predictions. Note that this figure is on a truly out-of-sample airfoil, so airfoils that are closer to the UIUC-database training set will have even more accurate results. 
+NeuralFoil is typically accurate to within a few percent of XFoil's predictions. Note that this figure is on a truly out-of-sample airfoil, so airfoils that are closer to the training set will have even more accurate results. 
 
 NeuralFoil also [has the benefit of smoothing out XFoil's "jagged" predictions](#xfoil-benefit-question) (for example, near $C_L=0.75$ at $Re=\mathrm{1M}$, or $C_L=1.4$ at $Re=\mathrm{90k}$) in cases where XFoil is obviously incorrect, which would otherwise make optimization difficult. 
 
