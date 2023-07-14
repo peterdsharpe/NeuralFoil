@@ -132,17 +132,20 @@ def get_aero_from_airfoil(
         Re: Union[float, np.ndarray],
         model_size="large",
 ) -> Dict[str, Union[float, np.ndarray]]:
+
+    airfoil_normalization = airfoil.normalize(return_dict=True)
+
     from aerosandbox.geometry.airfoil.airfoil_families import get_kulfan_parameters
 
     kulfan_parameters = get_kulfan_parameters(
-        airfoil.coordinates,
+        airfoil_normalization["airfoil"].coordinates,
         n_weights_per_side=8
     )
 
     return get_aero_from_kulfan_parameters(
         kulfan_parameters=kulfan_parameters,
-        alpha=alpha,
-        Re=Re,
+        alpha=alpha + airfoil_normalization["rotation_angle"],
+        Re=Re / airfoil_normalization["scale_factor"],
         model_size=model_size
     )
 
@@ -183,7 +186,8 @@ def get_aero_from_dat_file(
 
 if __name__ == '__main__':
 
-    airfoil = asb.Airfoil("dae11").repanel().normalize()
+    # airfoil = asb.Airfoil("dae11").repanel().normalize()
+    airfoil=asb.Airfoil("naca0012").add_control_surface(10, hinge_point_x=0.5)
 
     alpha = np.linspace(-15, 15, 100)
     Re = 1e6
