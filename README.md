@@ -57,7 +57,7 @@ aero = nf.get_aero_from_coordinates(  # You can use xy airfoil coordinates as an
     Re=5e6,
 )
 
-aero = nf.get_aero_from_airfoil(  # You can AeroSandbox airfoils as an entry point
+aero = nf.get_aero_from_airfoil(  # You can use AeroSandbox airfoils as an entry point
     airfoil=asb.Airfoil("naca4412"),  # `import aerosandbox as asb`, any UIUC or NACA airfoil name works
     alpha=5, Re=5e6,
 )
