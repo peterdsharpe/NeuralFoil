@@ -101,9 +101,7 @@ In addition to accuracy vs. speed, another consideration when choosing the right
 
 ## Installation
 
-[Install from PyPI](https://pypi.org/project/NeuralFoil/) with:
-
-`pip install neuralfoil`
+[Install from PyPI](https://pypi.org/project/NeuralFoil/) with `pip install neuralfoil`.
 
 <a name="dependencies-question"></a>
 To run models, NeuralFoil currently requires minimal dependencies:
