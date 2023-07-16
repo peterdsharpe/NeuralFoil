@@ -15,6 +15,10 @@ NeuralFoil is a small Python/NumPy tool for rapid aerodynamics analysis of airfo
 
 NeuralFoil is ~10x faster than XFoil for a single analysis, and ~1000x faster for multipoint analysis, all with [minimal loss in accuracy compared to XFoil](#performance). It also has [many nice features](#xfoil-benefit-question) (e.g., smoothness, vectorization, all in Python/NumPy) that make it much easier to use.
 
+```
+pip install neuralfoil
+```
+
 ## Overview
 
 NeuralFoil comes with 8 different neural network models, with increasing levels of complexity:
@@ -41,7 +45,7 @@ In addition to its neural network models, NeuralFoil also has a bonus "Linear $C
 Using NeuralFoil is dead-simple, and also offers several possible "entry points" for inputs. Here's an example showing this:
 
 ```python
-import neuralfoil as nf
+import neuralfoil as nf  # `pip install neuralfoil`
 import numpy as np
 
 aero = nf.get_aero_from_dat_file(  # You can use a .dat file as an entry point
@@ -57,12 +61,12 @@ aero = nf.get_aero_from_coordinates(  # You can use xy airfoil coordinates as an
     Re=5e6,
 )
 
-aero = nf.get_aero_from_airfoil(  # You can AeroSandbox airfoils as an entry point
+aero = nf.get_aero_from_airfoil(  # You can use AeroSandbox airfoils as an entry point
     airfoil=asb.Airfoil("naca4412"),  # `import aerosandbox as asb`, any UIUC or NACA airfoil name works
     alpha=5, Re=5e6,
 )
 
-# `aero` is a dict with keys: ["CL", "CD", "CM", "Cpmin", "Top_Xtr", "Bot_Xtr"]
+# `aero` is a dictionary with keys: ["CL", "CD", "CM", "Cpmin", "Top_Xtr", "Bot_Xtr"]
 ```
 
 ## Performance
@@ -74,7 +78,7 @@ Qualitatively, NeuralFoil tracks XFoil very closely across a wide range of $\alp
 	<img src="./benchmarking/neuralfoil_point_validation.svg" width="1000" />
 </p>
 
-NeuralFoil is typically accurate to within a few percent of XFoil's predictions. Note that this figure is on a truly out-of-sample airfoil, so airfoils that are closer to the UIUC-database training set will have even more accurate results. 
+NeuralFoil is typically accurate to within a few percent of XFoil's predictions. Note that this figure is on a truly out-of-sample airfoil, so airfoils that are closer to the training set will have even more accurate results. 
 
 NeuralFoil also [has the benefit of smoothing out XFoil's "jagged" predictions](#xfoil-benefit-question) (for example, near $C_L=0.75$ at $Re=\mathrm{1M}$, or $C_L=1.4$ at $Re=\mathrm{90k}$) in cases where XFoil is obviously incorrect, which would otherwise make optimization difficult. 
 
@@ -95,13 +99,9 @@ Based on these performance numbers, you can select the right tradeoff between ac
 
 In addition to accuracy vs. speed, another consideration when choosing the right model is what you're trying to use NeuralFoil for. Larger models will be more complicated ("less parsimonious," as the math kids would say), which means that they may have more "wiggles" in their outputs—this might be undesirable for gradient-based optimization. On the other hand, larger models will be able to capture a wider range of airfoils (e.g., nonsensical, weirdly-shaped airfoils that might be seen mid-optimization), so larger models could have a benefit in that sense. If you try a specific application and have better/worse results with a specific model, let me know by opening a GitHub issue!
 
-Notably, most of the computational overhead of calling NeuralFoil is actually in the airfoil preprocessing step, where the airfoil is converted from a set of coordinates to a CST (Kulfan) parameterization ([more info here](#geometry-parameterization-and-training-data)) - not in the aerodynamics analysis itself. This pre-processing takes around 20 milliseconds using [AeroSandbox's general nonlinear solvers](https://github.com/peterdsharpe/AeroSandbox/blob/c20bea3b142b61a7ad284dbe7632fbd9d5e232a6/aerosandbox/geometry/airfoil/airfoil_families.py#L265), but in theory a pure-NumPy implementation is possible that would be much faster by exploiting linearity (sub-millisecond). If you're interested in working on this, open an issue and let me know! In the meantime, you can eliminate this overhead by using [`get_aero_from_kulfan_parameters()`](./neuralfoil/neuralfoil.py) as opposed to one of NeuralFoil's other functions.
-
 ## Installation
 
-[Install from PyPI](https://pypi.org/project/NeuralFoil/) with:
-
-`pip install neuralfoil`
+[Install from PyPI](https://pypi.org/project/NeuralFoil/) with `pip install neuralfoil`.
 
 <a name="dependencies-question"></a>
 To run models, NeuralFoil currently requires minimal dependencies:
