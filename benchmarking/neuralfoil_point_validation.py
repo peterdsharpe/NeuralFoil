@@ -70,6 +70,8 @@ for Re, color in tqdm(zip(Re_values_to_test, colors)):
     xfoil_aero = asb.XFoil(
         airfoil=af,
         Re=Re,
+        timeout=120,
+        max_iter=100,
     ).alpha(alpha=alphas_xfoil)
 
     plt.plot(
@@ -135,7 +137,10 @@ plt.legend(
         Line2D([], [], color="k", linestyle="--", label="NeuralFoil \"xxxlarge\""),
         Line2D([], [], color="k", linestyle=":", label="NeuralFoil \"medium\""),
     ],
-    title="Analysis Method", loc="lower left", ncols=3, fontsize=10,
+    title="Analysis Method",
+    # loc=(0.8, 0.15),
+    loc='best', bbox_to_anchor=(0.5, 0., 0.5, 0.5),
+    fontsize=11,
     labelspacing=0.3, columnspacing=1.5, handletextpad=0.4,
     framealpha=0.5,
 )
@@ -156,7 +161,7 @@ afax.fill(
     "k", alpha=0.2
 )
 afax.annotate(
-    text="HALE_03 Airfoil",
+    text=f"{af.name} Airfoil",
     xy=(0.5, 0.15),
     xycoords="data",
     ha="center",
@@ -176,7 +181,7 @@ afax.set_aspect("equal", adjustable='box')
 
 
 plt.suptitle("Comparison of $C_L$-$C_D$ Polar for NeuralFoil vs. XFoil", fontsize=16,y=0.94)
-plt.title("On HALE_03 Airfoil (out-of-sample)", fontsize=12, alpha=0.7)
+plt.title(f"On {af.name} Airfoil (out-of-sample)", fontsize=12, alpha=0.7)
 
 p.show_plot(
     None,
