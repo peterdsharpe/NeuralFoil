@@ -62,7 +62,7 @@ aero = nf.get_aero_from_airfoil(  # You can use AeroSandbox airfoils as an entry
     alpha=5, Re=5e6,
 )
 
-# `aero` is a dict with keys: ["CL", "CD", "CM", "Cpmin", "Top_Xtr", "Bot_Xtr"]
+# `aero` is a dictionary with keys: ["CL", "CD", "CM", "Cpmin", "Top_Xtr", "Bot_Xtr"]
 ```
 
 ## Performance
