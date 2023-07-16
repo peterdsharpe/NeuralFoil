@@ -15,6 +15,10 @@ NeuralFoil is a small Python/NumPy tool for rapid aerodynamics analysis of airfo
 
 NeuralFoil is ~10x faster than XFoil for a single analysis, and ~1000x faster for multipoint analysis, all with [minimal loss in accuracy compared to XFoil](#performance). It also has [many nice features](#xfoil-benefit-question) (e.g., smoothness, vectorization, all in Python/NumPy) that make it much easier to use.
 
+```
+pip install neuralfoil
+```
+
 ## Overview
 
 NeuralFoil comes with 8 different neural network models, with increasing levels of complexity:
