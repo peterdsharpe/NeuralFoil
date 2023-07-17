@@ -1,5 +1,5 @@
 numpy~=1.24.3
-aerosandbox~=4.0.10
+aerosandbox~=4.1.0
 torch~=2.0.1
 ray[default]~=2.5.1
 polars~=0.18.4
