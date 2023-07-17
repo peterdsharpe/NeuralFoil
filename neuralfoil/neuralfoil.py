@@ -16,7 +16,8 @@ def get_aero_from_kulfan_parameters(
     ### Load the neural network parameters
     filename = npz_file_directory / f"nn-{model_size}.npz"
     if not filename.exists():
-        raise FileNotFoundError(f"Could not find the neural network file {filename}, which contains the weights and biases.")
+        raise FileNotFoundError(
+            f"Could not find the neural network file {filename}, which contains the weights and biases.")
 
     data: Dict[str, np.ndarray] = np.load(filename)
 
@@ -103,20 +104,20 @@ def get_aero_from_kulfan_parameters(
     y_flipped = net(x_flipped)
 
     ### The resulting outputs will also be flipped, so we need to flip them back to their normal orientation
-    y_flipped = np.stack([
-        -y_flipped[0, :],  # "CL"
-        y_flipped[1, :],  # "ln_CD + 4"
-        -y_flipped[2, :],  # "CM * 20"
-        y_flipped[3, :],  # "u_max_over_u - 1"
-        y_flipped[5, :],  # "Top_Xtr" (flipped with bot)
-        y_flipped[4, :],  # "Bot_Xtr" (flipped with top)
-    ])
+    y_flipped = y_flipped * np.array([
+        -1,  # "CL"
+        1,  # "ln_CD + 4"
+        -1,  # "CM * 20"
+        1,  # "u_max_over_u - 1"
+        1,  # "Top_Xtr" (flipped with bot)
+        1,  # "Bot_Xtr" (flipped with top)
+    ]).reshape((-1, 1))
 
     ### Then, average the two outputs to get the "symmetric" result
     y = (y + y_flipped) / 2
 
     # Unpack the neural network outputs
-    return {
+    results = {
         "CL"     : y[0, :],
         "CD"     : np.exp(y[1, :] - 4),
         "CM"     : y[2, :] / 20,
@@ -124,6 +125,7 @@ def get_aero_from_kulfan_parameters(
         "Top_Xtr": y[4, :],
         "Bot_Xtr": y[5, :],
     }
+    return {key: np.reshape(value, -1) for key, value in results.items()}
 
 
 def get_aero_from_airfoil(
@@ -187,7 +189,7 @@ def get_aero_from_dat_file(
 if __name__ == '__main__':
 
     # airfoil = asb.Airfoil("dae11").repanel().normalize()
-    airfoil=asb.Airfoil("naca0012").add_control_surface(10, hinge_point_x=0.5)
+    airfoil = asb.Airfoil("naca0012").add_control_surface(10, hinge_point_x=0.5)
 
     alpha = np.linspace(-15, 15, 100)
     Re = 1e6
@@ -248,6 +250,7 @@ if __name__ == '__main__':
     ax[1, 1].set_xlim(left=0)
 
     from aerosandbox.tools.string_formatting import eng_string
+
     plt.suptitle(f"\"{airfoil.name}\" Airfoil at $Re_c = \\mathrm{{{eng_string(Re)}}}$")
 
     p.show_plot()
