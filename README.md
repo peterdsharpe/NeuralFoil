@@ -214,4 +214,5 @@ If you use NeuralFoil in your research, please cite it as follows:
   publisher = {GitHub},
   journal = {GitHub repository},
   howpublished = {\url{https://github.com/peterdsharpe/NeuralFoil}},
+}
 ```
