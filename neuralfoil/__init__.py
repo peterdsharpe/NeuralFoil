@@ -5,4 +5,4 @@ from .neuralfoil import (
     get_aero_from_dat_file
 )
 
-__version__ = "0.1.6"
+__version__ = "0.1.7"
