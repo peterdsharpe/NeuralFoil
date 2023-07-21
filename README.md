@@ -12,10 +12,13 @@ by [Peter Sharpe](https://peterdsharpe.github.io) (<pds [at] mit [dot] edu>)
 
 -----
 
-NeuralFoil is a small Python/NumPy tool for rapid aerodynamics analysis of airfoils, similar to [XFoil](https://web.mit.edu/drela/Public/web/xfoil/). It is also a small subset of the larger [AeroSandbox](https://github.com/peterdsharpe/AeroSandbox) package, but it is offered here as a standalone. Under the hood, NeuralFoil consists of physics-informed neural networks trained on [tens of millions of XFoil runs](#geometry-parameterization-and-training-data). NeuralFoil aims to be lightweight, with [minimal dependencies](#dependencies-question) and a [tight, efficient code-base](./neuralfoil).
+NeuralFoil is a tool for rapid aerodynamics analysis of airfoils, similar to [XFoil](https://web.mit.edu/drela/Public/web/xfoil/). Under the hood, NeuralFoil consists of physics-informed neural networks trained on [tens of millions of XFoil runs](#geometry-parameterization-and-training-data).
+
+NeuralFoil is available here as a pure Python+NumPy standalone, but it is [available within AeroSandbox](#extended-features-transonics-post-stall-control-surface-deflections) which provides many more advanced features. With the AeroSandbox extension, **you can get viscous, compressible airfoil aerodynamics for (nearly) any airfoil, with control surface deflections, at $360^\circ$ angle of attack, at any Reynolds number, nearly instantly** (~5 milliseconds). And, it's guaranteed to return an answer (no non-convergence issues), it's vectorized, and it's $C^1$-continuous (all extremely useful for gradient-based optimization). 
 
 NeuralFoil is ~10x faster than XFoil for a single analysis, and ~1000x faster for multipoint analysis, all with [minimal loss in accuracy compared to XFoil](#performance). Thanks to the wide variety of training data and the embedding of several physics-based invariants, [this accuracy is seen even on out-of-sample airfoils](#performance) (i.e., airfoils it wasn't trained on). It also has [many nice features](#xfoil-benefit-question) (e.g., smoothness, vectorization, all in Python/NumPy) that make it much easier to use.
 
+ NeuralFoil aims to be lightweight, with [minimal dependencies](#dependencies-question) and a [tight, efficient, and easily-understood code-base](./neuralfoil) (less than 500 lines of user-facing code).
 ```
 pip install neuralfoil
 ```
@@ -107,8 +110,6 @@ For more sophisticated airfoil aerodynamics calculations, consider using NeuralF
 * Compressible aerodynamics, including transonic and supersonic aerodynamics. AeroSandbox will generally get the critical Mach number accurate to within $\pm 0.01$ or so (subsonic corrections done using a Laitone correction; similar to Prandtl-Glauert or Karman-Tsien, but higher-order). Wave drag accuracy is, of course, less reliable beyond the drag-divergence Mach number, although it still [agrees quite closely when compared to RANS CFD](https://github.com/peterdsharpe/AeroSandbox/blob/master/studies/WingTransonics/compare_methods.py).
 * Post-stall (i.e., truly 360 degree range of $\alpha$) aerodynamics. This is useful for applications like wind turbine blades or propeller roots, where the airfoil may be operating at high angles of attack.
 * Control surface deflections. Currently only trailing-edge control surface deflections are supported in AeroSandbox's NeuralFoil interface.
-
-From a practical perspective, this means that **you can get viscous, compressible airfoil aerodynamics for (nearly) any airfoil, with control surface deflections, at any angle of attack, at any Reynolds number, nearly instantly** (~5 milliseconds). And, it's guaranteed to return an answer (no non-convergence issues) and be $C^1$-continuous (critical for gradient-based optimization). 
 
 ## Installation
 
