@@ -14,7 +14,7 @@ by [Peter Sharpe](https://peterdsharpe.github.io) (<pds [at] mit [dot] edu>)
 
 NeuralFoil is a small Python/NumPy tool for rapid aerodynamics analysis of airfoils, similar to [XFoil](https://web.mit.edu/drela/Public/web/xfoil/). It is also a small subset of the larger [AeroSandbox](https://github.com/peterdsharpe/AeroSandbox) package, but it is offered here as a standalone. Under the hood, NeuralFoil consists of physics-informed neural networks trained on [tens of millions of XFoil runs](#geometry-parameterization-and-training-data). NeuralFoil aims to be lightweight, with [minimal dependencies](#dependencies-question) and a [tight, efficient code-base](./neuralfoil).
 
-NeuralFoil is ~10x faster than XFoil for a single analysis, and ~1000x faster for multipoint analysis, all with [minimal loss in accuracy compared to XFoil](#performance). It also has [many nice features](#xfoil-benefit-question) (e.g., smoothness, vectorization, all in Python/NumPy) that make it much easier to use.
+NeuralFoil is ~10x faster than XFoil for a single analysis, and ~1000x faster for multipoint analysis, all with [minimal loss in accuracy compared to XFoil](#performance). Thanks to the wide variety of training data and the embedding of several physics-based invariants, [this accuracy is seen even on out-of-sample airfoils](#performance) (i.e., airfoils it wasn't trained on). It also has [many nice features](#xfoil-benefit-question) (e.g., smoothness, vectorization, all in Python/NumPy) that make it much easier to use.
 
 ```
 pip install neuralfoil
@@ -81,7 +81,7 @@ Qualitatively, NeuralFoil tracks XFoil very closely across a wide range of $\alp
 
 NeuralFoil is typically accurate to within a few percent of XFoil's predictions. Note that this figure is on a truly out-of-sample airfoil, so airfoils that are closer to the training set will have even more accurate results. 
 
-NeuralFoil also [has the benefit of smoothing out XFoil's "jagged" predictions](#xfoil-benefit-question) (for example, near $C_L=0.75$ at $Re=\mathrm{1M}$, or $C_L=1.4$ at $Re=\mathrm{90k}$) in cases where XFoil is obviously incorrect, which would otherwise make optimization difficult. 
+NeuralFoil also [has the benefit of smoothing out XFoil's "jagged" predictions](#xfoil-benefit-question) (for example, near $C_L=1.4$ at $Re=\mathrm{90k}$) in cases where XFoil is not reliably converging, which would otherwise make optimization difficult. 
 
 In the table below, we quantify the performance of the NeuralFoil ("NF") models with respect to XFoil more precisely. At a basic level, we care about two things:
 
@@ -99,6 +99,16 @@ This table details both of these considerations. The first few columns show the 
 Based on these performance numbers, you can select the right tradeoff between accuracy and computational cost for your application. In general, I recommend starting with the "large" model and adjusting from there.
 
 In addition to accuracy vs. speed, another consideration when choosing the right model is what you're trying to use NeuralFoil for. Larger models will be more complicated ("less parsimonious," as the math kids would say), which means that they may have more "wiggles" in their outputs—this might be undesirable for gradient-based optimization. On the other hand, larger models will be able to capture a wider range of airfoils (e.g., nonsensical, weirdly-shaped airfoils that might be seen mid-optimization), so larger models could have a benefit in that sense. If you try a specific application and have better/worse results with a specific model, let me know by opening a GitHub issue!
+
+## Extended Features (transonics, post-stall, control surface deflections)
+
+For more sophisticated airfoil aerodynamics calculations, consider using NeuralFoil via [AeroSandbox](https://github.com/peterdsharpe/AeroSandbox) (specifically, through [`asb.Airfoil.get_aero_from_neuralfoil()`](https://github.com/peterdsharpe/AeroSandbox/blob/8ad83aa4e4e40c503884c722143b7730c08089fa/aerosandbox/geometry/airfoil/airfoil.py#L607)). This provides several advanced features:
+
+* Compressible aerodynamics, including transonic and supersonic aerodynamics. AeroSandbox will generally get the critical Mach number accurate to within $\pm 0.01$ or so (subsonic corrections done using a Laitone correction; similar to Prandtl-Glauert or Karman-Tsien, but higher-order). Wave drag accuracy is, of course, less reliable beyond the drag-divergence Mach number, although it still [agrees quite closely when compared to RANS CFD](https://github.com/peterdsharpe/AeroSandbox/blob/master/studies/WingTransonics/compare_methods.py).
+* Post-stall (i.e., truly 360 degree range of $\alpha$) aerodynamics. This is useful for applications like wind turbine blades or propeller roots, where the airfoil may be operating at high angles of attack.
+* Control surface deflections. Currently only trailing-edge control surface deflections are supported in AeroSandbox's NeuralFoil interface.
+
+From a practical perspective, this means that **you can get viscous, compressible airfoil aerodynamics for (nearly) any airfoil, with control surface deflections, at any angle of attack, at any Reynolds number, nearly instantly** (~5 milliseconds). And, it's guaranteed to return an answer (no non-convergence issues) and be $C^1$-continuous (critical for gradient-based optimization). 
 
 ## Installation
 
@@ -144,7 +154,7 @@ Why not just use XFoil directly?
 >      - For more on this, see [Adler, Gray, and Martins, "To CFD or not to CFD?..."](http://websites.umich.edu/~mdolaboratory/pdf/Adler2022c.pdf), Figure 7.
 > - While XFoil is ~1000x faster than RANS CFD, NeuralFoil [can be another ~1000x faster to evaluate than XFoil](#performance). NeuralFoil is also much easier to interface with on a memory level than XFoil, which means you won't find yourself I/O bound from file reading/writing like you will with XFoil.
 > - XFoil is not vectorized, which exacerbates the speed advantage of a (vectorized) neural network when analyzing large batches of airfoil cases simultaneously.
-> - XFoil is not guaranteed to produce a solution. Instead, XFoil often crashes when "ambitious" calculations are attempted, rather than producing a less-accurate answer. In some applications, that's okay or even desirable; in others, that's a dealbreaker. Example applications where this is a problem include:
+> - XFoil is not guaranteed to produce a solution. Instead, XFoil often crashes when "ambitious" calculations are attempted, rather than producing a less-accurate answer. In some applications, that's okay or even desirable; in others, that's a deal-breaker. Example applications where this is a problem include:
 >   - Real-time control, where one wants to estimate forces (e.g., for a MPC trajectory), but you can't have the controller crash if XFoil fails to converge or hangs the CPU.
 >   - Flight simulation: similar to real-time control where "a less-accurate answer" is much better than "no answer."
 >   - Design optimization, where the optimizer needs "an answer" in order to recover from a bad design point and send the search back to a reasonable design.
