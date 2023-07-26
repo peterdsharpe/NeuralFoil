@@ -130,9 +130,23 @@ Currently, NeuralFoil only uses AeroSandbox for airfoil geometry parameterizatio
 
 #### Geometry Parameterization
 
-To be written, but it's basically an 8-parameter-per-side CST (Kulfan) parameterization, with Kulfan's added leading-edge-modification (LEM) and trailing-edge thickness parameter. This gives a total of (8 * 2 + 1 + 1) = 18 parameters to describe a given airfoil shape. I'll write more here, but in the meantime read:
+The airfoil shape fed into NeuralFoil is in the form of an 8-parameter-per-side CST (Kulfan) parameterization, with Kulfan's added leading-edge-modification (LEM) and trailing-edge thickness parameter. This gives a total of (8 * 2 + 1 + 1) = 18 parameters to describe a given airfoil shape. 
+
+<p align="center">
+	<img src="./media/kulfan_parameterization_illustration.svg" width="1000" />
+</p>
+
+For more details on this parameterization, or why it is a good choice, read:
 - [D. A. Masters, "Geometric Comparison of Aerofoil Shape Parameterization Methods", AIAA Journal, 2017.](https://arc.aiaa.org/doi/pdf/10.2514/1.J054943)
 - The seminal paper on the CST (Kulfan) parameterization technique: [Brenda Kulfan, "Universal Parametric Geometry Representation Method"](http://mx1.brendakulfan.com/docs/CST6.pdf)
+
+To convert between airfoil coordinates and the CST parameterization, use the following functions:
+
+```python
+from aerosandbox.geometry.airfoil.airfoil_families import get_kulfan_parameters, get_kulfan_coordinates
+```
+
+with documentation [here](https://aerosandbox.readthedocs.io/en/master/autoapi/aerosandbox/geometry/airfoil/airfoil_families/index.html) or in the source ([here](https://github.com/peterdsharpe/AeroSandbox/blob/8ad83aa4e4e40c503884c722143b7730c08089fa/aerosandbox/geometry/airfoil/airfoil_families.py#L128), [here](https://github.com/peterdsharpe/AeroSandbox/blob/8ad83aa4e4e40c503884c722143b7730c08089fa/aerosandbox/geometry/airfoil/airfoil_families.py#L265)).
 
 #### Training Data
 
