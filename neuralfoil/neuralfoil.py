@@ -104,14 +104,12 @@ def get_aero_from_kulfan_parameters(
     y_flipped = net(x_flipped)
 
     ### The resulting outputs will also be flipped, so we need to flip them back to their normal orientation
-    y_flipped = y_flipped * np.array([
-        -1,  # "CL"
-        1,  # "ln_CD + 4"
-        -1,  # "CM * 20"
-        1,  # "u_max_over_u - 1"
-        1,  # "Top_Xtr" (flipped with bot)
-        1,  # "Bot_Xtr" (flipped with top)
-    ]).reshape((-1, 1))
+    y_flipped[0, :] *= -1  # CL
+    y_flipped[2, :] *= -1  # CM
+    temp = y_flipped[4, :] + 0.  # This is here to help swap the top / bottom Xtr (transition x) values
+    # Adding the 0. is a hack to force a memory-copy of the array to be made in a way that's array-backend-agnostic.
+    y_flipped[4, :] = y_flipped[5,:]  # Replace top Xtr with bottom Xtr
+    y_flipped[5, :] = temp  # Replace bottom Xtr with top Xtr
 
     ### Then, average the two outputs to get the "symmetric" result
     y = (y + y_flipped) / 2
