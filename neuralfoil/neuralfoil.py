@@ -186,15 +186,17 @@ def get_aero_from_dat_file(
 
 if __name__ == '__main__':
 
-    # airfoil = asb.Airfoil("dae11").repanel().normalize()
-    airfoil = asb.Airfoil("naca0012").add_control_surface(10, hinge_point_x=0.5)
+    airfoil = asb.Airfoil("dae11").repanel().normalize()
+    # airfoil = asb.Airfoil("naca0012").add_control_surface(10, hinge_point_x=0.5)
 
     alpha = np.linspace(-15, 15, 100)
     Re = 1e6
 
     aeros = {}
 
-    for model_size in ["xxsmall", "xsmall", "small", "medium", "large", "xlarge", "xxlarge", "xxxlarge"]:
+    model_sizes = ["xxsmall", "xsmall", "small", "medium", "large", "xlarge", "xxlarge", "xxxlarge"]
+
+    for model_size in model_sizes:
         aeros[f"NF-{model_size}"] = get_aero_from_airfoil(
             airfoil=airfoil,
             alpha=alpha,
@@ -202,7 +204,7 @@ if __name__ == '__main__':
             model_size=model_size
         )
 
-    if True:
+    if False:
 
         aeros["XFoil"] = asb.XFoil(
             airfoil=airfoil,
