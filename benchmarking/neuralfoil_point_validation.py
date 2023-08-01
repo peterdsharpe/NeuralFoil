@@ -109,25 +109,6 @@ plt.annotate(
     alpha=0.7
 )
 
-# Format log ticks
-from matplotlib import ticker
-
-ax.tick_params(which="minor", labelsize=8)
-
-p.set_ticks(None, None, 0.5, 0.1)
-ax.xaxis.set_major_locator(ticker.LogLocator())
-ax.xaxis.set_minor_locator(ticker.LogLocator(subs=np.arange(1, 10)))
-
-def fmt(x, pos):
-    coefficient = x / 10 ** np.floor(np.log10(x))
-    if any([np.allclose(coefficient, i) for i in [1, 2, 5]]):
-        return f"{x:.2g}"
-    else:
-        return f""
-
-ax.xaxis.set_major_formatter(ticker.FuncFormatter(fmt))
-ax.xaxis.set_minor_formatter(ticker.FuncFormatter(fmt))
-
 from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 
@@ -188,5 +169,6 @@ p.show_plot(
     "Drag Coefficient $C_D$",
     "Lift Coefficient $C_L$",
     legend=False,
-    savefig="neuralfoil_point_validation.svg"
+    savefig="neuralfoil_point_validation.svg",
+    savefig_transparent=False
 )
