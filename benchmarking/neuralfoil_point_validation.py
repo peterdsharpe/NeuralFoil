@@ -24,7 +24,6 @@ import aerosandbox.tools.pretty_plots as p
 fig, ax = plt.subplots(figsize=(8,5))
 plt.xscale('log')
 
-# cmap = plt.get_cmap("rainbow")
 cmap = LinearSegmentedColormap.from_list(
     "custom_cmap",
     colors=[
@@ -130,16 +129,9 @@ plt.xlim()
 plt.ylim(bottom=-0.8)
 
 afax = ax.inset_axes([0.76, 0.802, 0.23, 0.23])
-afax.plot(
-    af.x(),
-    af.y(),
-    "k", alpha=0.7,
-    linewidth=1
-)
 afax.fill(
-    af.x(),
-    af.y(),
-    "k", alpha=0.2
+    af.x(), af.y(),
+    facecolor=(0, 0, 0, 0.2), linewidth=1, edgecolor=(0, 0, 0, 0.7)
 )
 afax.annotate(
     text=f"{af.name} Airfoil",
