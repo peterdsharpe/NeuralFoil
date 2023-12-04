@@ -162,5 +162,6 @@ p.show_plot(
     "Lift Coefficient $C_L$",
     legend=False,
     savefig="neuralfoil_point_validation.svg",
-    savefig_transparent=False
+    savefig_transparent=False,
+    rotate_axis_labels=False
 )
