@@ -8,7 +8,7 @@ __pycache__/
 .spyrpoject/
 *.DS_Store
 .ipynb_checkpoints
-*/.ipynb_checkpoints/*
+svg-inkscape/
 ~*.*
 *.csv
 training_data.zip
@@ -26,7 +26,6 @@ training_data.zip
 *.cb
 *.cb2
 .*.lb
-svg-inkscape/
 
 ## Intermediate documents:
 *.dvi
