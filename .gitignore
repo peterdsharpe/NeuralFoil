@@ -26,7 +26,7 @@ training_data.zip
 *.cb
 *.cb2
 .*.lb
-*/svg-inkscape/*
+svg-inkscape/
 
 ## Intermediate documents:
 *.dvi
