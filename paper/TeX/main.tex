@@ -22,45 +22,30 @@
     \section{Nomenclature}
 
     {\renewcommand\arraystretch{1.0}
-    \noindent\begin{longtable*}{@{}l @{\quad=\quad} l@{}}
+    \noindent\begin{longtable*}{@{}l @{\quad=\quad} p{5in}@{}}
+                 $\beta$ & Prandtl-Glauert compressibility correction factor, defined as $\sqrt{1 - \Mi^2}$ \\
                  BL & boundary layer \\
                  CFD & computational fluid dynamics \\
                  $C_D$ & drag coefficient \\
                  $C_L$ & lift coefficient \\
                  $C_M$ & moment coefficient \\
-                 $C_p$ & local pressure coefficient \\
+                 $\Cp$ & local pressure coefficient (in the real compressible flow) \\
+                 $\Cpo$ & local pressure coefficient in the equivalent incompressible flow \\
+                 $\Cpm$ & minimum local pressure coefficient (in the real compressible flow) \\
+                 $\Cpom$ & minimum local pressure coefficient in the equivalent incompressible flow \\
                  $c_\mathcal{D}$ & dissipation coefficient \\
                  $c_f$ & skin friction coefficient \\
+                 $\gamma$ & ratio of specific heats; 1.4 for air near standard conditions \\
                  $H$ & BL shape parameter, defined as $\delta^*/\theta$ \\
                  $H^*$ & BL kinetic energy shape parameter, defined as $\theta^*/\theta$ \\
+                 $M$ & local Mach number \\
+                 $\Mi$ & freestream Mach number \\
+                 $\Mcr$ & critical Mach number, defined as the lowest freestream Mach number where any point in the flow is supersonic \\
+                 $M_{\rm dd}$ & drag-divergent Mach number, defined as the freestream Mach number above which drag begins to rise rapidly \\
                  RANS & Reynolds-averaged Navier-Stokes \\
                  $u_\infty$ & freestream velocity magnitude \\
                  $u_{\rm max}$ & maximum velocity magnitude at any point in the flowfield \\
                  $x_{\rm tr}$ & laminar-turbulent transition location, relative to the leading edge; appropriate suffixes denote top- and bottom-surface measures \\
-%                 $D$ & drag force \\
-%                 $d$ & order of noise estimator\\
-%                 $f_{\rm sample}$ & frequency of sensor measurements \\
-%                 $f_{\rm signal}$ & highest-relevant frequency of true signal \\
-%                 $g$ & gravitational acceleration \\
-%                 $h(t)$ & altitude at time $t$ \\
-%                 $J$ & propeller advance ratio \\
-%                 $L$ & lift force \\
-%                 $m$ & instantaneous aircraft mass \\
-%                 $\eta_{\rm propulsive}$ & propulsive efficiency \\
-%                 $N$ & number of samples in dataset \\
-%                 $n(t)$ & noise component of measurement at time $t$ \\
-%                 $n$ & propeller rotational rate \\
-%                 $P_{\rm loss}$ & power lost from the aircraft at time $t$; primarily drag, but also other system losses\\
-%                 $P_{\rm in}$ & input power to propulsion system \\
-%                 $P_{\rm thrust}$ & useful power at airstream, $T \cdot U$\\
-%                 $\sigma_n$ & standard deviation of noise component \\
-%                 $s(t)$ & true signal component of measurement at time $t$ \\
-%                 $\theta_i$ & various unknown parameters of the aircraft's performance curves\\
-%                 $T$ & thrust force \\
-%                 $t$ & time \\
-%                 $U(t)$ & true airspeed at time $t$ \\
-%                 $V(t)$ & battery voltage at time $t$ \\
-%                 $x(t)$ & measured data (signal + noise) of a generic sensor at time $t$ \\
     \end{longtable*}}
 
 
@@ -136,7 +121,7 @@
                     \item Airfoil shape, parameterized as described in Section \ref{sec:airfoil-parameterization}
                     \item Angle of attack $\alpha$
                     \item Reynolds number $\Rey$
-                    \item Mach number $M$
+                    \item Mach number $\Mi$
                     \item Control surfaces (both hinge points and deflection angles)
                 \end{itemize}
             };
@@ -161,7 +146,7 @@
             \draw[-Latex] (inputs) -- (neuralfoil);
             \draw[-Latex] (neuralfoil) -- (outputs);
         \end{tikzpicture}
-        \caption{Inputs and outputs of the NeuralFoil model.}
+        \caption{User-facing inputs and outputs of the NeuralFoil model.}
         \label{fig:neuralfoil_io}
     \end{figure}
 
@@ -176,15 +161,18 @@
     NeuralFoil is implemented as an open-source lightweight Python package with minimal dependencies (only NumPy \cite{harris_array_2020} for the actual aerodynamic modeling), allowing easy installation across a variety of platforms.
 
     \subsection{Airfoil Geometry Parameterization}
+    \label{sec:airfoil-parameterization}
 
     A user can specify input airfoil in many different forms -- for example, as an array of $(x, y)$ coordinates, as a standard \texttt{*.dat} file, or as an Airfoil-class object within the AeroSandbox \cite{sharpe_aerosandbox_2021} framework.
 
 
     However, underneath this interface layer, the actual airfoil geometry given to NeuralFoil's neural networks is parameterized as an 8-parameter-per-side CST (Kulfan) parameterization, with Kulfan's added leading-edge-modification (LEM) and trailing-edge thickness parameter \cite{kulfan_universal_2008, kulfan_modification_2020}. This gives a total of 18 parameters (corresponding to linear modes) to describe a given airfoil shape, which are illustrated in Figure \ref{fig:neuralfoil_parameterization}. This parameterization was chosen as Masters \cite{masters_geometric_2017} shows that this is one of the most parameter-efficient representations of airfoil shape and flexible enough to represent essentially all practical airfoil shapes. Moreover, this formulation, is linear and relatively interpretable, and is already common in existing aerospace tools such as OpenVSP \cite{mcdonald_open_2022}.
 
-    \begin{figure}[H]
+    \begin{figure}[h]
         \centering
-        \includegraphics[width=0.8\textwidth]{../../media/kulfan_parameterization_illustration.pdf}
+        \adjustbox{trim=0cm 1.5cm 0cm 0cm}{
+            \includesvg[width=0.8\textwidth]{../../media/kulfan_parameterization_illustration.svg}
+        }
         \caption{Geometry input parameterization used by NeuralFoil.}
         \label{fig:neuralfoil_parameterization}
     \end{figure}
@@ -192,6 +180,34 @@
     Conversion of user-specified airfoils to this format for NeuralFoil to use is efficiently handled using the AeroSandbox framework, which formulates this as a least-squares fitting problem.
 
     \subsection{Model Architecture}
+
+    At a high level, the mathematical model within NeuralFoil consists the following main steps:
+
+    \begin{enumerate}
+        \item Conversion of user airfoil shape into the required parameterization (including any control surfaces, which are made part of the airfoil geometry as described in Section \ref{sec:control-surfaces})
+        \item Temporary restriction to the incompressible flow case (i.e., input Mach is set aside for now; addressed later)
+        \item Transformation of user-facing inputs into an appropriate input vector space for the neural network
+        \item A neural network that maps from this vector space to another vector space
+        \item Transformation of this neural network output space back into the user-facing outputs
+        \item Compressibility correction, which is described in Section \ref{sec:compressibility}
+    \end{enumerate}
+
+    The intermediate vector spaces described above are carefully parameterized such that relevant functions are closer-to-linear (and hence vastly easier for a neural network to learn) in these spaces than in the original user input and output spaces. Effectively, this is feature engineering using domain-specific knowledge, which is known to substantially increase model accuracy and parameter efficiency.
+
+    For example, the user-facing input space (shown in Figure \ref{fig:neuralfoil_io}) is transformed into the following space, which is effectively what is seen by the neural network:
+
+    \begin{equation}
+        x_{\rm in,net} = \begin{bmatrix}
+                             4 \sin(\alpha)                                 \\
+                             20 \sin^2(\alpha)    \\
+                             (\ln(\Rey) - 12.5) / 2 \\
+                             (\text{Kulfan surface mode strengths}) \cdot 5             \\
+                             (\text{Kulfan leading-edge weight}) \cdot 5    \\
+                             (\text{trailing-edge thickness}) \cdot 100     \\
+        \end{bmatrix}
+    \end{equation}
+
+    \noindent These quantities are physically-supported by closed form aerodynamic models, such as thin-airfoil theory before application of the small-angle limit, post-stall models by Truong \cite{truong_analytical_2020}, power-law dependency on Reynolds number stemming from Blasius and Falkner-Skan relations \cite{drela_aerodynamics_2019}, etc.
 
     NeuralFoil offers eight different deep neural network models, which offer a tradeoff between accuracy and computational cost. This tradeoff is implemented as differences in the number and size of hidden layers. Table \ref{tab:model-sizes} lists the different models, along with their number of hidden layers and neurons per hidden layer.
 
@@ -214,26 +230,169 @@
         \end{tabular}
     \end{table}
 
-    Each layer is a fully-connected linear layer. The activation function applied between each layer is a hyperbolic tangent function, which is chosen because the resulting model is $C^\infty$-continuous.
+    Each layer is a fully-connected linear layer. The activation function applied between each layer is a hyperbolic tangent function, which is chosen because the resulting model is $C^\infty$-continuous and hence amenable to later gradient-based design optimization.
+
+    \subsubsection{Handling of Control Surface Deflections}
+    \label{sec:control-surfaces}
+
+    TODO
+
+    \subsubsection{Embedding of Angle of Attack Symmetry}
+
+    TODO \cite{zhang_threedimensional_2022}
+
+    \subsubsection{Handling of Compressibility Effects}
+    \label{sec:compressibility}
+
+    At a high level, compressibility is handled by applying a correction factor to the incompressible results. This correction factor is computed using Laitone's rule \cite{laitone_new_1951}, which is a higher-order variant of the well-known Prandtl-Glauert and Karman-Tsien compressibility corrections. All of these compressibility corrections take two inputs: the pressure coefficient in the equivalent incompressible flow $\Cpo$ and the Mach number $M$; they return the pressure coefficient in the actual compressible flow $\Cp$. For comparison, all three corrections are given here, which conveniently show the higher-order terms retained in each successive relation:
+
+    \begin{align}
+        \label{eq:prandtl-glauert} \text{Prandtl-Glauert:} \qquad & \Cp = \frac{\Cpo}{\beta} \\
+        \label{eq:karman-tsien} \text{Karman-Tsien:}\qquad    & \Cp = \frac{\Cpo}{\beta + \Mi^2 / (1 + \beta) \cdot \Cpo / 2} \\
+        \label{eq:laitone} \text{Laitone \cite{laitone_new_1951}:}\qquad & \Cp = \frac{\Cpo}{\beta + \Mi^2 / \beta \cdot \Cpo / 2 \cdot \left( 1 + \frac{\gamma - 1}{2} \Mi^2 \right)}
+    \end{align}
+
+    \noindent where $\beta = \sqrt{1- \Mi^2}$, and $\gamma$ is the ratio of specific heats (1.4 for air near standard conditions). In theory, these compressibility corrections should apply only to the pressure-derived forces on the airfoil, while the shear forces are relatively unaffected. In practice, NeuralFoil does not have access to the breakdown of pressure and shear forces, so this is not possible. Instead, NeuralFoil applies the compressibility correction to the lift force and pitching moment (which are pressure-dominated) but does not apply the correction to the drag force (which is often shear-dominated). This assumption, while relatively crude, proves to match compressible airfoil drag data computed with other methods quite closely, as shown in Section \ref{sec:validation_transonic}.
+
+    Another useful definition is that of the sonic pressure coefficient $\Cpcr$, which is the pressure coefficient below which flow goes supersonic. This is derived from the isentropic relations, yielding:
+
+    \begin{equation}
+        \Cpcr = \frac{2}{\gamma \Mi^{2}} \left(
+        \left(
+        \frac{1 + \frac{\gamma - 1}{2} \Mi^{2}}{1 + \frac{\gamma - 1}{2}}
+        \right)^{\frac{\gamma}{\gamma - 1}}
+        - 1
+        \right)
+        \label{eq:sonic-pressure-coefficient}
+    \end{equation}
+
+    At the location where supersonic flow first begins at $\Mcr$, Equations \ref{eq:laitone} and \ref{eq:sonic-pressure-coefficient} can be set equal. This yields a relation that maps the minimum value of the incompressible pressure coefficient $\Cpm$ to the critical Mach number $\Mcr$. This relation does not admit a closed-form solution, but it can be solved numerically; results are shown in Figure \ref{fig:compressibility_corrections} for all three corrections.
+
+    \begin{figure}[h]
+        \centering
+        \includesvg{./figures/critical_mach_vs_cp0.svg}
+        \caption{Laitone's rule allows a mapping from the minimum incompressible pressure coefficient $\Cpom$ to the critical Mach number $\Mcr$.}
+        \label{fig:compressibility_corrections}
+    \end{figure}
+
+    This implicit mapping is less desirable because the nonlinear solve is not guaranteed to converge, depending on initial guess. Instead, this relation can be replaced with an explicit surrogate model, which was obtained using symbolic regression (via PySR \cite{cranmer_interpretable_2023}):
+
+    \begin{equation}
+        \Mcr = \left(
+        1.0083619
+        - \Cpom
+        + \left(-0.51058894 \cdot \Cpom \right)^{0.6553655}
+        \right)^{-0.5536965}
+        \label{eq:laitone_surrogate}
+    \end{equation}
+
+    Replacing the implicit mapping of Figure \ref{fig:compressibility_corrections} with the surrogate model of Equation \ref{eq:laitone_surrogate} introduces negligible error, with a corresponding RMS error in $\Mcr$ of $0.0014$ over all $\Cpom$ values. This relation allows NeuralFoil estimate the critical Mach number $\Mcr$ using only incompressible quantities with surprising accuracy, often to within $\pm 0.01$ of results computed using the full-potential code MSES \cite{mses}. Following a derivation from Mason \cite{mason_transonic_2006}, an empirical relation for the shape of the drag rise beyond $\Mcr$ is included. Drag in this regime, especially beyond the drag-divergent Mach number $M_{\rm dd}$ is relatively crude and errs on the side of over-estimating wave drag. However, given that a primary goal of the NeuralFoil tool is to drive design optimization, this empirical model serves its purpose of steering the optimizer away from thick transonic airfoils with strong shocks.
 
     \subsection{Training Data Generation}
+    \label{sec:training-data}
 
-    Training data was generated by
+    Synthetic training data was generated by running XFoil on a large number of airfoils, spanning a wide range of angles of attack and Reynolds numbers. All training data is analyzed without compressibility in XFoil (i.e., $\Mi=0$); compressible effects were handled outside of the neural network training process, as described in Section \ref{sec:compressibility}.
+
+    A stochastic procedure was used to generate the airfoil shapes used in training, and is described here:
+
+    \begin{enumerate}
+        \item First, three airfoils are randomly selected from the UIUC airfoil database \cite{uiuc_airfoil_database}. Three random weights are drawn, and the airfoils are linearly interpolated\footnote{precisely, the airfoils are converted to the Kulfan representation of Section \ref{sec:airfoil-parameterization} and these parameters are merged} based on these weights. As the UIUC database consists of roughly 1,650 airfoils, this procedure effectively ensures that each training airfoil is derived from a unique combination of three airfoils.
+        \item This blended airfoil has its thickness uniformly scaled by a relative factor randomly drawn from $\operatorname{Lognormal}(\mu, \sigma^2)$, where $\mu=0$ and $\sigma=0.15$.
+        \item Each of the Kulfan parameters described in Section \ref{sec:airfoil-parameterization} is perturbed by a random variable drawn from the product of a normal and exponential distribution; typical perturbations are on the order of $\pm 0.05$.
+        \item With 50\% probability, the airfoil is made to have a sharp trailing edge; otherwise, any nonzero trailing edge thickness is kept and perturbed by a small random amount on the order of $\pm 0.003$.
+        \item With 75\% probability, the airfoil is made to have continuous leading-edge curvature (i.e., removing any sharp leading edge).
+    \end{enumerate}
+
+    In total, 12 million airfoil shapes were generated using this procedure. Airfoils were then analyzed using XFoil across a randomly-generated range of angles of attack and Reynolds numbers, both of which used a variety of statistical distributions to focus the training data on regions of interest but also include a substantial number of outliers. For example, the angles of attack included in the training data range from $-16.3\degree$ to $+17.1\degree$, and the Reynolds numbers range as low as 10 and and as high as 8.8 billion. Airfoil shape variation is sufficiently diverse that the XFoil-assessed lift coefficients range from $-1.86$ to $+3.28$.
 
     \subsection{Training Process}
+    \label{sec:training-process}
 
-    \subsubsection{Loss Function}
+    The neural networks at the heart of this approach were trained on a GPU computing cluster operated by the Lincoln Laboratory Supercomputing Center via MIT Supercloud. The training process was implemented using the PyTorch \cite{paszke_pytorch_2019} framework. The RAdam optimizer \cite{liu_variance_2019} was used with a decaying learning rate scheduled based on plateau of the training loss.
+
+    Synthetic data generated using the procedure described in Section \ref{sec:training-data} was split into a training dataset (95\%) and a test dataset (5\%). The training dataset was used to train the neural network models, and the test dataset was used to evaluate the performance of the trained models and monitor for over-fitting. Critically, a small amount of weight decay (effectively, a $L^2$-norm penalty on all weight and bias parameters) was added to the loss function, which causes the network training to asymptote without over-fitting. Other alternatives that improve generalization, such as batch normalization and dropout, were tested; however, it was found that weight decay alone produced the models with the most accurate generalization to the test dataset.
+
+    The loss function used when training the network is an $L^2$-norm composite of individual errors that each map to one of the user-facing outputs of Figure \ref{fig:neuralfoil_io}. The errors with respect to lift and drag are weighted most heavily in this loss function, as these are often the most important quantities for overall aircraft performance prediction.
 
     % TODO asymmetric CD penalty
 
-    \subsection{Performance}
+    \subsection{Model Performance}
 
-    XFoil
+    \subsubsection{Sample Validation of NeuralFoil Accuracy vs. XFoil}
+    \label{sec:validation_basic}
+
+    Qualitatively, NeuralFoil tracks XFoil very closely across a wide range of angles of attack and Reynolds numbers. In Figure \ref{fig:clcd_polar}, we compare the performance of NeuralFoil to XFoil on aerodynamic polar prediction. In this test, both analyses are incompressible ($\Mi=0$); accuracy with compressible effects is addressed in the subsequent results (TODO). Notably, the airfoil analyzed here was developed from scratch for a real-world aircraft development program (\emph{Dawn One}, a high-altitude long-endurance aircraft \cite{sharpe_optimization_2021, sharpe_tailerons_2023}). In this sense, this airfoil is truly an out-of-distribution sample, as it is generated with an entirely separate process from the one used for training data. Because of this, NeuralFoil isn't gaining an unfair advantage by memorizing this airfoil's performance, so the results of Figure \ref{fig:clcd_polar} are representative of those achieved in practical design tasks. In this example, and in others, NeuralFoil is typically accurate to within a few percent of XFoil's predictions. NeuralFoil also has the benefit of smoothing out XFoil's ``jagged'' predictions (for example, near $C_L=1.4$ and $\Rey=90 \times 10^3$ in Figure \ref{fig:clcd_polar}) in cases where XFoil is not reliably converging, which would otherwise make optimization difficult.
+
+    \begin{figure}[h]
+        \centering
+        \includesvg[width=\textwidth]{../../benchmarking/neuralfoil_point_validation.svg}
+        \caption{Sample validation of NeuralFoil versus XFoil on an out-of-distribution airfoil.}
+        \label{fig:clcd_polar}
+    \end{figure}
+
+    Table \ref{tab:neuralfoil_performance} quantifies the performance of NeuralFoil models with respect to XFoil more precisely. At a basic level, the figures of merit are accuracy (here, treating XFoil as a ``ground truth'') and computational speed. This table details both of these considerations.
+
+    The first few columns show the error with respect to XFoil on the test dataset. As implied by the name, the test dataset is completely isolated from the training dataset, and NeuralFoil was not allowed to learn from the test dataset. Thus, the performance on the test dataset gives a good idea of NeuralFoil's accuracy on airfoil design tasks ``in the wild''.
+
+    The second set of columns gives the runtime speed of the models, both for a single analysis and for a large batch analysis. Here, the benefit of NeuralFoil's vectorization is shown: for large batch analyses, runtimes many orders of magnitude faster than XFoil are possible, with minimal loss in accuracy.
+
+    \begin{table}[h]
+        \centering
+        \caption{Performance comparison of NeuralFoil (``NF'') physics-informed machine learning models versus XFoil in terms of accuracy (treating XFoil as a ground truth) and speed. Runtime speeds are measured on an AMD Ryzen 7 5800H laptop CPU.}
+        \label{tab:neuralfoil_performance}
+
+        \begin{adjustbox}{width=\textwidth}
+
+            \begin{tblr}{
+                width=\textwidth,
+                colspec={m{3cm} | m{2cm} m{2cm} m{2cm} m{2cm} m{2cm} m{2cm} | m{2cm} m{2cm}},
+                row{1}={font=\bfseries},
+%            column{1}={font=\bfseries},
+            }
+                \toprule
+                Aerodynamics Model & \multicolumn{6}{m{12cm}}{Mean Absolute Error (MAE) of Given Metric, on the Test Dataset, with respect to XFoil} & \multicolumn{2}{m{4cm}}{Computational Cost to Run} \\ %\cmidrule{2-9}
+                {}                     & Lift Coeff. & Fractional Drag Coeff. & Moment Coeff. & Max Overspeed                    & Top Transition Location & Bottom Transition Location & Runtime & Total Runtime \\
+                {}                     & $C_L$       & $\ln(C_D)^{\dagger}$   & $C_M$         & $u_{\max}/u_{\infty}^{\ddagger}$ & $x_{tr, top}/c$   & $x_{tr, bot}/c$ & (1 run) & (100,000 runs) \\ \midrule
+%                NF Linear $C_L$ Model & 0.116       & -                      & -             & -                                & -                   & -                  & 1 ms    & 0.020 sec      \\
+                NF ``xxsmall''         & 0.065       & 0.121                  & 0.010         & 0.215                            & 0.073                   & 0.100                      & 3 ms    & 0.190 sec      \\
+                NF ``xsmall''          & 0.042       & 0.075                  & 0.007         & 0.134                            & 0.039                   & 0.055                      & 4 ms    & 0.284 sec      \\
+                NF ``small''           & 0.039       & 0.069                  & 0.006         & 0.122                            & 0.036                   & 0.050                      & 4 ms    & 0.402 sec      \\
+                NF ``medium''          & 0.027       & 0.051                  & 0.004         & 0.088                            & 0.022                   & 0.033                      & 5 ms    & 0.784 sec      \\
+                NF ``large''           & 0.024       & 0.045                  & 0.004         & 0.079                            & 0.020                   & 0.029                      & 6 ms    & 1.754 sec      \\
+                NF ``xlarge''          & 0.023       & 0.043                  & 0.004         & 0.076                            & 0.019                   & 0.028                      & 10 ms   & 3.330 sec      \\
+                NF ``xxlarge''         & 0.021       & 0.040                  & 0.003         & 0.071                            & 0.018                   & 0.025                      & 13 ms   & 4.297 sec      \\
+                NF ``xxxlarge''        & 0.020       & 0.039                  & 0.003         & 0.070                            & 0.016                   & 0.024                      & 38 ms   & 8.980 sec      \\
+                XFoil                  & 0           & 0                      & 0             & 0                                & 0                       & 0                          & 73 ms   & 42 min         \\ \bottomrule
+            \end{tblr}
+        \end{adjustbox}
+
+        \begin{adjustbox}{width=\textwidth}
+            \vspace{1pt}
+            \begin{tblr}{
+                width=\textwidth,
+                colspec={l},
+            }
+                $^{\dagger}$ The deviation of $\ln(C_D)$ can be thought of as ``the typical relative error in $C_D$''. \\
+                $^{\ddagger}$ This ``maximum overspeed'' gives $\Cpm$, which can be used to estimate the critical Mach number $M_\text{crit}$.\\
+            \end{tblr}
+        \end{adjustbox}
+
+    \end{table}
+
+    \subsection{Sample Validation on Transonic Case}
+    \label{sec:validation_transonic}
+
+    TODO
+
+
+    \section{Airfoil Design Optimization with NeuralFoil}
+
+    TODO
 
 
     \section{Reproducibility Statement}
 
-    All code and data used in this paper is publicly available at \url{https://github.com/peterdsharpe/neuralfoil}. NeuralFoil itself is best accessed through the AeroSandbox \cite{sharpe_aerosandbox_2021} package, which provides some of the advanced features (e.g., $360\degree$ angle of attack, transonic effects, and control surface deflections) that are not yet available in the standalone NeuralFoil package.
+    All source code used in this paper is publicly available at \url{https://github.com/peterdsharpe/neuralfoil}. NeuralFoil itself is best accessed through the AeroSandbox package \cite{sharpe_aerosandbox_2021}, which provides some of the advanced features (e.g., $360\degree$ angle of attack, transonic effects, and control surface deflections) described in this work that are not yet available in the standalone NeuralFoil package.
 
 
     \section{Conclusion}
