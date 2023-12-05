@@ -17,7 +17,7 @@ kulfan_parameters = get_kulfan_parameters(
 import matplotlib.pyplot as plt
 import aerosandbox.tools.pretty_plots as p
 
-fig, ax = plt.subplots(2, 1, figsize=(5.3,5))
+fig, ax = plt.subplots(2, 1, figsize=(5.5,5))
 
 # cmap = plt.get_cmap('turbo')
 
@@ -84,18 +84,21 @@ ax[1].plot(
 for a in ax:
     plt.sca(a)
     plt.xlim(-0.05, 1.05)
-    plt.ylim(-0.18, 0.26)
+    # plt.ylim(-0.18, 0.26)
     p.equal()
 
 ax[0].set_title("Top- and Bottom-Surface Modes (16)")
 ax[1].set_title("Leading-Edge-Modification (LEM) and Trailing Edge (TE) Modes")
 
-p.show_plot(
-    "NeuralFoil Airfoil Shape Parameterization\n(18 parameters)",
-    show=False
-)
-plt.savefig("kulfan_parameterization_illustration.png", dpi=600)
-plt.savefig("kulfan_parameterization_illustration.pdf")
-plt.savefig("kulfan_parameterization_illustration.svg")
-plt.show()
+# plt.axis('off')
+ax[0].axis('off')
+ax[1].axis('off')
 
+p.show_plot(
+    "NeuralFoil Airfoil Shape Parameterization (18 parameters)",
+    savefig=[
+        "kulfan_parameterization_illustration.png",
+        "kulfan_parameterization_illustration.pdf",
+        "kulfan_parameterization_illustration.svg",
+    ],
+)
