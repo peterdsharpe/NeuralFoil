@@ -98,7 +98,7 @@ p.show_plot(
     "NeuralFoil Airfoil Shape Parameterization (18 parameters)",
     savefig=[
         "kulfan_parameterization_illustration.png",
-        "kulfan_parameterization_illustration.pdf",
+        # "kulfan_parameterization_illustration.pdf",
         "kulfan_parameterization_illustration.svg",
     ],
 )
