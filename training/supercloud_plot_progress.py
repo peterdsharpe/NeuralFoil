@@ -98,9 +98,9 @@ for key in ["Train Loss", "Test Loss"]:
     )
 
     plt.plot(
-        np.exp(ndimage.gaussian_filter1d(np.log(data[key]), sigma=6)),
-        color=lines[0].get_color(), alpha=0.6,
-        label=key
+        np.exp(ndimage.gaussian_filter1d(np.log(data[key]), sigma=2)),
+        color=lines[0].get_color(), alpha=0.7,
+        label=key, zorder=4
     )
 
 plt.yscale('log')
