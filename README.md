@@ -22,6 +22,8 @@ NeuralFoil aims to be lightweight, with [minimal dependencies](#dependencies-que
 pip install neuralfoil
 ```
 
+[For example usage of NeuralFoil, see the AeroSandbox tutorials](https://github.com/peterdsharpe/AeroSandbox/tree/master/tutorial/06%20-%20Aerodynamics/02%20-%20AeroSandbox%202D%20Aerodynamics%20Tools).
+
 ## Overview
 
 NeuralFoil comes with 8 different neural network models, with increasing levels of complexity:
