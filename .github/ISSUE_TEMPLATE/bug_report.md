@@ -1,3 +1,12 @@
+---
+name: Bug Report
+about: Report an issue with NeuralFoil
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 ## Bug Description / Observed Behavior
 
 ## Steps to Reproduce
