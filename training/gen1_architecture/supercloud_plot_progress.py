@@ -8,46 +8,8 @@ log_files = {
     for f in Path(__file__).parent.glob("*.log-*")
 }
 
-# get dictioanry key where value is highest
+# get dictionary key where value is highest
 # log_file = max(log_files, key=log_files.get)
-# log_file = "log.log-23266380"
-# log_file = "log.log-23266454"
-# log_file = "log.log-23266738"
-# log_file = "log.log-23266740"
-
-# log_file = "log.log-23266893"
-# log_file = "log.log-23266894"
-# log_file = "log.log-23266896"
-# log_file = "log.log-23266897"
-
-# log_file = "log.log-23266906"
-# log_file = "log.log-23266914"
-# log_file = "log.log-23266999"
-
-# log_file = "log.log-23267000"
-# log_file = "log.log-23267001"
-
-# log_file = "log.log-23267375"
-# log_file = "log.log-23267376"
-
-# log_file = "log.log-23267378"
-# log_file = "log.log-23267379"
-
-# log_file = "log.log-23267380"
-# log_file = "log.log-23267381"
-
-# log_file = "log.log-23267841"
-
-# log_file = "log.log-23267842"
-
-# log_file = "log.log-23272184"
-# log_file = "log.log-23272186"
-# log_file = "log.log-23272188"
-# log_file = "log.log-23272190"
-# log_file = "log.log-23272191"
-
-# log_file = "log.log-23272198"
-# log_file = "log.log-23272199"
 
 log_file = "log.log-23296397"
 log_file = "log.log-23296400"

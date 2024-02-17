@@ -16,7 +16,7 @@ NeuralFoil is available here as a pure Python+NumPy standalone, but it is also [
 
 NeuralFoil is [~10x faster than XFoil for a single analysis, and ~1000x faster for multipoint analysis](#table), all with [minimal loss in accuracy compared to XFoil](#performance). Due to the wide variety of training data and the embedding of several physics-based invariants, [this accuracy is seen even on out-of-sample airfoils](#performance) (i.e., airfoils it wasn't trained on). It also has [many nice features](#xfoil-benefit-question) (e.g., smoothness, vectorization, all in Python+NumPy) that make it much easier to use.
 
-NeuralFoil aims to be lightweight, with [minimal dependencies](#dependencies-question) and a [tight, efficient, and easily-understood code-base](./neuralfoil) (less than 500 lines of user-facing code).
+NeuralFoil aims to be lightweight, with [minimal dependencies](#dependencies-question) and a [tight, efficient, and easily-understood code-base](./neuralfoil/gen1_architecture) (less than 500 lines of user-facing code).
 
 ```
 pip install neuralfoil
