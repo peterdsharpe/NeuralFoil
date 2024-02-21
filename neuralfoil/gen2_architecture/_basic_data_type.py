@@ -121,7 +121,7 @@ class Data():
         for i, alpha in enumerate(alphas):
             alpha_deviations = np.abs(xf_outputs["alpha"] - alpha)
 
-            if (
+            if ( # If the alpha is not in the output
                     (len(alpha_deviations) == 0) or
                     (np.min(alpha_deviations) > 0.001)
             ):
@@ -158,7 +158,7 @@ class Data():
                                     np.argwhere(dx > 0)[0, 0]:,
                                     :
                                     ]
-                except IndexError:
+                except IndexError: # If the boundary layer data is too short
                     training_datas.append(
                         cls(
                             airfoil=airfoil.to_kulfan_airfoil(),
@@ -173,7 +173,7 @@ class Data():
                     )
                     continue
 
-                if len(upper_bl_data) <= 4 or len(lower_bl_data) <= 4:
+                if len(upper_bl_data) <= 4 or len(lower_bl_data) <= 4: # If the boundary layer data is too short
                     training_datas.append(
                         cls(
                             airfoil=airfoil.to_kulfan_airfoil(),
@@ -355,7 +355,7 @@ class Data():
         )
 
     @classmethod
-    def get_vector_column_names(cls):
+    def get_vector_input_column_names(cls):
         return [
             *[f"kulfan_upper_{i}" for i in range(8)],
             *[f"kulfan_lower_{i}" for i in range(8)],
@@ -367,6 +367,11 @@ class Data():
             "n_crit",
             "xtr_upper",
             "xtr_lower",
+        ]
+
+    @classmethod
+    def get_vector_output_column_names(cls):
+        return [
             "analysis_confidence",
             "CL",
             "CD",
@@ -382,6 +387,10 @@ class Data():
             *[f"lower_bl_Cf_{i}" for i in range(cls.N)],
             *[f"lower_bl_Cp_{i}" for i in range(cls.N)],
         ]
+
+    @classmethod
+    def get_vector_column_names(cls):
+        return cls.get_vector_input_column_names() + cls.get_vector_output_column_names()
 
     def __eq__(self, other: "Data") -> bool:
         v1 = self.to_vector()

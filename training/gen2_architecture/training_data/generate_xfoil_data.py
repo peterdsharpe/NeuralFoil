@@ -5,9 +5,14 @@ import aerosandbox.numpy as np
 from typing import List
 import time
 import os
-from data_types import Data
+from neuralfoil.gen2_architecture._basic_data_type import Data
 
-ray.init()
+print("Initializing Ray...")
+ray.init(
+    # address="local",
+    # _temp_dir="/home/gridsan/pds/tmp/",
+    # num_cpus=2,
+)
 
 datafile = "data_xfoil.csv"
 n_procs = int(ray.cluster_resources()["CPU"])
@@ -98,13 +103,14 @@ def worker(csv_actor):
             )
         )
 
-        af = af.scale(1, np.random.lognormal(0, 0.15))
+        af = af.scale(1, np.random.lognormal(0, 0.25))
 
-        deviance = np.random.exponential(0.01)
+        deviance = np.random.exponential(0.05)
         af.lower_weights += np.random.randn(8) * deviance
         af.upper_weights += np.random.randn(8) * deviance
         af.leading_edge_weight += np.random.randn() * deviance
-        af.TE_thickness *= np.random.lognormal(0, 0.15)
+        af.TE_thickness *= np.random.lognormal(0, 0.25)
+        af.TE_thickness += np.random.exponential(0.003)
 
         # if not af.as_shapely_polygon().is_valid:
         #     continue
@@ -132,7 +138,7 @@ def worker(csv_actor):
             xtr_lower=xtr_lower,
             timeout=5,
             max_iter=100,
-            # xfoil_command="~/NeuralFoil/training_data/xfoil_supercloud"
+            # xfoil_command="~/NeuralFoil/training/gen2_architecture/training_data/xfoil_supercloud"
         )
 
         for data in datas:

@@ -4,7 +4,7 @@ import aerosandbox.numpy as np
 from typing import List
 import time
 import os
-from data_types import Data
+from neuralfoil.gen2_architecture._basic_data_type import Data
 import matplotlib.pyplot as plt
 import aerosandbox.tools.pretty_plots as p
 import pandas as pd
