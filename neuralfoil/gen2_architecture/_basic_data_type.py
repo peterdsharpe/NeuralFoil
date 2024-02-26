@@ -6,24 +6,47 @@ from scipy import interpolate
 
 
 def compute_optimal_x_points(
-        n_points: int = 24,
+        n_points,
 ):
     # theta = np.arccos(1 - 2 * x)
     # delta_Cp_thin_airfoil_theory = 4 / np.tan(theta)
     # desired_spacing = 1 / delta_Cp_thin_airfoil_theory
     # spacing_function = integral(desired_spacing, x) # rescaled to (0, 1)
 
-    thin_airfoil_theory_spacing_function = lambda x: (
-                                                             -np.sqrt((1 - x) * x)
-                                                             - 0.5 * np.arcsin(1 - 2 * x)
-                                                     ) / (np.pi / 2) + 0.5
+    # thin_airfoil_theory_spacing_function = lambda x: (
+    #                                                          -np.sqrt((1 - x) * x)
+    #                                                          - 0.5 * np.arcsin(1 - 2 * x)
+    #                                                  ) / (np.pi / 2) + 0.5
+    #
+    # uniform_spacing_function = lambda x: x
+    #
+    # return (
+    #         thin_airfoil_theory_spacing_function(np.linspace(0, 1, n_points)) +
+    #         uniform_spacing_function(np.sinspace(0, 1, n_points))
+    # ) / 2
+    s = np.linspace(0, 1, n_points + 1)
+    return (s[1:] + s[:-1]) / 2
 
-    uniform_spacing_function = lambda x: x
 
-    return (
-            thin_airfoil_theory_spacing_function(np.linspace(0, 1, n_points)) +
-            uniform_spacing_function(np.sinspace(0, 1, n_points))
-    ) / 2
+# def compute_optimal_x_points(
+#         n_points: int = 24,
+# ):
+#     # theta = np.arccos(1 - 2 * x)
+#     # delta_Cp_thin_airfoil_theory = 4 / np.tan(theta)
+#     # desired_spacing = 1 / delta_Cp_thin_airfoil_theory
+#     # spacing_function = integral(desired_spacing, x) # rescaled to (0, 1)
+#
+#     thin_airfoil_theory_spacing_function = lambda x: (
+#                                                              -np.sqrt((1 - x) * x)
+#                                                              - 0.5 * np.arcsin(1 - 2 * x)
+#                                                      ) / (np.pi / 2) + 0.5
+#
+#     uniform_spacing_function = lambda x: x
+#
+#     return (
+#             thin_airfoil_theory_spacing_function(np.linspace(0, 1, n_points)) +
+#             uniform_spacing_function(np.sinspace(0, 1, n_points))
+#     ) / 2
 
 
 @dataclass
@@ -36,7 +59,7 @@ class Data():
     xtr_upper: float
     xtr_lower: float
 
-    N = 24
+    N = 32
     bl_x_points = compute_optimal_x_points(n_points=N)
 
     analysis_confidence: float  # Nominally 0 (no confidence) to 1 (high confidence)
@@ -51,20 +74,18 @@ class Data():
     )
     upper_bl_outputs: dict[str, Any] = field(
         default_factory=lambda: {
-            "theta": np.nan * np.ones_like(Data.bl_x_points),
-            "H"    : np.nan * np.ones_like(Data.bl_x_points),
-            "Cf"   : np.nan * np.ones_like(Data.bl_x_points),
-            "Cp"   : np.nan * np.ones_like(Data.bl_x_points),
+            "theta"  : np.nan * np.ones_like(Data.bl_x_points),
+            "H"      : np.nan * np.ones_like(Data.bl_x_points),
+            "ue/vinf": np.nan * np.ones_like(Data.bl_x_points),
         }
-    )  # theta, H, Cf, Cp
+    )  # theta, H, ue/vinf
     lower_bl_outputs: dict[str, Any] = field(
         default_factory=lambda: {
-            "theta": np.nan * np.ones_like(Data.bl_x_points),
-            "H"    : np.nan * np.ones_like(Data.bl_x_points),
-            "Cf"   : np.nan * np.ones_like(Data.bl_x_points),
-            "Cp"   : np.nan * np.ones_like(Data.bl_x_points),
+            "theta"  : np.nan * np.ones_like(Data.bl_x_points),
+            "H"      : np.nan * np.ones_like(Data.bl_x_points),
+            "ue/vinf": np.nan * np.ones_like(Data.bl_x_points),
         }
-    )  # theta, H, Cf, Cp
+    )  # theta, H, ue/vinf
 
     @property
     def inputs(self):
@@ -100,6 +121,8 @@ class Data():
                    max_iter=100,
                    xfoil_command: str = 'xfoil'
                    ) -> List["Data"]:
+        airfoil = airfoil.normalize().to_kulfan_airfoil()
+
         alphas = np.atleast_1d(alphas)
 
         xf = asb.XFoil(
@@ -112,153 +135,109 @@ class Data():
             xfoil_repanel=True,
             timeout=timeout,
             max_iter=max_iter,
-            xfoil_command=xfoil_command
+            xfoil_command=xfoil_command,
+            include_bl_data=True,
         )
-        xf_outputs = xf.alpha(alphas, include_bl_data=True)
+        xf_outputs = xf.alpha(alphas)
 
         training_datas = []
 
+        def append_empty_data():
+            training_datas.append(
+                cls(
+                    airfoil=airfoil.to_kulfan_airfoil(),
+                    alpha=alpha,
+                    Re=Re,
+                    mach=mach,
+                    n_crit=n_crit,
+                    xtr_upper=xtr_upper,
+                    xtr_lower=xtr_lower,
+                    analysis_confidence=0,
+                )
+            )
+
         for i, alpha in enumerate(alphas):
+            ### Figure out which output corresponds to this alpha
             alpha_deviations = np.abs(xf_outputs["alpha"] - alpha)
 
-            if ( # If the alpha is not in the output
+            if (  # If the alpha is not in the output
                     (len(alpha_deviations) == 0) or
                     (np.min(alpha_deviations) > 0.001)
             ):
-                training_datas.append(
-                    cls(
-                        airfoil=airfoil.to_kulfan_airfoil(),
-                        alpha=alpha,
-                        Re=Re,
-                        mach=mach,
-                        n_crit=n_crit,
-                        xtr_upper=xtr_upper,
-                        xtr_lower=xtr_lower,
-                        analysis_confidence=0,
-                    )
+                append_empty_data()
+                continue
+
+            index = np.argmin(alpha_deviations)
+            xf_output = {
+                key: value[index] for key, value in xf_outputs.items()
+            }
+            bl_data = xf_output["bl_data"]
+
+            # ### Trim off the wake data (rows where "Cp" first becomes NaN)
+            # wake_node_indices = np.flatnonzero(bl_data["x"] > )
+            # bl_data = bl_data.iloc[
+            #           :np.flatnonzero(bl_data["x"] <= airfoil.x().max())[-1] + 1,
+            #           :
+            #           ]
+
+            ### Split the boundary layer data into upper and lower sections
+            # LE_index = bl_data["x"].argmin()
+            try:
+                dx = np.diff(bl_data["x"].values)
+                upper_bl_data = bl_data.iloc[
+                                :np.flatnonzero(dx < 0)[-1] + 2
+                                :
+                                ].iloc[::-1, :]
+                lower_bl_data = bl_data.iloc[
+                                np.flatnonzero(dx > 0)[0]:,
+                                :
+                                ]
+            except IndexError:  # If the boundary layer data is too short
+                append_empty_data()
+                continue
+
+            if len(upper_bl_data) <= 4 or len(lower_bl_data) <= 4:  # If the boundary layer data is too short
+                append_empty_data()
+                continue
+
+            def interp(x, xp, fp):
+                return interpolate.PchipInterpolator(
+                    xp,
+                    fp,
+                    extrapolate=True,
+                )(x)
+
+            interp = lambda x, y: interpolate.PchipInterpolator(x, y, extrapolate=True)(cls.bl_x_points)
+
+            training_datas.append(
+                cls(
+                    airfoil=airfoil.to_kulfan_airfoil(),
+                    alpha=alpha,
+                    Re=Re,
+                    mach=mach,
+                    n_crit=n_crit,
+                    xtr_upper=xtr_upper,
+                    xtr_lower=xtr_lower,
+                    analysis_confidence=1,
+                    af_outputs={
+                        "CL"     : xf_output["CL"],
+                        "CD"     : xf_output["CD"],
+                        "CM"     : xf_output["CM"],
+                        "Top_Xtr": xf_output["Top_Xtr"],
+                        "Bot_Xtr": xf_output["Bot_Xtr"],
+                    },
+                    upper_bl_outputs={
+                        "theta"  : interp(upper_bl_data["x"], upper_bl_data["theta"]),
+                        "H"      : interp(upper_bl_data["x"], upper_bl_data["H"]),
+                        "ue/vinf": interp(upper_bl_data["x"], upper_bl_data["ue/vinf"]),
+                    },
+                    lower_bl_outputs={
+                        "theta"  : interp(lower_bl_data["x"], lower_bl_data["theta"]),
+                        "H"      : interp(lower_bl_data["x"], lower_bl_data["H"]),
+                        "ue/vinf": interp(lower_bl_data["x"], lower_bl_data["ue/vinf"]),
+                    },
                 )
-            else:
-                index = np.argmin(alpha_deviations)
-                xf_output = {
-                    key: value[index] for key, value in xf_outputs.items()
-                }
-                bl_data = xf_output["bl_data"]
-                # Trim off the wake data (rows where "Cp" first becomes NaN)
-                bl_data = bl_data.iloc[:np.argmax(np.isnan(bl_data["Cp"])), :]
-
-                # Split the boundary layer data into upper and lower
-                # LE_index = bl_data["x"].argmin()
-                try:
-                    dx = np.diff(bl_data["x"].values)
-                    upper_bl_data = bl_data.iloc[
-                                    :np.argwhere(dx < 0)[-1, 0] + 2
-                                    :
-                                    ].iloc[::-1, :]
-                    lower_bl_data = bl_data.iloc[
-                                    np.argwhere(dx > 0)[0, 0]:,
-                                    :
-                                    ]
-                except IndexError: # If the boundary layer data is too short
-                    training_datas.append(
-                        cls(
-                            airfoil=airfoil.to_kulfan_airfoil(),
-                            alpha=alpha,
-                            Re=Re,
-                            mach=mach,
-                            n_crit=n_crit,
-                            xtr_upper=xtr_upper,
-                            xtr_lower=xtr_lower,
-                            analysis_confidence=0,
-                        )
-                    )
-                    continue
-
-                if len(upper_bl_data) <= 4 or len(lower_bl_data) <= 4: # If the boundary layer data is too short
-                    training_datas.append(
-                        cls(
-                            airfoil=airfoil.to_kulfan_airfoil(),
-                            alpha=alpha,
-                            Re=Re,
-                            mach=mach,
-                            n_crit=n_crit,
-                            xtr_upper=xtr_upper,
-                            xtr_lower=xtr_lower,
-                            analysis_confidence=0,
-                        )
-                    )
-                    continue
-
-                def interp(x, xp, fp):
-                    return interpolate.interp1d(
-                        xp,
-                        fp,
-                        kind="cubic",
-                        fill_value="extrapolate",
-                    )(x)
-
-                training_datas.append(
-                    cls(
-                        airfoil=airfoil.to_kulfan_airfoil(),
-                        alpha=alpha,
-                        Re=Re,
-                        mach=mach,
-                        n_crit=n_crit,
-                        xtr_upper=xtr_upper,
-                        xtr_lower=xtr_lower,
-                        analysis_confidence=1,
-                        af_outputs={
-                            "CL"     : xf_output["CL"],
-                            "CD"     : xf_output["CD"],
-                            "CM"     : xf_output["CM"],
-                            "Top_Xtr": xf_output["Top_Xtr"],
-                            "Bot_Xtr": xf_output["Bot_Xtr"],
-                        },
-                        upper_bl_outputs={
-                            "theta": interp(
-                                cls.bl_x_points,
-                                upper_bl_data["x"],
-                                upper_bl_data["Theta"],
-                            ),
-                            "H"    : interp(
-                                cls.bl_x_points,
-                                upper_bl_data["x"],
-                                upper_bl_data["H"],
-                            ),
-                            "Cf"   : interp(
-                                cls.bl_x_points,
-                                upper_bl_data["x"],
-                                upper_bl_data["Cf"],
-                            ),
-                            "Cp"   : interp(
-                                cls.bl_x_points,
-                                upper_bl_data["x"],
-                                upper_bl_data["Cp"],
-                            ),
-                        },
-                        lower_bl_outputs={
-                            "theta": interp(
-                                cls.bl_x_points,
-                                lower_bl_data["x"],
-                                lower_bl_data["Theta"],
-                            ),
-                            "H"    : interp(
-                                cls.bl_x_points,
-                                lower_bl_data["x"],
-                                lower_bl_data["H"],
-                            ),
-                            "Cf"   : interp(
-                                cls.bl_x_points,
-                                lower_bl_data["x"],
-                                lower_bl_data["Cf"],
-                            ),
-                            "Cp"   : interp(
-                                cls.bl_x_points,
-                                lower_bl_data["x"],
-                                lower_bl_data["Cp"],
-                            ),
-                        },
-                    )
-                )
+            )
 
         return training_datas
 
@@ -282,12 +261,10 @@ class Data():
             self.af_outputs["Bot_Xtr"],
             self.upper_bl_outputs["theta"],
             self.upper_bl_outputs["H"],
-            self.upper_bl_outputs["Cf"],
-            self.upper_bl_outputs["Cp"],
+            self.upper_bl_outputs["ue/vinf"],
             self.lower_bl_outputs["theta"],
             self.lower_bl_outputs["H"],
-            self.lower_bl_outputs["Cf"],
-            self.lower_bl_outputs["Cp"],
+            self.lower_bl_outputs["ue/vinf"],
         ]
 
         return np.concatenate([
@@ -326,16 +303,14 @@ class Data():
             "Bot_Xtr": pop(1),
         }
         upper_bl_outputs = {
-            "theta": pop(cls.N),
-            "H"    : pop(cls.N),
-            "Cf"   : pop(cls.N),
-            "Cp"   : pop(cls.N),
+            "theta"  : pop(cls.N),
+            "H"      : pop(cls.N),
+            "ue/vinf": pop(cls.N),
         }
         lower_bl_outputs = {
-            "theta": pop(cls.N),
-            "H"    : pop(cls.N),
-            "Cf"   : pop(cls.N),
-            "Cp"   : pop(cls.N),
+            "theta"  : pop(cls.N),
+            "H"      : pop(cls.N),
+            "ue/vinf": pop(cls.N),
         }
         if not i == len(vector):
             raise ValueError(f"Vector length mismatch: Got {len(vector)}, expected {i}.")
@@ -380,12 +355,10 @@ class Data():
             "Bot_Xtr",
             *[f"upper_bl_theta_{i}" for i in range(cls.N)],
             *[f"upper_bl_H_{i}" for i in range(cls.N)],
-            *[f"upper_bl_Cf_{i}" for i in range(cls.N)],
-            *[f"upper_bl_Cp_{i}" for i in range(cls.N)],
+            *[f"upper_bl_ue/vinf_{i}" for i in range(cls.N)],
             *[f"lower_bl_theta_{i}" for i in range(cls.N)],
             *[f"lower_bl_H_{i}" for i in range(cls.N)],
-            *[f"lower_bl_Cf_{i}" for i in range(cls.N)],
-            *[f"lower_bl_Cp_{i}" for i in range(cls.N)],
+            *[f"lower_bl_ue/vinf_{i}" for i in range(cls.N)],
         ]
 
     @classmethod

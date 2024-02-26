@@ -25,6 +25,19 @@ airfoil_database = [
     for filename in airfoil_database_path.glob("*.dat")
 ]
 
+### Compute the covariance matrix of airfoil shape parameters, for better data generation later
+kulfans_database = np.stack([
+    np.concatenate([
+        airfoil.upper_weights,
+        airfoil.lower_weights,
+        np.atleast_1d(airfoil.leading_edge_weight),
+        np.atleast_1d(airfoil.TE_thickness)
+    ])
+    for airfoil in airfoil_database
+], axis=0)
+mean_database = np.mean(kulfans_database, axis=0)
+cov_database = np.cov(kulfans_database, rowvar=False)
+
 
 @ray.remote
 class CSVActor:
@@ -75,7 +88,7 @@ def worker(csv_actor):
             slices,
             [1]
         ])
-        weights = np.diff(slices)
+        weights = np.diff(slices) # result is N random numbers in [0, 1] that sum to 1
 
         parent_airfoils = np.random.choice(airfoil_database, size=n_airfoils_to_combine, replace=True)
 
@@ -105,25 +118,29 @@ def worker(csv_actor):
 
         af = af.scale(1, np.random.lognormal(0, 0.25))
 
-        deviance = np.random.exponential(0.05)
-        af.lower_weights += np.random.randn(8) * deviance
-        af.upper_weights += np.random.randn(8) * deviance
-        af.leading_edge_weight += np.random.randn() * deviance
-        af.TE_thickness *= np.random.lognormal(0, 0.25)
-        af.TE_thickness += np.random.exponential(0.003)
+        deviations = np.random.multivariate_normal(
+            np.zeros_like(mean_database), # Not including, since we already have a linear combo of 3 airfoils
+            cov_database,
+        )
+
+        # deviance = np.random.exponential(0.05)
+        af.upper_weights += deviations[:8]
+        af.lower_weights += deviations[8:16]
+        af.leading_edge_weight += deviations[16]
+        af.TE_thickness += deviations[17]
 
         # if not af.as_shapely_polygon().is_valid:
         #     continue
 
-        alphas = np.linspace(-10, 10, 5) + np.random.uniform(-2.5, 2.5) + 2.5 * np.random.randn()
+        alphas = np.linspace(-15, 15, 7) + np.random.uniform(-2.5, 2.5) + 2.5 * np.random.randn()
         Re = float(10 ** (5.5 + 1.5 * np.random.randn()))
 
         n_crit = np.random.uniform(0, 18)
-        if np.random.rand() < 0.5:
+        if np.random.rand() < 0.8:
             xtr_upper = 1
         else:
             xtr_upper = np.random.uniform(0, 1)
-        if np.random.rand() < 0.5:
+        if np.random.rand() < 0.8:
             xtr_lower = 1
         else:
             xtr_lower = np.random.uniform(0, 1)
