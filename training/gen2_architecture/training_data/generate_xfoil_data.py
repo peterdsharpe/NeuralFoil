@@ -153,7 +153,7 @@ def worker(csv_actor):
             n_crit=n_crit,
             xtr_upper=xtr_upper,
             xtr_lower=xtr_lower,
-            timeout=5,
+            timeout=15,
             max_iter=100,
             # xfoil_command="~/NeuralFoil/training/gen2_architecture/training_data/xfoil_supercloud"
         )
