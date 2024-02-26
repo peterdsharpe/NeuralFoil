@@ -14,7 +14,7 @@ ray.init(
     # num_cpus=2,
 )
 
-datafile = "data_xfoil.csv"
+datafile = "data_xfoil_comp1.csv"
 n_procs = int(ray.cluster_resources()["CPU"])
 print(f"Running on {n_procs} processes.")
 
@@ -153,8 +153,8 @@ def worker(csv_actor):
             n_crit=n_crit,
             xtr_upper=xtr_upper,
             xtr_lower=xtr_lower,
-            timeout=15,
-            max_iter=100,
+            timeout=30,
+            max_iter=200,
             # xfoil_command="~/NeuralFoil/training/gen2_architecture/training_data/xfoil_supercloud"
         )
 
