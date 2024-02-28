@@ -192,52 +192,52 @@ class Data():
                                 np.flatnonzero(dx > 0)[0]:,
                                 :
                                 ]
-            except IndexError:  # If the boundary layer data is too short
+            except IndexError as e:  # If the boundary layer data is too short
+                print(e)
                 append_empty_data()
                 continue
 
             if len(upper_bl_data) <= 4 or len(lower_bl_data) <= 4:  # If the boundary layer data is too short
+                print("BL data too short")
                 append_empty_data()
                 continue
 
-            def interp(x, xp, fp):
-                return interpolate.PchipInterpolator(
-                    xp,
-                    fp,
-                    extrapolate=True,
-                )(x)
-
             interp = lambda x, y: interpolate.PchipInterpolator(x, y, extrapolate=True)(cls.bl_x_points)
 
-            training_datas.append(
-                cls(
-                    airfoil=airfoil.to_kulfan_airfoil(),
-                    alpha=alpha,
-                    Re=Re,
-                    mach=mach,
-                    n_crit=n_crit,
-                    xtr_upper=xtr_upper,
-                    xtr_lower=xtr_lower,
-                    analysis_confidence=1,
-                    af_outputs={
-                        "CL"     : xf_output["CL"],
-                        "CD"     : xf_output["CD"],
-                        "CM"     : xf_output["CM"],
-                        "Top_Xtr": xf_output["Top_Xtr"],
-                        "Bot_Xtr": xf_output["Bot_Xtr"],
-                    },
-                    upper_bl_outputs={
-                        "theta"  : interp(upper_bl_data["x"], upper_bl_data["theta"]),
-                        "H"      : interp(upper_bl_data["x"], upper_bl_data["H"]),
-                        "ue/vinf": interp(upper_bl_data["x"], upper_bl_data["ue/vinf"]),
-                    },
-                    lower_bl_outputs={
-                        "theta"  : interp(lower_bl_data["x"], lower_bl_data["theta"]),
-                        "H"      : interp(lower_bl_data["x"], lower_bl_data["H"]),
-                        "ue/vinf": interp(lower_bl_data["x"], lower_bl_data["ue/vinf"]),
-                    },
+            try:
+                training_datas.append(
+                    cls(
+                        airfoil=airfoil.to_kulfan_airfoil(),
+                        alpha=alpha,
+                        Re=Re,
+                        mach=mach,
+                        n_crit=n_crit,
+                        xtr_upper=xtr_upper,
+                        xtr_lower=xtr_lower,
+                        analysis_confidence=1,
+                        af_outputs={
+                            "CL"     : xf_output["CL"],
+                            "CD"     : xf_output["CD"],
+                            "CM"     : xf_output["CM"],
+                            "Top_Xtr": xf_output["Top_Xtr"],
+                            "Bot_Xtr": xf_output["Bot_Xtr"],
+                        },
+                        upper_bl_outputs={
+                            "theta"  : interp(upper_bl_data["x"], upper_bl_data["theta"]),
+                            "H"      : interp(upper_bl_data["x"], upper_bl_data["H"]),
+                            "ue/vinf": interp(upper_bl_data["x"], upper_bl_data["ue/vinf"]),
+                        },
+                        lower_bl_outputs={
+                            "theta"  : interp(lower_bl_data["x"], lower_bl_data["theta"]),
+                            "H"      : interp(lower_bl_data["x"], lower_bl_data["H"]),
+                            "ue/vinf": interp(lower_bl_data["x"], lower_bl_data["ue/vinf"]),
+                        },
+                    )
                 )
-            )
+            except ValueError as e:
+                print(e)
+                append_empty_data()
+                continue
 
         return training_datas
 
