@@ -1,3 +1,4 @@
+import warnings
 import aerosandbox as asb
 import aerosandbox.numpy as np
 from dataclasses import dataclass, field
@@ -138,7 +139,9 @@ class Data():
             xfoil_command=xfoil_command,
             include_bl_data=True,
         )
-        xf_outputs = xf.alpha(alphas)
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=UserWarning)
+            xf_outputs = xf.alpha(alphas)
 
         training_datas = []
 
