@@ -34,7 +34,7 @@ cols_to_nullify.remove("analysis_confidence")
 
 c = pl.col("CD") <= 0
 print(
-    f"Eliminating {int(df.select(c).sum().to_numpy()[0, 0])} rows with CD <= 0..."
+    f"Nullifying {int(df.select(c).sum().to_numpy()[0, 0])} rows with CD <= 0..."
 )
 df = df.with_columns(
     [
@@ -53,7 +53,7 @@ c = pl.any_horizontal([
                           for i in range(Data.N)
                       ])
 print(
-    f"Eliminating {int(df.select(c).sum().to_numpy()[0, 0])} rows with nonpositive boundary layer thetas..."
+    f"Nullifying {int(df.select(c).sum().to_numpy()[0, 0])} rows with nonpositive boundary layer thetas..."
 )
 df = df.with_columns(
     [
@@ -72,7 +72,7 @@ c = pl.any_horizontal([
                           for i in range(Data.N)
                       ])
 print(
-    f"Eliminating {int(df.select(c).sum().to_numpy()[0, 0])} rows with H < 1 (non-physical BL)..."
+    f"Nullifying {int(df.select(c).sum().to_numpy()[0, 0])} rows with H < 1 (non-physical BL)..."
 )
 df = df.with_columns(
     [
@@ -94,7 +94,7 @@ c = pl.any_horizontal(sum([
 ], start=[])
 )
 print(
-    f"Eliminating {int(df.select(c).sum().to_numpy()[0, 0])} rows with non-physical edge velocities..."
+    f"Nullifying {int(df.select(c).sum().to_numpy()[0, 0])} rows with non-physical edge velocities..."
 )
 df = df.with_columns(
     [
@@ -110,7 +110,7 @@ print(df)
 print("Dataset statistics:")
 print(df.describe())
 
-### Shuffle the training set
+### Shuffle the training set (deterministically)
 df = df.sample(
     fraction=1,
     with_replacement=False,

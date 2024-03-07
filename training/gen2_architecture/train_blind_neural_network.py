@@ -1,5 +1,4 @@
-import aerosandbox as asb
-import aerosandbox.numpy as np
+import numpy as np
 from pathlib import Path
 import sys, os
 
@@ -19,25 +18,29 @@ from tqdm import tqdm
 N_inputs = len(df_train_inputs_scaled.columns)
 N_outputs = len(df_train_outputs_scaled.columns)
 
-cache_file = Path(__file__).parent / "nn-large.pth"
-
+cache_file = Path(__file__).parent / "nn-xxxlarge.pth"
+print("Cache file: ", cache_file)
 
 # Define the model
 class Net(torch.nn.Module):
     def __init__(self):
         super().__init__()
 
-        width = 256
+        width = 512
 
         self.net = torch.nn.Sequential(
             torch.nn.Linear(N_inputs, width),
             torch.nn.Tanh(),
+
             torch.nn.Linear(width, width),
             torch.nn.Tanh(),
             torch.nn.Linear(width, width),
             torch.nn.Tanh(),
             torch.nn.Linear(width, width),
             torch.nn.Tanh(),
+            torch.nn.Linear(width, width),
+            torch.nn.Tanh(),
+
             torch.nn.Linear(width, N_outputs),
         )
 
@@ -64,15 +67,20 @@ class Net(torch.nn.Module):
         y_unflipped[:, 3] *= -1  # CM
         y_unflipped[:, 4] = y_flipped[:, 5]  # switch Top_Xtr with Bot_Xtr
         y_unflipped[:, 5] = y_flipped[:, 4]  # switch Bot_Xtr with Top_Xtr
-        y_unflipped[:, 6:6 + 72] = y_flipped[:, 6 + 72: 6 + 2 * 72]  # switch upper_bl_theta with lower_bl_theta
-        y_unflipped[:, 6 + 72: 6 + 2 * 72] = y_flipped[:, 6:6 + 72]  # switch lower_bl_theta with upper_bl_theta
+
+        # switch upper and lower Ret, H
+        y_unflipped[:, 6:6 + 32 * 2] = y_flipped[:, 6 + 32 * 3: 6 + 32 * 5]
+        y_unflipped[:, 6 + 32 * 3: 6 + 32 * 5] = y_flipped[:, 6:6 + 32 * 2]
+
+        # switch upper_bl_ue/vinf with lower_bl_ue/vinf
+        y_unflipped[:, 6 + 32 * 2: 6 + 32 * 3] = -1 * y_flipped[:, 6 + 32 * 5: 6 + 32 * 6]
+        y_unflipped[:, 6 + 32 * 5: 6 + 32 * 6] = -1 * y_flipped[:, 6 + 32 * 2: 6 + 32 * 3]
 
         ### Then, average the two outputs to get the "symmetric" result
         y_fused = (y + y_unflipped) / 2
         y_fused[:, 0] = torch.sigmoid(y_fused[:, 0])  # Analysis confidence, a binary variable
 
         return y_fused
-
 
 
 if __name__ == '__main__':
@@ -93,15 +101,15 @@ if __name__ == '__main__':
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer,
         factor=0.5,
-        patience=20,
+        patience=10,
         verbose=True,
-        min_lr=1e-6,
+        min_lr=0,
     )
 
     # Define the data loader
     print(f"Preparing data...")
 
-    batch_size = 1024
+    batch_size = 128
     train_inputs = torch.tensor(
         df_train_inputs_scaled.to_numpy(),
         dtype=torch.float32,
@@ -131,6 +139,53 @@ if __name__ == '__main__':
         # num_workers=4,
     )
 
+    # Prepare the loss function
+    loss_weights = torch.ones(N_outputs, dtype=torch.float32).to(device)
+    loss_weights[0] *= 0.05  # Analysis confidence
+    loss_weights[1] *= 1  # CL
+    loss_weights[2] *= 2  # ln(CD)
+    loss_weights[3] *= 0.5  # CM
+    loss_weights[4] *= 0.25  # Top Xtr
+    loss_weights[5] *= 0.25  # Bot Xtr
+    loss_weights[6:] *= 1 / (32 * 6)  # Lower the weight on all boundary layer outputs
+
+
+    def loss_function(y_pred, y_data, return_individual_loss_components=False):
+        # For data with NaN, overwrite the data with the prediction. This essentially makes the model ignore NaN data,
+        # since the gradient of the loss with respect to parameters is zero when the data is NaN.
+        y_data = torch.where(
+            torch.isnan(y_data),
+            y_pred,
+            y_data
+        )
+
+        analysis_confidence_loss = torch.nn.functional.binary_cross_entropy(y_pred[:, 0], y_data[:, 0])
+        # other_loss_components = torch.mean(
+        #     (y_pred[:, 1:] - y_data[:, 1:]) ** 2,
+        #     dim=0
+        # )
+        other_loss_components = torch.mean(
+            torch.nn.functional.huber_loss(
+                y_pred[:, 1:], y_data[:, 1:],
+                reduction='none',
+                delta=1
+            ),
+            dim=0
+        )
+
+        unweighted_loss_components = torch.stack([
+            analysis_confidence_loss,
+            *other_loss_components
+        ], dim=0)
+        weighted_loss_components = unweighted_loss_components * loss_weights
+        loss = torch.sum(weighted_loss_components)
+
+        if return_individual_loss_components:
+            return weighted_loss_components
+        else:
+            return loss
+
+
     # raise Exception
     print(f"Training...")
     unweighted_epoch_loss_components = torch.ones(N_outputs, dtype=torch.float32).to(device)
@@ -142,83 +197,53 @@ if __name__ == '__main__':
         # Put the model in training mode
         net.train()
 
-        # Choose model weights for this epoch
-        loss_weights = torch.ones(N_outputs, dtype=torch.float32).to(device)
-        loss_weights[0] *= 0.05  # Analysis confidence
-        loss_weights[1] *= 1  # CL
-        loss_weights[2] *= 3  # ln(CD)
-        loss_weights[3] *= 0.5  # CM
-        loss_weights[4] *= 0.25  # Top Xtr
-        loss_weights[5] *= 0.25  # Bot Xtr
-        loss_weights[6:] *= 0.05  # Lower the weight on the boundary layer outputs
+        loss_from_each_training_batch = []
 
-        list_unweighted_batch_loss_components = []
-
-        for i, (x, y) in enumerate(tqdm(train_loader)):
+        for x, y_data in tqdm(train_loader):
 
             x = x.to(device)
-            y = y.to(device)
+            y_data = y_data.to(device)
 
-            y_pred = net(x)
-
-            y = torch.where(
-                torch.isnan(y),
-                y_pred,
-                y
+            loss = loss_function(
+                y_pred=net(x),
+                y_data=y_data
             )
 
-            unweighted_batch_loss_components = torch.mean( # 1 per output
-                    (y_pred - y) ** 2,
-                    dim=0,
-                )
-            list_unweighted_batch_loss_components.append(unweighted_batch_loss_components)
-
-            batch_loss = torch.sum(loss_weights * unweighted_batch_loss_components)
-            reweighted_batch_loss = torch.sum(loss_weights * unweighted_batch_loss_components / unweighted_epoch_loss_components)
-
             optimizer.zero_grad()
-            # batch_loss.backward()
-            reweighted_batch_loss.backward()
+            loss.backward()
             optimizer.step()
 
-        unweighted_epoch_loss_components = torch.mean(torch.stack(list_unweighted_batch_loss_components, dim=0), dim=0).detach()
-        unweighted_epoch_loss = torch.sum(unweighted_epoch_loss_components, dim=0)
-        epoch_loss = torch.sum(loss_weights * unweighted_epoch_loss_components)
+            loss_from_each_training_batch.append(loss.detach())
 
-        # Evaluate the model
+        train_loss = torch.mean(torch.stack(loss_from_each_training_batch, dim=0), dim=0)
+
+        # Put the model in evaluation mode
         net.eval()
 
-        batch_losses = []
-        batch_residual_mae = []  # Residual mean absolute error (MAE, L1 norm) of each test batch
+        loss_components_from_each_test_batch = []
+        mae_from_each_test_batch = []
 
-        for i, (x, y) in enumerate(test_loader):
+        for i, (x, y_data) in enumerate(test_loader):
             with torch.no_grad():
                 x = x.to(device)
-                y = y.to(device)
+                y_data = y_data.to(device)
 
                 y_pred = net(x)
 
-                y_nonan = torch.where(
-                    torch.isnan(y),
-                    y_pred,
-                    y
+                loss_components = loss_function(
+                    y_pred=y_pred,
+                    y_data=y_data,
+                    return_individual_loss_components=True
                 )
 
-                loss = torch.mean(
-                    torch.sum(
-                        loss_weights *
-                        (y_pred - y_nonan) ** 2,
-                        dim=1
-                    ),
-                    dim=0
-                )
-                batch_losses.append(loss.item())
-                batch_residual_mae.append(
-                    torch.nanmean(torch.abs(y_pred - y_nonan), dim=0).cpu().detach().numpy()
+                loss_components_from_each_test_batch.append(loss_components)
+                mae_from_each_test_batch.append(
+                    torch.nanmean(torch.abs(y_pred - y_data), dim=0)
                 )
 
-        test_loss = np.mean(batch_losses)
-        test_residual_mae = np.nanmean(np.stack(batch_residual_mae, axis=0), axis=0)
+        test_loss_components = torch.mean(torch.stack(loss_components_from_each_test_batch, dim=0), dim=0)
+        test_loss = torch.sum(test_loss_components)
+        test_residual_mae = torch.nanmean(torch.stack(mae_from_each_test_batch, dim=0), dim=0)
 
         labeled_maes = {
             "analysis_confidence": test_residual_mae[0],
@@ -229,7 +254,7 @@ if __name__ == '__main__':
             "Bot_Xtr"            : test_residual_mae[5],
         }
         print(
-            f"Epoch: {epoch} | Train Loss: {epoch_loss.item():.6g} | Test Loss: {test_loss.item():.6g} | "
+            f"Epoch: {epoch} | Train Loss: {train_loss.item():.6g} | Test Loss: {test_loss.item():.6g} | "
             + " | ".join(
                 [
                     f"{k}: {v:.6g}"
@@ -237,11 +262,11 @@ if __name__ == '__main__':
                 ]
             )
         )
-        loss_argsort = torch.argsort(unweighted_epoch_loss_components, descending=True)
+        loss_argsort = torch.argsort(test_loss_components, descending=True)
         print(f"Loss contributors: ")
         for i in loss_argsort[:10]:
-            print(f"\t{df_train_outputs_scaled.columns[i]:25}: {unweighted_epoch_loss_components[i].item():.6g}")
+            print(f"\t{df_train_outputs_scaled.columns[i]:25}: {test_loss_components[i].item():.6g}")
 
-        scheduler.step(epoch_loss)
+        scheduler.step(train_loss)
 
         torch.save(net.state_dict(), cache_file)

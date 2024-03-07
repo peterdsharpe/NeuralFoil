@@ -1,4 +1,4 @@
-import ray
+import multiprocessing as mp
 import csv
 import aerosandbox as asb
 import aerosandbox.numpy as np
@@ -7,16 +7,7 @@ import time
 import os
 from neuralfoil.gen2_architecture._basic_data_type import Data
 
-print("Initializing Ray...")
-ray.init(
-    # address="local",
-    # _temp_dir="/home/gridsan/pds/tmp/",
-    # num_cpus=2,
-)
-
-datafile = "data_xfoil_comp1.csv"
-n_procs = int(ray.cluster_resources()["CPU"])
-print(f"Running on {n_procs} processes.")
+datafile = "data_xfoil_comp1-mp.csv"
 
 airfoil_database_path = asb._asb_root / "geometry" / "airfoil" / "airfoil_database"
 
@@ -39,7 +30,6 @@ mean_database = np.mean(kulfans_database, axis=0)
 cov_database = np.cov(kulfans_database, rowvar=False)
 
 
-@ray.remote
 class CSVActor:
     def __init__(self, filename):
         self.filename = filename
@@ -74,9 +64,8 @@ class CSVActor:
             writer.writerow(row)
 
 
-@ray.remote
 def worker(csv_actor):
-
+    print("Worker started.")
     while True:
 
         n_airfoils_to_combine = 3
@@ -88,7 +77,7 @@ def worker(csv_actor):
             slices,
             [1]
         ])
-        weights = np.diff(slices)  # result is N random numbers in [0, 1] that sum to 1
+        weights = np.diff(slices) # result is N random numbers in [0, 1] that sum to 1
 
         parent_airfoils = np.random.choice(airfoil_database, size=n_airfoils_to_combine, replace=True)
 
@@ -119,7 +108,7 @@ def worker(csv_actor):
         af = af.scale(1, np.random.lognormal(0, 0.25))
 
         deviations = np.random.multivariate_normal(
-            np.zeros_like(mean_database),  # Not including, since we already have a linear combo of 3 airfoils
+            np.zeros_like(mean_database), # Not including, since we already have a linear combo of 3 airfoils
             cov_database,
         )
 
@@ -155,19 +144,21 @@ def worker(csv_actor):
             xtr_lower=xtr_lower,
             timeout=30,
             max_iter=200,
-            # xfoil_command="~/NeuralFoil/training/gen2_architecture/training_data/xfoil_supercloud"
+            xfoil_command="/home/gridsan/pds/NeuralFoil/training/gen2_architecture/training_data/xfoil_supercloud"
         )
 
         for data in datas:
-            ray.get(csv_actor.append_row.remote(data.to_vector()))
+            csv_actor.append_row(data.to_vector())
 
 
-csv_actor = CSVActor.remote(filename=datafile)
 
-# Start 8 workers
-for _ in range(n_procs):
-    worker.remote(csv_actor)
+if __name__ == '__main__':
+    pool = mp.Pool(mp.cpu_count())
+    n_procs = mp.cpu_count()
+    print(f"Running on {n_procs} processes.")
 
-# Keep the main thread alive (otherwise the script would end immediately)
-while True:
-    time.sleep(1)
+    # csv_actor = CSVActor(filename=datafile)
+    #
+    # worker(csv_actor)
+
+    pool.map(worker, [CSVActor(filename=datafile)] * n_procs)

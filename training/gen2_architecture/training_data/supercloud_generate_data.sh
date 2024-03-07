@@ -11,4 +11,4 @@ module unload anaconda
 module load anaconda/2023a
 
 # Run the script
-python -u ./generate_xfoil_data.py
+python -u ./generate_xfoil_data_multiprocessing.py

@@ -124,15 +124,43 @@ def get_aero_from_kulfan_parameters(
     y_unflipped[:, 3] *= -1  # CM
     y_unflipped[:, 4] = y_flipped[:, 5]  # switch Top_Xtr with Bot_Xtr
     y_unflipped[:, 5] = y_flipped[:, 4]  # switch Bot_Xtr with Top_Xtr
-    y_unflipped[:, 6:6 + 72] = y_flipped[:, 6 + 72: 6 + 2 * 72]  # switch upper_bl_theta with lower_bl_theta
-    y_unflipped[:, 6 + 72: 6 + 2 * 72] = y_flipped[:, 6:6 + 72]  # switch lower_bl_theta with upper_bl_theta
+
+    # switch upper and lower Ret, H
+    y_unflipped[:, 6:6 + 32 * 2] = y_flipped[:, 6 + 32 * 3: 6 + 32 * 5]
+    y_unflipped[:, 6 + 32 * 3: 6 + 32 * 5] = y_flipped[:, 6:6 + 32 * 2]
+
+    # switch upper_bl_ue/vinf with lower_bl_ue/vinf
+    y_unflipped[:, 6 + 32 * 2: 6 + 32 * 3] = -1 * y_flipped[:, 6 + 32 * 5: 6 + 32 * 6]
+    y_unflipped[:, 6 + 32 * 5: 6 + 32 * 6] = -1 * y_flipped[:, 6 + 32 * 2: 6 + 32 * 3]
 
     ### Then, average the two outputs to get the "symmetric" result
     y_fused = (y + y_unflipped) / 2
     y_fused[:, 0] = _sigmoid(y_fused[:, 0])  # Analysis confidence, a binary variable
 
     # Unpack the neural network outputs
-    sqrt_Rex_approx = [((Data.bl_x_points[i] + 1e-2) / Re) ** 0.5 for i in range(Data.N)]
+    # sqrt_Rex_approx = [((Data.bl_x_points[i] + 1e-2) / Re) ** 0.5 for i in range(Data.N)]
+    # TODO
+
+    analysis_confidence = y_fused[:, 0]
+    CL = y_fused[:, 1] / 2
+    CD = np.exp((y_fused[:, 2] - 2) * 2)
+    CM = y_fused[:, 3] / 20
+    Top_Xtr = y_fused[:, 4]
+    Bot_Xtr = y_fused[:, 5]
+
+    upper_bl_ue_over_vinf = y_fused[:, 6 + Data.N * 2:6 + Data.N * 3]
+    lower_bl_ue_over_vinf = y_fused[:, 6 + Data.N * 5:6 + Data.N * 6]
+
+    upper_theta = (
+                          (10 ** y_fused[:, 6: 6 + Data.N]) - 0.1
+    ) / (np.abs(upper_bl_ue_over_vinf) * Re)
+    upper_H = 2.6 * np.exp(y_fused[:, 6 + Data.N: 6 + Data.N * 2])
+
+    lower_theta = (
+                            (10 ** y_fused[:, 6 + Data.N * 3: 6 + Data.N * 4]) - 0.1
+    ) / (np.abs(lower_bl_ue_over_vinf) * Re)
+    lower_H = 2.6 * np.exp(y_fused[:, 6 + Data.N * 4: 6 + Data.N * 5])
+
 
     results = {
         "analysis_confidence": y_fused[:, 0],
@@ -142,27 +170,27 @@ def get_aero_from_kulfan_parameters(
         "Top_Xtr"            : y_fused[:, 4],
         "Bot_Xtr"            : y_fused[:, 5],
         **{
-            f"upper_bl_theta_{i}": np.exp(y_fused[:, 6 + i]) * sqrt_Rex_approx[i]
+            f"upper_bl_theta_{i}": upper_theta[:, i]
             for i in range(Data.N)
         },
         **{
-            f"upper_bl_H_{i}": np.exp(y_fused[:, 6 + Data.N + i]) * 2.6
+            f"upper_bl_H_{i}": upper_H[:, i]
             for i in range(Data.N)
         },
         **{
-            f"upper_bl_Cp_{i}": 1 - (1 + y_fused[:, 6 + 2 * Data.N + i]) ** 2
+            f"upper_bl_ue/vinf_{i}": upper_bl_ue_over_vinf[:, i]
             for i in range(Data.N)
         },
         **{
-            f"lower_bl_theta_{i}": np.exp(y_fused[:, 6 + 3 * Data.N + i]) * sqrt_Rex_approx[i]
+            f"lower_bl_theta_{i}": lower_theta[:, i]
             for i in range(Data.N)
         },
         **{
-            f"lower_bl_H_{i}": np.exp(y_fused[:, 6 + 4 * Data.N + i]) * 2.6
+            f"lower_bl_H_{i}": lower_H[:, i]
             for i in range(Data.N)
         },
         **{
-            f"lower_bl_Cp_{i}": 1 - (1 + y_fused[:, 6 + 5 * Data.N + i]) ** 2
+            f"lower_bl_ue/vinf_{i}": lower_bl_ue_over_vinf[:, i]
             for i in range(Data.N)
         },
     }
