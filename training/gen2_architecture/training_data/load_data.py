@@ -107,8 +107,8 @@ df = df.with_columns(
 
 print("Dataset:")
 print(df)
-print("Dataset statistics:")
-print(df.describe())
+# print("Dataset statistics:")
+# print(df.describe())
 
 ### Shuffle the training set (deterministically)
 df = df.sample(
@@ -141,8 +141,6 @@ df_inputs_scaled = pl.DataFrame({
 })
 
 di = df_inputs_scaled.describe()
-
-sqrt_Rex_approx = [((Data.bl_x_points[i] + 1e-2) / df["Re"]) ** 0.5 for i in range(Data.N)]
 
 df_outputs_scaled = pl.DataFrame({
     "s_analysis_confidence": df["analysis_confidence"],
