@@ -71,11 +71,11 @@ class Net(torch.nn.Module):
 
         # switch upper and lower Ret, H
         y_unflipped[:, 6 + 32 * 0: 6 + 32 * 2] = y_flipped[:, 6 + 32 * 3: 6 + 32 * 5]
+        y_unflipped[:, 6 + 32 * 2: 6 + 32 * 3] = y_flipped[:, 6 + 32 * 5: 6 + 32 * 6] * -1 # ue/vinf
         y_unflipped[:, 6 + 32 * 3: 6 + 32 * 5] = y_flipped[:, 6 + 32 * 0: 6 + 32 * 2]
+        y_unflipped[:, 6 + 32 * 5: 6 + 32 * 6] = y_flipped[:, 6 + 32 * 2: 6 + 32 * 3] * -1 # ue/vinf
 
         # switch upper_bl_ue/vinf with lower_bl_ue/vinf
-        y_unflipped[:, 6 + 32 * 2: 6 + 32 * 3] = -1 * y_flipped[:, 6 + 32 * 5: 6 + 32 * 6]
-        y_unflipped[:, 6 + 32 * 5: 6 + 32 * 6] = -1 * y_flipped[:, 6 + 32 * 2: 6 + 32 * 3]
 
         ### Then, average the two outputs to get the "symmetric" result
         y_fused = (y + y_unflipped) / 2
