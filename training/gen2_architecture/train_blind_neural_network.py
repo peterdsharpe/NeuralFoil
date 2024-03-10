@@ -148,7 +148,7 @@ if __name__ == '__main__':
     loss_weights[3] *= 0.25  # CM
     loss_weights[4] *= 0.25  # Top Xtr
     loss_weights[5] *= 0.25  # Bot Xtr
-    loss_weights[6:] *= 1 / 32  # Lower the weight on all boundary layer outputs
+    loss_weights[6:] *= 5e-3  # Lower the weight on all boundary layer outputs
 
     loss_weights = loss_weights / torch.sum(loss_weights) * 1000
 
@@ -174,22 +174,22 @@ if __name__ == '__main__':
         #     dim=0
         # )
 
-        # other_loss_components = torch.mean(
-        #     torch.nn.functional.huber_loss(
-        #         y_pred[:, 1:], y_data[:, 1:],
-        #         reduction='none',
-        #         delta=1
-        #     ),
-        #     dim=0
-        # )
-
         other_loss_components = torch.mean(
-            torch.nn.functional.mse_loss(
+            torch.nn.functional.huber_loss(
                 y_pred[:, 1:], y_data[:, 1:],
                 reduction='none',
+                delta=0.05
             ),
             dim=0
         )
+
+        # other_loss_components = torch.mean(
+        #     torch.nn.functional.mse_loss(
+        #         y_pred[:, 1:], y_data[:, 1:],
+        #         reduction='none',
+        #     ),
+        #     dim=0
+        # )
 
         unweighted_loss_components = torch.concatenate([
             analysis_confidence_loss,
@@ -206,7 +206,6 @@ if __name__ == '__main__':
 
     # raise Exception
     print(f"Training...")
-    unweighted_epoch_loss_components = torch.ones(N_outputs, dtype=torch.float32).to(device)
 
     n_batches_per_epoch = len(train_loader)
 
