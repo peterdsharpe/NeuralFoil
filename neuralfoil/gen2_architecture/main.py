@@ -163,12 +163,12 @@ def get_aero_from_kulfan_parameters(
 
 
     results = {
-        "analysis_confidence": y_fused[:, 0],
-        "CL"                 : y_fused[:, 1] / 2,
-        "CD"                 : np.exp((y_fused[:, 2] - 2) * 2),
-        "CM"                 : y_fused[:, 3] / 20,
-        "Top_Xtr"            : y_fused[:, 4],
-        "Bot_Xtr"            : y_fused[:, 5],
+        "analysis_confidence": analysis_confidence,
+        "CL"                 : CL,
+        "CD"                 : CD,
+        "CM"                 : CM,
+        "Top_Xtr"            : Top_Xtr,
+        "Bot_Xtr"            : Bot_Xtr,
         **{
             f"upper_bl_theta_{i}": upper_theta[:, i]
             for i in range(Data.N)
@@ -269,16 +269,21 @@ def get_aero_from_dat_file(
 
 if __name__ == '__main__':
 
-    # airfoil = asb.Airfoil("dae11").repanel().normalize()
-    airfoil = asb.Airfoil("naca0050")
+    airfoil = asb.Airfoil("dae11").repanel().normalize()
+    # airfoil = asb.Airfoil("naca0050")
     # airfoil = asb.Airfoil("naca0012").add_control_surface(10, hinge_point_x=0.5)
 
-    alpha = np.linspace(-18, 18, 100)
+    alpha = np.linspace(-5, 15, 50)
     Re = 1e6
+
+    aero = get_aero_from_airfoil(
+        airfoil, 3, Re,
+        model_size="xxxlarge"
+    )
 
     aeros = {}
 
-    model_sizes = ["large"]
+    model_sizes = ["xxxlarge"]
 
     for model_size in model_sizes:
         aeros[f"NF-{model_size}"] = get_aero_from_airfoil(
