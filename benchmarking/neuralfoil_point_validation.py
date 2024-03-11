@@ -6,7 +6,7 @@ from pathlib import Path
 from matplotlib.colors import LinearSegmentedColormap
 from tqdm import tqdm
 
-af = asb.Airfoil(name="HALE_02", coordinates=Path(__file__).parent / "assets" / "HALE_03.dat")
+af = asb.Airfoil(name="HALE_03", coordinates=Path(__file__).parent / "assets" / "hale_03mod.dat")
 
 alphas_xfoil = np.linspace(-5, 15, 50)
 # alphas_xfoil = np.concatenate([
