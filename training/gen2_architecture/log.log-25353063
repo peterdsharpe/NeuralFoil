@@ -1,0 +1,3819 @@
+/bin/bash: /state/partition1/llgrid/pkg/anaconda/anaconda3-2021b/lib/libtinfo.so.6: no version information available (required by /bin/bash)
+Reading /home/gridsan/pds/NeuralFoil/training/gen2_architecture/training_data/data_xfoil_comp1b.csv...
+	165536 rows
+Reading /home/gridsan/pds/NeuralFoil/training/gen2_architecture/training_data/data_xfoil_comp3e.csv...
+	2187654 rows
+Reading /home/gridsan/pds/NeuralFoil/training/gen2_architecture/training_data/data_xfoil_comp3c.csv...
+	1311442 rows
+Reading /home/gridsan/pds/NeuralFoil/training/gen2_architecture/training_data/data_xfoil_comp3d.csv...
+	449445 rows
+Reading /home/gridsan/pds/NeuralFoil/training/gen2_architecture/training_data/data_xfoil_comp1d.csv...
+	1159665 rows
+Reading /home/gridsan/pds/NeuralFoil/training/gen2_architecture/training_data/data_xfoil_comp3.csv...
+	301035 rows
+Reading /home/gridsan/pds/NeuralFoil/training/gen2_architecture/training_data/data_xfoil_comp1c.csv...
+	1791318 rows
+Reading /home/gridsan/pds/NeuralFoil/training/gen2_architecture/training_data/data_xfoil_comp1.csv...
+	209006 rows
+Reading /home/gridsan/pds/NeuralFoil/training/gen2_architecture/training_data/data_xfoil_comp3b.csv...
+	151907 rows
+Nullifying 0 rows with CD <= 0...
+Nullifying 2247 rows with nonpositive boundary layer thetas...
+Nullifying 1 rows with H < 1 (non-physical BL)...
+Nullifying 0 rows with non-physical edge velocities...
+Dataset:
+shape: (7_727_008, 222)
+┌───────────┬───────────┬───────────┬───────────┬───┬───────────┬───────────┬───────────┬──────────┐
+│ kulfan_up ┆ kulfan_up ┆ kulfan_up ┆ kulfan_up ┆ … ┆ lower_bl_ ┆ lower_bl_ ┆ lower_bl_ ┆ lower_bl │
+│ per_0     ┆ per_1     ┆ per_2     ┆ per_3     ┆   ┆ ue/vinf_2 ┆ ue/vinf_2 ┆ ue/vinf_3 ┆ _ue/vinf │
+│ ---       ┆ ---       ┆ ---       ┆ ---       ┆   ┆ 8         ┆ 9         ┆ 0         ┆ _31      │
+│ f32       ┆ f32       ┆ f32       ┆ f32       ┆   ┆ ---       ┆ ---       ┆ ---       ┆ ---      │
+│           ┆           ┆           ┆           ┆   ┆ f32       ┆ f32       ┆ f32       ┆ f32      │
+╞═══════════╪═══════════╪═══════════╪═══════════╪═══╪═══════════╪═══════════╪═══════════╪══════════╡
+│ 0.136597  ┆ 0.187229  ┆ 0.194317  ┆ 0.229619  ┆ … ┆ -1.116377 ┆ -1.111339 ┆ -1.106348 ┆ -1.10137 │
+│           ┆           ┆           ┆           ┆   ┆           ┆           ┆           ┆ 5        │
+│ 0.173077  ┆ 0.302854  ┆ 0.147885  ┆ 0.439375  ┆ … ┆ -0.92141  ┆ -0.9065   ┆ -0.890645 ┆ -0.87697 │
+│           ┆           ┆           ┆           ┆   ┆           ┆           ┆           ┆ 9        │
+│ 0.39567   ┆ 0.346951  ┆ 0.543495  ┆ 0.06758   ┆ … ┆ -1.003149 ┆ -0.99697  ┆ -0.991124 ┆ -0.98547 │
+│           ┆           ┆           ┆           ┆   ┆           ┆           ┆           ┆ 1        │
+│ 0.136597  ┆ 0.187229  ┆ 0.194317  ┆ 0.229619  ┆ … ┆ -0.93994  ┆ -0.941862 ┆ -0.944407 ┆ -0.94805 │
+│           ┆           ┆           ┆           ┆   ┆           ┆           ┆           ┆ 2        │
+│ 0.173077  ┆ 0.302854  ┆ 0.147885  ┆ 0.439375  ┆ … ┆ -0.909629 ┆ -0.89507  ┆ -0.876277 ┆ -0.85876 │
+│           ┆           ┆           ┆           ┆   ┆           ┆           ┆           ┆ 7        │
+│ …         ┆ …         ┆ …         ┆ …         ┆ … ┆ …         ┆ …         ┆ …         ┆ …        │
+│ 0.314914  ┆ 0.291318  ┆ 0.338657  ┆ 0.229014  ┆ … ┆ -0.908567 ┆ -0.895804 ┆ -0.877923 ┆ -0.86949 │
+│           ┆           ┆           ┆           ┆   ┆           ┆           ┆           ┆ 4        │
+│ 0.314914  ┆ 0.291318  ┆ 0.338657  ┆ 0.229014  ┆ … ┆ -0.887878 ┆ -0.878637 ┆ -0.862781 ┆ -0.85937 │
+│           ┆           ┆           ┆           ┆   ┆           ┆           ┆           ┆ 4        │
+│ 0.314914  ┆ 0.291318  ┆ 0.338657  ┆ 0.229014  ┆ … ┆ -0.862014 ┆ -0.857217 ┆ -0.84429  ┆ -0.84726 │
+│           ┆           ┆           ┆           ┆   ┆           ┆           ┆           ┆ 7        │
+│ 0.314914  ┆ 0.291318  ┆ 0.338657  ┆ 0.229014  ┆ … ┆ -0.839622 ┆ -0.841695 ┆ -0.83648  ┆ -0.85351 │
+│           ┆           ┆           ┆           ┆   ┆           ┆           ┆           ┆ 5        │
+│ 0.314914  ┆ 0.291318  ┆ 0.338657  ┆ 0.229014  ┆ … ┆ null      ┆ null      ┆ null      ┆ null     │
+└───────────┴───────────┴───────────┴───────────┴───┴───────────┴───────────┴───────────┴──────────┘
+/home/gridsan/pds/.local/lib/python3.9/site-packages/polars/series/series.py:1453: RuntimeWarning: divide by zero encountered in log
+  series = f(lambda out: ufunc(*args, out=out, dtype=dtype_char, **kwargs))
+Cache file:  /home/gridsan/pds/NeuralFoil/training/gen2_architecture/nn-xlarge.pth
+cuda
+No existing model found, starting fresh.
+Preparing data...
+Training...
+Epoch: 0 | Train Loss: 21.4867 | Test Loss: 10.2038 | analysis_confidence: 0.25642 | CL: 0.0524206 | ln_CD: 0.118163 | CM: 0.00849557 | Top_Xtr: 0.0563722 | Bot_Xtr: 0.0677879
+Loss contributors: 
+	s_ln_CD                  : 3.87908
+	s_CL                     : 3.3586
+	s_CM                     : 1.88458
+	s_analysis_confidence    : 0.419211
+	s_Bot_Xtr                : 0.349116
+	s_Top_Xtr                : 0.229263
+	s_upper_bl_H_31          : 0.00135949
+	s_upper_bl_H_30          : 0.00129426
+	s_lower_bl_H_31          : 0.00127121
+	s_upper_bl_H_24          : 0.00126479
+Epoch: 1 | Train Loss: 8.87902 | Test Loss: 7.92831 | analysis_confidence: 0.231114 | CL: 0.0428553 | ln_CD: 0.0935466 | CM: 0.00753731 | Top_Xtr: 0.048023 | Bot_Xtr: 0.0567737
+Loss contributors: 
+	s_ln_CD                  : 3.02192
+	s_CL                     : 2.55216
+	s_CM                     : 1.4567
+	s_analysis_confidence    : 0.37974
+	s_Bot_Xtr                : 0.272146
+	s_Top_Xtr                : 0.181735
+	s_upper_bl_H_31          : 0.00103489
+	s_lower_bl_H_31          : 0.00100418
+	s_upper_bl_H_30          : 0.000974072
+	s_upper_bl_H_29          : 0.000948759
+Epoch: 2 | Train Loss: 7.2897 | Test Loss: 6.81762 | analysis_confidence: 0.196339 | CL: 0.0399365 | ln_CD: 0.0909399 | CM: 0.00661299 | Top_Xtr: 0.0426085 | Bot_Xtr: 0.0502346
+Loss contributors: 
+	s_ln_CD                  : 2.65958
+	s_CL                     : 2.17812
+	s_CM                     : 1.20066
+	s_analysis_confidence    : 0.333915
+	s_Bot_Xtr                : 0.23208
+	s_Top_Xtr                : 0.156343
+	s_upper_bl_H_31          : 0.000932581
+	s_lower_bl_H_31          : 0.000906419
+	s_upper_bl_H_30          : 0.00087553
+	s_upper_bl_H_29          : 0.000848915
+Epoch: 3 | Train Loss: 6.41178 | Test Loss: 6.24114 | analysis_confidence: 0.176879 | CL: 0.0360252 | ln_CD: 0.0856475 | CM: 0.00596196 | Top_Xtr: 0.0399715 | Bot_Xtr: 0.0470639
+Loss contributors: 
+	s_ln_CD                  : 2.52961
+	s_CL                     : 1.94817
+	s_CM                     : 1.05486
+	s_analysis_confidence    : 0.305205
+	s_Bot_Xtr                : 0.207759
+	s_Top_Xtr                : 0.14318
+	s_upper_bl_H_31          : 0.000849993
+	s_lower_bl_H_31          : 0.000849941
+	s_upper_bl_H_30          : 0.000786575
+	s_upper_bl_H_29          : 0.000757495
+Epoch: 4 | Train Loss: 5.87077 | Test Loss: 5.58606 | analysis_confidence: 0.171219 | CL: 0.0345144 | ln_CD: 0.0693949 | CM: 0.00560825 | Top_Xtr: 0.0378621 | Bot_Xtr: 0.0439877
+Loss contributors: 
+	s_ln_CD                  : 2.15367
+	s_CL                     : 1.8056
+	s_CM                     : 0.964933
+	s_analysis_confidence    : 0.291148
+	s_Bot_Xtr                : 0.190189
+	s_Top_Xtr                : 0.131102
+	s_lower_bl_H_31          : 0.000776628
+	s_upper_bl_H_31          : 0.000772601
+	s_lower_bl_H_1           : 0.000742287
+	s_upper_bl_H_30          : 0.000725545
+Epoch: 5 | Train Loss: 5.50503 | Test Loss: 5.61179 | analysis_confidence: 0.161356 | CL: 0.0353517 | ln_CD: 0.0744127 | CM: 0.00584049 | Top_Xtr: 0.035019 | Bot_Xtr: 0.0414317
+Loss contributors: 
+	s_ln_CD                  : 2.22852
+	s_CL                     : 1.78935
+	s_CM                     : 0.964074
+	s_analysis_confidence    : 0.282038
+	s_Bot_Xtr                : 0.17747
+	s_Top_Xtr                : 0.12318
+	s_upper_bl_H_31          : 0.000745747
+	s_lower_bl_H_31          : 0.000734932
+	s_lower_bl_H_1           : 0.000719929
+	s_upper_bl_H_30          : 0.000706057
+Epoch: 6 | Train Loss: 5.21894 | Test Loss: 5.36082 | analysis_confidence: 0.159005 | CL: 0.0328912 | ln_CD: 0.0649234 | CM: 0.0054868 | Top_Xtr: 0.0343238 | Bot_Xtr: 0.039583
+Loss contributors: 
+	s_ln_CD                  : 2.20919
+	s_CL                     : 1.65606
+	s_CM                     : 0.893846
+	s_analysis_confidence    : 0.274154
+	s_Bot_Xtr                : 0.16569
+	s_Top_Xtr                : 0.11634
+	s_lower_bl_H_1           : 0.000708349
+	s_upper_bl_H_31          : 0.000701528
+	s_lower_bl_H_31          : 0.000700547
+	s_lower_bl_H_2           : 0.000662941
+Epoch: 7 | Train Loss: 4.98655 | Test Loss: 5.06159 | analysis_confidence: 0.154535 | CL: 0.0316733 | ln_CD: 0.0639938 | CM: 0.00518415 | Top_Xtr: 0.0331336 | Bot_Xtr: 0.0386629
+Loss contributors: 
+	s_ln_CD                  : 2.04741
+	s_CL                     : 1.59768
+	s_CM                     : 0.838105
+	s_analysis_confidence    : 0.267636
+	s_Bot_Xtr                : 0.15667
+	s_Top_Xtr                : 0.110125
+	s_lower_bl_H_1           : 0.000701808
+	s_upper_bl_H_31          : 0.000677126
+	s_lower_bl_H_31          : 0.000670627
+	s_lower_bl_H_0           : 0.000656333
+Epoch: 8 | Train Loss: 4.80911 | Test Loss: 4.85937 | analysis_confidence: 0.152477 | CL: 0.0295343 | ln_CD: 0.0622014 | CM: 0.00492158 | Top_Xtr: 0.0311442 | Bot_Xtr: 0.0371045
+Loss contributors: 
+	s_ln_CD                  : 1.99932
+	s_CL                     : 1.51268
+	s_CM                     : 0.783398
+	s_analysis_confidence    : 0.266344
+	s_Bot_Xtr                : 0.150201
+	s_Top_Xtr                : 0.104572
+	s_lower_bl_H_1           : 0.000680864
+	s_lower_bl_H_0           : 0.000660126
+	s_upper_bl_H_31          : 0.000659985
+	s_lower_bl_H_31          : 0.000645227
+Epoch: 9 | Train Loss: 4.64855 | Test Loss: 4.69986 | analysis_confidence: 0.149401 | CL: 0.0308723 | ln_CD: 0.0595355 | CM: 0.00482801 | Top_Xtr: 0.02979 | Bot_Xtr: 0.034957
+Loss contributors: 
+	s_ln_CD                  : 1.89528
+	s_CL                     : 1.49169
+	s_CM                     : 0.769134
+	s_analysis_confidence    : 0.260331
+	s_Bot_Xtr                : 0.141784
+	s_Top_Xtr                : 0.0993455
+	s_lower_bl_H_1           : 0.000673237
+	s_upper_bl_H_31          : 0.000649903
+	s_lower_bl_H_0           : 0.000645309
+	s_lower_bl_H_31          : 0.000636126
+Epoch: 10 | Train Loss: 4.51368 | Test Loss: 4.45467 | analysis_confidence: 0.14714 | CL: 0.0288432 | ln_CD: 0.0585472 | CM: 0.00495563 | Top_Xtr: 0.0316337 | Bot_Xtr: 0.0368368
+Loss contributors: 
+	s_ln_CD                  : 1.7544
+	s_CL                     : 1.41409
+	s_CM                     : 0.7543
+	s_analysis_confidence    : 0.258346
+	s_Bot_Xtr                : 0.135728
+	s_Top_Xtr                : 0.0963269
+	s_lower_bl_H_1           : 0.000666444
+	s_lower_bl_H_0           : 0.000651089
+	s_upper_bl_H_31          : 0.000625473
+	s_lower_bl_H_31          : 0.000605848
+Epoch: 11 | Train Loss: 4.39464 | Test Loss: 4.42563 | analysis_confidence: 0.146842 | CL: 0.0286671 | ln_CD: 0.0601968 | CM: 0.00472814 | Top_Xtr: 0.0297797 | Bot_Xtr: 0.0342875
+Loss contributors: 
+	s_ln_CD                  : 1.76989
+	s_CL                     : 1.40241
+	s_CM                     : 0.732228
+	s_analysis_confidence    : 0.255427
+	s_Bot_Xtr                : 0.132525
+	s_Top_Xtr                : 0.0923803
+	s_lower_bl_H_1           : 0.000661646
+	s_lower_bl_H_0           : 0.000642861
+	s_upper_bl_H_31          : 0.000619374
+	s_lower_bl_H_31          : 0.000602806
+Epoch: 12 | Train Loss: 4.30142 | Test Loss: 4.43655 | analysis_confidence: 0.14042 | CL: 0.028924 | ln_CD: 0.0633998 | CM: 0.00461455 | Top_Xtr: 0.0284015 | Bot_Xtr: 0.032385
+Loss contributors: 
+	s_ln_CD                  : 1.81437
+	s_CL                     : 1.41875
+	s_CM                     : 0.704666
+	s_analysis_confidence    : 0.254383
+	s_Bot_Xtr                : 0.119039
+	s_Top_Xtr                : 0.0844937
+	s_lower_bl_H_1           : 0.000643475
+	s_lower_bl_H_0           : 0.000633063
+	s_upper_bl_H_31          : 0.000600064
+	s_lower_bl_H_31          : 0.000578074
+Epoch: 13 | Train Loss: 4.21375 | Test Loss: 4.74452 | analysis_confidence: 0.148171 | CL: 0.0294368 | ln_CD: 0.0661198 | CM: 0.00504967 | Top_Xtr: 0.0283208 | Bot_Xtr: 0.0324041
+Loss contributors: 
+	s_ln_CD                  : 1.99684
+	s_CL                     : 1.47296
+	s_CM                     : 0.768368
+	s_analysis_confidence    : 0.255798
+	s_Bot_Xtr                : 0.121993
+	s_Top_Xtr                : 0.0870657
+	s_lower_bl_H_1           : 0.000646034
+	s_lower_bl_H_0           : 0.000636773
+	s_upper_bl_H_31          : 0.000603327
+	s_lower_bl_H_2           : 0.000583021
+Epoch: 14 | Train Loss: 4.14694 | Test Loss: 4.17694 | analysis_confidence: 0.143759 | CL: 0.0276801 | ln_CD: 0.0570339 | CM: 0.00443521 | Top_Xtr: 0.0275553 | Bot_Xtr: 0.0314296
+Loss contributors: 
+	s_ln_CD                  : 1.68166
+	s_CL                     : 1.34184
+	s_CM                     : 0.669387
+	s_analysis_confidence    : 0.251901
+	s_Bot_Xtr                : 0.112725
+	s_Top_Xtr                : 0.0804241
+	s_lower_bl_H_0           : 0.000636784
+	s_lower_bl_H_1           : 0.000635265
+	s_upper_bl_H_31          : 0.000583175
+	s_lower_bl_H_2           : 0.000571398
+Epoch: 15 | Train Loss: 4.08032 | Test Loss: 4.18555 | analysis_confidence: 0.142452 | CL: 0.0266299 | ln_CD: 0.0553097 | CM: 0.00431408 | Top_Xtr: 0.0264323 | Bot_Xtr: 0.0305801
+Loss contributors: 
+	s_ln_CD                  : 1.72198
+	s_CL                     : 1.32149
+	s_CM                     : 0.662403
+	s_analysis_confidence    : 0.250363
+	s_Bot_Xtr                : 0.112129
+	s_Top_Xtr                : 0.0785258
+	s_lower_bl_H_0           : 0.000643429
+	s_lower_bl_H_1           : 0.00063012
+	s_upper_bl_H_31          : 0.000572164
+	s_lower_bl_H_2           : 0.000569265
+Epoch: 16 | Train Loss: 4.02729 | Test Loss: 4.06782 | analysis_confidence: 0.143964 | CL: 0.0268498 | ln_CD: 0.0551353 | CM: 0.00438635 | Top_Xtr: 0.026622 | Bot_Xtr: 0.0297361
+Loss contributors: 
+	s_ln_CD                  : 1.64274
+	s_CL                     : 1.29656
+	s_CM                     : 0.651539
+	s_analysis_confidence    : 0.253418
+	s_Bot_Xtr                : 0.106748
+	s_Top_Xtr                : 0.078139
+	s_lower_bl_H_0           : 0.000630483
+	s_lower_bl_H_1           : 0.000621164
+	s_upper_bl_H_31          : 0.000568896
+	s_lower_bl_H_2           : 0.000566262
+Epoch: 17 | Train Loss: 3.97804 | Test Loss: 4.00267 | analysis_confidence: 0.139454 | CL: 0.0288966 | ln_CD: 0.0510781 | CM: 0.0042118 | Top_Xtr: 0.0260865 | Bot_Xtr: 0.0302511
+Loss contributors: 
+	s_ln_CD                  : 1.58869
+	s_CL                     : 1.32152
+	s_CM                     : 0.621988
+	s_analysis_confidence    : 0.248418
+	s_Bot_Xtr                : 0.108272
+	s_Top_Xtr                : 0.0756251
+	s_lower_bl_H_0           : 0.000636742
+	s_lower_bl_H_1           : 0.000609607
+	s_upper_bl_H_31          : 0.000574145
+	s_lower_bl_H_2           : 0.000551553
+Epoch: 18 | Train Loss: 3.92396 | Test Loss: 4.10698 | analysis_confidence: 0.138838 | CL: 0.0262326 | ln_CD: 0.0529079 | CM: 0.00426545 | Top_Xtr: 0.025735 | Bot_Xtr: 0.028913
+Loss contributors: 
+	s_ln_CD                  : 1.73824
+	s_CL                     : 1.26033
+	s_CM                     : 0.639662
+	s_analysis_confidence    : 0.247762
+	s_Bot_Xtr                : 0.105947
+	s_Top_Xtr                : 0.0769066
+	s_lower_bl_H_0           : 0.000632358
+	s_lower_bl_H_1           : 0.000608268
+	s_lower_bl_H_2           : 0.000552942
+	s_upper_bl_H_31          : 0.000544879
+Epoch: 19 | Train Loss: 3.88647 | Test Loss: 3.92117 | analysis_confidence: 0.141122 | CL: 0.0266323 | ln_CD: 0.0517575 | CM: 0.00420538 | Top_Xtr: 0.0248585 | Bot_Xtr: 0.0282304
+Loss contributors: 
+	s_ln_CD                  : 1.57656
+	s_CL                     : 1.25449
+	s_CM                     : 0.62305
+	s_analysis_confidence    : 0.25026
+	s_Bot_Xtr                : 0.104085
+	s_Top_Xtr                : 0.0750581
+	s_lower_bl_H_0           : 0.000637778
+	s_lower_bl_H_1           : 0.00060518
+	s_lower_bl_H_2           : 0.000555189
+	s_upper_bl_H_31          : 0.00054922
+Epoch: 20 | Train Loss: 3.84374 | Test Loss: 3.96813 | analysis_confidence: 0.139718 | CL: 0.0273193 | ln_CD: 0.0549757 | CM: 0.00449321 | Top_Xtr: 0.025081 | Bot_Xtr: 0.028461
+Loss contributors: 
+	s_ln_CD                  : 1.60123
+	s_CL                     : 1.25946
+	s_CM                     : 0.647703
+	s_analysis_confidence    : 0.246036
+	s_Bot_Xtr                : 0.101991
+	s_Top_Xtr                : 0.0742235
+	s_lower_bl_H_0           : 0.000638631
+	s_lower_bl_H_1           : 0.000607163
+	s_upper_bl_H_31          : 0.000556684
+	s_lower_bl_H_2           : 0.000549462
+Epoch: 21 | Train Loss: 3.8112 | Test Loss: 3.91443 | analysis_confidence: 0.141611 | CL: 0.0256102 | ln_CD: 0.0519279 | CM: 0.00421231 | Top_Xtr: 0.0248744 | Bot_Xtr: 0.0287702
+Loss contributors: 
+	s_ln_CD                  : 1.59295
+	s_CL                     : 1.2469
+	s_CM                     : 0.613927
+	s_analysis_confidence    : 0.246536
+	s_Bot_Xtr                : 0.104041
+	s_Top_Xtr                : 0.0728557
+	s_lower_bl_H_0           : 0.000640776
+	s_lower_bl_H_1           : 0.000607068
+	s_upper_bl_H_31          : 0.000553781
+	s_lower_bl_H_2           : 0.000552647
+Epoch: 22 | Train Loss: 3.77115 | Test Loss: 3.89828 | analysis_confidence: 0.136723 | CL: 0.0285276 | ln_CD: 0.0499972 | CM: 0.00428082 | Top_Xtr: 0.0238136 | Bot_Xtr: 0.0274047
+Loss contributors: 
+	s_ln_CD                  : 1.55382
+	s_CL                     : 1.27759
+	s_CM                     : 0.620231
+	s_analysis_confidence    : 0.245907
+	s_Bot_Xtr                : 0.0962837
+	s_Top_Xtr                : 0.0676588
+	s_lower_bl_H_0           : 0.000641963
+	s_lower_bl_H_1           : 0.000610811
+	s_lower_bl_H_2           : 0.000547379
+	s_upper_bl_H_31          : 0.000533428
+Epoch: 23 | Train Loss: 3.74628 | Test Loss: 3.85131 | analysis_confidence: 0.136009 | CL: 0.0259461 | ln_CD: 0.0505393 | CM: 0.00412711 | Top_Xtr: 0.0234033 | Bot_Xtr: 0.0267784
+Loss contributors: 
+	s_ln_CD                  : 1.56068
+	s_CL                     : 1.23647
+	s_CM                     : 0.602648
+	s_analysis_confidence    : 0.250131
+	s_Bot_Xtr                : 0.0959023
+	s_Top_Xtr                : 0.0684859
+	s_lower_bl_H_0           : 0.00065074
+	s_lower_bl_H_1           : 0.000604626
+	s_lower_bl_H_2           : 0.000550612
+	s_upper_bl_H_31          : 0.000546539
+Epoch: 24 | Train Loss: 3.70925 | Test Loss: 4.24839 | analysis_confidence: 0.143707 | CL: 0.0276643 | ln_CD: 0.0525906 | CM: 0.00442487 | Top_Xtr: 0.0235883 | Bot_Xtr: 0.0266966
+Loss contributors: 
+	s_ln_CD                  : 1.90126
+	s_CL                     : 1.25437
+	s_CM                     : 0.63238
+	s_analysis_confidence    : 0.254075
+	s_Bot_Xtr                : 0.0983722
+	s_Top_Xtr                : 0.0710322
+	s_lower_bl_H_0           : 0.000652529
+	s_lower_bl_H_1           : 0.000596588
+	s_lower_bl_H_2           : 0.000547201
+	s_upper_bl_H_31          : 0.00053271
+Epoch: 25 | Train Loss: 3.68311 | Test Loss: 3.8461 | analysis_confidence: 0.137048 | CL: 0.0261646 | ln_CD: 0.0513736 | CM: 0.00407588 | Top_Xtr: 0.0240908 | Bot_Xtr: 0.0273522
+Loss contributors: 
+	s_ln_CD                  : 1.58001
+	s_CL                     : 1.22751
+	s_CM                     : 0.593479
+	s_analysis_confidence    : 0.243448
+	s_Bot_Xtr                : 0.0961405
+	s_Top_Xtr                : 0.0690211
+	s_lower_bl_H_0           : 0.000648771
+	s_lower_bl_H_1           : 0.000606237
+	s_lower_bl_H_2           : 0.000553121
+	s_upper_bl_H_31          : 0.00053172
+Epoch: 26 | Train Loss: 3.66177 | Test Loss: 3.73834 | analysis_confidence: 0.140264 | CL: 0.0253332 | ln_CD: 0.0525087 | CM: 0.00414536 | Top_Xtr: 0.0233099 | Bot_Xtr: 0.0269022
+Loss contributors: 
+	s_ln_CD                  : 1.51546
+	s_CL                     : 1.18688
+	s_CM                     : 0.593309
+	s_analysis_confidence    : 0.2479
+	s_Bot_Xtr                : 0.0927743
+	s_Top_Xtr                : 0.0661891
+	s_lower_bl_H_0           : 0.000650226
+	s_lower_bl_H_1           : 0.000594113
+	s_lower_bl_H_2           : 0.000538824
+	s_upper_bl_H_31          : 0.000520203
+Epoch: 27 | Train Loss: 3.6299 | Test Loss: 3.64291 | analysis_confidence: 0.136614 | CL: 0.024362 | ln_CD: 0.0499407 | CM: 0.00395541 | Top_Xtr: 0.0231685 | Bot_Xtr: 0.0260205
+Loss contributors: 
+	s_ln_CD                  : 1.46664
+	s_CL                     : 1.16447
+	s_CM                     : 0.573012
+	s_analysis_confidence    : 0.243093
+	s_Bot_Xtr                : 0.0924979
+	s_Top_Xtr                : 0.0674565
+	s_lower_bl_H_0           : 0.000648041
+	s_lower_bl_H_1           : 0.000596114
+	s_lower_bl_H_2           : 0.000548397
+	s_upper_bl_H_31          : 0.00051679
+Epoch: 28 | Train Loss: 3.61403 | Test Loss: 3.79494 | analysis_confidence: 0.136274 | CL: 0.0258691 | ln_CD: 0.0498318 | CM: 0.00408832 | Top_Xtr: 0.0235366 | Bot_Xtr: 0.0265391
+Loss contributors: 
+	s_ln_CD                  : 1.5409
+	s_CL                     : 1.20689
+	s_CM                     : 0.59659
+	s_analysis_confidence    : 0.2498
+	s_Bot_Xtr                : 0.0950894
+	s_Top_Xtr                : 0.0692952
+	s_lower_bl_H_0           : 0.000663292
+	s_lower_bl_H_1           : 0.00060538
+	s_lower_bl_H_2           : 0.000556799
+	s_upper_bl_H_31          : 0.000524068
+Epoch: 29 | Train Loss: 3.58897 | Test Loss: 3.75904 | analysis_confidence: 0.135048 | CL: 0.0239699 | ln_CD: 0.0491243 | CM: 0.00380991 | Top_Xtr: 0.0237875 | Bot_Xtr: 0.0263571
+Loss contributors: 
+	s_ln_CD                  : 1.57399
+	s_CL                     : 1.18424
+	s_CM                     : 0.56521
+	s_analysis_confidence    : 0.240752
+	s_Bot_Xtr                : 0.0909968
+	s_Top_Xtr                : 0.0678878
+	s_lower_bl_H_0           : 0.000669529
+	s_lower_bl_H_1           : 0.000602765
+	s_lower_bl_H_2           : 0.000550716
+	s_upper_bl_H_31          : 0.000522902
+Epoch: 30 | Train Loss: 3.56389 | Test Loss: 3.66346 | analysis_confidence: 0.138138 | CL: 0.0244874 | ln_CD: 0.0494741 | CM: 0.00399512 | Top_Xtr: 0.0225234 | Bot_Xtr: 0.0251976
+Loss contributors: 
+	s_ln_CD                  : 1.50784
+	s_CL                     : 1.15852
+	s_CM                     : 0.565838
+	s_analysis_confidence    : 0.241048
+	s_Bot_Xtr                : 0.0899941
+	s_Top_Xtr                : 0.0646641
+	s_lower_bl_H_0           : 0.000653078
+	s_lower_bl_H_1           : 0.000585804
+	s_lower_bl_H_2           : 0.000536465
+	s_upper_bl_H_31          : 0.000527585
+Epoch: 31 | Train Loss: 3.5479 | Test Loss: 3.64722 | analysis_confidence: 0.13672 | CL: 0.0234092 | ln_CD: 0.0470087 | CM: 0.00380688 | Top_Xtr: 0.0221663 | Bot_Xtr: 0.0251542
+Loss contributors: 
+	s_ln_CD                  : 1.51189
+	s_CL                     : 1.14428
+	s_CM                     : 0.559017
+	s_analysis_confidence    : 0.243808
+	s_Bot_Xtr                : 0.0891107
+	s_Top_Xtr                : 0.0638351
+	s_lower_bl_H_0           : 0.000652379
+	s_lower_bl_H_1           : 0.000593584
+	s_lower_bl_H_2           : 0.000545313
+	s_upper_bl_H_31          : 0.000508309
+Epoch: 32 | Train Loss: 3.51829 | Test Loss: 3.6357 | analysis_confidence: 0.137468 | CL: 0.0252573 | ln_CD: 0.0483586 | CM: 0.00395388 | Top_Xtr: 0.0241725 | Bot_Xtr: 0.0273691
+Loss contributors: 
+	s_ln_CD                  : 1.46218
+	s_CL                     : 1.16614
+	s_CM                     : 0.56137
+	s_analysis_confidence    : 0.242707
+	s_Bot_Xtr                : 0.0974734
+	s_Top_Xtr                : 0.0706005
+	s_lower_bl_H_0           : 0.000650881
+	s_lower_bl_H_1           : 0.000588199
+	s_lower_bl_H_2           : 0.000533633
+	s_upper_bl_H_31          : 0.000504581
+Epoch: 33 | Train Loss: 3.50855 | Test Loss: 3.77251 | analysis_confidence: 0.137169 | CL: 0.0250721 | ln_CD: 0.0501546 | CM: 0.00403651 | Top_Xtr: 0.0222024 | Bot_Xtr: 0.0253189
+Loss contributors: 
+	s_ln_CD                  : 1.56778
+	s_CL                     : 1.19596
+	s_CM                     : 0.580885
+	s_analysis_confidence    : 0.24079
+	s_Bot_Xtr                : 0.0885656
+	s_Top_Xtr                : 0.0630561
+	s_lower_bl_H_0           : 0.000662996
+	s_lower_bl_H_1           : 0.000595034
+	s_lower_bl_H_2           : 0.00054327
+	s_upper_bl_H_31          : 0.000507702
+Epoch: 34 | Train Loss: 3.48486 | Test Loss: 3.75345 | analysis_confidence: 0.135485 | CL: 0.0244677 | ln_CD: 0.059022 | CM: 0.00382328 | Top_Xtr: 0.0229991 | Bot_Xtr: 0.0256405
+Loss contributors: 
+	s_ln_CD                  : 1.61266
+	s_CL                     : 1.16159
+	s_CM                     : 0.547778
+	s_analysis_confidence    : 0.240979
+	s_Bot_Xtr                : 0.0895119
+	s_Top_Xtr                : 0.0655095
+	s_lower_bl_H_0           : 0.000652302
+	s_lower_bl_H_1           : 0.00058529
+	s_lower_bl_H_2           : 0.000543998
+	s_upper_bl_H_31          : 0.000519703
+Epoch: 35 | Train Loss: 3.46861 | Test Loss: 3.6637 | analysis_confidence: 0.132428 | CL: 0.0248129 | ln_CD: 0.0485285 | CM: 0.00389818 | Top_Xtr: 0.0233618 | Bot_Xtr: 0.0275804
+Loss contributors: 
+	s_ln_CD                  : 1.50107
+	s_CL                     : 1.16178
+	s_CM                     : 0.565482
+	s_analysis_confidence    : 0.240072
+	s_Bot_Xtr                : 0.0925977
+	s_Top_Xtr                : 0.0677428
+	s_lower_bl_H_0           : 0.000647956
+	s_lower_bl_H_1           : 0.000582273
+	s_lower_bl_H_2           : 0.000528681
+	s_upper_bl_H_31          : 0.000517058
+Epoch: 36 | Train Loss: 3.45357 | Test Loss: 3.76652 | analysis_confidence: 0.131478 | CL: 0.025166 | ln_CD: 0.0496786 | CM: 0.00392192 | Top_Xtr: 0.022761 | Bot_Xtr: 0.0252236
+Loss contributors: 
+	s_ln_CD                  : 1.50422
+	s_CL                     : 1.26965
+	s_CM                     : 0.56653
+	s_analysis_confidence    : 0.238634
+	s_Bot_Xtr                : 0.0878596
+	s_Top_Xtr                : 0.0642087
+	s_lower_bl_H_0           : 0.000655785
+	s_lower_bl_H_1           : 0.000587415
+	s_lower_bl_H_2           : 0.000537924
+	s_upper_bl_H_31          : 0.000507688
+Epoch: 37 | Train Loss: 3.43489 | Test Loss: 3.58662 | analysis_confidence: 0.138426 | CL: 0.0244059 | ln_CD: 0.0477724 | CM: 0.00386261 | Top_Xtr: 0.0219778 | Bot_Xtr: 0.0249315
+Loss contributors: 
+	s_ln_CD                  : 1.46798
+	s_CL                     : 1.13362
+	s_CM                     : 0.550247
+	s_analysis_confidence    : 0.243962
+	s_Bot_Xtr                : 0.0896894
+	s_Top_Xtr                : 0.0662103
+	s_lower_bl_H_0           : 0.000669671
+	s_lower_bl_H_1           : 0.000584443
+	s_lower_bl_H_2           : 0.000535657
+	s_upper_bl_H_31          : 0.000500136
+Epoch: 38 | Train Loss: 3.42553 | Test Loss: 3.61916 | analysis_confidence: 0.1352 | CL: 0.0273961 | ln_CD: 0.0462459 | CM: 0.00424999 | Top_Xtr: 0.021123 | Bot_Xtr: 0.0243287
+Loss contributors: 
+	s_ln_CD                  : 1.41919
+	s_CL                     : 1.20212
+	s_CM                     : 0.578342
+	s_analysis_confidence    : 0.239549
+	s_Bot_Xtr                : 0.0847683
+	s_Top_Xtr                : 0.0605228
+	s_lower_bl_H_0           : 0.00066151
+	s_lower_bl_H_1           : 0.000585033
+	s_lower_bl_H_2           : 0.000534039
+	s_lower_bl_ret_0         : 0.000494884
+Epoch: 39 | Train Loss: 3.39908 | Test Loss: 3.74909 | analysis_confidence: 0.133163 | CL: 0.0249955 | ln_CD: 0.0486671 | CM: 0.00396808 | Top_Xtr: 0.0233265 | Bot_Xtr: 0.0260251
+Loss contributors: 
+	s_ln_CD                  : 1.58266
+	s_CL                     : 1.16971
+	s_CM                     : 0.560471
+	s_analysis_confidence    : 0.245092
+	s_Bot_Xtr                : 0.0896463
+	s_Top_Xtr                : 0.0662812
+	s_lower_bl_H_0           : 0.000670313
+	s_lower_bl_H_1           : 0.000596887
+	s_lower_bl_H_2           : 0.000553711
+	s_lower_bl_H_3           : 0.000507793
+Epoch: 40 | Train Loss: 3.39802 | Test Loss: 3.53929 | analysis_confidence: 0.135576 | CL: 0.0242427 | ln_CD: 0.0467702 | CM: 0.00390685 | Top_Xtr: 0.021297 | Bot_Xtr: 0.0242291
+Loss contributors: 
+	s_ln_CD                  : 1.43945
+	s_CL                     : 1.13503
+	s_CM                     : 0.546972
+	s_analysis_confidence    : 0.237802
+	s_Bot_Xtr                : 0.0844412
+	s_Top_Xtr                : 0.0611696
+	s_lower_bl_H_0           : 0.000660708
+	s_lower_bl_H_1           : 0.000589485
+	s_lower_bl_H_2           : 0.000540848
+	s_lower_bl_ret_0         : 0.000497657
+Epoch: 41 | Train Loss: 3.37688 | Test Loss: 3.65314 | analysis_confidence: 0.132552 | CL: 0.0250471 | ln_CD: 0.0485498 | CM: 0.00380918 | Top_Xtr: 0.0222382 | Bot_Xtr: 0.024831
+Loss contributors: 
+	s_ln_CD                  : 1.51637
+	s_CL                     : 1.1645
+	s_CM                     : 0.545672
+	s_analysis_confidence    : 0.238727
+	s_Bot_Xtr                : 0.0865743
+	s_Top_Xtr                : 0.0662294
+	s_lower_bl_H_0           : 0.000657418
+	s_lower_bl_H_1           : 0.000587839
+	s_lower_bl_H_2           : 0.000534738
+	s_upper_bl_H_31          : 0.000516537
+Epoch: 42 | Train Loss: 3.35414 | Test Loss: 3.54012 | analysis_confidence: 0.136335 | CL: 0.0236584 | ln_CD: 0.0465746 | CM: 0.00369227 | Top_Xtr: 0.0212336 | Bot_Xtr: 0.0244024
+Loss contributors: 
+	s_ln_CD                  : 1.47663
+	s_CL                     : 1.11538
+	s_CM                     : 0.526127
+	s_analysis_confidence    : 0.238577
+	s_Bot_Xtr                : 0.086781
+	s_Top_Xtr                : 0.0620674
+	s_lower_bl_H_0           : 0.000651991
+	s_lower_bl_H_1           : 0.00058169
+	s_lower_bl_H_2           : 0.000530193
+	s_upper_bl_H_31          : 0.000498456
+Epoch: 43 | Train Loss: 3.34571 | Test Loss: 3.65052 | analysis_confidence: 0.132355 | CL: 0.0238915 | ln_CD: 0.0517405 | CM: 0.0037906 | Top_Xtr: 0.0224821 | Bot_Xtr: 0.0256992
+Loss contributors: 
+	s_ln_CD                  : 1.55207
+	s_CL                     : 1.12963
+	s_CM                     : 0.544283
+	s_analysis_confidence    : 0.23861
+	s_Bot_Xtr                : 0.0882377
+	s_Top_Xtr                : 0.0629842
+	s_lower_bl_H_0           : 0.000667007
+	s_lower_bl_H_1           : 0.000591509
+	s_lower_bl_H_2           : 0.000547091
+	s_lower_bl_ret_0         : 0.000500156
+Epoch: 44 | Train Loss: 3.31591 | Test Loss: 3.43672 | analysis_confidence: 0.13614 | CL: 0.0236276 | ln_CD: 0.0446848 | CM: 0.0036277 | Top_Xtr: 0.0213505 | Bot_Xtr: 0.0240749
+Loss contributors: 
+	s_ln_CD                  : 1.3996
+	s_CL                     : 1.1046
+	s_CM                     : 0.519599
+	s_analysis_confidence    : 0.236901
+	s_Bot_Xtr                : 0.0823628
+	s_Top_Xtr                : 0.0595298
+	s_lower_bl_H_0           : 0.000661764
+	s_lower_bl_H_1           : 0.000587478
+	s_lower_bl_H_2           : 0.00053794
+	s_lower_bl_ret_0         : 0.000495254
+Epoch: 45 | Train Loss: 3.31735 | Test Loss: 3.57207 | analysis_confidence: 0.133132 | CL: 0.0249822 | ln_CD: 0.0469762 | CM: 0.00401931 | Top_Xtr: 0.0214176 | Bot_Xtr: 0.0242971
+Loss contributors: 
+	s_ln_CD                  : 1.4197
+	s_CL                     : 1.17169
+	s_CM                     : 0.561059
+	s_analysis_confidence    : 0.241609
+	s_Bot_Xtr                : 0.083243
+	s_Top_Xtr                : 0.0603274
+	s_lower_bl_H_0           : 0.000653771
+	s_lower_bl_H_1           : 0.000587311
+	s_lower_bl_H_2           : 0.000542952
+	s_lower_bl_ret_0         : 0.000496603
+Epoch: 46 | Train Loss: 3.30264 | Test Loss: 3.55705 | analysis_confidence: 0.130939 | CL: 0.0248358 | ln_CD: 0.0500597 | CM: 0.00375597 | Top_Xtr: 0.0217216 | Bot_Xtr: 0.0244119
+Loss contributors: 
+	s_ln_CD                  : 1.45393
+	s_CL                     : 1.1451
+	s_CM                     : 0.531003
+	s_analysis_confidence    : 0.238467
+	s_Bot_Xtr                : 0.0897751
+	s_Top_Xtr                : 0.0645279
+	s_lower_bl_H_0           : 0.000665425
+	s_lower_bl_H_1           : 0.000587453
+	s_lower_bl_H_2           : 0.000533864
+	s_lower_bl_ret_0         : 0.000497206
+Epoch: 47 | Train Loss: 3.2944 | Test Loss: 3.58086 | analysis_confidence: 0.131406 | CL: 0.0240338 | ln_CD: 0.04761 | CM: 0.00384456 | Top_Xtr: 0.0216243 | Bot_Xtr: 0.0243418
+Loss contributors: 
+	s_ln_CD                  : 1.4701
+	s_CL                     : 1.14815
+	s_CM                     : 0.548596
+	s_analysis_confidence    : 0.237123
+	s_Bot_Xtr                : 0.0826153
+	s_Top_Xtr                : 0.0601074
+	s_lower_bl_H_0           : 0.00065836
+	s_lower_bl_H_1           : 0.000588972
+	s_lower_bl_H_2           : 0.000528359
+	s_lower_bl_ret_0         : 0.000499826
+Epoch: 48 | Train Loss: 3.28014 | Test Loss: 3.62247 | analysis_confidence: 0.131762 | CL: 0.0271745 | ln_CD: 0.0458242 | CM: 0.00398635 | Top_Xtr: 0.021538 | Bot_Xtr: 0.0250828
+Loss contributors: 
+	s_ln_CD                  : 1.45864
+	s_CL                     : 1.18409
+	s_CM                     : 0.560893
+	s_analysis_confidence    : 0.238818
+	s_Bot_Xtr                : 0.0852658
+	s_Top_Xtr                : 0.0604513
+	s_lower_bl_H_0           : 0.000651831
+	s_lower_bl_H_1           : 0.000582233
+	s_lower_bl_H_2           : 0.000530717
+	s_lower_bl_ret_0         : 0.000494981
+Epoch: 49 | Train Loss: 3.25919 | Test Loss: 3.47549 | analysis_confidence: 0.132836 | CL: 0.0237577 | ln_CD: 0.0475277 | CM: 0.00375821 | Top_Xtr: 0.0255488 | Bot_Xtr: 0.0288528
+Loss contributors: 
+	s_ln_CD                  : 1.41905
+	s_CL                     : 1.09015
+	s_CM                     : 0.524221
+	s_analysis_confidence    : 0.235844
+	s_Bot_Xtr                : 0.0983403
+	s_Top_Xtr                : 0.0743992
+	s_lower_bl_H_0           : 0.000651771
+	s_lower_bl_H_1           : 0.00057937
+	s_lower_bl_H_2           : 0.000534099
+	s_lower_bl_ret_0         : 0.000487625
+Epoch: 50 | Train Loss: 3.24855 | Test Loss: 3.52604 | analysis_confidence: 0.132732 | CL: 0.023757 | ln_CD: 0.0464871 | CM: 0.0038728 | Top_Xtr: 0.0214213 | Bot_Xtr: 0.0238876
+Loss contributors: 
+	s_ln_CD                  : 1.44229
+	s_CL                     : 1.12558
+	s_CM                     : 0.542946
+	s_analysis_confidence    : 0.237914
+	s_Bot_Xtr                : 0.082322
+	s_Top_Xtr                : 0.0605145
+	s_lower_bl_H_0           : 0.000655876
+	s_lower_bl_H_1           : 0.000598852
+	s_lower_bl_H_2           : 0.000546723
+	s_lower_bl_ret_0         : 0.000502527
+Epoch: 51 | Train Loss: 3.24665 | Test Loss: 3.4616 | analysis_confidence: 0.133602 | CL: 0.0242935 | ln_CD: 0.0481258 | CM: 0.00365538 | Top_Xtr: 0.022104 | Bot_Xtr: 0.0253447
+Loss contributors: 
+	s_ln_CD                  : 1.41958
+	s_CL                     : 1.10827
+	s_CM                     : 0.517711
+	s_analysis_confidence    : 0.237242
+	s_Bot_Xtr                : 0.0837108
+	s_Top_Xtr                : 0.0611135
+	s_lower_bl_H_0           : 0.000651756
+	s_lower_bl_H_1           : 0.000583808
+	s_lower_bl_H_2           : 0.000538888
+	s_lower_bl_ret_0         : 0.000501349
+Epoch: 52 | Train Loss: 3.2306 | Test Loss: 3.46499 | analysis_confidence: 0.132082 | CL: 0.0236766 | ln_CD: 0.0449591 | CM: 0.00389649 | Top_Xtr: 0.0223235 | Bot_Xtr: 0.0251485
+Loss contributors: 
+	s_ln_CD                  : 1.40687
+	s_CL                     : 1.10651
+	s_CM                     : 0.535163
+	s_analysis_confidence    : 0.23557
+	s_Bot_Xtr                : 0.0845856
+	s_Top_Xtr                : 0.0621917
+	s_lower_bl_H_0           : 0.000648657
+	s_lower_bl_H_1           : 0.000586902
+	s_lower_bl_H_2           : 0.000531928
+	s_lower_bl_ret_0         : 0.000498608
+Epoch: 53 | Train Loss: 3.22244 | Test Loss: 3.45216 | analysis_confidence: 0.135684 | CL: 0.024335 | ln_CD: 0.0456114 | CM: 0.00369293 | Top_Xtr: 0.0218912 | Bot_Xtr: 0.025122
+Loss contributors: 
+	s_ln_CD                  : 1.4252
+	s_CL                     : 1.09556
+	s_CM                     : 0.515676
+	s_analysis_confidence    : 0.235967
+	s_Bot_Xtr                : 0.0849709
+	s_Top_Xtr                : 0.0612289
+	s_lower_bl_H_0           : 0.000645109
+	s_lower_bl_H_1           : 0.000582224
+	s_lower_bl_H_2           : 0.000533075
+	s_lower_bl_ret_0         : 0.000496107
+Epoch: 54 | Train Loss: 3.21019 | Test Loss: 3.49595 | analysis_confidence: 0.130762 | CL: 0.0247667 | ln_CD: 0.051545 | CM: 0.00383002 | Top_Xtr: 0.0224879 | Bot_Xtr: 0.0248858
+Loss contributors: 
+	s_ln_CD                  : 1.43361
+	s_CL                     : 1.11312
+	s_CM                     : 0.53006
+	s_analysis_confidence    : 0.23863
+	s_Bot_Xtr                : 0.0854487
+	s_Top_Xtr                : 0.0610777
+	s_lower_bl_H_0           : 0.000664133
+	s_lower_bl_H_1           : 0.000584352
+	s_lower_bl_H_2           : 0.000535142
+	s_lower_bl_ret_0         : 0.000495966
+Epoch: 55 | Train Loss: 3.19022 | Test Loss: 3.4342 | analysis_confidence: 0.132498 | CL: 0.0227956 | ln_CD: 0.0466921 | CM: 0.00367503 | Top_Xtr: 0.0214025 | Bot_Xtr: 0.0238409
+Loss contributors: 
+	s_ln_CD                  : 1.4184
+	s_CL                     : 1.08264
+	s_CM                     : 0.519598
+	s_analysis_confidence    : 0.23601
+	s_Bot_Xtr                : 0.0830003
+	s_Top_Xtr                : 0.0609821
+	s_lower_bl_H_0           : 0.000668459
+	s_lower_bl_H_1           : 0.000586753
+	s_lower_bl_H_2           : 0.000540195
+	s_lower_bl_ret_0         : 0.000498391
+Epoch: 56 | Train Loss: 3.18525 | Test Loss: 3.43426 | analysis_confidence: 0.130579 | CL: 0.0240612 | ln_CD: 0.0479218 | CM: 0.00371208 | Top_Xtr: 0.0209053 | Bot_Xtr: 0.024009
+Loss contributors: 
+	s_ln_CD                  : 1.41231
+	s_CL                     : 1.09227
+	s_CM                     : 0.518934
+	s_analysis_confidence    : 0.236222
+	s_Bot_Xtr                : 0.0823855
+	s_Top_Xtr                : 0.0586721
+	s_lower_bl_H_0           : 0.000641452
+	s_lower_bl_H_1           : 0.000579566
+	s_lower_bl_H_2           : 0.000529765
+	s_lower_bl_ret_0         : 0.00049843
+Epoch: 57 | Train Loss: 3.17307 | Test Loss: 3.46569 | analysis_confidence: 0.128088 | CL: 0.0229691 | ln_CD: 0.0469621 | CM: 0.00373111 | Top_Xtr: 0.0216147 | Bot_Xtr: 0.0237883
+Loss contributors: 
+	s_ln_CD                  : 1.42946
+	s_CL                     : 1.09745
+	s_CM                     : 0.525551
+	s_analysis_confidence    : 0.235787
+	s_Bot_Xtr                : 0.0818177
+	s_Top_Xtr                : 0.061992
+	s_lower_bl_H_0           : 0.000653689
+	s_lower_bl_H_1           : 0.000589142
+	s_lower_bl_H_2           : 0.00052317
+	s_lower_bl_ret_0         : 0.000501391
+Epoch: 58 | Train Loss: 3.15753 | Test Loss: 3.52512 | analysis_confidence: 0.129304 | CL: 0.0246486 | ln_CD: 0.0450401 | CM: 0.00393904 | Top_Xtr: 0.0205682 | Bot_Xtr: 0.0233787
+Loss contributors: 
+	s_ln_CD                  : 1.44542
+	s_CL                     : 1.12575
+	s_CM                     : 0.54082
+	s_analysis_confidence    : 0.233989
+	s_Bot_Xtr                : 0.0852162
+	s_Top_Xtr                : 0.0604546
+	s_lower_bl_H_0           : 0.000653219
+	s_lower_bl_H_1           : 0.000577993
+	s_lower_bl_H_2           : 0.000524786
+	s_upper_bl_H_31          : 0.000500763
+Epoch: 59 | Train Loss: 3.14796 | Test Loss: 3.38447 | analysis_confidence: 0.133635 | CL: 0.0238681 | ln_CD: 0.0446924 | CM: 0.00369967 | Top_Xtr: 0.0208917 | Bot_Xtr: 0.0234831
+Loss contributors: 
+	s_ln_CD                  : 1.37261
+	s_CL                     : 1.08729
+	s_CM                     : 0.518587
+	s_analysis_confidence    : 0.234131
+	s_Bot_Xtr                : 0.080522
+	s_Top_Xtr                : 0.057952
+	s_lower_bl_H_0           : 0.000649709
+	s_lower_bl_H_1           : 0.000578763
+	s_lower_bl_H_2           : 0.00051787
+	s_lower_bl_ret_0         : 0.000498569
+Epoch: 60 | Train Loss: 3.13439 | Test Loss: 3.43735 | analysis_confidence: 0.129403 | CL: 0.0231182 | ln_CD: 0.0439564 | CM: 0.00368369 | Top_Xtr: 0.0206985 | Bot_Xtr: 0.0236629
+Loss contributors: 
+	s_ln_CD                  : 1.43066
+	s_CL                     : 1.07271
+	s_CM                     : 0.520317
+	s_analysis_confidence    : 0.238158
+	s_Bot_Xtr                : 0.0831619
+	s_Top_Xtr                : 0.0586521
+	s_lower_bl_H_0           : 0.000663687
+	s_lower_bl_H_1           : 0.000580355
+	s_lower_bl_H_2           : 0.0005217
+	s_lower_bl_ret_0         : 0.000501877
+Epoch: 61 | Train Loss: 3.13324 | Test Loss: 3.31503 | analysis_confidence: 0.137273 | CL: 0.0228403 | ln_CD: 0.0439493 | CM: 0.00377127 | Top_Xtr: 0.020713 | Bot_Xtr: 0.0233857
+Loss contributors: 
+	s_ln_CD                  : 1.34125
+	s_CL                     : 1.05175
+	s_CM                     : 0.513576
+	s_analysis_confidence    : 0.237622
+	s_Bot_Xtr                : 0.079385
+	s_Top_Xtr                : 0.0580075
+	s_lower_bl_H_0           : 0.00066527
+	s_lower_bl_H_1           : 0.000587475
+	s_lower_bl_H_2           : 0.000530026
+	s_lower_bl_ret_0         : 0.000506066
+Epoch: 62 | Train Loss: 3.11912 | Test Loss: 3.4147 | analysis_confidence: 0.133223 | CL: 0.0229959 | ln_CD: 0.0466808 | CM: 0.00369252 | Top_Xtr: 0.0210674 | Bot_Xtr: 0.0238016
+Loss contributors: 
+	s_ln_CD                  : 1.40147
+	s_CL                     : 1.07969
+	s_CM                     : 0.518428
+	s_analysis_confidence    : 0.234135
+	s_Bot_Xtr                : 0.0857303
+	s_Top_Xtr                : 0.061846
+	s_lower_bl_H_0           : 0.000655823
+	s_lower_bl_H_1           : 0.00058078
+	s_lower_bl_H_2           : 0.000519306
+	s_lower_bl_ret_0         : 0.000501204
+Epoch: 63 | Train Loss: 3.10921 | Test Loss: 3.36994 | analysis_confidence: 0.136882 | CL: 0.023005 | ln_CD: 0.0445862 | CM: 0.00361663 | Top_Xtr: 0.0201436 | Bot_Xtr: 0.0228197
+Loss contributors: 
+	s_ln_CD                  : 1.38004
+	s_CL                     : 1.07529
+	s_CM                     : 0.506439
+	s_analysis_confidence    : 0.239436
+	s_Bot_Xtr                : 0.0787566
+	s_Top_Xtr                : 0.0566438
+	s_lower_bl_H_0           : 0.000656715
+	s_lower_bl_H_1           : 0.000580658
+	s_lower_bl_H_2           : 0.000524225
+	s_lower_bl_ret_0         : 0.000502947
+Epoch: 64 | Train Loss: 3.09619 | Test Loss: 3.42945 | analysis_confidence: 0.131924 | CL: 0.0239004 | ln_CD: 0.0431968 | CM: 0.004007 | Top_Xtr: 0.0211923 | Bot_Xtr: 0.0243596
+Loss contributors: 
+	s_ln_CD                  : 1.39194
+	s_CL                     : 1.09259
+	s_CM                     : 0.540359
+	s_analysis_confidence    : 0.235717
+	s_Bot_Xtr                : 0.0787657
+	s_Top_Xtr                : 0.0566487
+	s_lower_bl_H_0           : 0.000647924
+	s_lower_bl_H_1           : 0.000575887
+	s_lower_bl_H_2           : 0.000512375
+	s_lower_bl_ret_0         : 0.00051106
+Epoch: 65 | Train Loss: 3.0859 | Test Loss: 3.38217 | analysis_confidence: 0.135936 | CL: 0.0243954 | ln_CD: 0.0447955 | CM: 0.00368336 | Top_Xtr: 0.021393 | Bot_Xtr: 0.0236458
+Loss contributors: 
+	s_ln_CD                  : 1.37189
+	s_CL                     : 1.09556
+	s_CM                     : 0.508708
+	s_analysis_confidence    : 0.23666
+	s_Bot_Xtr                : 0.0785809
+	s_Top_Xtr                : 0.0575899
+	s_lower_bl_H_0           : 0.000663149
+	s_lower_bl_H_1           : 0.000583928
+	s_lower_bl_H_2           : 0.000529506
+	s_lower_bl_ret_0         : 0.000509281
+Epoch: 66 | Train Loss: 3.06926 | Test Loss: 3.40052 | analysis_confidence: 0.133733 | CL: 0.024566 | ln_CD: 0.0469382 | CM: 0.00383944 | Top_Xtr: 0.02124 | Bot_Xtr: 0.0236022
+Loss contributors: 
+	s_ln_CD                  : 1.37166
+	s_CL                     : 1.10324
+	s_CM                     : 0.522373
+	s_analysis_confidence    : 0.233465
+	s_Bot_Xtr                : 0.0791473
+	s_Top_Xtr                : 0.0572286
+	s_lower_bl_H_0           : 0.000663146
+	s_lower_bl_H_1           : 0.000585471
+	s_lower_bl_H_2           : 0.000528937
+	s_lower_bl_ret_0         : 0.000505464
+Epoch: 67 | Train Loss: 3.06855 | Test Loss: 3.34661 | analysis_confidence: 0.131372 | CL: 0.0234873 | ln_CD: 0.0497643 | CM: 0.00358048 | Top_Xtr: 0.0205218 | Bot_Xtr: 0.0227953
+Loss contributors: 
+	s_ln_CD                  : 1.38894
+	s_CL                     : 1.05963
+	s_CM                     : 0.501358
+	s_analysis_confidence    : 0.233368
+	s_Bot_Xtr                : 0.075959
+	s_Top_Xtr                : 0.0540896
+	s_lower_bl_H_0           : 0.000652694
+	s_lower_bl_H_1           : 0.000585
+	s_lower_bl_H_2           : 0.000532551
+	s_lower_bl_ret_0         : 0.00050059
+Epoch: 68 | Train Loss: 3.05351 | Test Loss: 3.50396 | analysis_confidence: 0.130737 | CL: 0.0249762 | ln_CD: 0.0438536 | CM: 0.00379504 | Top_Xtr: 0.0204821 | Bot_Xtr: 0.0234422
+Loss contributors: 
+	s_ln_CD                  : 1.41397
+	s_CL                     : 1.16452
+	s_CM                     : 0.523744
+	s_analysis_confidence    : 0.234316
+	s_Bot_Xtr                : 0.0786305
+	s_Top_Xtr                : 0.0555306
+	s_lower_bl_H_0           : 0.000659863
+	s_lower_bl_H_1           : 0.000587232
+	s_lower_bl_H_2           : 0.000530319
+	s_lower_bl_ret_0         : 0.000502891
+Epoch: 69 | Train Loss: 3.04631 | Test Loss: 3.46029 | analysis_confidence: 0.133509 | CL: 0.0237515 | ln_CD: 0.0479515 | CM: 0.00385308 | Top_Xtr: 0.0218262 | Bot_Xtr: 0.0240343
+Loss contributors: 
+	s_ln_CD                  : 1.42394
+	s_CL                     : 1.10359
+	s_CM                     : 0.530687
+	s_analysis_confidence    : 0.234771
+	s_Bot_Xtr                : 0.0777586
+	s_Top_Xtr                : 0.05595
+	s_lower_bl_H_0           : 0.000660652
+	s_lower_bl_H_1           : 0.000579297
+	s_lower_bl_H_2           : 0.000533747
+	s_lower_bl_ret_0         : 0.000505606
+Epoch: 70 | Train Loss: 3.0363 | Test Loss: 3.40435 | analysis_confidence: 0.131801 | CL: 0.0234169 | ln_CD: 0.0493281 | CM: 0.00365967 | Top_Xtr: 0.0212612 | Bot_Xtr: 0.0236237
+Loss contributors: 
+	s_ln_CD                  : 1.39237
+	s_CL                     : 1.08498
+	s_CM                     : 0.516448
+	s_analysis_confidence    : 0.234405
+	s_Bot_Xtr                : 0.0829738
+	s_Top_Xtr                : 0.0598649
+	s_lower_bl_H_0           : 0.000657293
+	s_lower_bl_H_1           : 0.000585166
+	s_lower_bl_H_2           : 0.000525178
+	s_lower_bl_ret_0         : 0.000502891
+Epoch: 71 | Train Loss: 3.023 | Test Loss: 3.52885 | analysis_confidence: 0.133517 | CL: 0.0236836 | ln_CD: 0.0472896 | CM: 0.00382298 | Top_Xtr: 0.0203704 | Bot_Xtr: 0.0228616
+Loss contributors: 
+	s_ln_CD                  : 1.47993
+	s_CL                     : 1.11351
+	s_CM                     : 0.538126
+	s_analysis_confidence    : 0.233904
+	s_Bot_Xtr                : 0.0759374
+	s_Top_Xtr                : 0.053613
+	s_lower_bl_H_0           : 0.000669185
+	s_lower_bl_H_1           : 0.000587889
+	s_lower_bl_H_2           : 0.00053918
+	s_lower_bl_ret_0         : 0.000504102
+Epoch: 72 | Train Loss: 3.01177 | Test Loss: 3.49444 | analysis_confidence: 0.130627 | CL: 0.0233306 | ln_CD: 0.058032 | CM: 0.00365652 | Top_Xtr: 0.019747 | Bot_Xtr: 0.0222636
+Loss contributors: 
+	s_ln_CD                  : 1.52008
+	s_CL                     : 1.07751
+	s_CM                     : 0.503672
+	s_analysis_confidence    : 0.235516
+	s_Bot_Xtr                : 0.0743967
+	s_Top_Xtr                : 0.049943
+	s_lower_bl_H_0           : 0.000665923
+	s_lower_bl_H_1           : 0.00058741
+	s_lower_bl_H_2           : 0.00053466
+	s_lower_bl_ret_0         : 0.00051454
+Epoch: 73 | Train Loss: 3.00096 | Test Loss: 3.36855 | analysis_confidence: 0.129805 | CL: 0.0242961 | ln_CD: 0.0478336 | CM: 0.00359319 | Top_Xtr: 0.020587 | Bot_Xtr: 0.0237941
+Loss contributors: 
+	s_ln_CD                  : 1.38201
+	s_CL                     : 1.08977
+	s_CM                     : 0.500119
+	s_analysis_confidence    : 0.233802
+	s_Bot_Xtr                : 0.0778594
+	s_Top_Xtr                : 0.0512439
+	s_lower_bl_H_0           : 0.000671214
+	s_lower_bl_H_1           : 0.00058319
+	s_lower_bl_H_2           : 0.000526291
+	s_lower_bl_ret_0         : 0.000502975
+Epoch: 74 | Train Loss: 2.98971 | Test Loss: 3.37166 | analysis_confidence: 0.135999 | CL: 0.0242308 | ln_CD: 0.0456869 | CM: 0.0036578 | Top_Xtr: 0.0196104 | Bot_Xtr: 0.0222177
+Loss contributors: 
+	s_ln_CD                  : 1.3797
+	s_CL                     : 1.08812
+	s_CM                     : 0.510253
+	s_analysis_confidence    : 0.236187
+	s_Bot_Xtr                : 0.0743947
+	s_Top_Xtr                : 0.0498354
+	s_lower_bl_H_0           : 0.000660675
+	s_lower_bl_H_1           : 0.000579713
+	s_lower_bl_H_2           : 0.000517084
+	s_lower_bl_ret_0         : 0.000503647
+Epoch: 75 | Train Loss: 2.97761 | Test Loss: 3.31119 | analysis_confidence: 0.130238 | CL: 0.0228826 | ln_CD: 0.046117 | CM: 0.00352685 | Top_Xtr: 0.0216851 | Bot_Xtr: 0.0238161
+Loss contributors: 
+	s_ln_CD                  : 1.36108
+	s_CL                     : 1.06168
+	s_CM                     : 0.497508
+	s_analysis_confidence    : 0.232385
+	s_Bot_Xtr                : 0.0738211
+	s_Top_Xtr                : 0.0514933
+	s_lower_bl_H_0           : 0.000673542
+	s_lower_bl_H_1           : 0.000581144
+	s_lower_bl_H_2           : 0.000520328
+	s_lower_bl_ret_0         : 0.000505457
+Epoch: 76 | Train Loss: 2.9694 | Test Loss: 3.39434 | analysis_confidence: 0.131829 | CL: 0.0220428 | ln_CD: 0.0484142 | CM: 0.00372021 | Top_Xtr: 0.0200588 | Bot_Xtr: 0.0229138
+Loss contributors: 
+	s_ln_CD                  : 1.44477
+	s_CL                     : 1.04632
+	s_CM                     : 0.514561
+	s_analysis_confidence    : 0.232403
+	s_Bot_Xtr                : 0.0746734
+	s_Top_Xtr                : 0.0487406
+	s_lower_bl_H_0           : 0.000666824
+	s_lower_bl_H_1           : 0.000581515
+	s_lower_bl_H_2           : 0.00052103
+	s_lower_bl_ret_0         : 0.000507031
+Epoch: 77 | Train Loss: 2.96069 | Test Loss: 3.35691 | analysis_confidence: 0.131257 | CL: 0.0225524 | ln_CD: 0.044766 | CM: 0.00408101 | Top_Xtr: 0.0198527 | Bot_Xtr: 0.0229204
+Loss contributors: 
+	s_ln_CD                  : 1.36959
+	s_CL                     : 1.0671
+	s_CM                     : 0.533943
+	s_analysis_confidence    : 0.232936
+	s_Bot_Xtr                : 0.0723139
+	s_Top_Xtr                : 0.047788
+	s_lower_bl_H_0           : 0.00066816
+	s_lower_bl_H_1           : 0.000582363
+	s_lower_bl_ret_0         : 0.0005144
+	s_lower_bl_H_2           : 0.000511981
+Epoch: 78 | Train Loss: 2.96017 | Test Loss: 3.34009 | analysis_confidence: 0.132069 | CL: 0.0236785 | ln_CD: 0.0476413 | CM: 0.00358738 | Top_Xtr: 0.0195521 | Bot_Xtr: 0.0223732
+Loss contributors: 
+	s_ln_CD                  : 1.37618
+	s_CL                     : 1.07587
+	s_CM                     : 0.499714
+	s_analysis_confidence    : 0.233929
+	s_Bot_Xtr                : 0.0736503
+	s_Top_Xtr                : 0.0477145
+	s_lower_bl_H_0           : 0.000666038
+	s_lower_bl_H_1           : 0.000584233
+	s_lower_bl_H_2           : 0.000521189
+	s_lower_bl_ret_0         : 0.000506127
+Epoch: 79 | Train Loss: 2.941 | Test Loss: 3.29865 | analysis_confidence: 0.131296 | CL: 0.0238618 | ln_CD: 0.0450987 | CM: 0.00367505 | Top_Xtr: 0.0204495 | Bot_Xtr: 0.0230198
+Loss contributors: 
+	s_ln_CD                  : 1.33434
+	s_CL                     : 1.06948
+	s_CM                     : 0.503885
+	s_analysis_confidence    : 0.237469
+	s_Bot_Xtr                : 0.0721222
+	s_Top_Xtr                : 0.0485717
+	s_lower_bl_H_0           : 0.000687251
+	s_lower_bl_H_1           : 0.000590405
+	s_lower_bl_H_2           : 0.000525389
+	s_lower_bl_ret_0         : 0.00051325
+Epoch: 80 | Train Loss: 2.93964 | Test Loss: 3.33341 | analysis_confidence: 0.130254 | CL: 0.0230605 | ln_CD: 0.0491517 | CM: 0.00355091 | Top_Xtr: 0.0199443 | Bot_Xtr: 0.0233278
+Loss contributors: 
+	s_ln_CD                  : 1.38339
+	s_CL                     : 1.0617
+	s_CM                     : 0.498567
+	s_analysis_confidence    : 0.232855
+	s_Bot_Xtr                : 0.0748081
+	s_Top_Xtr                : 0.0491786
+	s_lower_bl_H_0           : 0.000674093
+	s_lower_bl_H_1           : 0.000584155
+	s_lower_bl_H_2           : 0.000528362
+	s_lower_bl_ret_0         : 0.000514129
+Epoch: 81 | Train Loss: 2.92294 | Test Loss: 3.30298 | analysis_confidence: 0.133733 | CL: 0.0240818 | ln_CD: 0.0488986 | CM: 0.00360926 | Top_Xtr: 0.019883 | Bot_Xtr: 0.0225713
+Loss contributors: 
+	s_ln_CD                  : 1.3631
+	s_CL                     : 1.062
+	s_CM                     : 0.494223
+	s_analysis_confidence    : 0.2334
+	s_Bot_Xtr                : 0.070937
+	s_Top_Xtr                : 0.0466717
+	s_lower_bl_H_0           : 0.000681227
+	s_lower_bl_H_1           : 0.000586062
+	s_lower_bl_H_2           : 0.000515074
+	s_lower_bl_ret_0         : 0.000503329
+Epoch: 82 | Train Loss: 2.91402 | Test Loss: 3.34942 | analysis_confidence: 0.131023 | CL: 0.0243306 | ln_CD: 0.0455011 | CM: 0.00368132 | Top_Xtr: 0.0190717 | Bot_Xtr: 0.0222429
+Loss contributors: 
+	s_ln_CD                  : 1.33845
+	s_CL                     : 1.11758
+	s_CM                     : 0.511754
+	s_analysis_confidence    : 0.232656
+	s_Bot_Xtr                : 0.0706811
+	s_Top_Xtr                : 0.0452063
+	s_lower_bl_H_0           : 0.000675177
+	s_lower_bl_H_1           : 0.000575319
+	s_lower_bl_H_2           : 0.000507128
+	s_lower_bl_ret_0         : 0.000504018
+Epoch: 83 | Train Loss: 2.91157 | Test Loss: 3.55027 | analysis_confidence: 0.129824 | CL: 0.0275917 | ln_CD: 0.0528848 | CM: 0.00431906 | Top_Xtr: 0.0204925 | Bot_Xtr: 0.0232571
+Loss contributors: 
+	s_ln_CD                  : 1.44372
+	s_CL                     : 1.1596
+	s_CM                     : 0.561119
+	s_analysis_confidence    : 0.234555
+	s_Bot_Xtr                : 0.0706454
+	s_Top_Xtr                : 0.0473727
+	s_lower_bl_H_0           : 0.000672767
+	s_lower_bl_H_1           : 0.000582002
+	s_lower_bl_ret_0         : 0.000515157
+	s_lower_bl_H_2           : 0.00051159
+Epoch: 84 | Train Loss: 2.90286 | Test Loss: 3.26402 | analysis_confidence: 0.131055 | CL: 0.0237866 | ln_CD: 0.043264 | CM: 0.00361731 | Top_Xtr: 0.0190696 | Bot_Xtr: 0.0217496
+Loss contributors: 
+	s_ln_CD                  : 1.31834
+	s_CL                     : 1.06636
+	s_CM                     : 0.496859
+	s_analysis_confidence    : 0.231488
+	s_Bot_Xtr                : 0.0722962
+	s_Top_Xtr                : 0.0458414
+	s_lower_bl_H_0           : 0.000676425
+	s_lower_bl_H_1           : 0.000589237
+	s_lower_bl_H_2           : 0.000514095
+	s_lower_bl_ret_0         : 0.000507528
+Epoch: 85 | Train Loss: 2.8845 | Test Loss: 3.2191 | analysis_confidence: 0.128534 | CL: 0.0231552 | ln_CD: 0.0420162 | CM: 0.00355261 | Top_Xtr: 0.0200346 | Bot_Xtr: 0.0221955
+Loss contributors: 
+	s_ln_CD                  : 1.29662
+	s_CL                     : 1.04984
+	s_CM                     : 0.491068
+	s_analysis_confidence    : 0.232322
+	s_Bot_Xtr                : 0.0695303
+	s_Top_Xtr                : 0.0469477
+	s_lower_bl_H_0           : 0.000674591
+	s_lower_bl_H_1           : 0.00058357
+	s_lower_bl_H_2           : 0.0005119
+	s_lower_bl_ret_0         : 0.000506739
+Epoch: 86 | Train Loss: 2.88587 | Test Loss: 3.20094 | analysis_confidence: 0.130138 | CL: 0.022303 | ln_CD: 0.0425808 | CM: 0.0035119 | Top_Xtr: 0.019474 | Bot_Xtr: 0.0222271
+Loss contributors: 
+	s_ln_CD                  : 1.29129
+	s_CL                     : 1.05061
+	s_CM                     : 0.48272
+	s_analysis_confidence    : 0.231581
+	s_Bot_Xtr                : 0.0678944
+	s_Top_Xtr                : 0.0440019
+	s_lower_bl_H_0           : 0.000667618
+	s_lower_bl_H_1           : 0.000583674
+	s_lower_bl_H_2           : 0.000510713
+	s_lower_bl_ret_0         : 0.000508533
+Epoch: 87 | Train Loss: 2.87545 | Test Loss: 3.3095 | analysis_confidence: 0.131489 | CL: 0.0224001 | ln_CD: 0.0424996 | CM: 0.00359443 | Top_Xtr: 0.0199356 | Bot_Xtr: 0.0230343
+Loss contributors: 
+	s_ln_CD                  : 1.36217
+	s_CL                     : 1.05858
+	s_CM                     : 0.504942
+	s_analysis_confidence    : 0.23186
+	s_Bot_Xtr                : 0.0716047
+	s_Top_Xtr                : 0.0469202
+	s_lower_bl_H_0           : 0.000683666
+	s_lower_bl_H_1           : 0.000590728
+	s_lower_bl_H_2           : 0.000523126
+	s_lower_bl_ret_0         : 0.000514869
+Epoch: 88 | Train Loss: 2.8669 | Test Loss: 3.27929 | analysis_confidence: 0.135224 | CL: 0.0230521 | ln_CD: 0.0431204 | CM: 0.00380404 | Top_Xtr: 0.019242 | Bot_Xtr: 0.0216694
+Loss contributors: 
+	s_ln_CD                  : 1.29938
+	s_CL                     : 1.07908
+	s_CM                     : 0.516818
+	s_analysis_confidence    : 0.237381
+	s_Bot_Xtr                : 0.0692142
+	s_Top_Xtr                : 0.044583
+	s_lower_bl_H_0           : 0.000681224
+	s_lower_bl_H_1           : 0.000586061
+	s_lower_bl_H_2           : 0.000520036
+	s_lower_bl_ret_0         : 0.000512797
+Epoch: 89 | Train Loss: 2.85675 | Test Loss: 3.33649 | analysis_confidence: 0.132928 | CL: 0.0228784 | ln_CD: 0.0425178 | CM: 0.00375308 | Top_Xtr: 0.0190811 | Bot_Xtr: 0.0214401
+Loss contributors: 
+	s_ln_CD                  : 1.32316
+	s_CL                     : 1.1177
+	s_CM                     : 0.508154
+	s_analysis_confidence    : 0.236569
+	s_Bot_Xtr                : 0.0699938
+	s_Top_Xtr                : 0.0475051
+	s_lower_bl_H_0           : 0.00068594
+	s_lower_bl_H_1           : 0.000582781
+	s_lower_bl_H_2           : 0.000511573
+	s_lower_bl_ret_0         : 0.000506587
+Epoch: 90 | Train Loss: 2.8527 | Test Loss: 3.29143 | analysis_confidence: 0.132159 | CL: 0.0224422 | ln_CD: 0.0428698 | CM: 0.0034711 | Top_Xtr: 0.0200248 | Bot_Xtr: 0.0231691
+Loss contributors: 
+	s_ln_CD                  : 1.35597
+	s_CL                     : 1.06689
+	s_CM                     : 0.487281
+	s_analysis_confidence    : 0.232809
+	s_Bot_Xtr                : 0.0700949
+	s_Top_Xtr                : 0.0458275
+	s_lower_bl_H_0           : 0.00068118
+	s_lower_bl_H_1           : 0.000580681
+	s_lower_bl_H_2           : 0.000518641
+	s_lower_bl_ret_0         : 0.000506734
+Epoch: 91 | Train Loss: 2.842 | Test Loss: 3.27517 | analysis_confidence: 0.129573 | CL: 0.022492 | ln_CD: 0.0457146 | CM: 0.00358878 | Top_Xtr: 0.0200908 | Bot_Xtr: 0.0228573
+Loss contributors: 
+	s_ln_CD                  : 1.35858
+	s_CL                     : 1.04068
+	s_CM                     : 0.493608
+	s_analysis_confidence    : 0.231513
+	s_Bot_Xtr                : 0.0704601
+	s_Top_Xtr                : 0.0477825
+	s_lower_bl_H_0           : 0.000682051
+	s_lower_bl_H_1           : 0.000586239
+	s_lower_bl_H_2           : 0.000518187
+	s_lower_bl_ret_0         : 0.000506217
+Epoch: 92 | Train Loss: 2.84076 | Test Loss: 3.27046 | analysis_confidence: 0.131326 | CL: 0.0225948 | ln_CD: 0.0441665 | CM: 0.00363197 | Top_Xtr: 0.0193679 | Bot_Xtr: 0.0219967
+Loss contributors: 
+	s_ln_CD                  : 1.34031
+	s_CL                     : 1.05088
+	s_CM                     : 0.499149
+	s_analysis_confidence    : 0.23286
+	s_Bot_Xtr                : 0.0695876
+	s_Top_Xtr                : 0.0448971
+	s_lower_bl_H_0           : 0.000687628
+	s_lower_bl_H_1           : 0.000585341
+	s_lower_bl_H_2           : 0.000518925
+	s_lower_bl_ret_0         : 0.000509592
+Epoch: 93 | Train Loss: 2.83072 | Test Loss: 3.26608 | analysis_confidence: 0.132555 | CL: 0.0229916 | ln_CD: 0.0436593 | CM: 0.00365796 | Top_Xtr: 0.0191005 | Bot_Xtr: 0.0218562
+Loss contributors: 
+	s_ln_CD                  : 1.31065
+	s_CL                     : 1.07641
+	s_CM                     : 0.499921
+	s_analysis_confidence    : 0.231538
+	s_Bot_Xtr                : 0.0690876
+	s_Top_Xtr                : 0.0456219
+	s_lower_bl_H_0           : 0.000676935
+	s_lower_bl_H_1           : 0.000581424
+	s_lower_bl_H_2           : 0.000518401
+	s_lower_bl_ret_0         : 0.00050592
+Epoch: 94 | Train Loss: 2.81524 | Test Loss: 3.38629 | analysis_confidence: 0.131495 | CL: 0.0236911 | ln_CD: 0.043698 | CM: 0.00361957 | Top_Xtr: 0.0193129 | Bot_Xtr: 0.0224963
+Loss contributors: 
+	s_ln_CD                  : 1.44715
+	s_CL                     : 1.06193
+	s_CM                     : 0.493741
+	s_analysis_confidence    : 0.232533
+	s_Bot_Xtr                : 0.071471
+	s_Top_Xtr                : 0.0467407
+	s_lower_bl_H_0           : 0.000684448
+	s_lower_bl_H_1           : 0.000589729
+	s_lower_bl_H_2           : 0.000526568
+	s_lower_bl_ret_0         : 0.000503888
+Epoch: 95 | Train Loss: 2.80975 | Test Loss: 3.26899 | analysis_confidence: 0.134385 | CL: 0.0222848 | ln_CD: 0.0448017 | CM: 0.00354345 | Top_Xtr: 0.0193208 | Bot_Xtr: 0.0215857
+Loss contributors: 
+	s_ln_CD                  : 1.32454
+	s_CL                     : 1.07027
+	s_CM                     : 0.495511
+	s_analysis_confidence    : 0.234221
+	s_Bot_Xtr                : 0.0681805
+	s_Top_Xtr                : 0.0432808
+	s_lower_bl_H_0           : 0.000687906
+	s_lower_bl_H_1           : 0.000594415
+	s_lower_bl_H_2           : 0.000518898
+	s_lower_bl_ret_0         : 0.000512184
+Epoch: 96 | Train Loss: 2.80921 | Test Loss: 3.25163 | analysis_confidence: 0.13002 | CL: 0.0228743 | ln_CD: 0.0423709 | CM: 0.0036698 | Top_Xtr: 0.0193241 | Bot_Xtr: 0.0219451
+Loss contributors: 
+	s_ln_CD                  : 1.33223
+	s_CL                     : 1.04654
+	s_CM                     : 0.495217
+	s_analysis_confidence    : 0.231283
+	s_Bot_Xtr                : 0.0694364
+	s_Top_Xtr                : 0.0442217
+	s_lower_bl_H_0           : 0.000682818
+	s_lower_bl_H_1           : 0.000587096
+	s_lower_bl_H_2           : 0.000521046
+	s_lower_bl_ret_0         : 0.0005141
+Epoch: 97 | Train Loss: 2.79748 | Test Loss: 3.26078 | analysis_confidence: 0.130859 | CL: 0.0235326 | ln_CD: 0.0433561 | CM: 0.00378279 | Top_Xtr: 0.0186496 | Bot_Xtr: 0.021513
+Loss contributors: 
+	s_ln_CD                  : 1.30939
+	s_CL                     : 1.06539
+	s_CM                     : 0.502379
+	s_analysis_confidence    : 0.232041
+	s_Bot_Xtr                : 0.0734726
+	s_Top_Xtr                : 0.0456492
+	s_lower_bl_H_0           : 0.000682032
+	s_lower_bl_H_1           : 0.000586662
+	s_lower_bl_ret_0         : 0.000507607
+	s_lower_bl_H_2           : 0.000506592
+Epoch: 98 | Train Loss: 2.78545 | Test Loss: 3.26959 | analysis_confidence: 0.131922 | CL: 0.0234511 | ln_CD: 0.0435049 | CM: 0.0036447 | Top_Xtr: 0.0190426 | Bot_Xtr: 0.0215083
+Loss contributors: 
+	s_ln_CD                  : 1.32489
+	s_CL                     : 1.05962
+	s_CM                     : 0.495159
+	s_analysis_confidence    : 0.231412
+	s_Bot_Xtr                : 0.0753822
+	s_Top_Xtr                : 0.0503527
+	s_lower_bl_H_0           : 0.000692214
+	s_lower_bl_H_1           : 0.000594512
+	s_lower_bl_H_2           : 0.000528179
+	s_lower_bl_ret_0         : 0.000508726
+Epoch: 99 | Train Loss: 2.78275 | Test Loss: 3.18996 | analysis_confidence: 0.131347 | CL: 0.0226212 | ln_CD: 0.0418816 | CM: 0.00360829 | Top_Xtr: 0.0207904 | Bot_Xtr: 0.0237132
+Loss contributors: 
+	s_ln_CD                  : 1.29256
+	s_CL                     : 1.03097
+	s_CM                     : 0.489893
+	s_analysis_confidence    : 0.231671
+	s_Bot_Xtr                : 0.0686674
+	s_Top_Xtr                : 0.043638
+	s_lower_bl_H_0           : 0.000699126
+	s_lower_bl_H_1           : 0.000593491
+	s_lower_bl_H_2           : 0.000524867
+	s_lower_bl_ret_0         : 0.000507698
+Epoch: 100 | Train Loss: 2.78031 | Test Loss: 3.23797 | analysis_confidence: 0.131115 | CL: 0.0228404 | ln_CD: 0.0493975 | CM: 0.00348279 | Top_Xtr: 0.0188707 | Bot_Xtr: 0.0221142
+Loss contributors: 
+	s_ln_CD                  : 1.33749
+	s_CL                     : 1.0379
+	s_CM                     : 0.486344
+	s_analysis_confidence    : 0.232689
+	s_Bot_Xtr                : 0.0685467
+	s_Top_Xtr                : 0.0425725
+	s_lower_bl_H_0           : 0.000689582
+	s_lower_bl_H_1           : 0.000589361
+	s_lower_bl_ret_0         : 0.000507065
+	s_lower_bl_H_2           : 0.000505758
+Epoch: 101 | Train Loss: 2.76965 | Test Loss: 3.33035 | analysis_confidence: 0.132489 | CL: 0.0224188 | ln_CD: 0.0489754 | CM: 0.00364656 | Top_Xtr: 0.0197421 | Bot_Xtr: 0.0216281
+Loss contributors: 
+	s_ln_CD                  : 1.40916
+	s_CL                     : 1.03909
+	s_CM                     : 0.499226
+	s_analysis_confidence    : 0.23208
+	s_Bot_Xtr                : 0.0697545
+	s_Top_Xtr                : 0.0482733
+	s_lower_bl_H_0           : 0.000691772
+	s_lower_bl_H_1           : 0.000585233
+	s_lower_bl_H_2           : 0.000522613
+	s_lower_bl_ret_0         : 0.000512717
+Epoch: 102 | Train Loss: 2.76685 | Test Loss: 3.22363 | analysis_confidence: 0.132257 | CL: 0.0231912 | ln_CD: 0.0449775 | CM: 0.00357451 | Top_Xtr: 0.0197398 | Bot_Xtr: 0.0221458
+Loss contributors: 
+	s_ln_CD                  : 1.30867
+	s_CL                     : 1.05255
+	s_CM                     : 0.485712
+	s_analysis_confidence    : 0.23101
+	s_Bot_Xtr                : 0.0696708
+	s_Top_Xtr                : 0.0435785
+	s_lower_bl_H_0           : 0.000679446
+	s_lower_bl_H_1           : 0.000586092
+	s_lower_bl_H_2           : 0.000507167
+	s_lower_bl_ret_0         : 0.00050377
+Epoch: 103 | Train Loss: 2.75391 | Test Loss: 3.25602 | analysis_confidence: 0.133023 | CL: 0.022254 | ln_CD: 0.0563318 | CM: 0.00345783 | Top_Xtr: 0.0183773 | Bot_Xtr: 0.0211837
+Loss contributors: 
+	s_ln_CD                  : 1.35441
+	s_CL                     : 1.04548
+	s_CM                     : 0.480531
+	s_analysis_confidence    : 0.234669
+	s_Bot_Xtr                : 0.066338
+	s_Top_Xtr                : 0.0423608
+	s_lower_bl_H_0           : 0.000700894
+	s_lower_bl_H_1           : 0.000597707
+	s_lower_bl_H_2           : 0.000524969
+	s_lower_bl_ret_0         : 0.00050865
+Epoch: 104 | Train Loss: 2.74534 | Test Loss: 3.21502 | analysis_confidence: 0.130104 | CL: 0.0239738 | ln_CD: 0.0443035 | CM: 0.00350014 | Top_Xtr: 0.0190087 | Bot_Xtr: 0.0217169
+Loss contributors: 
+	s_ln_CD                  : 1.31155
+	s_CL                     : 1.05428
+	s_CM                     : 0.477718
+	s_analysis_confidence    : 0.230305
+	s_Bot_Xtr                : 0.0667556
+	s_Top_Xtr                : 0.0421677
+	s_lower_bl_H_0           : 0.000682571
+	s_lower_bl_H_1           : 0.000584106
+	s_lower_bl_H_2           : 0.000500946
+	s_lower_bl_ret_0         : 0.000500215
+Epoch: 105 | Train Loss: 2.73861 | Test Loss: 3.23347 | analysis_confidence: 0.129367 | CL: 0.0222735 | ln_CD: 0.0425213 | CM: 0.0035274 | Top_Xtr: 0.0198493 | Bot_Xtr: 0.0221255
+Loss contributors: 
+	s_ln_CD                  : 1.31186
+	s_CL                     : 1.06471
+	s_CM                     : 0.480848
+	s_analysis_confidence    : 0.232259
+	s_Bot_Xtr                : 0.067363
+	s_Top_Xtr                : 0.0438052
+	s_lower_bl_H_0           : 0.000686462
+	s_lower_bl_H_1           : 0.000581335
+	s_lower_bl_ret_0         : 0.000510729
+	s_lower_bl_H_2           : 0.000507225
+Epoch: 106 | Train Loss: 2.73424 | Test Loss: 3.22695 | analysis_confidence: 0.131448 | CL: 0.023003 | ln_CD: 0.046342 | CM: 0.00351089 | Top_Xtr: 0.0192154 | Bot_Xtr: 0.0211915
+Loss contributors: 
+	s_ln_CD                  : 1.31886
+	s_CL                     : 1.05319
+	s_CM                     : 0.482226
+	s_analysis_confidence    : 0.230886
+	s_Bot_Xtr                : 0.0664003
+	s_Top_Xtr                : 0.0428334
+	s_lower_bl_H_0           : 0.000693929
+	s_lower_bl_H_1           : 0.000592995
+	s_lower_bl_H_2           : 0.000507825
+	s_lower_bl_ret_0         : 0.000506524
+Epoch: 107 | Train Loss: 2.72446 | Test Loss: 3.22529 | analysis_confidence: 0.128768 | CL: 0.0222235 | ln_CD: 0.0448624 | CM: 0.00350983 | Top_Xtr: 0.0190995 | Bot_Xtr: 0.0220006
+Loss contributors: 
+	s_ln_CD                  : 1.31342
+	s_CL                     : 1.04287
+	s_CM                     : 0.489809
+	s_analysis_confidence    : 0.232087
+	s_Bot_Xtr                : 0.0711728
+	s_Top_Xtr                : 0.0433077
+	s_lower_bl_H_0           : 0.000680213
+	s_lower_bl_H_1           : 0.000591381
+	s_lower_bl_ret_0         : 0.000508861
+	s_lower_bl_H_2           : 0.000508587
+Epoch: 108 | Train Loss: 2.7246 | Test Loss: 3.2416 | analysis_confidence: 0.128561 | CL: 0.0227155 | ln_CD: 0.0430099 | CM: 0.00347926 | Top_Xtr: 0.0213411 | Bot_Xtr: 0.0235199
+Loss contributors: 
+	s_ln_CD                  : 1.31598
+	s_CL                     : 1.04637
+	s_CM                     : 0.477377
+	s_analysis_confidence    : 0.23124
+	s_Bot_Xtr                : 0.0812511
+	s_Top_Xtr                : 0.0565025
+	s_lower_bl_H_0           : 0.000695246
+	s_lower_bl_H_1           : 0.000586044
+	s_lower_bl_H_2           : 0.000511635
+	s_lower_bl_ret_0         : 0.00050605
+Epoch: 109 | Train Loss: 2.72051 | Test Loss: 3.22075 | analysis_confidence: 0.130751 | CL: 0.0218285 | ln_CD: 0.0431352 | CM: 0.00346555 | Top_Xtr: 0.0189147 | Bot_Xtr: 0.0213692
+Loss contributors: 
+	s_ln_CD                  : 1.33892
+	s_CL                     : 1.02849
+	s_CM                     : 0.476777
+	s_analysis_confidence    : 0.231789
+	s_Bot_Xtr                : 0.0682743
+	s_Top_Xtr                : 0.0441808
+	s_lower_bl_H_0           : 0.000688703
+	s_lower_bl_H_1           : 0.000581047
+	s_lower_bl_ret_0         : 0.000499797
+	s_lower_bl_H_2           : 0.000499323
+Epoch: 110 | Train Loss: 2.70579 | Test Loss: 3.23441 | analysis_confidence: 0.129911 | CL: 0.0236612 | ln_CD: 0.0432376 | CM: 0.00375235 | Top_Xtr: 0.0205062 | Bot_Xtr: 0.0229088
+Loss contributors: 
+	s_ln_CD                  : 1.28208
+	s_CL                     : 1.06715
+	s_CM                     : 0.501702
+	s_analysis_confidence    : 0.23054
+	s_Bot_Xtr                : 0.0725204
+	s_Top_Xtr                : 0.0481369
+	s_lower_bl_H_0           : 0.000682608
+	s_lower_bl_H_1           : 0.000584155
+	s_lower_bl_ret_0         : 0.000502919
+	s_lower_bl_H_2           : 0.000502661
+Epoch: 111 | Train Loss: 2.70315 | Test Loss: 3.18984 | analysis_confidence: 0.128329 | CL: 0.0221621 | ln_CD: 0.0436722 | CM: 0.0034773 | Top_Xtr: 0.0192339 | Bot_Xtr: 0.0222492
+Loss contributors: 
+	s_ln_CD                  : 1.28797
+	s_CL                     : 1.04392
+	s_CM                     : 0.483783
+	s_analysis_confidence    : 0.231853
+	s_Bot_Xtr                : 0.0669071
+	s_Top_Xtr                : 0.0430923
+	s_lower_bl_H_0           : 0.0006834
+	s_lower_bl_H_1           : 0.000586108
+	s_lower_bl_H_2           : 0.000513477
+	s_lower_bl_ret_0         : 0.000503125
+Epoch: 112 | Train Loss: 2.69988 | Test Loss: 3.23261 | analysis_confidence: 0.131018 | CL: 0.0244064 | ln_CD: 0.0448862 | CM: 0.00359827 | Top_Xtr: 0.0185251 | Bot_Xtr: 0.0211242
+Loss contributors: 
+	s_ln_CD                  : 1.30759
+	s_CL                     : 1.07092
+	s_CM                     : 0.483177
+	s_analysis_confidence    : 0.230016
+	s_Bot_Xtr                : 0.0670435
+	s_Top_Xtr                : 0.0415169
+	s_lower_bl_H_0           : 0.000689087
+	s_lower_bl_H_1           : 0.000585505
+	s_lower_bl_ret_0         : 0.000508511
+	s_lower_bl_H_2           : 0.000499812
+Epoch: 113 | Train Loss: 2.68966 | Test Loss: 3.18556 | analysis_confidence: 0.129121 | CL: 0.0230681 | ln_CD: 0.0421566 | CM: 0.00360301 | Top_Xtr: 0.0194193 | Bot_Xtr: 0.0213871
+Loss contributors: 
+	s_ln_CD                  : 1.26986
+	s_CL                     : 1.04441
+	s_CM                     : 0.495454
+	s_analysis_confidence    : 0.230867
+	s_Bot_Xtr                : 0.067651
+	s_Top_Xtr                : 0.0449297
+	s_lower_bl_H_0           : 0.000688431
+	s_lower_bl_H_1           : 0.000592823
+	s_lower_bl_ret_0         : 0.000504644
+	s_lower_bl_H_2           : 0.000499302
+Epoch: 114 | Train Loss: 2.68701 | Test Loss: 3.30526 | analysis_confidence: 0.129115 | CL: 0.0222217 | ln_CD: 0.0466106 | CM: 0.00360335 | Top_Xtr: 0.0196434 | Bot_Xtr: 0.0220648
+Loss contributors: 
+	s_ln_CD                  : 1.37478
+	s_CL                     : 1.05252
+	s_CM                     : 0.499579
+	s_analysis_confidence    : 0.230031
+	s_Bot_Xtr                : 0.0686517
+	s_Top_Xtr                : 0.0472681
+	s_lower_bl_H_0           : 0.000697999
+	s_lower_bl_H_1           : 0.000601324
+	s_lower_bl_H_2           : 0.000509346
+	s_lower_bl_ret_0         : 0.000502286
+Epoch: 115 | Train Loss: 2.67877 | Test Loss: 3.1464 | analysis_confidence: 0.128617 | CL: 0.022685 | ln_CD: 0.0421894 | CM: 0.00361867 | Top_Xtr: 0.0195765 | Bot_Xtr: 0.0235745
+Loss contributors: 
+	s_ln_CD                  : 1.26444
+	s_CL                     : 1.02593
+	s_CM                     : 0.482722
+	s_analysis_confidence    : 0.230772
+	s_Bot_Xtr                : 0.0686957
+	s_Top_Xtr                : 0.041647
+	s_lower_bl_H_0           : 0.000679869
+	s_lower_bl_H_1           : 0.000593806
+	s_lower_bl_ret_0         : 0.000507075
+	s_lower_bl_H_2           : 0.00050608
+Epoch: 116 | Train Loss: 2.67158 | Test Loss: 3.19953 | analysis_confidence: 0.130472 | CL: 0.0224789 | ln_CD: 0.0434624 | CM: 0.00352439 | Top_Xtr: 0.0187946 | Bot_Xtr: 0.0216064
+Loss contributors: 
+	s_ln_CD                  : 1.32096
+	s_CL                     : 1.03339
+	s_CM                     : 0.474225
+	s_analysis_confidence    : 0.230472
+	s_Bot_Xtr                : 0.0658431
+	s_Top_Xtr                : 0.0424672
+	s_lower_bl_H_0           : 0.000705714
+	s_lower_bl_H_1           : 0.000597513
+	s_lower_bl_H_2           : 0.00051132
+	s_lower_bl_ret_0         : 0.00050001
+Epoch: 117 | Train Loss: 2.66963 | Test Loss: 3.2966 | analysis_confidence: 0.132436 | CL: 0.0227134 | ln_CD: 0.0470722 | CM: 0.00364017 | Top_Xtr: 0.0193665 | Bot_Xtr: 0.0221301
+Loss contributors: 
+	s_ln_CD                  : 1.35653
+	s_CL                     : 1.05838
+	s_CM                     : 0.494142
+	s_analysis_confidence    : 0.239287
+	s_Bot_Xtr                : 0.0704853
+	s_Top_Xtr                : 0.0451921
+	s_lower_bl_H_0           : 0.000693894
+	s_lower_bl_H_1           : 0.000587738
+	s_lower_bl_ret_0         : 0.000508726
+	s_lower_bl_H_2           : 0.000503143
+Epoch: 118 | Train Loss: 2.65645 | Test Loss: 3.17233 | analysis_confidence: 0.131589 | CL: 0.0234571 | ln_CD: 0.0438807 | CM: 0.00366747 | Top_Xtr: 0.0193226 | Bot_Xtr: 0.0224404
+Loss contributors: 
+	s_ln_CD                  : 1.26633
+	s_CL                     : 1.04476
+	s_CM                     : 0.491204
+	s_analysis_confidence    : 0.23017
+	s_Bot_Xtr                : 0.065776
+	s_Top_Xtr                : 0.0418752
+	s_lower_bl_H_0           : 0.000699695
+	s_lower_bl_H_1           : 0.000589972
+	s_lower_bl_H_2           : 0.000509679
+	s_lower_bl_ret_0         : 0.000503936
+Epoch: 119 | Train Loss: 2.65922 | Test Loss: 3.2492 | analysis_confidence: 0.128265 | CL: 0.0221756 | ln_CD: 0.0434777 | CM: 0.00346495 | Top_Xtr: 0.0187496 | Bot_Xtr: 0.021349
+Loss contributors: 
+	s_ln_CD                  : 1.37872
+	s_CL                     : 1.02127
+	s_CM                     : 0.473851
+	s_analysis_confidence    : 0.231651
+	s_Bot_Xtr                : 0.0669144
+	s_Top_Xtr                : 0.044276
+	s_lower_bl_H_0           : 0.000697627
+	s_lower_bl_H_1           : 0.000592395
+	s_lower_bl_H_2           : 0.00051407
+	s_lower_bl_ret_0         : 0.000511368
+Epoch: 120 | Train Loss: 2.65487 | Test Loss: 3.19794 | analysis_confidence: 0.12934 | CL: 0.0223152 | ln_CD: 0.0436717 | CM: 0.0036029 | Top_Xtr: 0.0190195 | Bot_Xtr: 0.0218258
+Loss contributors: 
+	s_ln_CD                  : 1.27948
+	s_CL                     : 1.06011
+	s_CM                     : 0.487978
+	s_analysis_confidence    : 0.22903
+	s_Bot_Xtr                : 0.0666792
+	s_Top_Xtr                : 0.0424216
+	s_lower_bl_H_0           : 0.000680778
+	s_lower_bl_H_1           : 0.000593806
+	s_lower_bl_ret_0         : 0.00050215
+	s_lower_bl_H_2           : 0.000501127
+Epoch: 121 | Train Loss: 2.64751 | Test Loss: 3.25069 | analysis_confidence: 0.128804 | CL: 0.0226111 | ln_CD: 0.0435353 | CM: 0.00360589 | Top_Xtr: 0.0190734 | Bot_Xtr: 0.021546
+Loss contributors: 
+	s_ln_CD                  : 1.32972
+	s_CL                     : 1.04474
+	s_CM                     : 0.487529
+	s_analysis_confidence    : 0.231157
+	s_Bot_Xtr                : 0.073816
+	s_Top_Xtr                : 0.0513751
+	s_lower_bl_H_0           : 0.000701518
+	s_lower_bl_H_1           : 0.000589572
+	s_lower_bl_H_2           : 0.000502906
+	s_lower_bl_ret_0         : 0.000497952
+Epoch: 122 | Train Loss: 2.6342 | Test Loss: 3.19234 | analysis_confidence: 0.127018 | CL: 0.0224641 | ln_CD: 0.0421719 | CM: 0.00370823 | Top_Xtr: 0.0186939 | Bot_Xtr: 0.0215675
+Loss contributors: 
+	s_ln_CD                  : 1.26986
+	s_CL                     : 1.04587
+	s_CM                     : 0.504375
+	s_analysis_confidence    : 0.230154
+	s_Bot_Xtr                : 0.0672058
+	s_Top_Xtr                : 0.042676
+	s_lower_bl_H_0           : 0.000703172
+	s_lower_bl_H_1           : 0.000591652
+	s_lower_bl_ret_0         : 0.000501265
+	s_lower_bl_H_2           : 0.000501023
+Epoch: 123 | Train Loss: 2.63031 | Test Loss: 3.1958 | analysis_confidence: 0.127892 | CL: 0.0227131 | ln_CD: 0.0437105 | CM: 0.00341547 | Top_Xtr: 0.0179861 | Bot_Xtr: 0.0204487
+Loss contributors: 
+	s_ln_CD                  : 1.31923
+	s_CL                     : 1.03815
+	s_CM                     : 0.470023
+	s_analysis_confidence    : 0.231333
+	s_Bot_Xtr                : 0.0644002
+	s_Top_Xtr                : 0.0404022
+	s_lower_bl_H_0           : 0.000695601
+	s_lower_bl_H_1           : 0.000598727
+	s_lower_bl_H_2           : 0.000507136
+	s_lower_bl_ret_0         : 0.000498395
+Epoch: 124 | Train Loss: 2.62372 | Test Loss: 3.21539 | analysis_confidence: 0.132325 | CL: 0.0227567 | ln_CD: 0.0426569 | CM: 0.00377107 | Top_Xtr: 0.0184483 | Bot_Xtr: 0.021174
+Loss contributors: 
+	s_ln_CD                  : 1.31019
+	s_CL                     : 1.03473
+	s_CM                     : 0.498981
+	s_analysis_confidence    : 0.231937
+	s_Bot_Xtr                : 0.0657413
+	s_Top_Xtr                : 0.0415198
+	s_lower_bl_H_0           : 0.000689894
+	s_lower_bl_H_1           : 0.000592851
+	s_lower_bl_ret_0         : 0.000509665
+	s_lower_bl_H_2           : 0.000499155
+Epoch: 125 | Train Loss: 2.61863 | Test Loss: 3.20478 | analysis_confidence: 0.129806 | CL: 0.021787 | ln_CD: 0.0482689 | CM: 0.00345514 | Top_Xtr: 0.0180818 | Bot_Xtr: 0.020406
+Loss contributors: 
+	s_ln_CD                  : 1.33992
+	s_CL                     : 1.02361
+	s_CM                     : 0.47603
+	s_analysis_confidence    : 0.229966
+	s_Bot_Xtr                : 0.0635686
+	s_Top_Xtr                : 0.0397184
+	s_lower_bl_H_0           : 0.000687501
+	s_lower_bl_H_1           : 0.000580975
+	s_lower_bl_ret_0         : 0.000499995
+	s_lower_bl_H_2           : 0.0004853
+Epoch: 126 | Train Loss: 2.61731 | Test Loss: 3.34307 | analysis_confidence: 0.124855 | CL: 0.0215798 | ln_CD: 0.0419705 | CM: 0.00360214 | Top_Xtr: 0.0186389 | Bot_Xtr: 0.0211293
+Loss contributors: 
+	s_ln_CD                  : 1.42011
+	s_CL                     : 1.05111
+	s_CM                     : 0.49618
+	s_analysis_confidence    : 0.230785
+	s_Bot_Xtr                : 0.0673752
+	s_Top_Xtr                : 0.0451871
+	s_lower_bl_H_0           : 0.000683928
+	s_lower_bl_H_1           : 0.000589618
+	s_lower_bl_ret_0         : 0.000500879
+	s_lower_bl_H_2           : 0.000490296
+Epoch: 127 | Train Loss: 2.60848 | Test Loss: 3.14092 | analysis_confidence: 0.130403 | CL: 0.0218733 | ln_CD: 0.0444421 | CM: 0.00351593 | Top_Xtr: 0.0182084 | Bot_Xtr: 0.0208601
+Loss contributors: 
+	s_ln_CD                  : 1.26902
+	s_CL                     : 1.02003
+	s_CM                     : 0.480094
+	s_analysis_confidence    : 0.231911
+	s_Bot_Xtr                : 0.0656528
+	s_Top_Xtr                : 0.042146
+	s_lower_bl_H_0           : 0.000690144
+	s_lower_bl_H_1           : 0.000589812
+	s_lower_bl_ret_0         : 0.000500635
+	s_lower_bl_H_2           : 0.000486632
+Epoch: 128 | Train Loss: 2.60845 | Test Loss: 3.1546 | analysis_confidence: 0.128867 | CL: 0.021862 | ln_CD: 0.044029 | CM: 0.00357646 | Top_Xtr: 0.0189928 | Bot_Xtr: 0.0214683
+Loss contributors: 
+	s_ln_CD                  : 1.28898
+	s_CL                     : 1.01838
+	s_CM                     : 0.478204
+	s_analysis_confidence    : 0.229425
+	s_Bot_Xtr                : 0.0661439
+	s_Top_Xtr                : 0.0415263
+	s_lower_bl_H_0           : 0.000686944
+	s_lower_bl_H_1           : 0.000599614
+	s_lower_bl_ret_0         : 0.000497095
+	s_lower_bl_H_2           : 0.000490989
+Epoch: 129 | Train Loss: 2.60223 | Test Loss: 3.1462 | analysis_confidence: 0.128197 | CL: 0.0220142 | ln_CD: 0.0421089 | CM: 0.00339194 | Top_Xtr: 0.0183843 | Bot_Xtr: 0.0208258
+Loss contributors: 
+	s_ln_CD                  : 1.28598
+	s_CL                     : 1.02015
+	s_CM                     : 0.468451
+	s_analysis_confidence    : 0.232608
+	s_Bot_Xtr                : 0.0650917
+	s_Top_Xtr                : 0.04175
+	s_lower_bl_H_0           : 0.0006951
+	s_lower_bl_H_1           : 0.000587076
+	s_lower_bl_ret_0         : 0.000498193
+	s_lower_bl_H_2           : 0.000497921
+Epoch: 130 | Train Loss: 2.59612 | Test Loss: 3.14576 | analysis_confidence: 0.134206 | CL: 0.0221915 | ln_CD: 0.0414219 | CM: 0.00350966 | Top_Xtr: 0.018525 | Bot_Xtr: 0.0209312
+Loss contributors: 
+	s_ln_CD                  : 1.25272
+	s_CL                     : 1.04201
+	s_CM                     : 0.479431
+	s_analysis_confidence    : 0.233032
+	s_Bot_Xtr                : 0.0649317
+	s_Top_Xtr                : 0.0416878
+	s_lower_bl_H_0           : 0.000683286
+	s_lower_bl_H_1           : 0.000587913
+	s_lower_bl_ret_0         : 0.000506047
+	s_upper_bl_ret_0         : 0.000491319
+Epoch: 131 | Train Loss: 2.58614 | Test Loss: 3.16498 | analysis_confidence: 0.131109 | CL: 0.0226589 | ln_CD: 0.0439779 | CM: 0.00355585 | Top_Xtr: 0.0179499 | Bot_Xtr: 0.0202764
+Loss contributors: 
+	s_ln_CD                  : 1.28912
+	s_CL                     : 1.03539
+	s_CM                     : 0.474976
+	s_analysis_confidence    : 0.228985
+	s_Bot_Xtr                : 0.0637697
+	s_Top_Xtr                : 0.0405644
+	s_lower_bl_H_0           : 0.000688276
+	s_lower_bl_H_1           : 0.00059381
+	s_lower_bl_H_2           : 0.000498341
+	s_lower_bl_ret_0         : 0.000496773
+Epoch: 132 | Train Loss: 2.58707 | Test Loss: 3.32167 | analysis_confidence: 0.129898 | CL: 0.0232665 | ln_CD: 0.0426269 | CM: 0.00366837 | Top_Xtr: 0.0194651 | Bot_Xtr: 0.0215722
+Loss contributors: 
+	s_ln_CD                  : 1.38287
+	s_CL                     : 1.06841
+	s_CM                     : 0.496344
+	s_analysis_confidence    : 0.229756
+	s_Bot_Xtr                : 0.0679016
+	s_Top_Xtr                : 0.0439903
+	s_lower_bl_H_0           : 0.00069136
+	s_lower_bl_H_1           : 0.000597902
+	s_lower_bl_H_2           : 0.000502935
+	s_lower_bl_ret_0         : 0.00049258
+Epoch: 133 | Train Loss: 2.57863 | Test Loss: 3.16727 | analysis_confidence: 0.127842 | CL: 0.0216894 | ln_CD: 0.0453305 | CM: 0.00343747 | Top_Xtr: 0.0183832 | Bot_Xtr: 0.0208144
+Loss contributors: 
+	s_ln_CD                  : 1.31897
+	s_CL                     : 1.01307
+	s_CM                     : 0.466302
+	s_analysis_confidence    : 0.230411
+	s_Bot_Xtr                : 0.0643651
+	s_Top_Xtr                : 0.0424625
+	s_lower_bl_H_0           : 0.000689937
+	s_lower_bl_H_1           : 0.00059349
+	s_lower_bl_ret_0         : 0.000497545
+	s_lower_bl_H_2           : 0.000495053
+Epoch: 134 | Train Loss: 2.57611 | Test Loss: 3.17542 | analysis_confidence: 0.129471 | CL: 0.0237619 | ln_CD: 0.0424752 | CM: 0.00342919 | Top_Xtr: 0.0179379 | Bot_Xtr: 0.0202812
+Loss contributors: 
+	s_ln_CD                  : 1.29104
+	s_CL                     : 1.05104
+	s_CM                     : 0.466488
+	s_analysis_confidence    : 0.229933
+	s_Bot_Xtr                : 0.0644572
+	s_Top_Xtr                : 0.0405594
+	s_lower_bl_H_0           : 0.000689484
+	s_lower_bl_H_1           : 0.000597587
+	s_lower_bl_H_2           : 0.000506765
+	s_lower_bl_ret_0         : 0.000497708
+Epoch: 135 | Train Loss: 2.5745 | Test Loss: 3.26003 | analysis_confidence: 0.131853 | CL: 0.022363 | ln_CD: 0.045075 | CM: 0.00355553 | Top_Xtr: 0.0189749 | Bot_Xtr: 0.0214777
+Loss contributors: 
+	s_ln_CD                  : 1.34294
+	s_CL                     : 1.04515
+	s_CM                     : 0.491129
+	s_analysis_confidence    : 0.232425
+	s_Bot_Xtr                : 0.0707061
+	s_Top_Xtr                : 0.044858
+	s_lower_bl_H_0           : 0.000695486
+	s_lower_bl_H_1           : 0.000598116
+	s_lower_bl_H_2           : 0.000500488
+	s_lower_bl_ret_0         : 0.000500237
+Epoch: 136 | Train Loss: 2.56687 | Test Loss: 3.08991 | analysis_confidence: 0.125956 | CL: 0.0211727 | ln_CD: 0.0424372 | CM: 0.00340351 | Top_Xtr: 0.0178124 | Bot_Xtr: 0.0203309
+Loss contributors: 
+	s_ln_CD                  : 1.25405
+	s_CL                     : 1.00952
+	s_CM                     : 0.464042
+	s_analysis_confidence    : 0.228504
+	s_Bot_Xtr                : 0.0627687
+	s_Top_Xtr                : 0.0390935
+	s_lower_bl_H_0           : 0.000680576
+	s_lower_bl_H_1           : 0.000591737
+	s_lower_bl_ret_0         : 0.000501137
+	s_lower_bl_H_2           : 0.000489921
+Epoch: 137 | Train Loss: 2.5543 | Test Loss: 3.22978 | analysis_confidence: 0.130999 | CL: 0.0225431 | ln_CD: 0.045369 | CM: 0.00354081 | Top_Xtr: 0.0183865 | Bot_Xtr: 0.020773
+Loss contributors: 
+	s_ln_CD                  : 1.34237
+	s_CL                     : 1.03502
+	s_CM                     : 0.481734
+	s_analysis_confidence    : 0.228642
+	s_Bot_Xtr                : 0.0666387
+	s_Top_Xtr                : 0.0432119
+	s_lower_bl_H_0           : 0.000691976
+	s_lower_bl_H_1           : 0.000604699
+	s_lower_bl_ret_0         : 0.000507878
+	s_lower_bl_H_2           : 0.00050129
+Epoch: 138 | Train Loss: 2.55342 | Test Loss: 3.13582 | analysis_confidence: 0.12827 | CL: 0.0211796 | ln_CD: 0.0402108 | CM: 0.00339469 | Top_Xtr: 0.0187076 | Bot_Xtr: 0.020661
+Loss contributors: 
+	s_ln_CD                  : 1.31677
+	s_CL                     : 0.988429
+	s_CM                     : 0.461605
+	s_analysis_confidence    : 0.228571
+	s_Bot_Xtr                : 0.0653143
+	s_Top_Xtr                : 0.0433294
+	s_lower_bl_H_0           : 0.000689207
+	s_lower_bl_H_1           : 0.000599667
+	s_lower_bl_H_2           : 0.000507729
+	s_lower_bl_ret_0         : 0.000499278
+Epoch: 139 | Train Loss: 2.55489 | Test Loss: 3.24931 | analysis_confidence: 0.128054 | CL: 0.0236501 | ln_CD: 0.043247 | CM: 0.00371199 | Top_Xtr: 0.0185244 | Bot_Xtr: 0.0206838
+Loss contributors: 
+	s_ln_CD                  : 1.36464
+	s_CL                     : 1.03351
+	s_CM                     : 0.483386
+	s_analysis_confidence    : 0.22848
+	s_Bot_Xtr                : 0.0652828
+	s_Top_Xtr                : 0.0419997
+	s_lower_bl_H_0           : 0.000691475
+	s_lower_bl_H_1           : 0.000587653
+	s_lower_bl_ret_0         : 0.000496885
+	s_lower_bl_H_2           : 0.000484192
+Epoch: 140 | Train Loss: 2.54955 | Test Loss: 3.1091 | analysis_confidence: 0.129908 | CL: 0.0222123 | ln_CD: 0.0416144 | CM: 0.00355747 | Top_Xtr: 0.018451 | Bot_Xtr: 0.0213263
+Loss contributors: 
+	s_ln_CD                  : 1.24793
+	s_CL                     : 1.01812
+	s_CM                     : 0.477055
+	s_analysis_confidence    : 0.229547
+	s_Bot_Xtr                : 0.0644206
+	s_Top_Xtr                : 0.0400071
+	s_lower_bl_H_0           : 0.000684224
+	s_lower_bl_H_1           : 0.00059295
+	s_lower_bl_H_2           : 0.000494935
+	s_lower_bl_ret_0         : 0.000494081
+Epoch: 141 | Train Loss: 2.54237 | Test Loss: 3.06744 | analysis_confidence: 0.131062 | CL: 0.0224858 | ln_CD: 0.039962 | CM: 0.00335425 | Top_Xtr: 0.0177454 | Bot_Xtr: 0.0204345
+Loss contributors: 
+	s_ln_CD                  : 1.23501
+	s_CL                     : 1.01418
+	s_CM                     : 0.456263
+	s_analysis_confidence    : 0.228972
+	s_Bot_Xtr                : 0.0627747
+	s_Top_Xtr                : 0.0386845
+	s_lower_bl_H_0           : 0.000695648
+	s_lower_bl_H_1           : 0.000595059
+	s_lower_bl_ret_0         : 0.000498469
+	s_lower_bl_H_2           : 0.000485475
+Epoch: 142 | Train Loss: 2.54302 | Test Loss: 3.22842 | analysis_confidence: 0.130497 | CL: 0.0232736 | ln_CD: 0.0426299 | CM: 0.00342618 | Top_Xtr: 0.0209688 | Bot_Xtr: 0.0228658
+Loss contributors: 
+	s_ln_CD                  : 1.32569
+	s_CL                     : 1.05755
+	s_CM                     : 0.467639
+	s_analysis_confidence    : 0.22926
+	s_Bot_Xtr                : 0.0704201
+	s_Top_Xtr                : 0.0458159
+	s_lower_bl_H_0           : 0.000688266
+	s_lower_bl_H_1           : 0.000598514
+	s_lower_bl_H_2           : 0.000504581
+	s_lower_bl_ret_0         : 0.000500139
+Epoch: 143 | Train Loss: 2.53338 | Test Loss: 3.18826 | analysis_confidence: 0.126005 | CL: 0.0222972 | ln_CD: 0.0421033 | CM: 0.00348663 | Top_Xtr: 0.0184636 | Bot_Xtr: 0.0211167
+Loss contributors: 
+	s_ln_CD                  : 1.30691
+	s_CL                     : 1.03818
+	s_CM                     : 0.476447
+	s_analysis_confidence    : 0.22922
+	s_Bot_Xtr                : 0.064374
+	s_Top_Xtr                : 0.0413624
+	s_lower_bl_H_0           : 0.000690158
+	s_lower_bl_H_1           : 0.000602647
+	s_lower_bl_H_2           : 0.000497948
+	s_lower_bl_ret_0         : 0.000493094
+Epoch: 144 | Train Loss: 2.52995 | Test Loss: 3.2735 | analysis_confidence: 0.128845 | CL: 0.0219258 | ln_CD: 0.0466586 | CM: 0.00365811 | Top_Xtr: 0.020735 | Bot_Xtr: 0.0228475
+Loss contributors: 
+	s_ln_CD                  : 1.33526
+	s_CL                     : 1.03891
+	s_CM                     : 0.505652
+	s_analysis_confidence    : 0.23056
+	s_Bot_Xtr                : 0.0777228
+	s_Top_Xtr                : 0.0531704
+	s_lower_bl_H_0           : 0.000693206
+	s_lower_bl_H_1           : 0.00062556
+	s_lower_bl_H_2           : 0.000516002
+	s_lower_bl_ret_0         : 0.000499415
+Epoch: 145 | Train Loss: 2.52057 | Test Loss: 3.21227 | analysis_confidence: 0.12723 | CL: 0.0225774 | ln_CD: 0.0466439 | CM: 0.00363184 | Top_Xtr: 0.0182541 | Bot_Xtr: 0.0207218
+Loss contributors: 
+	s_ln_CD                  : 1.28991
+	s_CL                     : 1.05336
+	s_CM                     : 0.49742
+	s_analysis_confidence    : 0.232562
+	s_Bot_Xtr                : 0.0640242
+	s_Top_Xtr                : 0.0428845
+	s_lower_bl_H_0           : 0.000684268
+	s_lower_bl_H_1           : 0.000600944
+	s_lower_bl_ret_0         : 0.000498682
+	s_lower_bl_H_2           : 0.000493113
+Epoch: 146 | Train Loss: 2.5188 | Test Loss: 3.16241 | analysis_confidence: 0.130897 | CL: 0.021922 | ln_CD: 0.0475255 | CM: 0.00341398 | Top_Xtr: 0.0180475 | Bot_Xtr: 0.0202421
+Loss contributors: 
+	s_ln_CD                  : 1.30851
+	s_CL                     : 1.02016
+	s_CM                     : 0.468569
+	s_analysis_confidence    : 0.229477
+	s_Bot_Xtr                : 0.0633379
+	s_Top_Xtr                : 0.0406965
+	s_lower_bl_H_0           : 0.000692494
+	s_lower_bl_H_1           : 0.000599475
+	s_lower_bl_ret_0         : 0.000498448
+	s_lower_bl_H_2           : 0.000497533
+Epoch: 147 | Train Loss: 2.518 | Test Loss: 3.12245 | analysis_confidence: 0.128608 | CL: 0.0219822 | ln_CD: 0.0411333 | CM: 0.0034334 | Top_Xtr: 0.0188987 | Bot_Xtr: 0.0212515
+Loss contributors: 
+	s_ln_CD                  : 1.25863
+	s_CL                     : 1.0231
+	s_CM                     : 0.472788
+	s_analysis_confidence    : 0.228641
+	s_Bot_Xtr                : 0.0640504
+	s_Top_Xtr                : 0.043149
+	s_lower_bl_H_0           : 0.000683296
+	s_lower_bl_H_1           : 0.000605095
+	s_lower_bl_H_2           : 0.000514984
+	s_lower_bl_ret_0         : 0.000497809
+Epoch: 148 | Train Loss: 2.51154 | Test Loss: 3.12092 | analysis_confidence: 0.129109 | CL: 0.0215769 | ln_CD: 0.041495 | CM: 0.00344646 | Top_Xtr: 0.0179367 | Bot_Xtr: 0.0203362
+Loss contributors: 
+	s_ln_CD                  : 1.27784
+	s_CL                     : 1.00639
+	s_CM                     : 0.474212
+	s_analysis_confidence    : 0.228204
+	s_Bot_Xtr                : 0.0633126
+	s_Top_Xtr                : 0.039202
+	s_lower_bl_H_0           : 0.000684365
+	s_lower_bl_H_1           : 0.000599844
+	s_lower_bl_ret_0         : 0.000499369
+	s_lower_bl_H_2           : 0.000496849
+Epoch: 149 | Train Loss: 2.50547 | Test Loss: 3.11283 | analysis_confidence: 0.127359 | CL: 0.0219595 | ln_CD: 0.0412327 | CM: 0.00346855 | Top_Xtr: 0.0192449 | Bot_Xtr: 0.0214169
+Loss contributors: 
+	s_ln_CD                  : 1.25489
+	s_CL                     : 1.01482
+	s_CM                     : 0.473216
+	s_analysis_confidence    : 0.22834
+	s_Bot_Xtr                : 0.0662158
+	s_Top_Xtr                : 0.0433603
+	s_lower_bl_H_0           : 0.000678415
+	s_lower_bl_H_1           : 0.000591184
+	s_lower_bl_ret_0         : 0.000490748
+	s_lower_bl_H_2           : 0.000478614
+Epoch: 150 | Train Loss: 2.50468 | Test Loss: 3.12912 | analysis_confidence: 0.129478 | CL: 0.0227728 | ln_CD: 0.042218 | CM: 0.00336151 | Top_Xtr: 0.0177197 | Bot_Xtr: 0.0200902
+Loss contributors: 
+	s_ln_CD                  : 1.28233
+	s_CL                     : 1.02333
+	s_CM                     : 0.4581
+	s_analysis_confidence    : 0.229793
+	s_Bot_Xtr                : 0.0636662
+	s_Top_Xtr                : 0.0401893
+	s_lower_bl_H_0           : 0.000676056
+	s_lower_bl_H_1           : 0.000597644
+	s_lower_bl_ret_0         : 0.000500972
+	s_lower_bl_H_2           : 0.000491416
+Epoch: 151 | Train Loss: 2.50593 | Test Loss: 3.15341 | analysis_confidence: 0.129992 | CL: 0.0218638 | ln_CD: 0.0488363 | CM: 0.00332201 | Top_Xtr: 0.0176512 | Bot_Xtr: 0.0200661
+Loss contributors: 
+	s_ln_CD                  : 1.33138
+	s_CL                     : 1.00119
+	s_CM                     : 0.459073
+	s_analysis_confidence    : 0.230026
+	s_Bot_Xtr                : 0.0618735
+	s_Top_Xtr                : 0.0382231
+	s_lower_bl_H_0           : 0.000688418
+	s_lower_bl_H_1           : 0.000598579
+	s_lower_bl_ret_0         : 0.000497568
+	s_lower_bl_H_2           : 0.000493774
+Epoch: 152 | Train Loss: 2.49916 | Test Loss: 3.07323 | analysis_confidence: 0.126013 | CL: 0.0215741 | ln_CD: 0.0441438 | CM: 0.00353687 | Top_Xtr: 0.0176537 | Bot_Xtr: 0.0199432
+Loss contributors: 
+	s_ln_CD                  : 1.22956
+	s_CL                     : 1.00989
+	s_CM                     : 0.473978
+	s_analysis_confidence    : 0.228422
+	s_Bot_Xtr                : 0.0617211
+	s_Top_Xtr                : 0.038015
+	s_lower_bl_H_0           : 0.000693604
+	s_lower_bl_H_1           : 0.000602463
+	s_lower_bl_ret_0         : 0.00049672
+	s_lower_bl_H_2           : 0.000492012
+Epoch: 153 | Train Loss: 2.4934 | Test Loss: 3.16916 | analysis_confidence: 0.127361 | CL: 0.0222113 | ln_CD: 0.0458759 | CM: 0.00345663 | Top_Xtr: 0.0189229 | Bot_Xtr: 0.0215146
+Loss contributors: 
+	s_ln_CD                  : 1.29183
+	s_CL                     : 1.02831
+	s_CM                     : 0.477089
+	s_analysis_confidence    : 0.229577
+	s_Bot_Xtr                : 0.0669229
+	s_Top_Xtr                : 0.043482
+	s_lower_bl_H_0           : 0.000689415
+	s_lower_bl_H_1           : 0.000607965
+	s_lower_bl_ret_0         : 0.000498782
+	s_lower_bl_H_2           : 0.000493818
+Epoch: 154 | Train Loss: 2.4867 | Test Loss: 3.09695 | analysis_confidence: 0.127939 | CL: 0.0225085 | ln_CD: 0.0425878 | CM: 0.00333094 | Top_Xtr: 0.0177861 | Bot_Xtr: 0.0203147
+Loss contributors: 
+	s_ln_CD                  : 1.27079
+	s_CL                     : 1.01144
+	s_CM                     : 0.452581
+	s_analysis_confidence    : 0.228151
+	s_Bot_Xtr                : 0.0626595
+	s_Top_Xtr                : 0.039602
+	s_lower_bl_H_0           : 0.000684906
+	s_lower_bl_H_1           : 0.00061071
+	s_lower_bl_H_2           : 0.000497499
+	s_lower_bl_ret_0         : 0.00049313
+Epoch: 155 | Train Loss: 2.48325 | Test Loss: 3.13042 | analysis_confidence: 0.130033 | CL: 0.0215273 | ln_CD: 0.0409876 | CM: 0.00338727 | Top_Xtr: 0.0183013 | Bot_Xtr: 0.0214601
+Loss contributors: 
+	s_ln_CD                  : 1.27765
+	s_CL                     : 1.02345
+	s_CM                     : 0.461604
+	s_analysis_confidence    : 0.228213
+	s_Bot_Xtr                : 0.0669416
+	s_Top_Xtr                : 0.0408434
+	s_lower_bl_H_0           : 0.000687789
+	s_lower_bl_H_1           : 0.000604232
+	s_lower_bl_H_2           : 0.000506247
+	s_lower_bl_ret_0         : 0.000495788
+Epoch: 156 | Train Loss: 2.47852 | Test Loss: 3.11485 | analysis_confidence: 0.129318 | CL: 0.0211418 | ln_CD: 0.0470394 | CM: 0.00341304 | Top_Xtr: 0.0179669 | Bot_Xtr: 0.0201001
+Loss contributors: 
+	s_ln_CD                  : 1.2719
+	s_CL                     : 1.0089
+	s_CM                     : 0.468452
+	s_analysis_confidence    : 0.228336
+	s_Bot_Xtr                : 0.0647163
+	s_Top_Xtr                : 0.0406491
+	s_lower_bl_H_0           : 0.000673069
+	s_lower_bl_H_1           : 0.000594317
+	s_lower_bl_ret_0         : 0.000500212
+	s_upper_bl_ret_0         : 0.000485063
+Epoch: 157 | Train Loss: 2.48142 | Test Loss: 3.22749 | analysis_confidence: 0.129323 | CL: 0.0221006 | ln_CD: 0.0418235 | CM: 0.00343443 | Top_Xtr: 0.0175999 | Bot_Xtr: 0.0202234
+Loss contributors: 
+	s_ln_CD                  : 1.35852
+	s_CL                     : 1.03135
+	s_CM                     : 0.470356
+	s_analysis_confidence    : 0.228507
+	s_Bot_Xtr                : 0.065335
+	s_Top_Xtr                : 0.0416516
+	s_lower_bl_H_0           : 0.000687309
+	s_lower_bl_H_1           : 0.000604159
+	s_lower_bl_ret_0         : 0.000491974
+	s_lower_bl_H_2           : 0.000490825
+Epoch: 158 | Train Loss: 2.47151 | Test Loss: 3.08462 | analysis_confidence: 0.126652 | CL: 0.02138 | ln_CD: 0.0435014 | CM: 0.00337746 | Top_Xtr: 0.0179021 | Bot_Xtr: 0.0203033
+Loss contributors: 
+	s_ln_CD                  : 1.23836
+	s_CL                     : 1.01731
+	s_CM                     : 0.464894
+	s_analysis_confidence    : 0.228439
+	s_Bot_Xtr                : 0.0646552
+	s_Top_Xtr                : 0.0394427
+	s_lower_bl_H_0           : 0.000674622
+	s_lower_bl_H_1           : 0.000605807
+	s_lower_bl_H_2           : 0.000492207
+	s_lower_bl_ret_0         : 0.000485922
+Epoch: 159 | Train Loss: 2.47212 | Test Loss: 3.10917 | analysis_confidence: 0.12761 | CL: 0.0212835 | ln_CD: 0.0461806 | CM: 0.00334704 | Top_Xtr: 0.0178464 | Bot_Xtr: 0.0200802
+Loss contributors: 
+	s_ln_CD                  : 1.28134
+	s_CL                     : 1.0008
+	s_CM                     : 0.464948
+	s_analysis_confidence    : 0.227673
+	s_Bot_Xtr                : 0.0628671
+	s_Top_Xtr                : 0.040012
+	s_lower_bl_H_0           : 0.000698256
+	s_lower_bl_H_1           : 0.000603724
+	s_lower_bl_H_2           : 0.00049533
+	s_lower_bl_ret_0         : 0.000492541
+Epoch: 160 | Train Loss: 2.46174 | Test Loss: 3.10121 | analysis_confidence: 0.130365 | CL: 0.0213827 | ln_CD: 0.0400925 | CM: 0.0033349 | Top_Xtr: 0.0173055 | Bot_Xtr: 0.0201623
+Loss contributors: 
+	s_ln_CD                  : 1.2765
+	s_CL                     : 1.00371
+	s_CM                     : 0.4599
+	s_analysis_confidence    : 0.228637
+	s_Bot_Xtr                : 0.0626714
+	s_Top_Xtr                : 0.0380045
+	s_lower_bl_H_0           : 0.000680003
+	s_lower_bl_H_1           : 0.000606605
+	s_lower_bl_ret_0         : 0.000498391
+	s_lower_bl_H_2           : 0.000493702
+Epoch: 161 | Train Loss: 2.46515 | Test Loss: 3.32888 | analysis_confidence: 0.12577 | CL: 0.0225539 | ln_CD: 0.0506621 | CM: 0.00351708 | Top_Xtr: 0.018326 | Bot_Xtr: 0.0205604
+Loss contributors: 
+	s_ln_CD                  : 1.37949
+	s_CL                     : 1.08776
+	s_CM                     : 0.494353
+	s_analysis_confidence    : 0.229772
+	s_Bot_Xtr                : 0.0639843
+	s_Top_Xtr                : 0.0413394
+	s_lower_bl_H_0           : 0.00068638
+	s_lower_bl_H_1           : 0.000598874
+	s_lower_bl_ret_0         : 0.000494318
+	s_lower_bl_H_2           : 0.000489745
+Epoch: 162 | Train Loss: 2.46248 | Test Loss: 3.10048 | analysis_confidence: 0.128119 | CL: 0.0215005 | ln_CD: 0.0417485 | CM: 0.00342424 | Top_Xtr: 0.0178084 | Bot_Xtr: 0.0201956
+Loss contributors: 
+	s_ln_CD                  : 1.25281
+	s_CL                     : 1.01536
+	s_CM                     : 0.468262
+	s_analysis_confidence    : 0.228187
+	s_Bot_Xtr                : 0.0640177
+	s_Top_Xtr                : 0.0402451
+	s_lower_bl_H_0           : 0.000688998
+	s_lower_bl_H_1           : 0.000603326
+	s_lower_bl_ret_0         : 0.000494575
+	s_lower_bl_H_2           : 0.000488233
+Epoch: 163 | Train Loss: 2.45909 | Test Loss: 3.22538 | analysis_confidence: 0.130758 | CL: 0.0225273 | ln_CD: 0.0423825 | CM: 0.00354724 | Top_Xtr: 0.0176711 | Bot_Xtr: 0.0198559
+Loss contributors: 
+	s_ln_CD                  : 1.33036
+	s_CL                     : 1.04101
+	s_CM                     : 0.491121
+	s_analysis_confidence    : 0.228256
+	s_Bot_Xtr                : 0.0632372
+	s_Top_Xtr                : 0.0395404
+	s_lower_bl_H_0           : 0.000670628
+	s_lower_bl_H_1           : 0.000599239
+	s_lower_bl_ret_0         : 0.000495489
+	s_lower_bl_H_2           : 0.000486566
+Epoch: 164 | Train Loss: 2.44787 | Test Loss: 3.24906 | analysis_confidence: 0.12562 | CL: 0.0217748 | ln_CD: 0.0436717 | CM: 0.00351083 | Top_Xtr: 0.0177272 | Bot_Xtr: 0.0200308
+Loss contributors: 
+	s_ln_CD                  : 1.39154
+	s_CL                     : 1.01851
+	s_CM                     : 0.475088
+	s_analysis_confidence    : 0.228442
+	s_Bot_Xtr                : 0.0636149
+	s_Top_Xtr                : 0.039785
+	s_lower_bl_H_0           : 0.000678117
+	s_lower_bl_H_1           : 0.000609144
+	s_lower_bl_ret_0         : 0.000497559
+	s_lower_bl_H_2           : 0.000496364
+Epoch: 165 | Train Loss: 2.44467 | Test Loss: 3.27776 | analysis_confidence: 0.129186 | CL: 0.0213721 | ln_CD: 0.046267 | CM: 0.00343641 | Top_Xtr: 0.0179068 | Bot_Xtr: 0.0208105
+Loss contributors: 
+	s_ln_CD                  : 1.41816
+	s_CL                     : 1.02265
+	s_CM                     : 0.469643
+	s_analysis_confidence    : 0.232202
+	s_Bot_Xtr                : 0.0639882
+	s_Top_Xtr                : 0.0396395
+	s_lower_bl_H_0           : 0.000688924
+	s_lower_bl_H_1           : 0.000610053
+	s_lower_bl_H_2           : 0.000497223
+	s_lower_bl_ret_0         : 0.000493093
+Epoch: 166 | Train Loss: 2.44541 | Test Loss: 3.24531 | analysis_confidence: 0.130613 | CL: 0.0227564 | ln_CD: 0.0441884 | CM: 0.00359226 | Top_Xtr: 0.0183793 | Bot_Xtr: 0.0209087
+Loss contributors: 
+	s_ln_CD                  : 1.34352
+	s_CL                     : 1.05783
+	s_CM                     : 0.481053
+	s_analysis_confidence    : 0.228996
+	s_Bot_Xtr                : 0.0624323
+	s_Top_Xtr                : 0.0392634
+	s_lower_bl_H_0           : 0.000687315
+	s_lower_bl_H_1           : 0.000612926
+	s_lower_bl_H_2           : 0.000506157
+	s_lower_bl_ret_0         : 0.000493458
+Epoch: 167 | Train Loss: 2.44282 | Test Loss: 3.11667 | analysis_confidence: 0.132145 | CL: 0.021296 | ln_CD: 0.0391789 | CM: 0.00338305 | Top_Xtr: 0.0175916 | Bot_Xtr: 0.0200856
+Loss contributors: 
+	s_ln_CD                  : 1.28525
+	s_CL                     : 1.00155
+	s_CM                     : 0.46942
+	s_analysis_confidence    : 0.228406
+	s_Bot_Xtr                : 0.0616885
+	s_Top_Xtr                : 0.0388894
+	s_lower_bl_H_0           : 0.000676411
+	s_lower_bl_H_1           : 0.000598087
+	s_lower_bl_ret_0         : 0.000489568
+	s_lower_bl_H_2           : 0.00048494
+Epoch: 168 | Train Loss: 2.43847 | Test Loss: 3.21793 | analysis_confidence: 0.127372 | CL: 0.0235303 | ln_CD: 0.0427657 | CM: 0.00337364 | Top_Xtr: 0.0179428 | Bot_Xtr: 0.0207629
+Loss contributors: 
+	s_ln_CD                  : 1.33501
+	s_CL                     : 1.05973
+	s_CM                     : 0.460709
+	s_analysis_confidence    : 0.228532
+	s_Bot_Xtr                : 0.0626658
+	s_Top_Xtr                : 0.0393912
+	s_lower_bl_H_0           : 0.000682467
+	s_lower_bl_H_1           : 0.000601415
+	s_lower_bl_H_2           : 0.00050005
+	s_lower_bl_ret_0         : 0.000491068
+Epoch: 169 | Train Loss: 2.43309 | Test Loss: 3.0734 | analysis_confidence: 0.128957 | CL: 0.0219628 | ln_CD: 0.0409447 | CM: 0.00335498 | Top_Xtr: 0.0198397 | Bot_Xtr: 0.0221037
+Loss contributors: 
+	s_ln_CD                  : 1.24798
+	s_CL                     : 1.00315
+	s_CM                     : 0.456071
+	s_analysis_confidence    : 0.228252
+	s_Bot_Xtr                : 0.0641148
+	s_Top_Xtr                : 0.0418681
+	s_lower_bl_H_0           : 0.000680087
+	s_lower_bl_H_1           : 0.000604172
+	s_lower_bl_ret_0         : 0.000495647
+	s_lower_bl_H_2           : 0.000488838
+Epoch: 170 | Train Loss: 2.43135 | Test Loss: 3.25937 | analysis_confidence: 0.129941 | CL: 0.0221193 | ln_CD: 0.0468641 | CM: 0.00364481 | Top_Xtr: 0.0183934 | Bot_Xtr: 0.0208077
+Loss contributors: 
+	s_ln_CD                  : 1.37583
+	s_CL                     : 1.01771
+	s_CM                     : 0.485158
+	s_analysis_confidence    : 0.228722
+	s_Bot_Xtr                : 0.0734469
+	s_Top_Xtr                : 0.0466931
+	s_lower_bl_H_0           : 0.000678925
+	s_lower_bl_H_1           : 0.000606955
+	s_lower_bl_H_2           : 0.000495264
+	s_lower_bl_ret_0         : 0.000485788
+Epoch: 171 | Train Loss: 2.42547 | Test Loss: 3.16089 | analysis_confidence: 0.126171 | CL: 0.0223971 | ln_CD: 0.0446936 | CM: 0.00342296 | Top_Xtr: 0.0178057 | Bot_Xtr: 0.0199571
+Loss contributors: 
+	s_ln_CD                  : 1.28786
+	s_CL                     : 1.04103
+	s_CM                     : 0.471391
+	s_analysis_confidence    : 0.22818
+	s_Bot_Xtr                : 0.061922
+	s_Top_Xtr                : 0.0387994
+	s_lower_bl_H_0           : 0.00067041
+	s_lower_bl_H_1           : 0.000609554
+	s_lower_bl_H_2           : 0.000497567
+	s_lower_bl_ret_0         : 0.000493982
+Epoch: 172 | Train Loss: 2.42491 | Test Loss: 3.13972 | analysis_confidence: 0.127283 | CL: 0.0218581 | ln_CD: 0.0464652 | CM: 0.00378646 | Top_Xtr: 0.0184533 | Bot_Xtr: 0.020863
+Loss contributors: 
+	s_ln_CD                  : 1.26917
+	s_CL                     : 1.01014
+	s_CM                     : 0.497947
+	s_analysis_confidence    : 0.228264
+	s_Bot_Xtr                : 0.0623562
+	s_Top_Xtr                : 0.0402289
+	s_lower_bl_H_0           : 0.000663616
+	s_lower_bl_H_1           : 0.000602615
+	s_lower_bl_ret_0         : 0.000492849
+	s_lower_bl_H_2           : 0.000485459
+Epoch: 173 | Train Loss: 2.41811 | Test Loss: 3.18906 | analysis_confidence: 0.127579 | CL: 0.0224622 | ln_CD: 0.0450947 | CM: 0.00356562 | Top_Xtr: 0.0173246 | Bot_Xtr: 0.0197994
+Loss contributors: 
+	s_ln_CD                  : 1.33146
+	s_CL                     : 1.01919
+	s_CM                     : 0.477144
+	s_analysis_confidence    : 0.227932
+	s_Bot_Xtr                : 0.0627306
+	s_Top_Xtr                : 0.0389945
+	s_lower_bl_H_0           : 0.000681034
+	s_lower_bl_H_1           : 0.000598576
+	s_lower_bl_ret_0         : 0.000496135
+	s_upper_bl_ret_0         : 0.000482123
+Epoch: 174 | Train Loss: 2.4205 | Test Loss: 3.08131 | analysis_confidence: 0.127981 | CL: 0.021617 | ln_CD: 0.0415133 | CM: 0.00334586 | Top_Xtr: 0.0176874 | Bot_Xtr: 0.0201481
+Loss contributors: 
+	s_ln_CD                  : 1.25579
+	s_CL                     : 0.998441
+	s_CM                     : 0.46334
+	s_analysis_confidence    : 0.227349
+	s_Bot_Xtr                : 0.0630911
+	s_Top_Xtr                : 0.0416936
+	s_lower_bl_H_0           : 0.000691625
+	s_lower_bl_H_1           : 0.000610695
+	s_lower_bl_H_2           : 0.000507953
+	s_lower_bl_ret_0         : 0.000486761
+Epoch: 175 | Train Loss: 2.41898 | Test Loss: 3.10334 | analysis_confidence: 0.12857 | CL: 0.0216945 | ln_CD: 0.040973 | CM: 0.00351006 | Top_Xtr: 0.0187619 | Bot_Xtr: 0.0217267
+Loss contributors: 
+	s_ln_CD                  : 1.24357
+	s_CL                     : 1.01287
+	s_CM                     : 0.474437
+	s_analysis_confidence    : 0.234939
+	s_Bot_Xtr                : 0.0644635
+	s_Top_Xtr                : 0.0410573
+	s_lower_bl_H_0           : 0.000678682
+	s_lower_bl_H_1           : 0.000614985
+	s_lower_bl_ret_0         : 0.000502324
+	s_lower_bl_H_2           : 0.000497897
+Epoch: 176 | Train Loss: 2.41694 | Test Loss: 3.05127 | analysis_confidence: 0.12732 | CL: 0.0220347 | ln_CD: 0.0393349 | CM: 0.00343336 | Top_Xtr: 0.0179697 | Bot_Xtr: 0.0203927
+Loss contributors: 
+	s_ln_CD                  : 1.20874
+	s_CL                     : 1.01187
+	s_CM                     : 0.467619
+	s_analysis_confidence    : 0.230082
+	s_Bot_Xtr                : 0.0616586
+	s_Top_Xtr                : 0.0400541
+	s_lower_bl_H_0           : 0.000663788
+	s_lower_bl_H_1           : 0.000599893
+	s_lower_bl_ret_0         : 0.000489501
+	s_lower_bl_H_2           : 0.00048156
+Epoch: 177 | Train Loss: 2.41086 | Test Loss: 3.05723 | analysis_confidence: 0.128077 | CL: 0.021277 | ln_CD: 0.0398384 | CM: 0.00342101 | Top_Xtr: 0.0196646 | Bot_Xtr: 0.0225914
+Loss contributors: 
+	s_ln_CD                  : 1.22077
+	s_CL                     : 0.99515
+	s_CM                     : 0.470308
+	s_analysis_confidence    : 0.229843
+	s_Bot_Xtr                : 0.0662981
+	s_Top_Xtr                : 0.0434687
+	s_lower_bl_H_0           : 0.000682694
+	s_lower_bl_H_1           : 0.000609324
+	s_lower_bl_H_2           : 0.000501485
+	s_lower_bl_ret_0         : 0.000487028
+Epoch: 178 | Train Loss: 2.40678 | Test Loss: 3.06542 | analysis_confidence: 0.124316 | CL: 0.0222279 | ln_CD: 0.0398257 | CM: 0.00352984 | Top_Xtr: 0.017459 | Bot_Xtr: 0.0198906
+Loss contributors: 
+	s_ln_CD                  : 1.2229
+	s_CL                     : 1.01855
+	s_CM                     : 0.466806
+	s_analysis_confidence    : 0.227389
+	s_Bot_Xtr                : 0.0603596
+	s_Top_Xtr                : 0.0378758
+	s_lower_bl_H_0           : 0.000681039
+	s_lower_bl_H_1           : 0.000606049
+	s_lower_bl_ret_0         : 0.000496799
+	s_lower_bl_H_2           : 0.000482627
+Epoch: 179 | Train Loss: 2.40578 | Test Loss: 3.29189 | analysis_confidence: 0.126911 | CL: 0.0219445 | ln_CD: 0.0512846 | CM: 0.00342033 | Top_Xtr: 0.0179659 | Bot_Xtr: 0.0201361
+Loss contributors: 
+	s_ln_CD                  : 1.42803
+	s_CL                     : 1.02991
+	s_CM                     : 0.469766
+	s_analysis_confidence    : 0.229863
+	s_Bot_Xtr                : 0.0627124
+	s_Top_Xtr                : 0.0399075
+	s_lower_bl_H_0           : 0.00068247
+	s_lower_bl_H_1           : 0.000608986
+	s_lower_bl_H_2           : 0.000492091
+	s_lower_bl_ret_0         : 0.000490521
+Epoch: 180 | Train Loss: 2.40133 | Test Loss: 3.13903 | analysis_confidence: 0.126584 | CL: 0.0217636 | ln_CD: 0.0411088 | CM: 0.00340507 | Top_Xtr: 0.017295 | Bot_Xtr: 0.0196159
+Loss contributors: 
+	s_ln_CD                  : 1.31324
+	s_CL                     : 1.00731
+	s_CM                     : 0.460493
+	s_analysis_confidence    : 0.227654
+	s_Bot_Xtr                : 0.0605821
+	s_Top_Xtr                : 0.0382223
+	s_lower_bl_H_0           : 0.000676787
+	s_lower_bl_H_1           : 0.000611192
+	s_lower_bl_H_2           : 0.000504384
+	s_lower_bl_ret_0         : 0.00048833
+Epoch: 181 | Train Loss: 2.39645 | Test Loss: 3.10371 | analysis_confidence: 0.126964 | CL: 0.0209668 | ln_CD: 0.0431409 | CM: 0.00334719 | Top_Xtr: 0.0199735 | Bot_Xtr: 0.023026
+Loss contributors: 
+	s_ln_CD                  : 1.26328
+	s_CL                     : 0.997296
+	s_CM                     : 0.458402
+	s_analysis_confidence    : 0.228174
+	s_Bot_Xtr                : 0.0766377
+	s_Top_Xtr                : 0.0484615
+	s_lower_bl_H_0           : 0.000688089
+	s_lower_bl_H_1           : 0.000607888
+	s_lower_bl_ret_0         : 0.000489867
+	s_lower_bl_H_2           : 0.000488444
+Epoch: 182 | Train Loss: 2.39433 | Test Loss: 3.15731 | analysis_confidence: 0.125863 | CL: 0.0216234 | ln_CD: 0.0407846 | CM: 0.00336828 | Top_Xtr: 0.0176624 | Bot_Xtr: 0.0200225
+Loss contributors: 
+	s_ln_CD                  : 1.31732
+	s_CL                     : 1.01667
+	s_CM                     : 0.462487
+	s_analysis_confidence    : 0.228061
+	s_Bot_Xtr                : 0.0620299
+	s_Top_Xtr                : 0.0392674
+	s_lower_bl_H_0           : 0.000691126
+	s_lower_bl_H_1           : 0.000614618
+	s_lower_bl_H_2           : 0.000495451
+	s_lower_bl_ret_0         : 0.000482905
+Epoch: 183 | Train Loss: 2.39305 | Test Loss: 3.11126 | analysis_confidence: 0.131612 | CL: 0.0222493 | ln_CD: 0.0412355 | CM: 0.00341013 | Top_Xtr: 0.0177592 | Bot_Xtr: 0.0200151
+Loss contributors: 
+	s_ln_CD                  : 1.27374
+	s_CL                     : 1.01635
+	s_CM                     : 0.461478
+	s_analysis_confidence    : 0.228998
+	s_Bot_Xtr                : 0.0607887
+	s_Top_Xtr                : 0.0383322
+	s_lower_bl_H_0           : 0.000671673
+	s_lower_bl_H_1           : 0.000605975
+	s_lower_bl_ret_0         : 0.00049356
+	s_lower_bl_H_2           : 0.000490566
+Epoch: 184 | Train Loss: 2.38877 | Test Loss: 3.15988 | analysis_confidence: 0.127311 | CL: 0.0216705 | ln_CD: 0.0438731 | CM: 0.00338033 | Top_Xtr: 0.017406 | Bot_Xtr: 0.0197918
+Loss contributors: 
+	s_ln_CD                  : 1.32751
+	s_CL                     : 1.00838
+	s_CM                     : 0.465715
+	s_analysis_confidence    : 0.22663
+	s_Bot_Xtr                : 0.0617386
+	s_Top_Xtr                : 0.0384587
+	s_lower_bl_H_0           : 0.000675804
+	s_lower_bl_H_1           : 0.000607039
+	s_lower_bl_ret_0         : 0.000490664
+	s_lower_bl_H_2           : 0.000487901
+Epoch: 185 | Train Loss: 2.38999 | Test Loss: 3.19018 | analysis_confidence: 0.129399 | CL: 0.0215829 | ln_CD: 0.0457508 | CM: 0.00338452 | Top_Xtr: 0.0179969 | Bot_Xtr: 0.020746
+Loss contributors: 
+	s_ln_CD                  : 1.33473
+	s_CL                     : 1.01833
+	s_CM                     : 0.47349
+	s_analysis_confidence    : 0.227305
+	s_Bot_Xtr                : 0.0643024
+	s_Top_Xtr                : 0.0401991
+	s_lower_bl_H_0           : 0.000679403
+	s_lower_bl_H_1           : 0.000604911
+	s_lower_bl_ret_0         : 0.00049648
+	s_lower_bl_H_2           : 0.00049145
+Epoch: 186 | Train Loss: 2.38472 | Test Loss: 3.15315 | analysis_confidence: 0.129018 | CL: 0.0228239 | ln_CD: 0.0425576 | CM: 0.00355866 | Top_Xtr: 0.0175475 | Bot_Xtr: 0.0200326
+Loss contributors: 
+	s_ln_CD                  : 1.28719
+	s_CL                     : 1.02916
+	s_CM                     : 0.476266
+	s_analysis_confidence    : 0.226932
+	s_Bot_Xtr                : 0.0620306
+	s_Top_Xtr                : 0.0400144
+	s_lower_bl_H_0           : 0.000680719
+	s_lower_bl_H_1           : 0.000617294
+	s_lower_bl_H_2           : 0.00050402
+	s_lower_bl_ret_0         : 0.000491025
+Epoch: 187 | Train Loss: 2.37581 | Test Loss: 3.04888 | analysis_confidence: 0.128254 | CL: 0.0207043 | ln_CD: 0.0401667 | CM: 0.00336568 | Top_Xtr: 0.0179757 | Bot_Xtr: 0.0209333
+Loss contributors: 
+	s_ln_CD                  : 1.2406
+	s_CL                     : 0.988673
+	s_CM                     : 0.462144
+	s_analysis_confidence    : 0.226724
+	s_Bot_Xtr                : 0.0611163
+	s_Top_Xtr                : 0.0381491
+	s_lower_bl_H_0           : 0.000679476
+	s_lower_bl_H_1           : 0.000606884
+	s_lower_bl_ret_0         : 0.000490823
+	s_lower_bl_H_2           : 0.000481363
+Epoch: 188 | Train Loss: 2.38246 | Test Loss: 3.10484 | analysis_confidence: 0.127227 | CL: 0.0215992 | ln_CD: 0.0414426 | CM: 0.00334046 | Top_Xtr: 0.0186347 | Bot_Xtr: 0.0203843
+Loss contributors: 
+	s_ln_CD                  : 1.27607
+	s_CL                     : 0.999356
+	s_CM                     : 0.463294
+	s_analysis_confidence    : 0.227503
+	s_Bot_Xtr                : 0.0640484
+	s_Top_Xtr                : 0.0431532
+	s_lower_bl_H_0           : 0.000678779
+	s_lower_bl_H_1           : 0.000606248
+	s_lower_bl_ret_0         : 0.000489394
+	s_lower_bl_H_2           : 0.00048896
+Epoch: 189 | Train Loss: 2.37397 | Test Loss: 3.08439 | analysis_confidence: 0.128637 | CL: 0.0217124 | ln_CD: 0.0400788 | CM: 0.00331546 | Top_Xtr: 0.0172018 | Bot_Xtr: 0.0198436
+Loss contributors: 
+	s_ln_CD                  : 1.25081
+	s_CL                     : 1.01731
+	s_CM                     : 0.458324
+	s_analysis_confidence    : 0.227001
+	s_Bot_Xtr                : 0.0611724
+	s_Top_Xtr                : 0.0380366
+	s_lower_bl_H_0           : 0.000684921
+	s_lower_bl_H_1           : 0.000614738
+	s_lower_bl_H_2           : 0.000491581
+	s_lower_bl_ret_0         : 0.000485901
+Epoch: 190 | Train Loss: 2.37387 | Test Loss: 3.12533 | analysis_confidence: 0.127153 | CL: 0.0221389 | ln_CD: 0.0438988 | CM: 0.00347964 | Top_Xtr: 0.0171118 | Bot_Xtr: 0.0194426
+Loss contributors: 
+	s_ln_CD                  : 1.2901
+	s_CL                     : 1.01284
+	s_CM                     : 0.465899
+	s_analysis_confidence    : 0.226592
+	s_Bot_Xtr                : 0.0608975
+	s_Top_Xtr                : 0.0375835
+	s_lower_bl_H_0           : 0.000683873
+	s_lower_bl_H_1           : 0.000614933
+	s_lower_bl_H_2           : 0.000497008
+	s_lower_bl_ret_0         : 0.000482025
+Epoch: 191 | Train Loss: 2.36554 | Test Loss: 3.08206 | analysis_confidence: 0.127721 | CL: 0.0222901 | ln_CD: 0.0402747 | CM: 0.00333455 | Top_Xtr: 0.0174178 | Bot_Xtr: 0.0201579
+Loss contributors: 
+	s_ln_CD                  : 1.24186
+	s_CL                     : 1.01937
+	s_CM                     : 0.460132
+	s_analysis_confidence    : 0.227138
+	s_Bot_Xtr                : 0.0630399
+	s_Top_Xtr                : 0.0391848
+	s_lower_bl_H_0           : 0.000684481
+	s_lower_bl_H_1           : 0.000608163
+	s_lower_bl_ret_0         : 0.000491044
+	s_lower_bl_H_2           : 0.000479616
+Epoch: 192 | Train Loss: 2.37114 | Test Loss: 3.09267 | analysis_confidence: 0.126465 | CL: 0.0224113 | ln_CD: 0.0439388 | CM: 0.00357656 | Top_Xtr: 0.0171882 | Bot_Xtr: 0.0196348
+Loss contributors: 
+	s_ln_CD                  : 1.24629
+	s_CL                     : 1.01683
+	s_CM                     : 0.474946
+	s_analysis_confidence    : 0.227238
+	s_Bot_Xtr                : 0.0596888
+	s_Top_Xtr                : 0.0362814
+	s_lower_bl_H_0           : 0.000677529
+	s_lower_bl_H_1           : 0.000613386
+	s_lower_bl_H_2           : 0.000496003
+	s_lower_bl_ret_0         : 0.000495184
+Epoch: 193 | Train Loss: 2.37003 | Test Loss: 3.11372 | analysis_confidence: 0.128698 | CL: 0.0213457 | ln_CD: 0.0405083 | CM: 0.00330769 | Top_Xtr: 0.0179575 | Bot_Xtr: 0.0204022
+Loss contributors: 
+	s_ln_CD                  : 1.29819
+	s_CL                     : 0.99483
+	s_CM                     : 0.459442
+	s_analysis_confidence    : 0.227279
+	s_Bot_Xtr                : 0.0628067
+	s_Top_Xtr                : 0.039788
+	s_lower_bl_H_0           : 0.00067572
+	s_lower_bl_H_1           : 0.00060493
+	s_lower_bl_ret_0         : 0.000489648
+	s_lower_bl_H_2           : 0.000483718
+Epoch: 194 | Train Loss: 2.36211 | Test Loss: 3.16719 | analysis_confidence: 0.127508 | CL: 0.0229043 | ln_CD: 0.0418023 | CM: 0.00347114 | Top_Xtr: 0.0178754 | Bot_Xtr: 0.020342
+Loss contributors: 
+	s_ln_CD                  : 1.27635
+	s_CL                     : 1.04717
+	s_CM                     : 0.474357
+	s_analysis_confidence    : 0.22736
+	s_Bot_Xtr                : 0.0674817
+	s_Top_Xtr                : 0.0426862
+	s_lower_bl_H_0           : 0.000682752
+	s_lower_bl_H_1           : 0.000614216
+	s_lower_bl_H_2           : 0.000490184
+	s_lower_bl_ret_0         : 0.000488711
+Epoch: 195 | Train Loss: 2.35555 | Test Loss: 3.15289 | analysis_confidence: 0.125398 | CL: 0.0218713 | ln_CD: 0.0434934 | CM: 0.00330006 | Top_Xtr: 0.017905 | Bot_Xtr: 0.0203739
+Loss contributors: 
+	s_ln_CD                  : 1.30486
+	s_CL                     : 1.01685
+	s_CM                     : 0.463109
+	s_analysis_confidence    : 0.227366
+	s_Bot_Xtr                : 0.0675282
+	s_Top_Xtr                : 0.0415338
+	s_lower_bl_H_0           : 0.000680363
+	s_lower_bl_H_1           : 0.000615164
+	s_lower_bl_H_2           : 0.000502267
+	s_lower_bl_ret_0         : 0.00049463
+Epoch: 196 | Train Loss: 2.35739 | Test Loss: 3.07225 | analysis_confidence: 0.127659 | CL: 0.0215068 | ln_CD: 0.0418201 | CM: 0.00333856 | Top_Xtr: 0.017048 | Bot_Xtr: 0.0193826
+Loss contributors: 
+	s_ln_CD                  : 1.26205
+	s_CL                     : 0.997872
+	s_CM                     : 0.458074
+	s_analysis_confidence    : 0.226287
+	s_Bot_Xtr                : 0.0594859
+	s_Top_Xtr                : 0.0370259
+	s_lower_bl_H_0           : 0.000677674
+	s_lower_bl_H_1           : 0.000610373
+	s_lower_bl_ret_0         : 0.000494967
+	s_lower_bl_H_2           : 0.000486242
+Epoch: 197 | Train Loss: 2.35643 | Test Loss: 3.1169 | analysis_confidence: 0.127966 | CL: 0.0211027 | ln_CD: 0.0400854 | CM: 0.00338213 | Top_Xtr: 0.0173262 | Bot_Xtr: 0.0197366
+Loss contributors: 
+	s_ln_CD                  : 1.29573
+	s_CL                     : 1.00164
+	s_CM                     : 0.460798
+	s_analysis_confidence    : 0.228022
+	s_Bot_Xtr                : 0.0607327
+	s_Top_Xtr                : 0.0384967
+	s_lower_bl_H_0           : 0.000685273
+	s_lower_bl_H_1           : 0.000617541
+	s_lower_bl_H_2           : 0.00049022
+	s_lower_bl_ret_0         : 0.000485275
+Epoch: 198 | Train Loss: 2.34534 | Test Loss: 3.13884 | analysis_confidence: 0.125318 | CL: 0.0220212 | ln_CD: 0.0405678 | CM: 0.00333995 | Top_Xtr: 0.0182619 | Bot_Xtr: 0.0210729
+Loss contributors: 
+	s_ln_CD                  : 1.29286
+	s_CL                     : 1.02272
+	s_CM                     : 0.459311
+	s_analysis_confidence    : 0.227229
+	s_Bot_Xtr                : 0.0643831
+	s_Top_Xtr                : 0.0408809
+	s_lower_bl_H_0           : 0.00066491
+	s_lower_bl_H_1           : 0.000614634
+	s_lower_bl_H_2           : 0.000487185
+	s_lower_bl_ret_0         : 0.000482345
+Epoch: 199 | Train Loss: 2.35147 | Test Loss: 3.14689 | analysis_confidence: 0.132101 | CL: 0.0220326 | ln_CD: 0.0441919 | CM: 0.00367036 | Top_Xtr: 0.0178736 | Bot_Xtr: 0.0196954
+Loss contributors: 
+	s_ln_CD                  : 1.25881
+	s_CL                     : 1.03548
+	s_CM                     : 0.486438
+	s_analysis_confidence    : 0.233401
+	s_Bot_Xtr                : 0.0617455
+	s_Top_Xtr                : 0.0395417
+	s_lower_bl_H_0           : 0.000676398
+	s_lower_bl_H_1           : 0.000614301
+	s_lower_bl_H_2           : 0.000492403
+	s_lower_bl_ret_0         : 0.000488192
+Epoch: 200 | Train Loss: 2.34871 | Test Loss: 3.15903 | analysis_confidence: 0.127396 | CL: 0.0215893 | ln_CD: 0.0401928 | CM: 0.00330687 | Top_Xtr: 0.0171403 | Bot_Xtr: 0.0198372
+Loss contributors: 
+	s_ln_CD                  : 1.29574
+	s_CL                     : 1.04381
+	s_CM                     : 0.459948
+	s_analysis_confidence    : 0.227395
+	s_Bot_Xtr                : 0.0613128
+	s_Top_Xtr                : 0.0391009
+	s_lower_bl_H_0           : 0.000688908
+	s_lower_bl_H_1           : 0.000614516
+	s_lower_bl_H_2           : 0.000493271
+	s_lower_bl_ret_0         : 0.000492468
+Epoch: 201 | Train Loss: 2.3481 | Test Loss: 3.12737 | analysis_confidence: 0.126946 | CL: 0.0219551 | ln_CD: 0.0418076 | CM: 0.00352998 | Top_Xtr: 0.0182856 | Bot_Xtr: 0.0203683
+Loss contributors: 
+	s_ln_CD                  : 1.27403
+	s_CL                     : 1.0173
+	s_CM                     : 0.475246
+	s_analysis_confidence    : 0.226765
+	s_Bot_Xtr                : 0.0621639
+	s_Top_Xtr                : 0.0400612
+	s_lower_bl_H_0           : 0.000687162
+	s_lower_bl_H_1           : 0.000619197
+	s_lower_bl_H_2           : 0.000497734
+	s_lower_bl_ret_0         : 0.000488264
+Epoch: 202 | Train Loss: 2.34455 | Test Loss: 3.10135 | analysis_confidence: 0.125303 | CL: 0.0224446 | ln_CD: 0.0405761 | CM: 0.00352654 | Top_Xtr: 0.0186458 | Bot_Xtr: 0.02139
+Loss contributors: 
+	s_ln_CD                  : 1.2415
+	s_CL                     : 1.02877
+	s_CM                     : 0.471962
+	s_analysis_confidence    : 0.226902
+	s_Bot_Xtr                : 0.0622461
+	s_Top_Xtr                : 0.03848
+	s_lower_bl_H_0           : 0.000678338
+	s_lower_bl_H_1           : 0.000601776
+	s_lower_bl_ret_0         : 0.000485791
+	s_lower_bl_H_2           : 0.000475633
+Epoch: 203 | Train Loss: 2.33901 | Test Loss: 3.14002 | analysis_confidence: 0.126981 | CL: 0.0212602 | ln_CD: 0.040644 | CM: 0.00341391 | Top_Xtr: 0.0179382 | Bot_Xtr: 0.0204326
+Loss contributors: 
+	s_ln_CD                  : 1.28243
+	s_CL                     : 1.02724
+	s_CM                     : 0.470601
+	s_analysis_confidence    : 0.226561
+	s_Bot_Xtr                : 0.062579
+	s_Top_Xtr                : 0.0391339
+	s_lower_bl_H_0           : 0.00067999
+	s_lower_bl_H_1           : 0.000621706
+	s_lower_bl_H_2           : 0.000505755
+	s_lower_bl_ret_0         : 0.000486672
+Epoch: 204 | Train Loss: 2.33409 | Test Loss: 3.06217 | analysis_confidence: 0.12513 | CL: 0.0211732 | ln_CD: 0.0391027 | CM: 0.00328244 | Top_Xtr: 0.0173462 | Bot_Xtr: 0.0198919
+Loss contributors: 
+	s_ln_CD                  : 1.25428
+	s_CL                     : 0.994517
+	s_CM                     : 0.457012
+	s_analysis_confidence    : 0.22711
+	s_Bot_Xtr                : 0.0599394
+	s_Top_Xtr                : 0.0379238
+	s_lower_bl_H_0           : 0.000674843
+	s_lower_bl_H_1           : 0.000616327
+	s_lower_bl_ret_0         : 0.000492015
+	s_lower_bl_H_2           : 0.000487137
+Epoch: 205 | Train Loss: 2.33089 | Test Loss: 3.15997 | analysis_confidence: 0.129409 | CL: 0.0218385 | ln_CD: 0.0436499 | CM: 0.00340421 | Top_Xtr: 0.0172573 | Bot_Xtr: 0.0199152
+Loss contributors: 
+	s_ln_CD                  : 1.30137
+	s_CL                     : 1.03081
+	s_CM                     : 0.467709
+	s_analysis_confidence    : 0.228267
+	s_Bot_Xtr                : 0.0613248
+	s_Top_Xtr                : 0.038864
+	s_lower_bl_H_0           : 0.000672165
+	s_lower_bl_H_1           : 0.000622194
+	s_lower_bl_H_2           : 0.000507722
+	s_lower_bl_ret_0         : 0.000489107
+Epoch: 206 | Train Loss: 2.33918 | Test Loss: 3.28176 | analysis_confidence: 0.125937 | CL: 0.02186 | ln_CD: 0.0420627 | CM: 0.00340431 | Top_Xtr: 0.0171803 | Bot_Xtr: 0.0194876
+Loss contributors: 
+	s_ln_CD                  : 1.44256
+	s_CL                     : 1.01594
+	s_CM                     : 0.461581
+	s_analysis_confidence    : 0.228124
+	s_Bot_Xtr                : 0.0615395
+	s_Top_Xtr                : 0.0405748
+	s_lower_bl_H_0           : 0.000672607
+	s_lower_bl_H_1           : 0.000619341
+	s_lower_bl_H_2           : 0.000503823
+	s_lower_bl_ret_0         : 0.000499305
+Epoch: 207 | Train Loss: 2.32729 | Test Loss: 3.12889 | analysis_confidence: 0.126915 | CL: 0.0218431 | ln_CD: 0.0434292 | CM: 0.00344656 | Top_Xtr: 0.0187745 | Bot_Xtr: 0.0208961
+Loss contributors: 
+	s_ln_CD                  : 1.2847
+	s_CL                     : 1.00856
+	s_CM                     : 0.463892
+	s_analysis_confidence    : 0.226574
+	s_Bot_Xtr                : 0.0678064
+	s_Top_Xtr                : 0.0457987
+	s_lower_bl_H_0           : 0.000668411
+	s_lower_bl_H_1           : 0.000607984
+	s_lower_bl_ret_0         : 0.000483415
+	s_lower_bl_H_2           : 0.000481494
+Epoch: 208 | Train Loss: 2.32907 | Test Loss: 3.11227 | analysis_confidence: 0.127911 | CL: 0.0229476 | ln_CD: 0.0409923 | CM: 0.00352905 | Top_Xtr: 0.0182191 | Bot_Xtr: 0.0205595
+Loss contributors: 
+	s_ln_CD                  : 1.24421
+	s_CL                     : 1.03133
+	s_CM                     : 0.477367
+	s_analysis_confidence    : 0.227243
+	s_Bot_Xtr                : 0.0619079
+	s_Top_Xtr                : 0.0389139
+	s_lower_bl_H_0           : 0.000673489
+	s_lower_bl_H_1           : 0.000605903
+	s_lower_bl_ret_0         : 0.000487658
+	s_lower_bl_H_2           : 0.000475996
+Epoch: 209 | Train Loss: 2.32836 | Test Loss: 3.14108 | analysis_confidence: 0.1292 | CL: 0.0216392 | ln_CD: 0.0409237 | CM: 0.00345171 | Top_Xtr: 0.0179191 | Bot_Xtr: 0.0198724
+Loss contributors: 
+	s_ln_CD                  : 1.27785
+	s_CL                     : 1.03027
+	s_CM                     : 0.474124
+	s_analysis_confidence    : 0.229216
+	s_Bot_Xtr                : 0.060409
+	s_Top_Xtr                : 0.0376562
+	s_lower_bl_H_0           : 0.000680528
+	s_lower_bl_H_1           : 0.000620531
+	s_lower_bl_H_2           : 0.000499401
+	s_lower_bl_ret_0         : 0.000484895
+Epoch: 210 | Train Loss: 2.32282 | Test Loss: 3.15037 | analysis_confidence: 0.127939 | CL: 0.0214904 | ln_CD: 0.043201 | CM: 0.00345279 | Top_Xtr: 0.0176149 | Bot_Xtr: 0.0201848
+Loss contributors: 
+	s_ln_CD                  : 1.2911
+	s_CL                     : 1.02782
+	s_CM                     : 0.472004
+	s_analysis_confidence    : 0.22731
+	s_Bot_Xtr                : 0.0618028
+	s_Top_Xtr                : 0.0387194
+	s_lower_bl_H_0           : 0.000676249
+	s_lower_bl_H_1           : 0.000612998
+	s_lower_bl_H_2           : 0.000488979
+	s_lower_bl_ret_0         : 0.000482169
+Epoch: 211 | Train Loss: 2.32454 | Test Loss: 3.21161 | analysis_confidence: 0.125245 | CL: 0.0215345 | ln_CD: 0.0435024 | CM: 0.00337652 | Top_Xtr: 0.018338 | Bot_Xtr: 0.0206287
+Loss contributors: 
+	s_ln_CD                  : 1.36794
+	s_CL                     : 1.0134
+	s_CM                     : 0.463354
+	s_analysis_confidence    : 0.226958
+	s_Bot_Xtr                : 0.0663489
+	s_Top_Xtr                : 0.041961
+	s_lower_bl_H_0           : 0.000680234
+	s_lower_bl_H_1           : 0.000618487
+	s_lower_bl_H_2           : 0.000493413
+	s_lower_bl_ret_0         : 0.000488514
+Epoch: 212 | Train Loss: 2.31702 | Test Loss: 3.15007 | analysis_confidence: 0.12846 | CL: 0.0215627 | ln_CD: 0.040159 | CM: 0.00341402 | Top_Xtr: 0.0181755 | Bot_Xtr: 0.0203258
+Loss contributors: 
+	s_ln_CD                  : 1.29704
+	s_CL                     : 1.01551
+	s_CM                     : 0.467568
+	s_analysis_confidence    : 0.228623
+	s_Bot_Xtr                : 0.0665332
+	s_Top_Xtr                : 0.0433784
+	s_lower_bl_H_0           : 0.000669676
+	s_lower_bl_H_1           : 0.000613188
+	s_lower_bl_ret_0         : 0.000492084
+	s_lower_bl_H_2           : 0.000485338
+Epoch: 213 | Train Loss: 2.32431 | Test Loss: 3.1157 | analysis_confidence: 0.12615 | CL: 0.0231083 | ln_CD: 0.0406403 | CM: 0.00350319 | Top_Xtr: 0.0194582 | Bot_Xtr: 0.0217981
+Loss contributors: 
+	s_ln_CD                  : 1.24964
+	s_CL                     : 1.03692
+	s_CM                     : 0.470381
+	s_analysis_confidence    : 0.226196
+	s_Bot_Xtr                : 0.0615571
+	s_Top_Xtr                : 0.0395235
+	s_lower_bl_H_0           : 0.000682765
+	s_lower_bl_H_1           : 0.000631107
+	s_lower_bl_H_2           : 0.000500717
+	s_lower_bl_ret_0         : 0.000495438
+Epoch: 214 | Train Loss: 2.31945 | Test Loss: 3.121 | analysis_confidence: 0.129766 | CL: 0.0216488 | ln_CD: 0.0410323 | CM: 0.00337693 | Top_Xtr: 0.0177439 | Bot_Xtr: 0.020029
+Loss contributors: 
+	s_ln_CD                  : 1.25501
+	s_CL                     : 1.02141
+	s_CM                     : 0.475757
+	s_analysis_confidence    : 0.227292
+	s_Bot_Xtr                : 0.0665945
+	s_Top_Xtr                : 0.043365
+	s_lower_bl_H_0           : 0.000682474
+	s_lower_bl_H_1           : 0.000626053
+	s_lower_bl_H_2           : 0.000500546
+	s_lower_bl_ret_0         : 0.000491295
+Epoch: 215 | Train Loss: 2.31255 | Test Loss: 3.15997 | analysis_confidence: 0.127746 | CL: 0.0215132 | ln_CD: 0.0439393 | CM: 0.00327221 | Top_Xtr: 0.0178814 | Bot_Xtr: 0.0206564
+Loss contributors: 
+	s_ln_CD                  : 1.3145
+	s_CL                     : 1.02189
+	s_CM                     : 0.461383
+	s_analysis_confidence    : 0.226799
+	s_Bot_Xtr                : 0.0632941
+	s_Top_Xtr                : 0.0405535
+	s_lower_bl_H_0           : 0.000676292
+	s_lower_bl_H_1           : 0.000625119
+	s_lower_bl_H_2           : 0.000493265
+	s_lower_bl_ret_0         : 0.000483335
+Epoch: 216 | Train Loss: 2.31772 | Test Loss: 3.03567 | analysis_confidence: 0.125506 | CL: 0.0217224 | ln_CD: 0.0409855 | CM: 0.00346124 | Top_Xtr: 0.0196141 | Bot_Xtr: 0.0209891
+Loss contributors: 
+	s_ln_CD                  : 1.21022
+	s_CL                     : 0.997663
+	s_CM                     : 0.470349
+	s_analysis_confidence    : 0.226912
+	s_Bot_Xtr                : 0.0597509
+	s_Top_Xtr                : 0.0395487
+	s_lower_bl_H_0           : 0.000682403
+	s_lower_bl_H_1           : 0.000615006
+	s_lower_bl_H_2           : 0.000496663
+	s_lower_bl_ret_0         : 0.000489353
+Epoch: 217 | Train Loss: 2.31165 | Test Loss: 3.05621 | analysis_confidence: 0.12526 | CL: 0.0221468 | ln_CD: 0.0415236 | CM: 0.00325388 | Top_Xtr: 0.0177411 | Bot_Xtr: 0.0197505
+Loss contributors: 
+	s_ln_CD                  : 1.24289
+	s_CL                     : 1.00324
+	s_CM                     : 0.453497
+	s_analysis_confidence    : 0.226899
+	s_Bot_Xtr                : 0.0593892
+	s_Top_Xtr                : 0.0388748
+	s_lower_bl_H_0           : 0.000680407
+	s_lower_bl_H_1           : 0.000615149
+	s_lower_bl_H_2           : 0.000501914
+	s_lower_bl_ret_0         : 0.000483133
+Epoch: 218 | Train Loss: 2.30522 | Test Loss: 3.12287 | analysis_confidence: 0.126501 | CL: 0.0214442 | ln_CD: 0.0400374 | CM: 0.0037916 | Top_Xtr: 0.0174237 | Bot_Xtr: 0.0196366
+Loss contributors: 
+	s_ln_CD                  : 1.27439
+	s_CL                     : 0.993118
+	s_CM                     : 0.497952
+	s_analysis_confidence    : 0.226613
+	s_Bot_Xtr                : 0.0599718
+	s_Top_Xtr                : 0.0389462
+	s_lower_bl_H_0           : 0.000676727
+	s_lower_bl_H_1           : 0.000618576
+	s_lower_bl_H_2           : 0.000492758
+	s_lower_bl_ret_0         : 0.000482429
+Epoch: 219 | Train Loss: 2.30748 | Test Loss: 3.17294 | analysis_confidence: 0.127378 | CL: 0.0208475 | ln_CD: 0.0400588 | CM: 0.0033669 | Top_Xtr: 0.0172105 | Bot_Xtr: 0.0195017
+Loss contributors: 
+	s_ln_CD                  : 1.32165
+	s_CL                     : 1.0184
+	s_CM                     : 0.474193
+	s_analysis_confidence    : 0.226744
+	s_Bot_Xtr                : 0.0612992
+	s_Top_Xtr                : 0.0392425
+	s_lower_bl_H_0           : 0.000678645
+	s_lower_bl_H_1           : 0.000615971
+	s_lower_bl_ret_0         : 0.000488358
+	s_lower_bl_H_2           : 0.000484704
+Epoch: 220 | Train Loss: 2.3019 | Test Loss: 3.09934 | analysis_confidence: 0.129446 | CL: 0.0220151 | ln_CD: 0.0442448 | CM: 0.00342514 | Top_Xtr: 0.0170993 | Bot_Xtr: 0.019368
+Loss contributors: 
+	s_ln_CD                  : 1.2819
+	s_CL                     : 1.00478
+	s_CM                     : 0.45784
+	s_analysis_confidence    : 0.227044
+	s_Bot_Xtr                : 0.0591441
+	s_Top_Xtr                : 0.0373907
+	s_lower_bl_H_0           : 0.000701718
+	s_lower_bl_H_1           : 0.00062046
+	s_lower_bl_ret_0         : 0.00048647
+	s_lower_bl_H_2           : 0.000485546
+Epoch: 221 | Train Loss: 2.29985 | Test Loss: 3.10961 | analysis_confidence: 0.125294 | CL: 0.0213392 | ln_CD: 0.0410467 | CM: 0.00340983 | Top_Xtr: 0.017211 | Bot_Xtr: 0.019885
+Loss contributors: 
+	s_ln_CD                  : 1.27501
+	s_CL                     : 1.00843
+	s_CM                     : 0.466738
+	s_analysis_confidence    : 0.226374
+	s_Bot_Xtr                : 0.0610004
+	s_Top_Xtr                : 0.0404794
+	s_lower_bl_H_0           : 0.000681963
+	s_lower_bl_H_1           : 0.00062507
+	s_lower_bl_H_2           : 0.000492335
+	s_lower_bl_ret_0         : 0.000488347
+Epoch: 222 | Train Loss: 2.29379 | Test Loss: 3.04679 | analysis_confidence: 0.127083 | CL: 0.0206606 | ln_CD: 0.0402757 | CM: 0.00331389 | Top_Xtr: 0.017544 | Bot_Xtr: 0.0199136
+Loss contributors: 
+	s_ln_CD                  : 1.23397
+	s_CL                     : 0.994277
+	s_CM                     : 0.460268
+	s_analysis_confidence    : 0.227143
+	s_Bot_Xtr                : 0.0603324
+	s_Top_Xtr                : 0.0394226
+	s_lower_bl_H_0           : 0.00068069
+	s_lower_bl_H_1           : 0.00061706
+	s_lower_bl_ret_0         : 0.00049315
+	s_lower_bl_H_2           : 0.000484808
+Epoch: 223 | Train Loss: 2.30215 | Test Loss: 3.10068 | analysis_confidence: 0.129039 | CL: 0.0227283 | ln_CD: 0.0398547 | CM: 0.0035047 | Top_Xtr: 0.0170124 | Bot_Xtr: 0.0192407
+Loss contributors: 
+	s_ln_CD                  : 1.24235
+	s_CL                     : 1.03192
+	s_CM                     : 0.47007
+	s_analysis_confidence    : 0.226982
+	s_Bot_Xtr                : 0.0598943
+	s_Top_Xtr                : 0.0379696
+	s_lower_bl_H_0           : 0.000685288
+	s_lower_bl_H_1           : 0.000623629
+	s_lower_bl_H_2           : 0.000498309
+	s_lower_bl_ret_0         : 0.000493913
+Epoch: 224 | Train Loss: 2.29537 | Test Loss: 3.12986 | analysis_confidence: 0.130487 | CL: 0.0218211 | ln_CD: 0.041172 | CM: 0.00337825 | Top_Xtr: 0.0170168 | Bot_Xtr: 0.0191745
+Loss contributors: 
+	s_ln_CD                  : 1.3013
+	s_CL                     : 1.00876
+	s_CM                     : 0.46276
+	s_analysis_confidence    : 0.227569
+	s_Bot_Xtr                : 0.0599855
+	s_Top_Xtr                : 0.0380934
+	s_lower_bl_H_0           : 0.000681011
+	s_lower_bl_H_1           : 0.000622605
+	s_lower_bl_H_2           : 0.000501925
+	s_lower_bl_ret_0         : 0.000486686
+Epoch: 225 | Train Loss: 2.29671 | Test Loss: 3.16765 | analysis_confidence: 0.12766 | CL: 0.0219104 | ln_CD: 0.0405146 | CM: 0.00332037 | Top_Xtr: 0.0169774 | Bot_Xtr: 0.0194233
+Loss contributors: 
+	s_ln_CD                  : 1.30447
+	s_CL                     : 1.04573
+	s_CM                     : 0.462961
+	s_analysis_confidence    : 0.226423
+	s_Bot_Xtr                : 0.0595598
+	s_Top_Xtr                : 0.0370552
+	s_lower_bl_H_0           : 0.000671595
+	s_lower_bl_H_1           : 0.000614307
+	s_lower_bl_ret_0         : 0.000493251
+	s_lower_bl_H_2           : 0.000484639
+Epoch: 226 | Train Loss: 2.29683 | Test Loss: 3.09492 | analysis_confidence: 0.12797 | CL: 0.0213662 | ln_CD: 0.0420173 | CM: 0.00338231 | Top_Xtr: 0.0172614 | Bot_Xtr: 0.0194355
+Loss contributors: 
+	s_ln_CD                  : 1.26979
+	s_CL                     : 1.00573
+	s_CM                     : 0.45757
+	s_analysis_confidence    : 0.227685
+	s_Bot_Xtr                : 0.0616087
+	s_Top_Xtr                : 0.0412303
+	s_lower_bl_H_0           : 0.000692328
+	s_lower_bl_H_1           : 0.000614994
+	s_lower_bl_ret_0         : 0.000487493
+	s_lower_bl_H_2           : 0.00048643
+Epoch: 227 | Train Loss: 2.29205 | Test Loss: 3.14732 | analysis_confidence: 0.128895 | CL: 0.0218446 | ln_CD: 0.0420371 | CM: 0.00334315 | Top_Xtr: 0.018989 | Bot_Xtr: 0.0215245
+Loss contributors: 
+	s_ln_CD                  : 1.32344
+	s_CL                     : 1.00477
+	s_CM                     : 0.456905
+	s_analysis_confidence    : 0.226325
+	s_Bot_Xtr                : 0.0634898
+	s_Top_Xtr                : 0.0409103
+	s_lower_bl_H_0           : 0.000683636
+	s_lower_bl_H_1           : 0.000628298
+	s_lower_bl_H_2           : 0.000498751
+	s_lower_bl_ret_0         : 0.000488467
+Epoch: 228 | Train Loss: 2.28329 | Test Loss: 3.09447 | analysis_confidence: 0.128331 | CL: 0.0221235 | ln_CD: 0.0403012 | CM: 0.00331675 | Top_Xtr: 0.0170208 | Bot_Xtr: 0.0193383
+Loss contributors: 
+	s_ln_CD                  : 1.2555
+	s_CL                     : 1.02503
+	s_CM                     : 0.457322
+	s_analysis_confidence    : 0.227028
+	s_Bot_Xtr                : 0.0597975
+	s_Top_Xtr                : 0.0384654
+	s_lower_bl_H_0           : 0.000684122
+	s_lower_bl_H_1           : 0.000611353
+	s_lower_bl_ret_0         : 0.000488087
+	s_lower_bl_H_2           : 0.000477001
+Epoch: 229 | Train Loss: 2.28524 | Test Loss: 3.21162 | analysis_confidence: 0.127244 | CL: 0.0219405 | ln_CD: 0.0552068 | CM: 0.00327226 | Top_Xtr: 0.0169928 | Bot_Xtr: 0.0195252
+Loss contributors: 
+	s_ln_CD                  : 1.37964
+	s_CL                     : 1.0265
+	s_CM                     : 0.450643
+	s_analysis_confidence    : 0.226636
+	s_Bot_Xtr                : 0.0592893
+	s_Top_Xtr                : 0.0374272
+	s_lower_bl_H_0           : 0.000683662
+	s_lower_bl_H_1           : 0.000624908
+	s_lower_bl_H_2           : 0.000499016
+	s_lower_bl_ret_0         : 0.000487226
+Epoch: 230 | Train Loss: 2.28565 | Test Loss: 3.11835 | analysis_confidence: 0.126472 | CL: 0.0218644 | ln_CD: 0.0405085 | CM: 0.00332173 | Top_Xtr: 0.0175349 | Bot_Xtr: 0.0194737
+Loss contributors: 
+	s_ln_CD                  : 1.28572
+	s_CL                     : 1.01454
+	s_CM                     : 0.462133
+	s_analysis_confidence    : 0.226367
+	s_Bot_Xtr                : 0.0591522
+	s_Top_Xtr                : 0.0389081
+	s_lower_bl_H_0           : 0.000679228
+	s_lower_bl_H_1           : 0.000619805
+	s_lower_bl_ret_0         : 0.000491223
+	s_lower_bl_H_2           : 0.000489435
+Epoch: 231 | Train Loss: 2.28452 | Test Loss: 3.08576 | analysis_confidence: 0.125863 | CL: 0.0210744 | ln_CD: 0.0395491 | CM: 0.00327785 | Top_Xtr: 0.0173098 | Bot_Xtr: 0.01973
+Loss contributors: 
+	s_ln_CD                  : 1.26442
+	s_CL                     : 1.0081
+	s_CM                     : 0.454037
+	s_analysis_confidence    : 0.227085
+	s_Bot_Xtr                : 0.0617315
+	s_Top_Xtr                : 0.0389082
+	s_lower_bl_H_0           : 0.000678897
+	s_lower_bl_H_1           : 0.000620716
+	s_lower_bl_H_2           : 0.000493993
+	s_lower_bl_ret_0         : 0.000488001
+Epoch: 232 | Train Loss: 2.27825 | Test Loss: 3.24859 | analysis_confidence: 0.126727 | CL: 0.0215575 | ln_CD: 0.0454757 | CM: 0.00365094 | Top_Xtr: 0.017414 | Bot_Xtr: 0.0194033
+Loss contributors: 
+	s_ln_CD                  : 1.35022
+	s_CL                     : 1.03521
+	s_CM                     : 0.507956
+	s_analysis_confidence    : 0.226026
+	s_Bot_Xtr                : 0.0598723
+	s_Top_Xtr                : 0.0376355
+	s_lower_bl_H_0           : 0.00068305
+	s_lower_bl_H_1           : 0.000628737
+	s_lower_bl_H_2           : 0.000493937
+	s_lower_bl_ret_0         : 0.000485138
+Epoch: 233 | Train Loss: 2.27717 | Test Loss: 3.19286 | analysis_confidence: 0.126712 | CL: 0.0218247 | ln_CD: 0.0460465 | CM: 0.00340764 | Top_Xtr: 0.0176299 | Bot_Xtr: 0.0201815
+Loss contributors: 
+	s_ln_CD                  : 1.31877
+	s_CL                     : 1.02878
+	s_CM                     : 0.483628
+	s_analysis_confidence    : 0.226909
+	s_Bot_Xtr                : 0.0630698
+	s_Top_Xtr                : 0.0400467
+	s_lower_bl_H_0           : 0.00068779
+	s_lower_bl_H_1           : 0.000629397
+	s_lower_bl_H_2           : 0.000495425
+	s_lower_bl_ret_0         : 0.000480182
+Epoch: 234 | Train Loss: 2.2824 | Test Loss: 3.1426 | analysis_confidence: 0.124347 | CL: 0.0212346 | ln_CD: 0.0408804 | CM: 0.00341391 | Top_Xtr: 0.0176565 | Bot_Xtr: 0.0201352
+Loss contributors: 
+	s_ln_CD                  : 1.31896
+	s_CL                     : 0.996333
+	s_CM                     : 0.4654
+	s_analysis_confidence    : 0.227986
+	s_Bot_Xtr                : 0.0621044
+	s_Top_Xtr                : 0.0404261
+	s_lower_bl_H_0           : 0.000678999
+	s_lower_bl_H_1           : 0.000622376
+	s_lower_bl_H_2           : 0.00049029
+	s_lower_bl_ret_0         : 0.000482304
+Epoch: 235 | Train Loss: 2.27539 | Test Loss: 3.14601 | analysis_confidence: 0.125227 | CL: 0.0231419 | ln_CD: 0.0412452 | CM: 0.00357423 | Top_Xtr: 0.0168675 | Bot_Xtr: 0.0190293
+Loss contributors: 
+	s_ln_CD                  : 1.2781
+	s_CL                     : 1.03718
+	s_CM                     : 0.475877
+	s_analysis_confidence    : 0.226257
+	s_Bot_Xtr                : 0.0593489
+	s_Top_Xtr                : 0.0378864
+	s_lower_bl_H_0           : 0.000677693
+	s_lower_bl_H_1           : 0.000609212
+	s_lower_bl_ret_0         : 0.000484113
+	s_lower_bl_H_2           : 0.000469562
+Epoch: 236 | Train Loss: 2.26614 | Test Loss: 3.05407 | analysis_confidence: 0.128793 | CL: 0.0220559 | ln_CD: 0.0416708 | CM: 0.00330264 | Top_Xtr: 0.0175669 | Bot_Xtr: 0.0196808
+Loss contributors: 
+	s_ln_CD                  : 1.23196
+	s_CL                     : 1.00256
+	s_CM                     : 0.457186
+	s_analysis_confidence    : 0.228098
+	s_Bot_Xtr                : 0.0625118
+	s_Top_Xtr                : 0.0403144
+	s_lower_bl_H_0           : 0.000690123
+	s_lower_bl_H_1           : 0.000622254
+	s_lower_bl_ret_0         : 0.000491332
+	s_lower_bl_H_2           : 0.0004908
+Epoch: 237 | Train Loss: 2.27552 | Test Loss: 3.17759 | analysis_confidence: 0.124587 | CL: 0.0211283 | ln_CD: 0.0439353 | CM: 0.00330322 | Top_Xtr: 0.017955 | Bot_Xtr: 0.0200894
+Loss contributors: 
+	s_ln_CD                  : 1.34828
+	s_CL                     : 1.00669
+	s_CM                     : 0.461014
+	s_analysis_confidence    : 0.22763
+	s_Bot_Xtr                : 0.0616158
+	s_Top_Xtr                : 0.040852
+	s_lower_bl_H_0           : 0.000685533
+	s_lower_bl_H_1           : 0.000613749
+	s_lower_bl_H_2           : 0.000490403
+	s_lower_bl_ret_0         : 0.000488709
+Epoch: 238 | Train Loss: 2.26482 | Test Loss: 3.02419 | analysis_confidence: 0.126631 | CL: 0.0210309 | ln_CD: 0.0402397 | CM: 0.00338771 | Top_Xtr: 0.0167233 | Bot_Xtr: 0.0189304
+Loss contributors: 
+	s_ln_CD                  : 1.2273
+	s_CL                     : 0.986561
+	s_CM                     : 0.454181
+	s_analysis_confidence    : 0.226045
+	s_Bot_Xtr                : 0.0593643
+	s_Top_Xtr                : 0.0395525
+	s_lower_bl_H_0           : 0.000683851
+	s_lower_bl_H_1           : 0.000621811
+	s_lower_bl_H_2           : 0.000491705
+	s_lower_bl_ret_0         : 0.000488872
+Epoch: 239 | Train Loss: 2.26222 | Test Loss: 3.11377 | analysis_confidence: 0.12655 | CL: 0.0214252 | ln_CD: 0.0439497 | CM: 0.00330309 | Top_Xtr: 0.0175112 | Bot_Xtr: 0.0198903
+Loss contributors: 
+	s_ln_CD                  : 1.28785
+	s_CL                     : 1.0122
+	s_CM                     : 0.457583
+	s_analysis_confidence    : 0.225916
+	s_Bot_Xtr                : 0.0607062
+	s_Top_Xtr                : 0.0382231
+	s_lower_bl_H_0           : 0.000683571
+	s_lower_bl_H_1           : 0.000617972
+	s_lower_bl_ret_0         : 0.000481811
+	s_lower_bl_H_2           : 0.000481806
+Epoch: 240 | Train Loss: 2.25915 | Test Loss: 3.15346 | analysis_confidence: 0.126357 | CL: 0.0231284 | ln_CD: 0.040736 | CM: 0.00347375 | Top_Xtr: 0.0174319 | Bot_Xtr: 0.0197149
+Loss contributors: 
+	s_ln_CD                  : 1.28472
+	s_CL                     : 1.0404
+	s_CM                     : 0.47082
+	s_analysis_confidence    : 0.226565
+	s_Bot_Xtr                : 0.061005
+	s_Top_Xtr                : 0.038737
+	s_lower_bl_H_0           : 0.000687728
+	s_lower_bl_H_1           : 0.000615093
+	s_lower_bl_ret_0         : 0.000482231
+	s_lower_bl_H_2           : 0.000481726
+Epoch: 241 | Train Loss: 2.26073 | Test Loss: 3.10946 | analysis_confidence: 0.12452 | CL: 0.0212131 | ln_CD: 0.0403116 | CM: 0.00327779 | Top_Xtr: 0.0173621 | Bot_Xtr: 0.019574
+Loss contributors: 
+	s_ln_CD                  : 1.25492
+	s_CL                     : 1.03414
+	s_CM                     : 0.459478
+	s_analysis_confidence    : 0.22747
+	s_Bot_Xtr                : 0.0623909
+	s_Top_Xtr                : 0.038934
+	s_lower_bl_H_0           : 0.000678635
+	s_lower_bl_H_1           : 0.000627307
+	s_lower_bl_H_2           : 0.000497269
+	s_lower_bl_ret_0         : 0.000496587
+Epoch: 242 | Train Loss: 2.26241 | Test Loss: 3.19399 | analysis_confidence: 0.126141 | CL: 0.0219223 | ln_CD: 0.0424695 | CM: 0.00346765 | Top_Xtr: 0.0179848 | Bot_Xtr: 0.0202798
+Loss contributors: 
+	s_ln_CD                  : 1.34171
+	s_CL                     : 1.00738
+	s_CM                     : 0.47727
+	s_analysis_confidence    : 0.226638
+	s_Bot_Xtr                : 0.065165
+	s_Top_Xtr                : 0.0443863
+	s_lower_bl_H_0           : 0.00068485
+	s_lower_bl_H_1           : 0.000623724
+	s_lower_bl_H_2           : 0.000491491
+	s_lower_bl_ret_0         : 0.00048734
+Epoch: 243 | Train Loss: 2.26575 | Test Loss: 3.14509 | analysis_confidence: 0.12718 | CL: 0.0231061 | ln_CD: 0.040408 | CM: 0.00339678 | Top_Xtr: 0.0170048 | Bot_Xtr: 0.0196447
+Loss contributors: 
+	s_ln_CD                  : 1.31428
+	s_CL                     : 1.01819
+	s_CM                     : 0.455381
+	s_analysis_confidence    : 0.226773
+	s_Bot_Xtr                : 0.0601746
+	s_Top_Xtr                : 0.0388371
+	s_lower_bl_H_0           : 0.000687649
+	s_lower_bl_H_1           : 0.000627718
+	s_lower_bl_H_2           : 0.000494237
+	s_lower_bl_ret_0         : 0.000491303
+Epoch: 244 | Train Loss: 2.26136 | Test Loss: 3.08822 | analysis_confidence: 0.130684 | CL: 0.021438 | ln_CD: 0.0414926 | CM: 0.00338135 | Top_Xtr: 0.0168024 | Bot_Xtr: 0.0190803
+Loss contributors: 
+	s_ln_CD                  : 1.27592
+	s_CL                     : 0.996083
+	s_CM                     : 0.461331
+	s_analysis_confidence    : 0.227096
+	s_Bot_Xtr                : 0.0591392
+	s_Top_Xtr                : 0.0374587
+	s_lower_bl_H_0           : 0.000686793
+	s_lower_bl_H_1           : 0.000620048
+	s_lower_bl_H_2           : 0.000491843
+	s_lower_bl_ret_0         : 0.000489266
+Epoch: 245 | Train Loss: 2.26051 | Test Loss: 3.20048 | analysis_confidence: 0.12675 | CL: 0.0220121 | ln_CD: 0.0444727 | CM: 0.00375699 | Top_Xtr: 0.0174302 | Bot_Xtr: 0.0204023
+Loss contributors: 
+	s_ln_CD                  : 1.34139
+	s_CL                     : 1.00303
+	s_CM                     : 0.496682
+	s_analysis_confidence    : 0.226909
+	s_Bot_Xtr                : 0.0619616
+	s_Top_Xtr                : 0.0386363
+	s_lower_bl_H_0           : 0.000705288
+	s_lower_bl_H_1           : 0.000636162
+	s_lower_bl_H_2           : 0.000509389
+	s_lower_bl_ret_0         : 0.000496859
+Epoch: 246 | Train Loss: 2.2562 | Test Loss: 3.23249 | analysis_confidence: 0.126912 | CL: 0.0240165 | ln_CD: 0.0416663 | CM: 0.00343599 | Top_Xtr: 0.0174449 | Bot_Xtr: 0.0196198
+Loss contributors: 
+	s_ln_CD                  : 1.32708
+	s_CL                     : 1.07075
+	s_CM                     : 0.476885
+	s_analysis_confidence    : 0.227013
+	s_Bot_Xtr                : 0.0609088
+	s_Top_Xtr                : 0.0383631
+	s_lower_bl_H_0           : 0.000685859
+	s_lower_bl_H_1           : 0.000631407
+	s_lower_bl_H_2           : 0.000497841
+	s_lower_bl_ret_0         : 0.00048199
+Epoch: 247 | Train Loss: 2.25081 | Test Loss: 3.08932 | analysis_confidence: 0.128209 | CL: 0.0232009 | ln_CD: 0.0417986 | CM: 0.00343571 | Top_Xtr: 0.0167902 | Bot_Xtr: 0.0188315
+Loss contributors: 
+	s_ln_CD                  : 1.26506
+	s_CL                     : 1.0118
+	s_CM                     : 0.458159
+	s_analysis_confidence    : 0.227203
+	s_Bot_Xtr                : 0.0576718
+	s_Top_Xtr                : 0.0383971
+	s_lower_bl_H_0           : 0.000689461
+	s_lower_bl_H_1           : 0.000618642
+	s_lower_bl_H_2           : 0.000485773
+	s_lower_bl_ret_0         : 0.000485257
+Epoch: 248 | Train Loss: 2.24976 | Test Loss: 3.09726 | analysis_confidence: 0.130994 | CL: 0.0212291 | ln_CD: 0.0417858 | CM: 0.00332807 | Top_Xtr: 0.0174238 | Bot_Xtr: 0.0202415
+Loss contributors: 
+	s_ln_CD                  : 1.27883
+	s_CL                     : 1.00089
+	s_CM                     : 0.462837
+	s_analysis_confidence    : 0.226585
+	s_Bot_Xtr                : 0.0596552
+	s_Top_Xtr                : 0.0371431
+	s_lower_bl_H_0           : 0.000679659
+	s_lower_bl_H_1           : 0.000613996
+	s_lower_bl_ret_0         : 0.000484549
+	s_lower_bl_H_2           : 0.000481495
+Epoch: 249 | Train Loss: 2.24845 | Test Loss: 3.09221 | analysis_confidence: 0.126904 | CL: 0.0216815 | ln_CD: 0.0434415 | CM: 0.0032519 | Top_Xtr: 0.0169788 | Bot_Xtr: 0.0192237
+Loss contributors: 
+	s_ln_CD                  : 1.27706
+	s_CL                     : 1.0098
+	s_CM                     : 0.449659
+	s_analysis_confidence    : 0.226476
+	s_Bot_Xtr                : 0.0602744
+	s_Top_Xtr                : 0.0373486
+	s_lower_bl_H_0           : 0.000695372
+	s_lower_bl_H_1           : 0.000640137
+	s_lower_bl_H_2           : 0.000516914
+	s_lower_bl_ret_0         : 0.000490898
+Epoch: 250 | Train Loss: 2.24527 | Test Loss: 3.12043 | analysis_confidence: 0.125035 | CL: 0.0212921 | ln_CD: 0.0461487 | CM: 0.00334963 | Top_Xtr: 0.0173912 | Bot_Xtr: 0.0198803
+Loss contributors: 
+	s_ln_CD                  : 1.29799
+	s_CL                     : 1.00213
+	s_CM                     : 0.463034
+	s_analysis_confidence    : 0.225957
+	s_Bot_Xtr                : 0.0620482
+	s_Top_Xtr                : 0.0375691
+	s_lower_bl_H_0           : 0.000686582
+	s_lower_bl_H_1           : 0.000613761
+	s_lower_bl_ret_0         : 0.000482908
+	s_upper_bl_ret_0         : 0.000478115
+Epoch: 251 | Train Loss: 2.25007 | Test Loss: 3.11563 | analysis_confidence: 0.124759 | CL: 0.02146 | ln_CD: 0.043969 | CM: 0.00327622 | Top_Xtr: 0.0174347 | Bot_Xtr: 0.0196574
+Loss contributors: 
+	s_ln_CD                  : 1.29638
+	s_CL                     : 1.00959
+	s_CM                     : 0.452267
+	s_analysis_confidence    : 0.226585
+	s_Bot_Xtr                : 0.0595539
+	s_Top_Xtr                : 0.0400467
+	s_lower_bl_H_0           : 0.000678906
+	s_lower_bl_H_1           : 0.000632001
+	s_lower_bl_H_2           : 0.000494329
+	s_lower_bl_ret_0         : 0.000489582
+Epoch: 252 | Train Loss: 2.25104 | Test Loss: 3.27785 | analysis_confidence: 0.129104 | CL: 0.0222303 | ln_CD: 0.0434574 | CM: 0.00341408 | Top_Xtr: 0.0169086 | Bot_Xtr: 0.0196819
+Loss contributors: 
+	s_ln_CD                  : 1.42941
+	s_CL                     : 1.02521
+	s_CM                     : 0.464747
+	s_analysis_confidence    : 0.227985
+	s_Bot_Xtr                : 0.0609938
+	s_Top_Xtr                : 0.0380516
+	s_lower_bl_H_0           : 0.000685348
+	s_lower_bl_H_1           : 0.000624599
+	s_lower_bl_ret_0         : 0.000486237
+	s_upper_bl_ret_0         : 0.000484717
+Epoch: 253 | Train Loss: 2.24022 | Test Loss: 3.28586 | analysis_confidence: 0.127182 | CL: 0.0219765 | ln_CD: 0.0555601 | CM: 0.00328415 | Top_Xtr: 0.0176239 | Bot_Xtr: 0.0196122
+Loss contributors: 
+	s_ln_CD                  : 1.43266
+	s_CL                     : 1.03612
+	s_CM                     : 0.457776
+	s_analysis_confidence    : 0.226321
+	s_Bot_Xtr                : 0.0607477
+	s_Top_Xtr                : 0.0407334
+	s_lower_bl_H_0           : 0.000689827
+	s_lower_bl_H_1           : 0.000629754
+	s_lower_bl_H_2           : 0.000497946
+	s_lower_bl_ret_0         : 0.000484556
+Epoch: 254 | Train Loss: 2.24594 | Test Loss: 3.10551 | analysis_confidence: 0.126749 | CL: 0.0213923 | ln_CD: 0.0403025 | CM: 0.00339432 | Top_Xtr: 0.0168669 | Bot_Xtr: 0.018867
+Loss contributors: 
+	s_ln_CD                  : 1.26792
+	s_CL                     : 1.01975
+	s_CM                     : 0.465227
+	s_analysis_confidence    : 0.225086
+	s_Bot_Xtr                : 0.0583813
+	s_Top_Xtr                : 0.0380509
+	s_lower_bl_H_0           : 0.000687614
+	s_lower_bl_H_1           : 0.000624436
+	s_lower_bl_H_2           : 0.000495001
+	s_lower_bl_ret_0         : 0.000483851
+Epoch: 255 | Train Loss: 2.24481 | Test Loss: 3.17892 | analysis_confidence: 0.124705 | CL: 0.0221525 | ln_CD: 0.0498022 | CM: 0.00329756 | Top_Xtr: 0.0173496 | Bot_Xtr: 0.0190489
+Loss contributors: 
+	s_ln_CD                  : 1.35501
+	s_CL                     : 1.01322
+	s_CM                     : 0.455152
+	s_analysis_confidence    : 0.226248
+	s_Bot_Xtr                : 0.0596007
+	s_Top_Xtr                : 0.0383644
+	s_lower_bl_H_0           : 0.000697376
+	s_lower_bl_H_1           : 0.000632921
+	s_lower_bl_H_2           : 0.000508937
+	s_lower_bl_ret_0         : 0.000492697
+Epoch: 256 | Train Loss: 2.24226 | Test Loss: 3.13021 | analysis_confidence: 0.127364 | CL: 0.0213416 | ln_CD: 0.0426014 | CM: 0.00332766 | Top_Xtr: 0.0170686 | Bot_Xtr: 0.0193286
+Loss contributors: 
+	s_ln_CD                  : 1.2996
+	s_CL                     : 1.01738
+	s_CM                     : 0.456844
+	s_analysis_confidence    : 0.227042
+	s_Bot_Xtr                : 0.0597915
+	s_Top_Xtr                : 0.0382216
+	s_lower_bl_H_0           : 0.000686389
+	s_lower_bl_H_1           : 0.000627317
+	s_lower_bl_H_2           : 0.00049573
+	s_lower_bl_ret_0         : 0.000484956
+Epoch: 257 | Train Loss: 2.23555 | Test Loss: 3.04791 | analysis_confidence: 0.126001 | CL: 0.0209086 | ln_CD: 0.0397354 | CM: 0.00325422 | Top_Xtr: 0.0175498 | Bot_Xtr: 0.0197721
+Loss contributors: 
+	s_ln_CD                  : 1.25355
+	s_CL                     : 0.9901
+	s_CM                     : 0.448749
+	s_analysis_confidence    : 0.225889
+	s_Bot_Xtr                : 0.0596704
+	s_Top_Xtr                : 0.0387285
+	s_lower_bl_H_0           : 0.000676796
+	s_lower_bl_H_1           : 0.000613679
+	s_lower_bl_ret_0         : 0.000484263
+	s_lower_bl_H_2           : 0.000476676
+Epoch: 258 | Train Loss: 2.24075 | Test Loss: 3.09371 | analysis_confidence: 0.128027 | CL: 0.0211778 | ln_CD: 0.0438075 | CM: 0.00327229 | Top_Xtr: 0.0168823 | Bot_Xtr: 0.0193988
+Loss contributors: 
+	s_ln_CD                  : 1.28127
+	s_CL                     : 1.00275
+	s_CM                     : 0.455141
+	s_analysis_confidence    : 0.226858
+	s_Bot_Xtr                : 0.0590551
+	s_Top_Xtr                : 0.0371293
+	s_lower_bl_H_0           : 0.000678189
+	s_lower_bl_H_1           : 0.000621848
+	s_lower_bl_H_2           : 0.000493973
+	s_lower_bl_ret_0         : 0.000493463
+Epoch: 259 | Train Loss: 2.2382 | Test Loss: 3.05591 | analysis_confidence: 0.126767 | CL: 0.0210453 | ln_CD: 0.0395777 | CM: 0.00322854 | Top_Xtr: 0.0173911 | Bot_Xtr: 0.0198376
+Loss contributors: 
+	s_ln_CD                  : 1.24279
+	s_CL                     : 1.00398
+	s_CM                     : 0.45727
+	s_analysis_confidence    : 0.225341
+	s_Bot_Xtr                : 0.0586329
+	s_Top_Xtr                : 0.0367479
+	s_lower_bl_H_0           : 0.000682961
+	s_lower_bl_H_1           : 0.000622044
+	s_lower_bl_H_2           : 0.000487598
+	s_lower_bl_ret_0         : 0.000486743
+Epoch: 260 | Train Loss: 2.23277 | Test Loss: 3.12818 | analysis_confidence: 0.128654 | CL: 0.0209636 | ln_CD: 0.0391953 | CM: 0.00328785 | Top_Xtr: 0.0165526 | Bot_Xtr: 0.0187581
+Loss contributors: 
+	s_ln_CD                  : 1.31057
+	s_CL                     : 1.00486
+	s_CM                     : 0.460051
+	s_analysis_confidence    : 0.225994
+	s_Bot_Xtr                : 0.0588567
+	s_Top_Xtr                : 0.0367796
+	s_lower_bl_H_0           : 0.000695788
+	s_lower_bl_H_1           : 0.000620764
+	s_lower_bl_ret_0         : 0.000492532
+	s_lower_bl_H_2           : 0.0004868
+Epoch: 261 | Train Loss: 2.23317 | Test Loss: 3.08989 | analysis_confidence: 0.130476 | CL: 0.0215418 | ln_CD: 0.0406249 | CM: 0.0034139 | Top_Xtr: 0.0167011 | Bot_Xtr: 0.0192288
+Loss contributors: 
+	s_ln_CD                  : 1.27211
+	s_CL                     : 0.9986
+	s_CM                     : 0.464374
+	s_analysis_confidence    : 0.226876
+	s_Bot_Xtr                : 0.0595221
+	s_Top_Xtr                : 0.0374173
+	s_lower_bl_H_0           : 0.000697853
+	s_lower_bl_H_1           : 0.000622046
+	s_lower_bl_H_2           : 0.000492002
+	s_lower_bl_ret_0         : 0.000485866
+Epoch: 262 | Train Loss: 2.23025 | Test Loss: 3.22017 | analysis_confidence: 0.127829 | CL: 0.0220809 | ln_CD: 0.0411222 | CM: 0.00356369 | Top_Xtr: 0.0189251 | Bot_Xtr: 0.0214403
+Loss contributors: 
+	s_ln_CD                  : 1.35764
+	s_CL                     : 1.0262
+	s_CM                     : 0.47726
+	s_analysis_confidence    : 0.225445
+	s_Bot_Xtr                : 0.0618885
+	s_Top_Xtr                : 0.0401587
+	s_lower_bl_H_0           : 0.000702131
+	s_lower_bl_H_1           : 0.000628058
+	s_lower_bl_H_2           : 0.000487872
+	s_lower_bl_ret_0         : 0.0004876
+Epoch: 263 | Train Loss: 2.22532 | Test Loss: 3.01325 | analysis_confidence: 0.129362 | CL: 0.0210542 | ln_CD: 0.0389404 | CM: 0.003276 | Top_Xtr: 0.0185401 | Bot_Xtr: 0.0213711
+Loss contributors: 
+	s_ln_CD                  : 1.21665
+	s_CL                     : 0.991186
+	s_CM                     : 0.448532
+	s_analysis_confidence    : 0.226446
+	s_Bot_Xtr                : 0.0603875
+	s_Top_Xtr                : 0.0390119
+	s_lower_bl_H_0           : 0.000676774
+	s_lower_bl_H_1           : 0.000615947
+	s_upper_bl_ret_0         : 0.000485684
+	s_lower_bl_ret_0         : 0.000481383
+Epoch: 264 | Train Loss: 2.21999 | Test Loss: 3.12683 | analysis_confidence: 0.125523 | CL: 0.0219083 | ln_CD: 0.0414204 | CM: 0.0033632 | Top_Xtr: 0.0171676 | Bot_Xtr: 0.0194755
+Loss contributors: 
+	s_ln_CD                  : 1.30374
+	s_CL                     : 1.00718
+	s_CM                     : 0.454801
+	s_analysis_confidence    : 0.225782
+	s_Bot_Xtr                : 0.0634896
+	s_Top_Xtr                : 0.0407206
+	s_lower_bl_H_0           : 0.000691966
+	s_lower_bl_H_1           : 0.000624001
+	s_lower_bl_H_2           : 0.000487836
+	s_lower_bl_ret_0         : 0.000482993
+Epoch: 265 | Train Loss: 2.22862 | Test Loss: 3.21085 | analysis_confidence: 0.13138 | CL: 0.0211314 | ln_CD: 0.0403886 | CM: 0.00347752 | Top_Xtr: 0.0176001 | Bot_Xtr: 0.0201632
+Loss contributors: 
+	s_ln_CD                  : 1.35546
+	s_CL                     : 1.00629
+	s_CM                     : 0.466802
+	s_analysis_confidence    : 0.227794
+	s_Bot_Xtr                : 0.0761582
+	s_Top_Xtr                : 0.047029
+	s_lower_bl_H_0           : 0.000697157
+	s_lower_bl_H_1           : 0.000621313
+	s_lower_bl_ret_0         : 0.000487304
+	s_lower_bl_H_2           : 0.000479294
+Epoch: 266 | Train Loss: 2.22618 | Test Loss: 3.15374 | analysis_confidence: 0.124744 | CL: 0.0219022 | ln_CD: 0.0401911 | CM: 0.00347058 | Top_Xtr: 0.0166265 | Bot_Xtr: 0.0187517
+Loss contributors: 
+	s_ln_CD                  : 1.32111
+	s_CL                     : 1.00587
+	s_CM                     : 0.47266
+	s_analysis_confidence    : 0.22592
+	s_Bot_Xtr                : 0.0595167
+	s_Top_Xtr                : 0.0374398
+	s_lower_bl_H_0           : 0.000686384
+	s_lower_bl_H_1           : 0.000622455
+	s_lower_bl_H_2           : 0.000487237
+	s_lower_bl_ret_0         : 0.000486242
+Epoch: 267 | Train Loss: 2.22809 | Test Loss: 3.01674 | analysis_confidence: 0.125536 | CL: 0.0208377 | ln_CD: 0.039299 | CM: 0.00323348 | Top_Xtr: 0.0167967 | Bot_Xtr: 0.018669
+Loss contributors: 
+	s_ln_CD                  : 1.22514
+	s_CL                     : 0.995323
+	s_CM                     : 0.445029
+	s_analysis_confidence    : 0.225086
+	s_Bot_Xtr                : 0.0576145
+	s_Top_Xtr                : 0.0372662
+	s_lower_bl_H_0           : 0.000699855
+	s_lower_bl_H_1           : 0.000627477
+	s_lower_bl_H_2           : 0.000493692
+	s_lower_bl_ret_0         : 0.000488839
+Epoch: 268 | Train Loss: 2.21613 | Test Loss: 3.05863 | analysis_confidence: 0.126855 | CL: 0.0214509 | ln_CD: 0.0393692 | CM: 0.00327257 | Top_Xtr: 0.0207432 | Bot_Xtr: 0.0223792
+Loss contributors: 
+	s_ln_CD                  : 1.23543
+	s_CL                     : 1.01018
+	s_CM                     : 0.451059
+	s_analysis_confidence    : 0.226141
+	s_Bot_Xtr                : 0.0620819
+	s_Top_Xtr                : 0.0426279
+	s_lower_bl_H_0           : 0.000698995
+	s_lower_bl_H_1           : 0.000623406
+	s_lower_bl_ret_0         : 0.000490207
+	s_lower_bl_H_2           : 0.000480658
+Epoch: 269 | Train Loss: 2.21996 | Test Loss: 3.2653 | analysis_confidence: 0.129369 | CL: 0.0214847 | ln_CD: 0.0417481 | CM: 0.00343882 | Top_Xtr: 0.0172225 | Bot_Xtr: 0.0191913
+Loss contributors: 
+	s_ln_CD                  : 1.42839
+	s_CL                     : 1.01605
+	s_CM                     : 0.462311
+	s_analysis_confidence    : 0.226299
+	s_Bot_Xtr                : 0.0612531
+	s_Top_Xtr                : 0.0393314
+	s_lower_bl_H_0           : 0.00069053
+	s_lower_bl_H_1           : 0.000622742
+	s_lower_bl_ret_0         : 0.000488525
+	s_upper_bl_ret_0         : 0.000483177
+Epoch: 270 | Train Loss: 2.21537 | Test Loss: 3.09801 | analysis_confidence: 0.131198 | CL: 0.0205522 | ln_CD: 0.0387646 | CM: 0.00329957 | Top_Xtr: 0.0174331 | Bot_Xtr: 0.0194482
+Loss contributors: 
+	s_ln_CD                  : 1.30263
+	s_CL                     : 0.989171
+	s_CM                     : 0.450524
+	s_analysis_confidence    : 0.227541
+	s_Bot_Xtr                : 0.0588603
+	s_Top_Xtr                : 0.0381109
+	s_lower_bl_H_0           : 0.000703979
+	s_lower_bl_H_1           : 0.000633239
+	s_lower_bl_H_2           : 0.000497463
+	s_lower_bl_ret_0         : 0.000484275
+Epoch: 271 | Train Loss: 2.21506 | Test Loss: 3.09001 | analysis_confidence: 0.126965 | CL: 0.021845 | ln_CD: 0.0438225 | CM: 0.00334974 | Top_Xtr: 0.0175444 | Bot_Xtr: 0.0197962
+Loss contributors: 
+	s_ln_CD                  : 1.25319
+	s_CL                     : 1.03082
+	s_CM                     : 0.455012
+	s_analysis_confidence    : 0.225204
+	s_Bot_Xtr                : 0.0584006
+	s_Top_Xtr                : 0.0362697
+	s_lower_bl_H_0           : 0.000695416
+	s_lower_bl_H_1           : 0.000623943
+	s_lower_bl_ret_0         : 0.000485689
+	s_lower_bl_H_2           : 0.00048409
+Epoch: 272 | Train Loss: 2.21565 | Test Loss: 3.14291 | analysis_confidence: 0.126877 | CL: 0.0218865 | ln_CD: 0.0415915 | CM: 0.00344527 | Top_Xtr: 0.0197821 | Bot_Xtr: 0.0227041
+Loss contributors: 
+	s_ln_CD                  : 1.29121
+	s_CL                     : 1.02608
+	s_CM                     : 0.463098
+	s_analysis_confidence    : 0.226363
+	s_Bot_Xtr                : 0.0635671
+	s_Top_Xtr                : 0.0414352
+	s_lower_bl_H_0           : 0.000698497
+	s_lower_bl_H_1           : 0.000637996
+	s_lower_bl_H_2           : 0.000496025
+	s_lower_bl_ret_0         : 0.000486197
+Epoch: 273 | Train Loss: 2.21574 | Test Loss: 3.06654 | analysis_confidence: 0.125637 | CL: 0.0228761 | ln_CD: 0.0439003 | CM: 0.00327952 | Top_Xtr: 0.0166832 | Bot_Xtr: 0.019389
+Loss contributors: 
+	s_ln_CD                  : 1.24457
+	s_CL                     : 1.01929
+	s_CM                     : 0.448604
+	s_analysis_confidence    : 0.226903
+	s_Bot_Xtr                : 0.0597988
+	s_Top_Xtr                : 0.0363817
+	s_lower_bl_H_0           : 0.000690484
+	s_lower_bl_H_1           : 0.00062654
+	s_lower_bl_H_2           : 0.000486661
+	s_lower_bl_ret_0         : 0.00048245
+Epoch: 274 | Train Loss: 2.21512 | Test Loss: 3.29111 | analysis_confidence: 0.125835 | CL: 0.0222583 | ln_CD: 0.0496792 | CM: 0.00337449 | Top_Xtr: 0.0177378 | Bot_Xtr: 0.0201321
+Loss contributors: 
+	s_ln_CD                  : 1.40792
+	s_CL                     : 1.05071
+	s_CM                     : 0.473725
+	s_analysis_confidence    : 0.226007
+	s_Bot_Xtr                : 0.0607923
+	s_Top_Xtr                : 0.0403797
+	s_lower_bl_H_0           : 0.000707208
+	s_lower_bl_H_1           : 0.000629891
+	s_lower_bl_H_2           : 0.000490642
+	s_lower_bl_ret_0         : 0.000488971
+Epoch: 275 | Train Loss: 2.21091 | Test Loss: 3.1914 | analysis_confidence: 0.126281 | CL: 0.0214452 | ln_CD: 0.0413997 | CM: 0.00336485 | Top_Xtr: 0.0168615 | Bot_Xtr: 0.018842
+Loss contributors: 
+	s_ln_CD                  : 1.34754
+	s_CL                     : 1.02196
+	s_CM                     : 0.468616
+	s_analysis_confidence    : 0.226318
+	s_Bot_Xtr                : 0.0579475
+	s_Top_Xtr                : 0.037721
+	s_lower_bl_H_0           : 0.000702581
+	s_lower_bl_H_1           : 0.000644195
+	s_lower_bl_ret_0         : 0.000503156
+	s_lower_bl_H_2           : 0.000491382
+Epoch: 276 | Train Loss: 2.21237 | Test Loss: 3.07569 | analysis_confidence: 0.126522 | CL: 0.0218133 | ln_CD: 0.0408395 | CM: 0.00334505 | Top_Xtr: 0.0162123 | Bot_Xtr: 0.0188279
+Loss contributors: 
+	s_ln_CD                  : 1.2544
+	s_CL                     : 1.01444
+	s_CM                     : 0.456056
+	s_analysis_confidence    : 0.225967
+	s_Bot_Xtr                : 0.0579918
+	s_Top_Xtr                : 0.0358134
+	s_lower_bl_H_0           : 0.000685124
+	s_lower_bl_H_1           : 0.000617349
+	s_lower_bl_ret_0         : 0.000487455
+	s_lower_bl_H_2           : 0.000478004
+Epoch: 277 | Train Loss: 2.20569 | Test Loss: 3.09181 | analysis_confidence: 0.125397 | CL: 0.020761 | ln_CD: 0.0453659 | CM: 0.00333538 | Top_Xtr: 0.0164032 | Bot_Xtr: 0.0188063
+Loss contributors: 
+	s_ln_CD                  : 1.28062
+	s_CL                     : 1.00029
+	s_CM                     : 0.457923
+	s_analysis_confidence    : 0.226852
+	s_Bot_Xtr                : 0.0584281
+	s_Top_Xtr                : 0.0362576
+	s_lower_bl_H_0           : 0.000698036
+	s_lower_bl_H_1           : 0.000621322
+	s_lower_bl_ret_0         : 0.000487808
+	s_lower_bl_H_2           : 0.000479245
+Epoch: 278 | Train Loss: 2.21056 | Test Loss: 3.06276 | analysis_confidence: 0.123486 | CL: 0.0211279 | ln_CD: 0.0391313 | CM: 0.00334364 | Top_Xtr: 0.0176353 | Bot_Xtr: 0.0199175
+Loss contributors: 
+	s_ln_CD                  : 1.26054
+	s_CL                     : 0.989551
+	s_CM                     : 0.455912
+	s_analysis_confidence    : 0.225474
+	s_Bot_Xtr                : 0.0604204
+	s_Top_Xtr                : 0.0398824
+	s_lower_bl_H_0           : 0.000692172
+	s_lower_bl_H_1           : 0.000640067
+	s_lower_bl_H_2           : 0.000499631
+	s_lower_bl_ret_0         : 0.000484207
+Epoch: 279 | Train Loss: 2.20272 | Test Loss: 3.04085 | analysis_confidence: 0.128478 | CL: 0.020261 | ln_CD: 0.0387041 | CM: 0.00315959 | Top_Xtr: 0.0167052 | Bot_Xtr: 0.0187517
+Loss contributors: 
+	s_ln_CD                  : 1.24386
+	s_CL                     : 1.00511
+	s_CM                     : 0.441472
+	s_analysis_confidence    : 0.22623
+	s_Bot_Xtr                : 0.0567916
+	s_Top_Xtr                : 0.0362261
+	s_lower_bl_H_0           : 0.000694427
+	s_lower_bl_H_1           : 0.00062141
+	s_lower_bl_ret_0         : 0.000492532
+	s_upper_bl_ret_0         : 0.000474747
+Epoch: 280 | Train Loss: 2.20492 | Test Loss: 3.12609 | analysis_confidence: 0.12488 | CL: 0.0211429 | ln_CD: 0.0442089 | CM: 0.00327702 | Top_Xtr: 0.0177052 | Bot_Xtr: 0.0198296
+Loss contributors: 
+	s_ln_CD                  : 1.28656
+	s_CL                     : 1.02416
+	s_CM                     : 0.456496
+	s_analysis_confidence    : 0.226631
+	s_Bot_Xtr                : 0.0615116
+	s_Top_Xtr                : 0.0395416
+	s_lower_bl_H_0           : 0.000699513
+	s_lower_bl_H_1           : 0.000630833
+	s_lower_bl_H_2           : 0.000496534
+	s_lower_bl_ret_0         : 0.000488871
+Epoch: 281 | Train Loss: 2.20279 | Test Loss: 3.04361 | analysis_confidence: 0.125886 | CL: 0.0208624 | ln_CD: 0.0385058 | CM: 0.00333355 | Top_Xtr: 0.0178592 | Bot_Xtr: 0.0206158
+Loss contributors: 
+	s_ln_CD                  : 1.24131
+	s_CL                     : 0.990495
+	s_CM                     : 0.458337
+	s_analysis_confidence    : 0.22501
+	s_Bot_Xtr                : 0.0596383
+	s_Top_Xtr                : 0.0377129
+	s_lower_bl_H_0           : 0.000693866
+	s_lower_bl_H_1           : 0.000631783
+	s_lower_bl_H_2           : 0.000492774
+	s_lower_bl_ret_0         : 0.000492234
+Epoch: 282 | Train Loss: 2.20654 | Test Loss: 3.06071 | analysis_confidence: 0.122974 | CL: 0.0214684 | ln_CD: 0.0416904 | CM: 0.00341524 | Top_Xtr: 0.0182634 | Bot_Xtr: 0.0207098
+Loss contributors: 
+	s_ln_CD                  : 1.22074
+	s_CL                     : 1.01832
+	s_CM                     : 0.465366
+	s_analysis_confidence    : 0.225831
+	s_Bot_Xtr                : 0.0602612
+	s_Top_Xtr                : 0.0389844
+	s_lower_bl_H_0           : 0.000690124
+	s_lower_bl_H_1           : 0.000627876
+	s_lower_bl_ret_0         : 0.000490711
+	s_lower_bl_H_2           : 0.00048913
+Epoch: 283 | Train Loss: 2.19632 | Test Loss: 3.29203 | analysis_confidence: 0.126804 | CL: 0.0212094 | ln_CD: 0.0409955 | CM: 0.00339764 | Top_Xtr: 0.0202002 | Bot_Xtr: 0.02238
+Loss contributors: 
+	s_ln_CD                  : 1.34842
+	s_CL                     : 1.0454
+	s_CM                     : 0.468667
+	s_analysis_confidence    : 0.226123
+	s_Bot_Xtr                : 0.0988227
+	s_Top_Xtr                : 0.0729327
+	s_lower_bl_H_0           : 0.00070573
+	s_lower_bl_H_1           : 0.00064033
+	s_lower_bl_H_2           : 0.000505665
+	s_lower_bl_ret_0         : 0.00049311
+Epoch: 284 | Train Loss: 2.19702 | Test Loss: 3.09778 | analysis_confidence: 0.128033 | CL: 0.0208818 | ln_CD: 0.0391931 | CM: 0.00332557 | Top_Xtr: 0.0182447 | Bot_Xtr: 0.0203963
+Loss contributors: 
+	s_ln_CD                  : 1.26112
+	s_CL                     : 1.01806
+	s_CM                     : 0.465447
+	s_analysis_confidence    : 0.226021
+	s_Bot_Xtr                : 0.0584056
+	s_Top_Xtr                : 0.0374356
+	s_lower_bl_H_0           : 0.000702793
+	s_lower_bl_H_1           : 0.000640515
+	s_lower_bl_H_2           : 0.00050292
+	s_lower_bl_ret_0         : 0.00048791
+Epoch: 285 | Train Loss: 2.19604 | Test Loss: 3.07156 | analysis_confidence: 0.127926 | CL: 0.0212119 | ln_CD: 0.0430188 | CM: 0.00326812 | Top_Xtr: 0.0164949 | Bot_Xtr: 0.0186447
+Loss contributors: 
+	s_ln_CD                  : 1.26834
+	s_CL                     : 1.00293
+	s_CM                     : 0.447287
+	s_analysis_confidence    : 0.226782
+	s_Bot_Xtr                : 0.0577802
+	s_Top_Xtr                : 0.0372239
+	s_lower_bl_H_0           : 0.000696091
+	s_lower_bl_H_1           : 0.000624097
+	s_lower_bl_ret_0         : 0.000490256
+	s_lower_bl_H_2           : 0.000489927
+Epoch: 286 | Train Loss: 2.19482 | Test Loss: 3.23447 | analysis_confidence: 0.128345 | CL: 0.0227717 | ln_CD: 0.0422098 | CM: 0.00347395 | Top_Xtr: 0.0165948 | Bot_Xtr: 0.0189745
+Loss contributors: 
+	s_ln_CD                  : 1.36571
+	s_CL                     : 1.04864
+	s_CM                     : 0.465579
+	s_analysis_confidence    : 0.225663
+	s_Bot_Xtr                : 0.0594897
+	s_Top_Xtr                : 0.0380206
+	s_lower_bl_H_0           : 0.000693058
+	s_lower_bl_H_1           : 0.000620745
+	s_lower_bl_ret_0         : 0.000490485
+	s_upper_bl_ret_0         : 0.000484093
+Epoch: 287 | Train Loss: 2.19565 | Test Loss: 3.1209 | analysis_confidence: 0.127051 | CL: 0.0218813 | ln_CD: 0.0477788 | CM: 0.00328777 | Top_Xtr: 0.0172907 | Bot_Xtr: 0.0194217
+Loss contributors: 
+	s_ln_CD                  : 1.30472
+	s_CL                     : 1.00979
+	s_CM                     : 0.452014
+	s_analysis_confidence    : 0.225443
+	s_Bot_Xtr                : 0.0590498
+	s_Top_Xtr                : 0.0387923
+	s_lower_bl_H_0           : 0.000688154
+	s_lower_bl_H_1           : 0.000625965
+	s_lower_bl_ret_0         : 0.00048699
+	s_lower_bl_H_2           : 0.000474382
+Epoch: 288 | Train Loss: 2.19238 | Test Loss: 3.07848 | analysis_confidence: 0.125276 | CL: 0.0216723 | ln_CD: 0.0405098 | CM: 0.00334308 | Top_Xtr: 0.0213064 | Bot_Xtr: 0.0241993
+Loss contributors: 
+	s_ln_CD                  : 1.25278
+	s_CL                     : 1.00262
+	s_CM                     : 0.460397
+	s_analysis_confidence    : 0.226392
+	s_Bot_Xtr                : 0.0635686
+	s_Top_Xtr                : 0.0416344
+	s_lower_bl_H_0           : 0.000699745
+	s_lower_bl_H_1           : 0.000629306
+	s_lower_bl_ret_0         : 0.000487986
+	s_lower_bl_H_2           : 0.000486609
+Epoch: 289 | Train Loss: 2.19126 | Test Loss: 3.08455 | analysis_confidence: 0.124289 | CL: 0.0215547 | ln_CD: 0.0397643 | CM: 0.00325864 | Top_Xtr: 0.0170197 | Bot_Xtr: 0.0189447
+Loss contributors: 
+	s_ln_CD                  : 1.24007
+	s_CL                     : 1.0338
+	s_CM                     : 0.458428
+	s_analysis_confidence    : 0.226141
+	s_Bot_Xtr                : 0.0579102
+	s_Top_Xtr                : 0.0370324
+	s_lower_bl_H_0           : 0.000696911
+	s_lower_bl_H_1           : 0.000625161
+	s_lower_bl_ret_0         : 0.000488643
+	s_lower_bl_H_2           : 0.000483608
+Epoch: 290 | Train Loss: 2.19419 | Test Loss: 3.24384 | analysis_confidence: 0.126272 | CL: 0.0211267 | ln_CD: 0.0420153 | CM: 0.00337984 | Top_Xtr: 0.0178382 | Bot_Xtr: 0.0201625
+Loss contributors: 
+	s_ln_CD                  : 1.37847
+	s_CL                     : 1.0311
+	s_CM                     : 0.47578
+	s_analysis_confidence    : 0.225195
+	s_Bot_Xtr                : 0.0618198
+	s_Top_Xtr                : 0.0400589
+	s_lower_bl_H_0           : 0.000698968
+	s_lower_bl_H_1           : 0.000627499
+	s_lower_bl_ret_0         : 0.000491379
+	s_lower_bl_H_2           : 0.000487143
+Epoch: 291 | Train Loss: 2.19058 | Test Loss: 3.14766 | analysis_confidence: 0.128692 | CL: 0.0218093 | ln_CD: 0.043868 | CM: 0.00337162 | Top_Xtr: 0.0174651 | Bot_Xtr: 0.0197946
+Loss contributors: 
+	s_ln_CD                  : 1.32003
+	s_CL                     : 1.01438
+	s_CM                     : 0.458831
+	s_analysis_confidence    : 0.226645
+	s_Bot_Xtr                : 0.0587475
+	s_Top_Xtr                : 0.0379565
+	s_lower_bl_H_0           : 0.000693691
+	s_lower_bl_H_1           : 0.000625586
+	s_lower_bl_ret_0         : 0.000485771
+	s_lower_bl_H_2           : 0.000478002
+Epoch: 292 | Train Loss: 2.1896 | Test Loss: 3.14589 | analysis_confidence: 0.12398 | CL: 0.0215756 | ln_CD: 0.0476752 | CM: 0.00338075 | Top_Xtr: 0.0168338 | Bot_Xtr: 0.0188785
+Loss contributors: 
+	s_ln_CD                  : 1.32764
+	s_CL                     : 1.00791
+	s_CM                     : 0.460034
+	s_analysis_confidence    : 0.225922
+	s_Bot_Xtr                : 0.0564091
+	s_Top_Xtr                : 0.0368147
+	s_lower_bl_H_0           : 0.000694942
+	s_lower_bl_H_1           : 0.000626861
+	s_lower_bl_ret_0         : 0.00049604
+	s_lower_bl_H_2           : 0.00048549
+Epoch: 293 | Train Loss: 2.18753 | Test Loss: 3.09092 | analysis_confidence: 0.127024 | CL: 0.0220837 | ln_CD: 0.044889 | CM: 0.00329531 | Top_Xtr: 0.0168542 | Bot_Xtr: 0.0191284
+Loss contributors: 
+	s_ln_CD                  : 1.26779
+	s_CL                     : 1.01955
+	s_CM                     : 0.451392
+	s_analysis_confidence    : 0.225225
+	s_Bot_Xtr                : 0.058742
+	s_Top_Xtr                : 0.0369676
+	s_lower_bl_H_0           : 0.000700893
+	s_lower_bl_H_1           : 0.000631079
+	s_lower_bl_H_2           : 0.000495195
+	s_lower_bl_ret_0         : 0.000487191
+Epoch: 294 | Train Loss: 2.18338 | Test Loss: 3.08387 | analysis_confidence: 0.125652 | CL: 0.0210782 | ln_CD: 0.0457486 | CM: 0.00326923 | Top_Xtr: 0.0189519 | Bot_Xtr: 0.0206654
+Loss contributors: 
+	s_ln_CD                  : 1.28528
+	s_CL                     : 0.994765
+	s_CM                     : 0.44903
+	s_analysis_confidence    : 0.225184
+	s_Bot_Xtr                : 0.0588855
+	s_Top_Xtr                : 0.0395572
+	s_lower_bl_H_0           : 0.000696464
+	s_lower_bl_H_1           : 0.000641286
+	s_lower_bl_H_2           : 0.000509645
+	s_lower_bl_ret_0         : 0.000492893
+Epoch: 295 | Train Loss: 2.18692 | Test Loss: 3.0784 | analysis_confidence: 0.126811 | CL: 0.0210235 | ln_CD: 0.0395046 | CM: 0.00332542 | Top_Xtr: 0.0171296 | Bot_Xtr: 0.0192629
+Loss contributors: 
+	s_ln_CD                  : 1.26693
+	s_CL                     : 1.0036
+	s_CM                     : 0.456835
+	s_analysis_confidence    : 0.225054
+	s_Bot_Xtr                : 0.0583609
+	s_Top_Xtr                : 0.0366442
+	s_lower_bl_H_0           : 0.000699052
+	s_lower_bl_H_1           : 0.000624266
+	s_lower_bl_ret_0         : 0.000491206
+	s_upper_bl_ret_0         : 0.000478322
+Epoch: 296 | Train Loss: 2.18039 | Test Loss: 3.07738 | analysis_confidence: 0.1287 | CL: 0.0222856 | ln_CD: 0.0416532 | CM: 0.00345767 | Top_Xtr: 0.0176048 | Bot_Xtr: 0.0199988
+Loss contributors: 
+	s_ln_CD                  : 1.25732
+	s_CL                     : 1.00843
+	s_CM                     : 0.456834
+	s_analysis_confidence    : 0.225404
+	s_Bot_Xtr                : 0.060044
+	s_Top_Xtr                : 0.0380094
+	s_lower_bl_H_0           : 0.00070628
+	s_lower_bl_H_1           : 0.000635352
+	s_lower_bl_H_2           : 0.000494854
+	s_lower_bl_ret_0         : 0.000489945
+Epoch: 297 | Train Loss: 2.19123 | Test Loss: 3.08299 | analysis_confidence: 0.125711 | CL: 0.020332 | ln_CD: 0.0395801 | CM: 0.00321687 | Top_Xtr: 0.016731 | Bot_Xtr: 0.0189057
+Loss contributors: 
+	s_ln_CD                  : 1.27913
+	s_CL                     : 1.00515
+	s_CM                     : 0.448762
+	s_analysis_confidence    : 0.226026
+	s_Bot_Xtr                : 0.0568515
+	s_Top_Xtr                : 0.036008
+	s_lower_bl_H_0           : 0.000703531
+	s_lower_bl_H_1           : 0.000629517
+	s_lower_bl_ret_0         : 0.000494601
+	s_lower_bl_H_2           : 0.000483922
+Epoch: 298 | Train Loss: 2.18037 | Test Loss: 3.06741 | analysis_confidence: 0.127689 | CL: 0.021646 | ln_CD: 0.0393388 | CM: 0.00329907 | Top_Xtr: 0.0168582 | Bot_Xtr: 0.0192453
+Loss contributors: 
+	s_ln_CD                  : 1.23795
+	s_CL                     : 1.00946
+	s_CM                     : 0.460022
+	s_analysis_confidence    : 0.226228
+	s_Bot_Xtr                : 0.0613805
+	s_Top_Xtr                : 0.0409566
+	s_lower_bl_H_0           : 0.000696117
+	s_lower_bl_H_1           : 0.000633136
+	s_lower_bl_H_2           : 0.000500049
+	s_lower_bl_ret_0         : 0.000494055
+Epoch: 299 | Train Loss: 2.17561 | Test Loss: 3.19433 | analysis_confidence: 0.126417 | CL: 0.0214683 | ln_CD: 0.0430093 | CM: 0.00347364 | Top_Xtr: 0.0171617 | Bot_Xtr: 0.0194384
+Loss contributors: 
+	s_ln_CD                  : 1.3502
+	s_CL                     : 1.02324
+	s_CM                     : 0.466772
+	s_analysis_confidence    : 0.226025
+	s_Bot_Xtr                : 0.0589943
+	s_Top_Xtr                : 0.0377901
+	s_lower_bl_H_0           : 0.000716126
+	s_lower_bl_H_1           : 0.000644478
+	s_lower_bl_H_2           : 0.000493857
+	s_lower_bl_ret_0         : 0.000489577
+Epoch: 300 | Train Loss: 2.17673 | Test Loss: 3.15606 | analysis_confidence: 0.128298 | CL: 0.0215571 | ln_CD: 0.0448855 | CM: 0.00329649 | Top_Xtr: 0.0162326 | Bot_Xtr: 0.0183678
+Loss contributors: 
+	s_ln_CD                  : 1.31467
+	s_CL                     : 1.03653
+	s_CM                     : 0.454261
+	s_analysis_confidence    : 0.225604
+	s_Bot_Xtr                : 0.057343
+	s_Top_Xtr                : 0.0365885
+	s_lower_bl_H_0           : 0.000689214
+	s_lower_bl_H_1           : 0.00062591
+	s_lower_bl_H_2           : 0.000489339
+	s_lower_bl_ret_0         : 0.000488995
+Epoch: 301 | Train Loss: 2.17514 | Test Loss: 3.11713 | analysis_confidence: 0.128738 | CL: 0.0206214 | ln_CD: 0.0391513 | CM: 0.00325852 | Top_Xtr: 0.0171657 | Bot_Xtr: 0.0196564
+Loss contributors: 
+	s_ln_CD                  : 1.3098
+	s_CL                     : 0.997339
+	s_CM                     : 0.453443
+	s_analysis_confidence    : 0.225596
+	s_Bot_Xtr                : 0.0612404
+	s_Top_Xtr                : 0.0384993
+	s_lower_bl_H_0           : 0.0006987
+	s_lower_bl_H_1           : 0.000640948
+	s_lower_bl_H_2           : 0.000502258
+	s_lower_bl_ret_0         : 0.00049473
+Epoch: 302 | Train Loss: 2.17013 | Test Loss: 3.09868 | analysis_confidence: 0.129417 | CL: 0.022523 | ln_CD: 0.0397979 | CM: 0.00335476 | Top_Xtr: 0.0168172 | Bot_Xtr: 0.0187175
+Loss contributors: 
+	s_ln_CD                  : 1.278
+	s_CL                     : 1.01322
+	s_CM                     : 0.457107
+	s_analysis_confidence    : 0.225689
+	s_Bot_Xtr                : 0.0569419
+	s_Top_Xtr                : 0.0368078
+	s_lower_bl_H_0           : 0.000701389
+	s_lower_bl_H_1           : 0.000631671
+	s_lower_bl_ret_0         : 0.000488677
+	s_lower_bl_H_2           : 0.000478809
+Epoch: 303 | Train Loss: 2.17733 | Test Loss: 3.10782 | analysis_confidence: 0.125604 | CL: 0.020676 | ln_CD: 0.0406685 | CM: 0.00339514 | Top_Xtr: 0.0167382 | Bot_Xtr: 0.0190591
+Loss contributors: 
+	s_ln_CD                  : 1.28136
+	s_CL                     : 1.00101
+	s_CM                     : 0.472092
+	s_analysis_confidence    : 0.225693
+	s_Bot_Xtr                : 0.0580471
+	s_Top_Xtr                : 0.0385083
+	s_lower_bl_H_0           : 0.000705552
+	s_lower_bl_H_1           : 0.000633236
+	s_lower_bl_ret_0         : 0.000496108
+	s_lower_bl_H_2           : 0.000489175
+Epoch: 304 | Train Loss: 2.17612 | Test Loss: 3.13148 | analysis_confidence: 0.127584 | CL: 0.0214684 | ln_CD: 0.0391329 | CM: 0.00347785 | Top_Xtr: 0.017352 | Bot_Xtr: 0.0196534
+Loss contributors: 
+	s_ln_CD                  : 1.31692
+	s_CL                     : 0.989369
+	s_CM                     : 0.46648
+	s_analysis_confidence    : 0.225471
+	s_Bot_Xtr                : 0.0615794
+	s_Top_Xtr                : 0.0404017
+	s_lower_bl_H_0           : 0.000702531
+	s_lower_bl_H_1           : 0.000641159
+	s_lower_bl_ret_0         : 0.000494795
+	s_lower_bl_H_2           : 0.00048817
+Epoch: 305 | Train Loss: 2.16697 | Test Loss: 3.07895 | analysis_confidence: 0.126826 | CL: 0.0205216 | ln_CD: 0.0397444 | CM: 0.003234 | Top_Xtr: 0.0163794 | Bot_Xtr: 0.0186604
+Loss contributors: 
+	s_ln_CD                  : 1.2621
+	s_CL                     : 1.01262
+	s_CM                     : 0.450923
+	s_analysis_confidence    : 0.22826
+	s_Bot_Xtr                : 0.0573386
+	s_Top_Xtr                : 0.036564
+	s_lower_bl_H_0           : 0.000692813
+	s_lower_bl_H_1           : 0.000627718
+	s_lower_bl_ret_0         : 0.000487786
+	s_upper_bl_ret_0         : 0.000483783
+Epoch: 306 | Train Loss: 2.1642 | Test Loss: 3.08628 | analysis_confidence: 0.12711 | CL: 0.0212894 | ln_CD: 0.039942 | CM: 0.00330181 | Top_Xtr: 0.0165222 | Bot_Xtr: 0.0188218
+Loss contributors: 
+	s_ln_CD                  : 1.2846
+	s_CL                     : 0.99772
+	s_CM                     : 0.452384
+	s_analysis_confidence    : 0.225516
+	s_Bot_Xtr                : 0.0580719
+	s_Top_Xtr                : 0.037017
+	s_lower_bl_H_0           : 0.000695015
+	s_lower_bl_H_1           : 0.000628967
+	s_lower_bl_ret_0         : 0.000490291
+	s_lower_bl_H_2           : 0.000484794
+Epoch: 307 | Train Loss: 2.16529 | Test Loss: 3.05873 | analysis_confidence: 0.123276 | CL: 0.0208447 | ln_CD: 0.0407944 | CM: 0.00327887 | Top_Xtr: 0.0172683 | Bot_Xtr: 0.0195449
+Loss contributors: 
+	s_ln_CD                  : 1.26914
+	s_CL                     : 0.988699
+	s_CM                     : 0.449624
+	s_analysis_confidence    : 0.225419
+	s_Bot_Xtr                : 0.0578054
+	s_Top_Xtr                : 0.0370605
+	s_lower_bl_H_0           : 0.000701045
+	s_lower_bl_H_1           : 0.000632796
+	s_lower_bl_ret_0         : 0.00049229
+	s_lower_bl_H_2           : 0.000482151
+Epoch: 308 | Train Loss: 2.17587 | Test Loss: 3.35136 | analysis_confidence: 0.127173 | CL: 0.0209865 | ln_CD: 0.0464723 | CM: 0.00324711 | Top_Xtr: 0.0200448 | Bot_Xtr: 0.0219918
+Loss contributors: 
+	s_ln_CD                  : 1.51511
+	s_CL                     : 1.01325
+	s_CM                     : 0.453763
+	s_analysis_confidence    : 0.228071
+	s_Bot_Xtr                : 0.0635293
+	s_Top_Xtr                : 0.0463913
+	s_lower_bl_H_0           : 0.000696328
+	s_lower_bl_H_1           : 0.000625478
+	s_lower_bl_ret_0         : 0.000490557
+	s_lower_bl_H_2           : 0.000485563
+Epoch: 309 | Train Loss: 2.16653 | Test Loss: 3.11271 | analysis_confidence: 0.123375 | CL: 0.0228827 | ln_CD: 0.0390061 | CM: 0.00351293 | Top_Xtr: 0.0167532 | Bot_Xtr: 0.0187536
+Loss contributors: 
+	s_ln_CD                  : 1.24406
+	s_CL                     : 1.03505
+	s_CM                     : 0.479578
+	s_analysis_confidence    : 0.225856
+	s_Bot_Xtr                : 0.0593357
+	s_Top_Xtr                : 0.0378769
+	s_lower_bl_H_0           : 0.000694958
+	s_lower_bl_H_1           : 0.000632836
+	s_lower_bl_ret_0         : 0.000493473
+	s_lower_bl_H_2           : 0.000492262
+Epoch: 310 | Train Loss: 2.16855 | Test Loss: 3.0498 | analysis_confidence: 0.124093 | CL: 0.0209733 | ln_CD: 0.0407434 | CM: 0.00320165 | Top_Xtr: 0.0169945 | Bot_Xtr: 0.0193803
+Loss contributors: 
+	s_ln_CD                  : 1.24771
+	s_CL                     : 0.998263
+	s_CM                     : 0.451742
+	s_analysis_confidence    : 0.226877
+	s_Bot_Xtr                : 0.0573112
+	s_Top_Xtr                : 0.0366229
+	s_lower_bl_H_0           : 0.000708236
+	s_lower_bl_H_1           : 0.000631963
+	s_lower_bl_ret_0         : 0.00049921
+	s_lower_bl_H_2           : 0.000487632
+Epoch: 311 | Train Loss: 2.16522 | Test Loss: 3.02123 | analysis_confidence: 0.126215 | CL: 0.0206509 | ln_CD: 0.0404436 | CM: 0.00321014 | Top_Xtr: 0.0171997 | Bot_Xtr: 0.0191369
+Loss contributors: 
+	s_ln_CD                  : 1.24331
+	s_CL                     : 0.985378
+	s_CM                     : 0.442315
+	s_analysis_confidence    : 0.225393
+	s_Bot_Xtr                : 0.0574272
+	s_Top_Xtr                : 0.0363515
+	s_lower_bl_H_0           : 0.000706159
+	s_lower_bl_H_1           : 0.000642472
+	s_lower_bl_ret_0         : 0.000489804
+	s_lower_bl_H_2           : 0.000487503
+Epoch: 312 | Train Loss: 2.16092 | Test Loss: 3.0568 | analysis_confidence: 0.128036 | CL: 0.0213619 | ln_CD: 0.0392522 | CM: 0.00338151 | Top_Xtr: 0.0178094 | Bot_Xtr: 0.0205928
+Loss contributors: 
+	s_ln_CD                  : 1.22806
+	s_CL                     : 1.00662
+	s_CM                     : 0.466157
+	s_analysis_confidence    : 0.225103
+	s_Bot_Xtr                : 0.060919
+	s_Top_Xtr                : 0.0388332
+	s_lower_bl_H_0           : 0.000700964
+	s_lower_bl_H_1           : 0.0006203
+	s_lower_bl_ret_0         : 0.00049144
+	s_upper_bl_ret_0         : 0.000476102
+slurmstepd-d-13-3-1: error: *** JOB 25353063 ON d-13-3-1 CANCELLED AT 2024-03-09T00:55:12 ***
+Traceback (most recent call last):
+  File "/home/gridsan/pds/NeuralFoil/training/gen2_architecture/./train_blind_neural_network.py", line 219, in <module>
