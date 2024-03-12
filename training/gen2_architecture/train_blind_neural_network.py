@@ -41,6 +41,8 @@ class Net(torch.nn.Module):
             torch.nn.Tanh(),
             torch.nn.Linear(width, width),
             torch.nn.Tanh(),
+            torch.nn.Linear(width, width),
+            torch.nn.Tanh(),
 
             torch.nn.Linear(width, N_outputs),
         )
@@ -90,22 +92,24 @@ if __name__ == '__main__':
 
     net = Net().to(device)
 
-    try:
-        net.load_state_dict(torch.load(cache_file))
-        print("Model found, resuming training.")
-    except FileNotFoundError:
-        print("No existing model found, starting fresh.")
-
     # Define the optimizer
-    learning_rate = 1e-3
-    optimizer = torch.optim.RAdam(net.parameters(), lr=learning_rate, weight_decay=1e-6)
+    learning_rate = 1e-4
+    optimizer = torch.optim.RAdam(net.parameters(), lr=learning_rate, weight_decay=3e-5)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer,
-        factor=0.5,
         patience=10,
         verbose=True,
         min_lr=0,
     )
+
+    try:
+        checkpoint = torch.load(cache_file)
+        net.load_state_dict(checkpoint["model_state_dict"])
+        optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+
+        print("Model found, resuming training.")
+    except FileNotFoundError:
+        print("No existing model found, starting fresh.")
 
     # Define the data loader
     print(f"Preparing data...")
@@ -288,6 +292,9 @@ if __name__ == '__main__':
         for i in loss_argsort[:10]:
             print(f"\t{df_train_outputs_scaled.columns[i]:25}: {test_loss_components[i].item():.6g}")
 
-        scheduler.step(train_loss)
+        scheduler.step(test_loss)
 
-        torch.save(net.state_dict(), cache_file)
+        torch.save({
+            'model_state_dict': net.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+        }, cache_file)

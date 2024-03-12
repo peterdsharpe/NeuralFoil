@@ -78,9 +78,9 @@ for i, (title, log_file) in enumerate(log_file_ids.items()):
     for key in ["Train Loss", "Test Loss"]:
         lines = plt.plot(
             data[key],
-            ".-",
+            "-",
             markersize=5,
-            alpha=0.5,
+            alpha=0.9,
             markeredgewidth=0,
         )
 
