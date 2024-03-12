@@ -35,8 +35,8 @@ def get_aero_from_kulfan_parameters(
 
     ### Prepare the inputs for the neural network
     input_rows: List[Union[float, np.ndarray]] = [
-        *kulfan_parameters["upper_weights"],
-        *kulfan_parameters["lower_weights"],
+        *[kulfan_parameters["upper_weights"][i] for i in range(8)],
+        *[kulfan_parameters["lower_weights"][i] for i in range(8)],
         kulfan_parameters["leading_edge_weight"],
         kulfan_parameters["TE_thickness"] * 50,
         np.sind(2 * alpha),
@@ -154,12 +154,12 @@ def get_aero_from_kulfan_parameters(
 
     upper_theta = (
                           (10 ** y_fused[:, 6: 6 + Data.N]) - 0.1
-    ) / (np.abs(upper_bl_ue_over_vinf) * Re)
+    ) / (np.abs(upper_bl_ue_over_vinf) * np.reshape(Re, (-1, 1)))
     upper_H = 2.6 * np.exp(y_fused[:, 6 + Data.N: 6 + Data.N * 2])
 
     lower_theta = (
                             (10 ** y_fused[:, 6 + Data.N * 3: 6 + Data.N * 4]) - 0.1
-    ) / (np.abs(lower_bl_ue_over_vinf) * Re)
+    ) / (np.abs(lower_bl_ue_over_vinf) * np.reshape(Re, (-1, 1)))
     lower_H = 2.6 * np.exp(y_fused[:, 6 + Data.N * 4: 6 + Data.N * 5])
 
 
