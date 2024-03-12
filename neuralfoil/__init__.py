@@ -6,4 +6,4 @@ from neuralfoil.gen2_architecture.main import (
     bl_x_points,
 )
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"

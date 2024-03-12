@@ -2,7 +2,7 @@ import warnings
 import aerosandbox as asb
 import aerosandbox.numpy as np
 from dataclasses import dataclass, field
-from typing import Union, Sequence, List, Any
+from typing import Union, Sequence, List, Any, Dict
 from scipy import interpolate
 
 
@@ -64,7 +64,7 @@ class Data():
     bl_x_points = compute_optimal_x_points(n_points=N)
 
     analysis_confidence: float  # Nominally 0 (no confidence) to 1 (high confidence)
-    af_outputs: dict[str, Any] = field(
+    af_outputs: Dict[str, Any] = field(
         default_factory=lambda: {
             "CL"     : np.nan,
             "CD"     : np.nan,
@@ -73,14 +73,14 @@ class Data():
             "Bot_Xtr": np.nan,
         }
     )
-    upper_bl_outputs: dict[str, Any] = field(
+    upper_bl_outputs: Dict[str, Any] = field(
         default_factory=lambda: {
             "theta"  : np.nan * np.ones_like(Data.bl_x_points),
             "H"      : np.nan * np.ones_like(Data.bl_x_points),
             "ue/vinf": np.nan * np.ones_like(Data.bl_x_points),
         }
     )  # theta, H, ue/vinf
-    lower_bl_outputs: dict[str, Any] = field(
+    lower_bl_outputs: Dict[str, Any] = field(
         default_factory=lambda: {
             "theta"  : np.nan * np.ones_like(Data.bl_x_points),
             "H"      : np.nan * np.ones_like(Data.bl_x_points),
