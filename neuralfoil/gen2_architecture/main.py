@@ -6,6 +6,7 @@ from neuralfoil.gen2_architecture._basic_data_type import Data
 
 npz_file_directory = Path(__file__).parent / "nn_weights_and_biases"
 
+bl_x_points = Data.bl_x_points
 
 def _sigmoid(x):
     return 1 / (1 + np.exp(-x))
