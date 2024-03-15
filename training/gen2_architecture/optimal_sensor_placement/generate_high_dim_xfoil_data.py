@@ -14,7 +14,7 @@ ray.init(
     # num_cpus=2,
 )
 
-datafile = "data_xfoil.csv"
+datafile = "hd_data_xfoil.csv"
 n_procs = int(ray.cluster_resources()["CPU"])
 print(f"Running on {n_procs} processes.")
 

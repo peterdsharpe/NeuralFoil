@@ -15,7 +15,7 @@ data_directory = Path(__file__).parent
 
 raw_dfs = {}
 
-for csv_file in data_directory.glob("data*.csv"):
+for csv_file in data_directory.glob("hd_data*.csv"):
     print(f"Reading {csv_file}...")
     raw_dfs[csv_file.stem] = pl.read_csv(
         csv_file, has_header=False,
