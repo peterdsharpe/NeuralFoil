@@ -15,7 +15,7 @@
 
     \begin{abstract}
 
-        This work introduces \emph{NeuralFoil}, an open-source tool for rapid aerodynamics analysis of airfoils, similar to XFoil. NeuralFoil uses a physics-informed machine learning approach, with physics constraints structurally embedded into the model architecture and training performed on tens of millions of XFoil runs. Compared to XFoil, this allows nearly-identical aerodynamic accuracy, runtime speeds up to 1,000x faster on large batch analyses, and most importantly, compatibility with gradient-based design optimization methods (e.g., infinitely-smooth solutions, no non-convergence issues, and straightforward compatibility with automatic differentiation tools). NeuralFoil yields airfoil aerodynamics results including viscous and compressible effects for nearly any practical airfoil, including control deflections, across a full $360\degree$ range of angles of attack, across Reynolds numbers from $10^2$ to $10^9$, and for Mach numbers from zero to low transonic conditions. This work discusses the architecture, training, and performance of NeuralFoil on a variety of test cases, including an airfoil design optimization case for the MIT Daedalus human-powered aircraft. In this case study, NeuralFoil optimization is able to produce airfoils remarkably similar in performance and shape to expert-designed airfoils in seconds; this provides a good starting point for further expert refinement. NeuralFoil is implemented as a lightweight Python package with minimal dependencies, allowing easy installation across a variety of platforms.
+        This work introduces \emph{NeuralFoil}, an open-source tool for rapid aerodynamics analysis of airfoils, similar to XFoil. NeuralFoil uses a physics-informed machine learning approach, with physics constraints structurally embedded into the model architecture and training performed on tens of millions of XFoil runs. Compared to XFoil, this allows nearly-identical aerodynamic accuracy: the mean absolute error of drag on airfoils not part of NeuralFoil's training data is 2.0\%. Moreover, NeuralFoil offers runtime speeds up to 1,000x faster than XFoil when performing large batch analyses and compatibility with gradient-based design optimization methods (e.g., infinitely-smooth solutions, no non-convergence issues, and straightforward compatibility with automatic differentiation tools). NeuralFoil yields airfoil aerodynamics results including viscous and compressible effects across a wide variety of airfoil shapes, including control deflections, across a full $360\degree$ range of angles of attack, across Reynolds numbers from $10^2$ to $10^9$, and for Mach numbers from zero to low transonic conditions. This work discusses the model architecture, training, and performance of NeuralFoil on a variety of test cases, including an airfoil design optimization case for the MIT Daedalus human-powered aircraft. In this case study, NeuralFoil optimization is able to produce airfoils remarkably similar in performance and shape to expert-designed airfoils in seconds; these computationally-optimized airfoils provide a useful starting point for further expert refinement. NeuralFoil is implemented as a lightweight Python package with minimal dependencies, allowing easy installation across a variety of platforms.
 
     \end{abstract}
 
@@ -77,21 +77,21 @@
 
     In the direct manual method (or ``geometric design'' method, using parlance from XFoil), an engineer formulates an airfoil shape directly and modifies this iteratively by hand. Aerodynamic analysis is performed by any code that will perform the forward problem (geometry $\rightarrow$ aerodynamics), such as XFoil, MSES \cite{mses}, or any RANS-based CFD code \cite{adler_cfd_2022}. This allows for easier satisfaction of non-aerodynamic constraints, but it is difficult to directly target aerodynamic quantities. Significant user expertise is also required to identify the most relevant geometric parameters and to make effective changes to the airfoil shape.
 
-    In the optimization approach, a parameterized airfoil shape is optimized to minimize a cost function and satisfy specified constraints. At first glance, this appears to be an automation of the direct manual method. However, Drela and others note the surprising difficulty of posing the correct optimization problem \cite{drela_pros_1998, kroo_multidisciplinary_1997}, so this approach requires just as much (if not more) human expertise than the direct manual method -- though that is not to say it is without benefits. As stated by Drela \cite{drela_pros_1998}, optimization-based airfoil design ``is still an iterative cut-and-try undertaking. But compared to [direct] techniques, the cutting-and-trying is not on the geometry, but rather on the precise formulation of the optimization problem.'' To support this, Drela gives compelling case studies of how airfoil design optimization can go awry in the absence of user review and care. Some codes, like the LINDOP \cite{mses} optimization routine coupled with XFoil, alleviate this somewhat by using a hybrid of the direct and optimization approaches: update directions are computed by an optimizer, but the actual changes are reviewed and implemented by a human between iterations. Despite the potential challenges of this optimization-based airfoil design approach, it offers compelling benefits: resulting airfoil performance is equal or exceed that of expert-designed airfoils \cite{drela_pros_1998}, particularly on problems that with unique or otherwise non-intuitive constraints. This optimization process also has the potential to require orders of magnitude less engineering time, and it provides a systematic and disciplined approach that is especially suited to the most challenging design problems \cite{he2019robust}.
+    In the optimization approach, a parameterized airfoil shape is optimized to minimize a cost function and satisfy specified constraints. At first glance, this appears to be an automation of the direct manual method. However, Drela and others note the surprising difficulty of posing the correct optimization problem \cite{drela_pros_1998, kroo_multidisciplinary_1997}, so this approach requires just as much (if not more) human expertise than the direct manual method -- though that is not to say it is without benefits. As stated by Drela \cite{drela_pros_1998}, optimization-based airfoil design ``is still an iterative cut-and-try undertaking. But compared to [direct] techniques, the cutting-and-trying is not on the geometry, but rather on the precise formulation of the optimization problem.'' To support this, Drela gives compelling case studies of how airfoil design optimization can go awry in the absence of user review and care. Some codes, like the LINDOP \cite{mses} optimization routine coupled with XFoil, alleviate this somewhat by using a hybrid of the direct and optimization approaches: update directions are computed by an optimizer, but the actual changes are reviewed and implemented by a human between iterations. Despite the potential challenges of this optimization-based airfoil design approach, it offers compelling benefits: resulting airfoil performance can equal that of airfoils by an expert \cite{drela_pros_1998}, particularly on problems with unique or otherwise non-intuitive constraints. This optimization process also has the potential to require orders of magnitude less engineering time, and it provides a systematic and disciplined approach that is especially suited to the most challenging design problems \cite{he2019robust}.
 
-    In all of these methods, some form of a computational tool for airfoil aerodynamics analysis is required. For subsonic airfoils, the gold standard of such tools is XFoil \cite{drela_xfoil_1989}. XFoil is more accurate than RANS-CFD-based tools \cite{morgado2016xfoil}, yet it has a computational cost that is roughly 1,000x lower -- a testament to the power of its modeling approach, which couples integral boundary layer and potential flow methods. A complete description of this modeling approach is available in Drela's \textit{Aerodynamics of Viscous Fluids} \cite{drela_aerodynamics_2019}, and in recent state-of-the-art work by Zhang \cite{zhang_threedimensional_2022, zhang_nonparametric_2017}. However, XFoil has several attributes that make it less-than-ideal for directly driving numerical optimization studies. Among these:
+    In all of these methods, some form of a computational tool for airfoil aerodynamics analysis is required. For subsonic airfoils, the gold standard of such tools is XFoil \cite{drela_xfoil_1989}. XFoil is more accurate than RANS-CFD-based tools \cite{morgado2016xfoil} in this regime, yet it has a computational cost that is roughly 1,000x lower -- a testament to the power of its modeling approach, which strongly-couples integral boundary layer and potential flow methods. A complete description of this modeling approach is available in Drela's \textit{Aerodynamics of Viscous Fluids} \cite{drela_aerodynamics_2019}, and in recent state-of-the-art work by Zhang \cite{zhang_threedimensional_2022, zhang_nonparametric_2017}. However, despite the many strengths of XFoil, it has several attributes that make it less-than-ideal for directly driving numerical optimization studies. Among these:
 
     \begin{itemize}
-        \item XFoil is not guaranteed to produce a solution. When an ``ambitious'' calculations are attempted, XFoil often fails to provide a converged solution; the unconverged result often has wildly-diverging values and is effectively unusable. In some cases, calculations can lead to infinite loops or process crashes due to unhandled exceptions. While this is acceptable in certain applications (e.g., manual direct analysis), it is generally unacceptable for use in numerical optimization. Instead, optimization strongly benefits from a robust analysis tool that always produces a result, even if that result has slightly degraded accuracy; this allows the analysis to steer the optimizer back towards the design space of reasonable airfoils \cite{he2019robust}. A particularly useful case is when the model is deliberately made to be slightly pessimistic (e.g., overestimate drag) in regions of the design space with high uncertainty, adding further optimization pressure towards reasonable designs with low performance uncertainty.
+        \item XFoil is not guaranteed to produce a solution. When an ``ambitious'' calculation is attempted, XFoil often fails to provide a converged solution; the unconverged result often has wildly-diverging values and is effectively unusable. In some cases, calculations can lead to infinite loops or process crashes due to unhandled exceptions. While this is acceptable in certain applications (e.g., manual direct analysis), it is generally unacceptable for use in numerical optimization. Instead, optimization strongly benefits from a robust analysis tool that always produces a result, even if that result has degraded accuracy; this allows the analysis to steer the optimizer back towards the design space of reasonable airfoils \cite{he2019robust}. A particularly useful attribute is when the model is deliberately made to be slightly pessimistic (e.g., overestimate drag) in regions of the design space with high uncertainty, adding further optimization pressure towards reasonable designs with low performance uncertainty.
         \begin{itemize}
             \item More generally, design optimization is not the only application that strongly benefits from an aerodynamics analysis tool that always produces an answer. Other examples where a non-answer, infinite loop, or crashed process are unacceptable include real-time control (e.g., as an aerodynamic model for a model-predictive controller onboard an aircraft) and flight simulation.
         \end{itemize}
-        \item XFoil solutions are not necessarily unique, and slightly different solutions can be obtained for the same analysis problem (airfoil shape, angle of attack, and Reynolds and Mach numbers). In practice, this manifests as an effective hysteresis depending on whether angle of attack is swept up or down. This flow non-uniqueness is in fact a real physical\footnote{For example, flow over an airfoil may separate as its angle of attack increases past $12\degree$, but it may not fully reattach until the angle of attack descends back to below $11\degree$} effect \cite{jameson_airfoils_1991, kuzmin2012non, he2019robust}. However, this non-uniqueness can be exceptionally problematic for numerical optimization, as there is no limit to how sensitive performance can be to input parameters (precluding approaches such as finite-differencing for gradient-based optimization).
-        \item XFoil solutions are non-smooth\footnote{precisely, they are $C^0$ continuous but not $C^1$ continuous} with respect to input parameters, which makes it fundamentally incompatible with gradient-based optimization. This is a consequence of how laminar-turbulent transition is handled by XFoil's integral boundary layer solver. This solve requires the use of laminar and turbulent boundary layer \emph{closure models}, which are curve-fitted functions that yield various necessary quantities ($H^*$, $c_f$, $c_\mathcal{D}$, etc.) of the von Karman integral momentum and kinetic energy equations as a function of the two values that parameterize the boundary layer ($H$, $\Rey_\theta$). The laminar and turbulent versions of these functions differ. XFoil implements a cut-cell approach on the transitioning interval, which restores $C^0$-continuity (i.e., transition won't truly ``jump'' from one node to another discretely); however, a sharp change in gradient occurs whenever an individual node switches its equation from laminar to turbulent. Adler et al. provide a graphical depiction of this phenomenon \cite{adler_cfd_2022}.
-        \item Most interfaces between an optimizer and XFoil communicate through a series of text files (i.e., hard disk), rather than by sharing data in memory (i.e., RAM). Given the quick speed of an individual XFoil run, this input-output overhead can impose a significant performance penalty. While this programming-language-agnostic interface is arguably one of the reasons for XFoil's long-enduring popularity, it comes at the cost of runtime performance if the tool is to be used in a high-throughput setting (e.g., for design optimization).
+        \item XFoil solutions are not necessarily unique, and slightly different solutions can be obtained for the same analysis problem (airfoil shape, angle of attack, and Reynolds and Mach numbers). In practice, this manifests as an effective hysteresis depending on whether angle of attack is swept up or down. This flow non-uniqueness is in fact a real physical\footnote{For example, flow over an airfoil may separate as its angle of attack increases past $12\degree$, but it may not fully reattach until the angle of attack descends back to below $11\degree$} effect \cite{jameson_airfoils_1991, kuzmin2012non, he2019robust}. However, this non-uniqueness can be exceptionally problematic for numerical optimization, as an infinitesimal change in an input parameter can result in the solution jumping to a different Newton basis of attraction. Therefore, there is no limit to how sensitive performance can be to input parameters (which hampers techniques like finite-differencing for gradient-based optimization).
+        \item XFoil solutions are non-smooth\footnote{precisely, they are $C^0$ continuous but not $C^1$ continuous} with respect to input parameters, which makes it fundamentally incompatible with gradient-based optimization. Interestingly, this is a consequence of how laminar-turbulent transition is handled by XFoil's integral boundary layer solver. This solve requires the use of laminar and turbulent boundary layer \emph{closure models}, which are curve-fitted functions that yield various necessary quantities ($H^*$, $c_f$, $c_\mathcal{D}$, etc.) of the von Karman integral momentum and kinetic energy equations as a function of the two values that parameterize the boundary layer ($H$, $\Rey_\theta$). The laminar and turbulent versions of these functions differ. XFoil implements a cut-cell approach on the transitioning interval, which restores $C^0$-continuity (i.e., transition won't truly ``jump'' from one node to another discretely); however, a sharp change in gradient occurs whenever an individual node switches its equation from laminar to turbulent. Adler et al. provide a graphical depiction of this phenomenon \cite{adler_cfd_2022}.
+        \item Most interfaces between an optimizer and XFoil communicate through a series of text files (i.e., hard disk), rather than by sharing data in memory (i.e., RAM). Given the quick speed of an individual XFoil run, this input-output overhead imposes a significant performance penalty. While this programming-language-agnostic interface is arguably one of the reasons for XFoil's long-enduring popularity, it comes at the cost of runtime performance if the tool is to be used in a high-throughput setting (e.g., for design optimization).
     \end{itemize}
 
-    This motivates the development of a new airfoil aerodynamics analysis tool that captures the advantages of XFoil (accuracy, speed) while mitigating these drawbacks (i.e., incompatibility with optimization). In recent years, many fields have benefited from a hybrid data-and-theory approach, where data-driven models are used to augment traditional physics-based models with learned closures. This work presents a similar physics-informed approach as applied to analyzing airfoil aerodynamics.
+    This motivates the development of a new airfoil aerodynamics analysis tool that captures the advantages of XFoil (accuracy, speed) while mitigating these drawbacks (i.e., incompatibility with gradient-based optimization). In recent years, many fields have benefited from a hybrid data-and-theory approach, where data-driven models are used to augment traditional physics-based models with learned closures. This work presents a similar physics-informed approach as applied to analyzing airfoil aerodynamics.
 
     % TODO write about other physics-informed ML approaches, webfoil?
 
@@ -159,10 +159,10 @@
 
     NeuralFoil has a mathematical form that is fully explicit\footnote{meaning no iterative solvers are used} and guaranteed to produce a unique solution with a bounded amount of computational effort for any input. Reasonable aerodynamics estimates can be expected:
     \begin{itemize}
-        \item For any practical airfoil shape\footnote{only single-element airfoils are allowed}, including modifications for trailing-edge control deflections up to reasonable deflections (e.g., $\pm 25\degree$)
+        \item For any practical airfoil shape that can be analyzed with XFoil\footnote{only single-element airfoils are allowed}, including modifications for trailing-edge control deflections up to reasonable deflections (e.g., $\pm 25\degree$)
         \item Across the $360\degree$ angle of attack range, by leveraging analytical post-stall models regressed from high-$\alpha$ wind tunnel data by Truong \cite{truong_analytical_2020}
-        \item At any practical Reynolds number ($10^2$ to $10^9$) with physically-correct extrapolation even beyond these ranges (e.g., Stokes flow limit)
-        \item At subsonic and transonic Mach numbers, from zero to slightly above the drag-divergent Mach number
+        \item At any practical Reynolds number ($10^2$ to $10^9$) with physically-sensible extrapolation even beyond these ranges (e.g., Stokes flow limit)
+        \item At subsonic and low-transonic Mach numbers, from zero to slightly above the drag-divergent Mach number
     \end{itemize}
 
     NeuralFoil is implemented as an open-source lightweight Python package with minimal dependencies (only NumPy \cite{harris_array_2020} for the actual aerodynamic modeling), allowing easy installation across a variety of platforms.
@@ -234,7 +234,7 @@
         \end{tabular}
     \end{table}
 
-    Each layer is a fully-connected linear layer. The activation function applied between each layer is a hyperbolic tangent function, which is chosen because the resulting model is infinitely smooth ($C^\infty$-continuous) and hence guaranteed to be amenable to later gradient-based design optimization.
+    Each layer is a fully-connected linear layer. The activation function applied between each layer is a hyperbolic tangent function, which is chosen because the resulting model is then infinitely smooth ($C^\infty$-continuous) and hence much more amenable to later gradient-based design optimization.
 
     \subsubsection{Handling of Control Surface Deflections}
     \label{sec:control-surfaces}
@@ -339,7 +339,7 @@
 
     \begin{figure}[h]
         \centering
-        \includesvg[width=\textwidth]{../../benchmarking/neuralfoil_point_validation.svg}
+        \includesvg[width=\textwidth]{../../benchmarking/neuralfoil_point_comparison.svg}
         \caption{Sample validation of NeuralFoil versus XFoil on an out-of-distribution airfoil.}
         \label{fig:clcd_polar}
     \end{figure}
@@ -351,7 +351,7 @@
     The second set of columns gives the runtime speed of the models, both for a single analysis and for a large batch analysis. Here, the benefit of NeuralFoil's vectorization is shown: for large batch analyses, runtimes many orders of magnitude faster than XFoil are possible, with minimal loss in accuracy.
 
     \begin{table}[h]
-        \centering
+        \begin{centering}
         \caption{Performance comparison of NeuralFoil (``NF'') physics-informed machine learning models versus XFoil in terms of accuracy (treating XFoil as a ground truth) and speed. Runtime speeds are measured on an AMD Ryzen 7 5800H laptop CPU.}
         \label{tab:neuralfoil_performance}
 
@@ -359,37 +359,36 @@
 
             \begin{tblr}{
                 width=\textwidth,
-                colspec={m{3cm} | m{2cm} m{2cm} m{2cm} m{2cm} m{2cm} m{2cm} | m{2cm} m{2cm}},
+                colspec={m{2.2cm} | m{2cm} m{2cm} m{2cm} m{2cm} | m{2cm} m{2cm}},
                 row{1}={font=\bfseries},
 %            column{1}={font=\bfseries},
             }
-                \toprule
-                Aerodynamics Model & \multicolumn{6}{m{12cm}}{Mean Absolute Error (MAE) of Given Metric, on the Test Dataset, with respect to XFoil} & \multicolumn{2}{m{4cm}}{Computational Cost to Run} \\ %\cmidrule{2-9}
-                {}                     & Lift Coeff. & Fractional Drag Coeff. & Moment Coeff. & Max Overspeed                    & Top Transition Location & Bottom Transition Location & Runtime & Total Runtime \\
-                {}                     & $C_L$       & $\ln(C_D)^{\dagger}$   & $C_M$         & $u_{\max}/u_{\infty}^{\ddagger}$ & $x_{tr, top}/c$   & $x_{tr, bot}/c$ & (1 run) & (100,000 runs) \\ \midrule
-%                NF Linear $C_L$ Model & 0.116       & -                      & -             & -                                & -                   & -                  & 1 ms    & 0.020 sec      \\
-                NF ``xxsmall''         & 0.065       & 0.121                  & 0.010         & 0.215                            & 0.073                   & 0.100                      & 3 ms    & 0.190 sec      \\
-                NF ``xsmall''          & 0.042       & 0.075                  & 0.007         & 0.134                            & 0.039                   & 0.055                      & 4 ms    & 0.284 sec      \\
-                NF ``small''           & 0.039       & 0.069                  & 0.006         & 0.122                            & 0.036                   & 0.050                      & 4 ms    & 0.402 sec      \\
-                NF ``medium''          & 0.027       & 0.051                  & 0.004         & 0.088                            & 0.022                   & 0.033                      & 5 ms    & 0.784 sec      \\
-                NF ``large''           & 0.024       & 0.045                  & 0.004         & 0.079                            & 0.020                   & 0.029                      & 6 ms    & 1.754 sec      \\
-                NF ``xlarge''          & 0.023       & 0.043                  & 0.004         & 0.076                            & 0.019                   & 0.028                      & 10 ms   & 3.330 sec      \\
-                NF ``xxlarge''         & 0.021       & 0.040                  & 0.003         & 0.071                            & 0.018                   & 0.025                      & 13 ms   & 4.297 sec      \\
-                NF ``xxxlarge''        & 0.020       & 0.039                  & 0.003         & 0.070                            & 0.016                   & 0.024                      & 38 ms   & 8.980 sec      \\
-                XFoil                  & 0           & 0                      & 0             & 0                                & 0                       & 0                          & 73 ms   & 42 min         \\ \bottomrule
+\toprule
+\multicolumn{1}{c}{\textbf{Aerodynamics Model}} & \multicolumn{4}{c}{\textbf{Mean Absolute Error (MAE) of Given Metric,}\\ \textbf{on the Test Dataset, with respect to XFoil}} & \multicolumn{2}{c}{\textbf{Computational Cost to Run}} \\
+ & \begin{tabular}[c]{@{}l@{}}Lift Coeff.\\ $C_L$\end{tabular} & \begin{tabular}[c]{@{}l@{}}Fractional\\Drag Coeff.\\ $\ln(C_D)\ ^{\dagger}$ \end{tabular} & \begin{tabular}[c]{@{}l@{}}Moment Coeff.\\ $C_M$\end{tabular} & \begin{tabular}[c]{@{}l@{}}Transition\\Locations\\ $x_{tr}/c$\end{tabular} & \begin{tabular}[c]{@{}l@{}}Runtime\\ (1 run)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Total Runtime\\ (100,000 runs)\end{tabular} \\ \midrule
+NF ``xxsmall'' & 0.040 & 0.078 & 0.007 & 0.044 & 4 ms & 0.85 sec \\
+NF ``xsmall'' & 0.030 & 0.057 & 0.005 & 0.033 & 4 ms & 0.96 sec \\
+NF ``small'' & 0.027 & 0.050 & 0.005 & 0.027 & 5 ms & 1.08 sec \\
+NF ``medium'' & 0.020 & 0.039 & 0.003 & 0.020 & 5 ms & 1.29 sec \\
+NF ``large'' & 0.016 & 0.030 & 0.003 & 0.014 & 8 ms & 2.23 sec \\
+NF ``xlarge'' & 0.013 & 0.024 & 0.002 & 0.010 & 13 ms & 4.21 sec \\
+NF ``xxlarge'' & 0.012 & 0.022 & 0.002 & 0.009 & 16 ms & 5.16 sec \\
+NF ``xxxlarge'' & 0.012 & 0.020 & 0.002 & 0.007 & 56 ms & 13.6 sec \\
+XFoil & 0 & 0 & 0 & 0 & 73 ms & 42 min \\ \bottomrule
             \end{tblr}
         \end{adjustbox}
+        \end{centering}
+        $^{\dagger}$ The deviation of $\ln(C_D)$ can be thought of as ``the typical relative error in $C_D$''. \\
 
-        \begin{adjustbox}{width=\textwidth}
-            \vspace{1pt}
-            \begin{tblr}{
-                width=\textwidth,
-                colspec={l},
-            }
-                $^{\dagger}$ The deviation of $\ln(C_D)$ can be thought of as ``the typical relative error in $C_D$''. \\
-                $^{\ddagger}$ This ``maximum overspeed'' gives $\Cpm$, which can be used to estimate the critical Mach number $M_\text{crit}$.\\
-            \end{tblr}
-        \end{adjustbox}
+%        \begin{adjustbox}{width=\textwidth}
+%            \vspace{1pt}
+%            \begin{tblr}{
+%                width=\textwidth,
+%                colspec={l},
+%            }
+%                $^{\dagger}$ The deviation of $\ln(C_D)$ can be thought of as ``the typical relative error in $C_D$''. \\
+%            \end{tblr}
+%        \end{adjustbox}
 
     \end{table}
 
@@ -458,7 +457,7 @@
 
     \begin{figure}[h]
         \centering
-        \includesvg[width=\textwidth]{figures/neuralfoil_daedalus.svg}
+        \includesvg[width=\textwidth]{figures/daedalus_optimization.svg}
         \caption{NeuralFoil-optimized airfoils yield performance that is competitive with expert-designed airfoils and have remarkably similar shapes. Adversarial optimization is not observed, as the NeuralFoil-optimized and XFoil-optimized airfoils yield similar performance when analyzed using XFoil.}
         \label{fig:daedalus_optimized}
     \end{figure}
@@ -478,7 +477,7 @@
     \section{Conclusion}
     \label{sec:conclusion}
 
-    This paper introduces NeuralFoil, a physics-informed machine learning tool for airfoil aerodynamics analysis trained on an extensive dataset of XFoil analyses. NeuralFoil offers improved computational efficiency and optimization-friendliness while maintaining accuracy comparable to XFoil. Its ability to handle a wide range of practical airfoil shapes, angles of attack, Reynolds numbers, and Mach numbers up to low transonic conditions makes it a versatile tool in aerodynamic analysis.
+    In this work, we have introduced NeuralFoil, a physics-informed machine learning tool for airfoil aerodynamics analysis trained on an extensive dataset of XFoil analyses. NeuralFoil offers improved computational efficiency and optimization-friendliness while maintaining accuracy comparable to XFoil. Its ability to handle a wide range of practical airfoil shapes, angles of attack, Reynolds numbers, and Mach numbers up to low transonic conditions makes it a versatile tool in aerodynamic analysis.
 
     The accuracy of NeuralFoil with respect to XFoil is demonstrated across test cases, with particular focus on airfoils that NeuralFoil was not trained on (i.e., out-of-distribution). Much of the accuracy achieved here is due to the embedding of domain-specific physics knowledge into the model architecture, which increases the parameter-efficiency and generalizability of the resulting model. Also presented in this work is an application of NeuralFoil to airfoil design optimization for the MIT Daedalus human-powered aircraft, where it quickly produces designs close in performance and shape to expert-crafted airfoils. This showcases NeuralFoil's potential for rapid, accurate airfoil design optimization and iterative design processes.
 
