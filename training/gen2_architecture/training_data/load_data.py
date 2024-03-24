@@ -132,7 +132,7 @@ df_inputs_scaled = pl.DataFrame({
     "s_kulfan_TE_thickness": df["kulfan_TE_thickness"] * 50,
     "s_sin_2a"             : np.sind(2 * df["alpha"]),
     "s_cos_a"              : np.cosd(df["alpha"]),
-    "s_cos2_a"             : 1 - np.cosd(df["alpha"]) ** 2,
+    "s_1mcos2_a"           : 1 - np.cosd(df["alpha"]) ** 2,
     "s_Re"                 : (np.log(df["Re"]) - 12.5) / 3.5,
     # No mach
     "s_n_crit"             : (df["n_crit"] - 9) / 4.5,
