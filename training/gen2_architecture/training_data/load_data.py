@@ -105,6 +105,24 @@ df = df.with_columns(
     ]
 )
 
+c = pl.any_horizontal(
+    pl.col("Top_Xtr") < 0,
+    pl.col("Top_Xtr") > 1,
+    pl.col("Bot_Xtr") < 0,
+    pl.col("Bot_Xtr") > 1,
+)
+print(
+    f"Nullifying {int(df.select(c).sum().to_numpy()[0, 0])} rows with non-physical transition locations..."
+)
+df = df.with_columns(
+    [
+        pl.when(c).then(0).otherwise(pl.col("analysis_confidence")).alias("analysis_confidence"),
+    ] + [
+        pl.when(c).then(None).otherwise(pl.col(col)).alias(col)
+        for col in cols_to_nullify
+    ]
+)
+
 print("Dataset:")
 print(df)
 # print("Dataset statistics:")
