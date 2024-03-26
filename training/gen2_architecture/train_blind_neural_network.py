@@ -8,6 +8,8 @@ from training_data.load_data import (
     df_train_outputs_scaled,
     df_test_inputs_scaled,
     df_test_outputs_scaled,
+    mean_inputs_scaled,
+    cov_inputs_scaled,
 )
 import torch
 from torch.utils.data import TensorDataset, DataLoader
@@ -24,10 +26,15 @@ print("Cache file: ", cache_file)
 
 # Define the model
 class Net(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, mean_inputs_scaled, cov_inputs_scaled):
         super().__init__()
 
         width = 512
+
+        self.mean_inputs_scaled = mean_inputs_scaled
+        self.cov_inputs_scaled = cov_inputs_scaled
+        self.inv_cov_inputs_scaled = torch.inverse(cov_inputs_scaled)
+        self.N_inputs = len(mean_inputs_scaled)
 
         self.net = torch.nn.Sequential(
             torch.nn.Linear(N_inputs, width),
@@ -47,9 +54,19 @@ class Net(torch.nn.Module):
             torch.nn.Linear(width, N_outputs),
         )
 
+    def squared_mahalanobis_distance(self, x: torch.Tensor):
+        return torch.sum(
+            (x - self.mean_inputs_scaled) @ self.inv_cov_inputs_scaled * (x - self.mean_inputs_scaled),
+            dim=1
+        )
+
     def forward(self, x: torch.Tensor):
         ### First, evaluate the network normally
         y = self.net(x)
+        y[:, 0] = y[:, 0] - self.squared_mahalanobis_distance(x=x) / (2 * N_inputs)
+        ### Add in the squared Mahalanobis distance to the analysis_confidence logit, to ensure it
+        # asymptotes to untrustworthy as the inputs get further from the training data
+
 
         ### Then, flip the inputs and evaluate the network again.
         # The goal here is to embed the invariant of "symmetry across alpha" into the network evaluation.
@@ -63,6 +80,9 @@ class Net(torch.nn.Module):
         x_flipped[:, 24] = x[:, 23]  # flip xtr_lower with xtr_upper
 
         y_flipped = self.net(x_flipped)
+        y_flipped[:, 0] = y_flipped[:, 0] - self.squared_mahalanobis_distance(x=x_flipped) / (2 * N_inputs)
+        ### Add in the squared Mahalanobis distance to the analysis_confidence logit, to ensure it
+        # asymptotes to untrustworthy as the inputs get further from the training data
 
         ### The resulting outputs will also be flipped, so we need to flip them back to their normal orientation
         y_unflipped = y_flipped.clone()
@@ -82,6 +102,8 @@ class Net(torch.nn.Module):
         ### Then, average the two outputs to get the "symmetric" result
         y_fused = (y + y_unflipped) / 2
         # y_fused[:, 0] = torch.sigmoid(y_fused[:, 0])  # Analysis confidence, a binary variable
+        y_fused[:, 4] = torch.clip(y_fused[:, 4].clone(), 0, 1)  # Top_Xtr clipped to range
+        y_fused[:, 5] = torch.clip(y_fused[:, 5].clone(), 0, 1)  # Bot_Xtr clipped to range
 
         return y_fused
 
@@ -90,7 +112,11 @@ if __name__ == '__main__':
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
     print(device)
 
-    net = Net().to(device)
+    net = Net(
+        mean_inputs_scaled=torch.tensor(mean_inputs_scaled, dtype=torch.float32).to(device),
+        cov_inputs_scaled=torch.tensor(cov_inputs_scaled, dtype=torch.float32).to(device),
+    ).to(device)
+
 
     # Define the optimizer
     learning_rate = 1e-4
