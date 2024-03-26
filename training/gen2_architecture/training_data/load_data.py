@@ -204,6 +204,9 @@ df_train_outputs_scaled = df_outputs_scaled[:test_train_split_index]
 df_test_inputs_scaled = df_inputs_scaled[test_train_split_index:]
 df_test_outputs_scaled = df_outputs_scaled[test_train_split_index:]
 
+mean_inputs_scaled = np.mean(df_inputs_scaled.to_numpy(), axis=0)
+cov_inputs_scaled = np.cov(df_inputs_scaled.to_numpy(), rowvar=False)
+
 
 def make_data(row_index, df=df):
     row = df[row_index]
