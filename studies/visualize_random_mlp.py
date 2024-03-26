@@ -3,17 +3,17 @@ import aerosandbox.tools.pretty_plots as p
 import aerosandbox as asb
 import aerosandbox.numpy as np
 
-lims = np.array([-1, 1]) * 100
+lims = np.array([-1, 1]) * 10
 
 x, y = (
-    np.linspace(*lims, 1000),
-    np.linspace(*lims, 1000)
+    np.linspace(*lims, 300),
+    np.linspace(*lims, 300)
 )
 X, Y = np.meshgrid(x, y)
 
-np.random.seed(17)
-n_hidden_layers = 2
-n_hidden_units = 5
+np.random.seed(170)
+n_hidden_layers = 5
+n_hidden_units = 50
 
 W = [
         np.random.randn(n_hidden_units, 2) / np.sqrt(2)
@@ -37,8 +37,13 @@ def net(x):
         x = W[i] @ x + b[i][:, None]
         print("dense")
         if i < n_hidden_layers:
-            x = np.tanh(x)
-            print("tanh")
+            # x = np.tanh(x)
+            # print("tanh")
+            # x = np.softplus(x)
+            # print("softplus")
+            x = np.swish(x)
+            print("swish")
+
     return x
 
 
@@ -52,6 +57,6 @@ fig, ax = plt.subplots()
 p.contour(
     X, Y, Z,
     levels=50,
-
+    linelabels=False,
 )
 p.show_plot()
