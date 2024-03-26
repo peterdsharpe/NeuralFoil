@@ -19,8 +19,10 @@ _scaled_input_distribution["N_inputs"] = len(_scaled_input_distribution["mean_in
 
 def _squared_mahalanobis_distance(x):
     d = _scaled_input_distribution
+    mean = np.reshape(d["mean_inputs_scaled"], (1, -1))
+    x_minus_mean = (x.T - mean.T).T
     return np.sum(
-        (x - d["mean_inputs_scaled"]) @ d["inv_cov_inputs_scaled"] * (x - d["mean_inputs_scaled"]),
+        x_minus_mean @ d["inv_cov_inputs_scaled"] * x_minus_mean,
         axis=1
     )
 def get_aero_from_kulfan_parameters(
@@ -112,7 +114,7 @@ def get_aero_from_kulfan_parameters(
         return x
 
     y = net(x)  # N_outputs x N_cases
-    y[:, 0] -= _squared_mahalanobis_distance(x) / (2 * _scaled_input_distribution["N_inputs"])
+    y[:, 0] = y[:, 0] - _squared_mahalanobis_distance(x) / (2 * _scaled_input_distribution["N_inputs"])
     # This was baked into training in order to ensure the network asymptotes to zero analysis confidence far away from the training data.
 
     ### Then, flip the inputs and evaluate the network again.
@@ -128,7 +130,7 @@ def get_aero_from_kulfan_parameters(
     x_flipped[:, 24] = x[:, 23]  # flip xtr_lower with xtr_upper
 
     y_flipped = net(x_flipped)
-    y_flipped[:, 0] -= _squared_mahalanobis_distance(x_flipped) / (2 * _scaled_input_distribution["N_inputs"])
+    y_flipped[:, 0] = y_flipped[:, 0] - _squared_mahalanobis_distance(x_flipped) / (2 * _scaled_input_distribution["N_inputs"])
     # This was baked into training in order to ensure the network asymptotes to zero analysis confidence far away from the training data.
 
     ### The resulting outputs will also be flipped, so we need to flip them back to their normal orientation
@@ -149,11 +151,10 @@ def get_aero_from_kulfan_parameters(
     ### Then, average the two outputs to get the "symmetric" result
     y_fused = (y + y_unflipped) / 2
     y_fused[:, 0] = _sigmoid(y_fused[:, 0])  # Analysis confidence, a binary variable
+    y_fused[:, 4] = np.clip(y_fused[:, 4], 0, 1)  # Top_Xtr
+    y_fused[:, 5] = np.clip(y_fused[:, 5], 0, 1)  # Bot_Xtr
 
-    # Unpack the neural network outputs
-    # sqrt_Rex_approx = [((Data.bl_x_points[i] + 1e-2) / Re) ** 0.5 for i in range(Data.N)]
-    # TODO
-
+    ### Unpack outputs
     analysis_confidence = y_fused[:, 0]
     CL = y_fused[:, 1] / 2
     CD = np.exp((y_fused[:, 2] - 2) * 2)
