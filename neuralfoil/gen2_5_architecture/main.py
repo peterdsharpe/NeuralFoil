@@ -109,7 +109,7 @@ def get_aero_from_kulfan_parameters(
             x = w @ x + np.reshape(b, (-1, 1))
 
             if len(layer_indices_to_iterate) != 0:  # Don't apply the activation function on the last layer
-                x = np.softplus(x)
+                x = np.swish(x)
         x = np.transpose(x)
         return x
 
@@ -124,8 +124,8 @@ def get_aero_from_kulfan_parameters(
     x_flipped = x + 0.  # This is a array-api-agnostic way to force a memory copy of the array to be made.
     x_flipped[:, :8] = x[:, 8:16] * -1  # switch kulfan_lower with a flipped kulfan_upper
     x_flipped[:, 8:16] = x[:, :8] * -1  # switch kulfan_upper with a flipped kulfan_lower
-    x_flipped[:, 16] *= -1  # flip kulfan_LE_weight
-    x_flipped[:, 18] *= -1  # flip sin(2a)
+    x_flipped[:, 16] = -1 * x[:, 16]  # flip kulfan_LE_weight
+    x_flipped[:, 18] = -1 * x[:, 18]  # flip sin(2a)
     x_flipped[:, 23] = x[:, 24]  # flip xtr_upper with xtr_lower
     x_flipped[:, 24] = x[:, 23]  # flip xtr_lower with xtr_upper
 
@@ -135,8 +135,8 @@ def get_aero_from_kulfan_parameters(
 
     ### The resulting outputs will also be flipped, so we need to flip them back to their normal orientation
     y_unflipped = y_flipped + 0.  # This is a array-api-agnostic way to force a memory copy of the array to be made.
-    y_unflipped[:, 1] *= -1  # CL
-    y_unflipped[:, 3] *= -1  # CM
+    y_unflipped[:, 1] = y_flipped[:, 1] * -1  # CL
+    y_unflipped[:, 3] = y_flipped[:, 3] * -1  # CM
     y_unflipped[:, 4] = y_flipped[:, 5]  # switch Top_Xtr with Bot_Xtr
     y_unflipped[:, 5] = y_flipped[:, 4]  # switch Bot_Xtr with Top_Xtr
 

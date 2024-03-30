@@ -21,6 +21,8 @@ N_inputs = len(df_train_inputs_scaled.columns)
 N_outputs = len(df_train_outputs_scaled.columns)
 
 cache_file = Path(__file__).parent / "nn-xxxlarge.pth"
+n_hidden_layers = 5
+width = 512
 print("Cache file: ", cache_file)
 
 
@@ -29,30 +31,26 @@ class Net(torch.nn.Module):
     def __init__(self, mean_inputs_scaled, cov_inputs_scaled):
         super().__init__()
 
-        width = 512
-
         self.mean_inputs_scaled = mean_inputs_scaled
         self.cov_inputs_scaled = cov_inputs_scaled
         self.inv_cov_inputs_scaled = torch.inverse(cov_inputs_scaled)
         self.N_inputs = len(mean_inputs_scaled)
 
-        self.net = torch.nn.Sequential(
+        layers = [
             torch.nn.Linear(N_inputs, width),
-            torch.nn.Tanh(),
+            torch.nn.SiLU(),
+        ]
+        for i in range(n_hidden_layers):
+            layers += [
+                torch.nn.Linear(width, width),
+                torch.nn.SiLU(),
+            ]
 
-            torch.nn.Linear(width, width),
-            torch.nn.Tanh(),
-            torch.nn.Linear(width, width),
-            torch.nn.Tanh(),
-            torch.nn.Linear(width, width),
-            torch.nn.Tanh(),
-            torch.nn.Linear(width, width),
-            torch.nn.Tanh(),
-            torch.nn.Linear(width, width),
-            torch.nn.Tanh(),
-
+        layers += [
             torch.nn.Linear(width, N_outputs),
-        )
+        ]
+
+        self.net = torch.nn.Sequential(*layers)
 
     def squared_mahalanobis_distance(self, x: torch.Tensor):
         return torch.sum(
@@ -67,7 +65,6 @@ class Net(torch.nn.Module):
         ### Add in the squared Mahalanobis distance to the analysis_confidence logit, to ensure it
         # asymptotes to untrustworthy as the inputs get further from the training data
 
-
         ### Then, flip the inputs and evaluate the network again.
         # The goal here is to embed the invariant of "symmetry across alpha" into the network evaluation.
 
@@ -75,7 +72,7 @@ class Net(torch.nn.Module):
         x_flipped[:, :8] = -1 * x[:, 8:16]  # switch kulfan_lower with a flipped kulfan_upper
         x_flipped[:, 8:16] = -1 * x[:, :8]  # switch kulfan_upper with a flipped kulfan_lower
         x_flipped[:, 16] = -1 * x[:, 16]  # flip kulfan_LE_weight
-        x_flipped[:, 18] = -1 * x[:, 18] # flip sin(2a)
+        x_flipped[:, 18] = -1 * x[:, 18]  # flip sin(2a)
         x_flipped[:, 23] = x[:, 24]  # flip xtr_upper with xtr_lower
         x_flipped[:, 24] = x[:, 23]  # flip xtr_lower with xtr_upper
 
@@ -93,9 +90,9 @@ class Net(torch.nn.Module):
 
         # switch upper and lower Ret, H
         y_unflipped[:, 6 + 32 * 0: 6 + 32 * 2] = y_flipped[:, 6 + 32 * 3: 6 + 32 * 5]
-        y_unflipped[:, 6 + 32 * 2: 6 + 32 * 3] = y_flipped[:, 6 + 32 * 5: 6 + 32 * 6] * -1 # ue/vinf
+        y_unflipped[:, 6 + 32 * 2: 6 + 32 * 3] = y_flipped[:, 6 + 32 * 5: 6 + 32 * 6] * -1  # ue/vinf
         y_unflipped[:, 6 + 32 * 3: 6 + 32 * 5] = y_flipped[:, 6 + 32 * 0: 6 + 32 * 2]
-        y_unflipped[:, 6 + 32 * 5: 6 + 32 * 6] = y_flipped[:, 6 + 32 * 2: 6 + 32 * 3] * -1 # ue/vinf
+        y_unflipped[:, 6 + 32 * 5: 6 + 32 * 6] = y_flipped[:, 6 + 32 * 2: 6 + 32 * 3] * -1  # ue/vinf
 
         # switch upper_bl_ue/vinf with lower_bl_ue/vinf
 
@@ -117,15 +114,14 @@ if __name__ == '__main__':
         cov_inputs_scaled=torch.tensor(cov_inputs_scaled, dtype=torch.float32).to(device),
     ).to(device)
 
-
     # Define the optimizer
     learning_rate = 1e-4
     optimizer = torch.optim.RAdam(net.parameters(), lr=learning_rate, weight_decay=3e-5)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer,
-        patience=10,
+        factor=0.5,
+        patience=50,
         verbose=True,
-        min_lr=0,
     )
 
     try:
@@ -181,6 +177,7 @@ if __name__ == '__main__':
     loss_weights[6:] *= 5e-3  # Lower the weight on all boundary layer outputs
 
     loss_weights = loss_weights / torch.sum(loss_weights) * 1000
+
 
     def loss_function(y_pred, y_data, return_individual_loss_components=False):
         # For data with NaN, overwrite the data with the prediction. This essentially makes the model ignore NaN data,
@@ -286,7 +283,7 @@ if __name__ == '__main__':
 
                 loss_components_from_each_test_batch.append(loss_components)
 
-                y_pred[:, 0] = torch.sigmoid(y_pred[:, 0]) # Analysis confidence, a binary variable
+                y_pred[:, 0] = torch.sigmoid(y_pred[:, 0])  # Analysis confidence, a binary variable
 
                 mae_from_each_test_batch.append(
                     torch.nanmean(torch.abs(y_pred - y_data), dim=0)
@@ -321,6 +318,6 @@ if __name__ == '__main__':
         scheduler.step(test_loss)
 
         torch.save({
-            'model_state_dict': net.state_dict(),
+            'model_state_dict'    : net.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
         }, cache_file)
