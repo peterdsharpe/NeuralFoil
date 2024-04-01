@@ -163,7 +163,7 @@ with documentation [here](https://aerosandbox.readthedocs.io/en/master/autoapi/a
 
 #### Training Data
 
-To be written, but in the meantime [see here](https://github.com/peterdsharpe/NeuralFoil/tree/master/training_data). Training data is not (yet) uploaded to GitHub, but will be soon - need to figure out Git LFS, as it's many gigabytes. Contact me if you need it sooner.
+To be written, but in the meantime [see here](https://github.com/peterdsharpe/NeuralFoil/tree/master/training) for details on the synthetic data generation and training processes. Training data is not (yet) uploaded to GitHub, but will be soon - need to figure out Git LFS, as it's many gigabytes. Contact me if you need it sooner.
 
 ## FAQs
 
