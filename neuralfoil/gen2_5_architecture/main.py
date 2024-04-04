@@ -212,7 +212,7 @@ def get_aero_from_kulfan_parameters(
 
 
 def get_aero_from_airfoil(
-        airfoil: asb.Airfoil,
+        airfoil: Union[asb.Airfoil, asb.KulfanAirfoil],
         alpha: Union[float, np.ndarray],
         Re: Union[float, np.ndarray],
         n_crit: Union[float, np.ndarray] = 9.0,
@@ -221,24 +221,35 @@ def get_aero_from_airfoil(
         model_size="large",
 ) -> Dict[str, Union[float, np.ndarray]]:
 
-    airfoil_normalization = airfoil.normalize(return_dict=True)
-
-    from aerosandbox.geometry.airfoil.airfoil_families import get_kulfan_parameters
-
-    kulfan_parameters = get_kulfan_parameters(
-        airfoil_normalization["airfoil"].coordinates,
-        n_weights_per_side=8
+    ### Normalize the inputs and evaluate
+    normalization_outputs = airfoil.normalize(return_dict=True)
+    normalized_airfoil = normalization_outputs["airfoil"].to_kulfan_airfoil(
+        n_weights_per_side=8,
+        normalize_coordinates=False  # No need to redo this
     )
+    delta_alpha = normalization_outputs["rotation_angle"]  # degrees
+    x_translation_LE = normalization_outputs["x_translation"]
+    y_translation_LE = normalization_outputs["y_translation"]
+    scale = normalization_outputs["scale_factor"]
 
-    return get_aero_from_kulfan_parameters(
-        kulfan_parameters=kulfan_parameters,
-        alpha=alpha + airfoil_normalization["rotation_angle"],
-        Re=Re / airfoil_normalization["scale_factor"],
+    x_translation_qc = -x_translation_LE + 0.25 * (1 / scale * np.cosd(delta_alpha)) - 0.25
+    y_translation_qc = -y_translation_LE + 0.25 * (1 / scale * np.sind(-delta_alpha))
+
+    raw_aero = get_aero_from_kulfan_parameters(
+        kulfan_parameters=normalized_airfoil.kulfan_parameters,
+        alpha=alpha + delta_alpha,
+        Re=Re / scale,
         n_crit=n_crit,
         xtr_upper=xtr_upper,
         xtr_lower=xtr_lower,
-        model_size=model_size
+        model_size=model_size,
     )
+
+    ### Correct the force vectors and lift-induced moment from translation
+    extra_CM = -raw_aero["CL"] * x_translation_qc + raw_aero["CD"] * y_translation_qc
+    raw_aero["CM"] = raw_aero["CM"] + extra_CM
+
+    return raw_aero
 
 
 def get_aero_from_coordinates(
