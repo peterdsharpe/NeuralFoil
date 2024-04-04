@@ -8,14 +8,18 @@ npz_file_directory = Path(__file__).parent / "nn_weights_and_biases"
 
 bl_x_points = Data.bl_x_points
 
+
 def _sigmoid(x):
     return 1 / (1 + np.exp(-x))
+
 
 def _inverse_sigmoid(x):
     return -np.log(1 / x - 1)
 
+
 _scaled_input_distribution = dict(np.load(npz_file_directory / "scaled_input_distribution.npz"))
 _scaled_input_distribution["N_inputs"] = len(_scaled_input_distribution["mean_inputs_scaled"])
+
 
 def _squared_mahalanobis_distance(x):
     d = _scaled_input_distribution
@@ -25,6 +29,8 @@ def _squared_mahalanobis_distance(x):
         x_minus_mean @ d["inv_cov_inputs_scaled"] * x_minus_mean,
         axis=1
     )
+
+
 def get_aero_from_kulfan_parameters(
         kulfan_parameters: Dict[str, Union[float, np.ndarray]],
         alpha: Union[float, np.ndarray],
@@ -130,7 +136,9 @@ def get_aero_from_kulfan_parameters(
     x_flipped[:, 24] = x[:, 23]  # flip xtr_lower with xtr_upper
 
     y_flipped = net(x_flipped)
-    y_flipped[:, 0] = y_flipped[:, 0] - _squared_mahalanobis_distance(x_flipped) / (2 * _scaled_input_distribution["N_inputs"])
+    y_flipped[:, 0] = y_flipped[:, 0] - _squared_mahalanobis_distance(x_flipped) / (
+                2 * _scaled_input_distribution["N_inputs"]
+    )
     # This was baked into training in order to ensure the network asymptotes to zero analysis confidence far away from the training data.
 
     ### The resulting outputs will also be flipped, so we need to flip them back to their normal orientation
@@ -167,14 +175,13 @@ def get_aero_from_kulfan_parameters(
 
     upper_theta = (
                           (10 ** y_fused[:, 6: 6 + Data.N]) - 0.1
-    ) / (np.abs(upper_bl_ue_over_vinf) * np.reshape(Re, (-1, 1)))
+                  ) / (np.abs(upper_bl_ue_over_vinf) * np.reshape(Re, (-1, 1)))
     upper_H = 2.6 * np.exp(y_fused[:, 6 + Data.N: 6 + Data.N * 2])
 
     lower_theta = (
-                            (10 ** y_fused[:, 6 + Data.N * 3: 6 + Data.N * 4]) - 0.1
-    ) / (np.abs(lower_bl_ue_over_vinf) * np.reshape(Re, (-1, 1)))
+                          (10 ** y_fused[:, 6 + Data.N * 3: 6 + Data.N * 4]) - 0.1
+                  ) / (np.abs(lower_bl_ue_over_vinf) * np.reshape(Re, (-1, 1)))
     lower_H = 2.6 * np.exp(y_fused[:, 6 + Data.N * 4: 6 + Data.N * 5])
-
 
     results = {
         "analysis_confidence": analysis_confidence,
