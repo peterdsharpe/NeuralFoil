@@ -3,11 +3,11 @@ import aerosandbox.tools.pretty_plots as p
 import aerosandbox as asb
 import aerosandbox.numpy as np
 
-lims = np.array([-1, 1]) * 10
+lims = np.array([-1, 1]) * 100
 
 x, y = (
-    np.linspace(*lims, 300),
-    np.linspace(*lims, 300)
+    np.linspace(*lims, 500),
+    np.linspace(*lims, 500)
 )
 X, Y = np.meshgrid(x, y)
 
@@ -43,6 +43,8 @@ def net(x):
             # print("softplus")
             x = np.swish(x)
             print("swish")
+            # x = np.maximum(0, x)
+            # print("relu")
 
     return x
 
