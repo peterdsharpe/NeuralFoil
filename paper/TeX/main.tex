@@ -15,7 +15,14 @@
 
     \begin{abstract}
 
-        This work introduces \emph{NeuralFoil}, an open-source tool for rapid aerodynamics analysis of airfoils, similar to XFoil. NeuralFoil uses a physics-informed machine learning approach, with physics constraints structurally embedded into the model architecture and training performed on tens of millions of XFoil runs. Compared to XFoil, this allows nearly-identical aerodynamic accuracy: the mean absolute error of drag on airfoils not part of NeuralFoil's training data is 2.0\%. Moreover, NeuralFoil offers runtime speeds up to 1,000x faster than XFoil when performing large batch analyses and compatibility with gradient-based design optimization methods (e.g., infinitely-smooth solutions, no non-convergence issues, and straightforward compatibility with automatic differentiation tools). NeuralFoil yields airfoil aerodynamics results including viscous and compressible effects across a wide variety of airfoil shapes, including control deflections, across a full $360\degree$ range of angles of attack, across Reynolds numbers from $10^2$ to $10^9$, and for Mach numbers from zero to low transonic conditions. This work discusses the model architecture, training, and performance of NeuralFoil on a variety of test cases, including an airfoil design optimization case for the MIT Daedalus human-powered aircraft. In this case study, NeuralFoil optimization is able to produce airfoils remarkably similar in performance and shape to expert-designed airfoils in seconds; these computationally-optimized airfoils provide a useful starting point for further expert refinement. NeuralFoil is implemented as a lightweight Python package with minimal dependencies, allowing easy installation across a variety of platforms.
+        This work introduces \emph{NeuralFoil}, an open-source tool for rapid aerodynamics analysis of airfoils, similar in purpose to XFoil. NeuralFoil yields viscous and compressible airfoil aerodynamics results across an 18-dimensional space of airfoil shapes, possibly including control deflections, across a full $360\degree$ range of angles of attack, across chord Reynolds numbers from $10^2$ to $10^9$, for Mach numbers from zero to low transonic conditions, and with varying turbulence parameters. NeuralFoil's aerodynamic results match those of XFoil closely: on airfoils outside of NeuralFoil's training data, the mean absolute error of NeuralFoil's drag coefficient is 2.0\%. NeuralFoil computes both bulk quantities (lift, drag, etc.) as well as detailed flowfield behavior (boundary layer parameters, etc.) Moreover, NeuralFoil offers runtime speeds up to 1,000x faster than XFoil (for large batch analyses) and is amenable to gradient-based design optimization methods (e.g., $C^\infty$-continuous solutions, bounded computational cost, compatibility with automatic differentiation tools).
+
+        For improved accuracy, parameter efficiency, and data efficiency, NeuralFoil uses a physics-informed machine learning approach. For example, the model components that handle attached flows are trained on synthetic data from $\approx$7 million XFoil analyses.
+        This ``physics information'' includes both symmetries that are structurally embedded into the model architecture as well as feature engineering on inputs and outputs by leveraging domain knowledge.
+
+        This work also develops a new approach to surrogate model uncertainty quantification, where the model directly learns and computes a model of its own uncertainty throughout the input space. This can be used to drive robust optimization with constraints on model error.
+
+        This work discusses the model architecture, training, and performance of NeuralFoil on a variety of test cases, including an airfoil design optimization case study for the MIT Daedalus human-powered aircraft. In this case, NeuralFoil optimization is able to produce airfoils remarkably similar in performance and shape to expert-designed airfoils within seconds; these computationally-optimized airfoils provide a useful starting point for further expert refinement. NeuralFoil is implemented as a lightweight Python package with minimal dependencies, allowing easy installation across a variety of platforms.
 
     \end{abstract}
 
@@ -41,45 +48,56 @@
                  $\gamma$ & ratio of specific heats of the working fluid; 1.4 for air near standard conditions \\
                  $H$ & BL shape parameter, defined as $\delta^*/\theta$ \\
                  $H^*$ & BL kinetic energy shape parameter, defined as $\theta^*/\theta$ \\
-                 LE & leading edge \\
+                 LE & airfoil leading edge \\
                  $M$ & local Mach number \\
                  $\Mi$ & freestream Mach number \\
                  $\Mcr$ & critical Mach number, defined as the lowest freestream Mach number where any point in the flow is supersonic \\
                  $M_{\rm dd}$ & drag-divergent Mach number, defined as the freestream Mach number above which drag begins to rise rapidly \\
-                 RANS & Reynolds-averaged Navier-Stokes \\
-                 TE & trailing edge \\
+                 $\nu$ & kinematic viscosity \\
+                 $\Ncr$ & BL critical amplification factor (affected by surface roughness, freestream turbulence) \\
+                 RANS & Reynolds-averaged Navier-Stokes equations \\
+                 $\Rey_c$ & chord Reynolds number, defined as $u_\infty c / \nu$ \\
+                 $\Rey_\theta$ & momentum-thickness Reynolds number, a local BL quantity defined as $\theta u_e / \nu$ \\
+                 $s$ & coordinate along the airfoil surface, starting at the TE and proceeding over the top surface \\
+                 $\theta$ & BL momentum thickness \\
+                 $\theta_{\rm TE}$ & Trailing-edge angle \\
+                 TE & airfoil trailing edge \\
+                 $u_e$ & BL edge velocity \\
                  $u_\infty$ & freestream velocity magnitude \\
                  $u_{\rm max}$ & maximum velocity magnitude at any point in the flow field \\
-                 $x_{\rm tr}$ & laminar-turbulent transition location, relative to the leading edge; appropriate suffixes denote top- and bottom-surface measures \\
+                 $x_{\rm tr}$ & actual laminar-turbulent transition location, relative to the leading edge; appropriate suffixes denote top- and bottom-surface measures \\
+                 $x_{\rm tr, forced}$ & location of any forced trips for bypass transition (e.g., turbulators, rivets), if present; $x_{\rm tr, forced} / c = 1$ if absent\\
                  $x / c$ & nondimensional distance along the airfoil chord ($\text{LE} \rightarrow 0$, $\text{TE} \rightarrow 1$) \\
                  $y / c$ & nondimensional distance normal to the airfoil chord (LE and TE at 0, barring any control surface deflections) \\
+                 $z_{\rm in}$ & input latent space vector \\
+                 $z_{\rm out}$ & output latent space vector \\
     \end{longtable*}}
 
 
     \section{Introduction}
 
-    In conceptual aircraft design, the problem of shaping a typical wing can be decomposed into two parts: planform design and airfoil design. The latter, which is the focus of this work, is a multidisciplinary design problem that requires consideration of a variety of aerodynamic, structural, and manufacturing objectives and constraints. A non-exhaustive list of major considerations could include:
+    In conceptual aircraft design, the problem of shaping a typical wing is usually decomposed into two parts: planform design and airfoil design. The latter, which is the focus of this work, is a multidisciplinary design problem that requires consideration of a variety of aerodynamic, structural, and manufacturing objectives and constraints. A non-exhaustive list of major considerations could include:
     \begin{itemize}
         \item Profile drag across the expected operating range of the airfoil (spanning lift coefficients, Reynolds numbers, and Mach numbers), including adequate off-design performance \cite{drela_pros_1998};
-        \item Pitching moment coefficients, which can drive tail sizing (modifying trim drag) and affect divergence speed;
+        \item Pitching moment and aft-camber coefficients, which can drive tail sizing (modifying trim drag), affect divergence speed;
         \item Hinge moments and control effectiveness of any control surfaces, which drive actuator design and weight;
         \item Stall behavior, which can affect handling qualities and safety;
         \item Thickness at various points, in order to accommodate fuel volume and required structural members to resist failure (e.g., by bending, buckling, divergence, flutter, or control reversal);\cite{sharpe_tailerons_2023}
-        \item Sensitivity to boundary layer performance, which places constraints on surface finish, cleanliness, and manufacturing tolerances \cite{eleshaky1993airfoil, selig_highlift_1997, liebeck1973class};
+        \item Sensitivity to boundary layer performance, freestream turbulence, and trips, all of which impose constraints on surface finish, cleanliness, and manufacturing tolerances \cite{eleshaky1993airfoil, selig_highlift_1997, liebeck1973class};
         \item Peak suction pressures, which affect the critical Mach number in transonic applications or cavitation in hydrodynamic applications;
         \item Shock stability and buffet considerations in transonic applications;
         \item Manufacturability, which might include flat-bottom airfoil sections, strictly-convex airfoil shapes (e.g., to accommodate shrink-coverings, which are common in ultra-lightweight applications \cite{drela_lowreynoldsnumber_1988}), or restrictions on trailing-edge angle.
     \end{itemize}
 
-    These airfoil requirements often differ considerably at different points along the span of the wing, which often leads to a family of airfoils being used in the design of a given wing. To fulfill such design requirements, a designer will typically either find an existing airfoil or design a new airfoil. Given the specificity of the requirements illustrated in the list above, the latter is often necessary.
+    These airfoil design drivers often differ considerably at different locations along the span of the wing, which often leads to a family of airfoils being used in the design of a given wing. To fulfill such design requirements, a designer will typically either find an existing airfoil or design a new airfoil. Given the specificity of the requirements illustrated in the list above, designing bespoke airfoils can yield considerable performance improvement.
 
-    Three approaches are commonly used to computationally design new airfoils: inverse design methods, direct manual methods, and optimization methods. In the inverse design approach, popularized by Drela's XFoil code \cite{drela_xfoil_1989} and Eppler's Profil code \cite{profil, tao_bs_thesis}, conformal mapping methods are used to reconstruct a new airfoil shape from a desired pressure distribution. This has the benefit of allowing the engineer to directly operate on the most relevant aerodynamic quantities, but it can struggle to produce airfoils that satisfy non-aerodynamic constraints (e.g., manufacturability) due to the lack of direct control here. Conformal mapping methods are also only applicable to potential-flow-governed regions, so the specified pressure distribution is often the inviscid, rather than viscous (true) pressure distribution\footnote{This can be alleviated by using nonlinear optimization to target the viscous pressure distribution, albeit with reduced numerical robustness.}.
+    Currently, three approaches are commonly used to computationally design new airfoils: inverse design methods, direct manual methods, and optimization methods. In the inverse design approach, popularized by Drela's XFoil code \cite{drela_xfoil_1989} and Eppler's Profil code \cite{profil, tao_bs_thesis}, conformal mapping methods are used to reconstruct a new airfoil shape from a user-specified pressure distribution. This has the benefit of allowing the engineer to directly operate on the most relevant aerodynamic quantities, and it produces considerable design insight. However, it can be time-consuming to produce airfoils that satisfy non-aerodynamic constraints (e.g., manufacturability, spar thickness) due to the lack of direct control here. Conformal mapping methods are also only strictly applicable to potential-flow-governed regions, so the specified pressure distribution is often only the inviscid, rather than viscous (true) pressure distribution\footnote{This can be alleviated by using nonlinear optimization to target the viscous pressure distribution, albeit with reduced numerical robustness.}.
 
-    In the direct manual method (or ``geometric design'' method, using parlance from XFoil), an engineer formulates an airfoil shape directly and modifies this iteratively by hand. Aerodynamic analysis is performed by any code that will perform the forward problem (geometry $\rightarrow$ aerodynamics), such as XFoil, MSES \cite{mses}, or any RANS-based CFD code \cite{adler_cfd_2022}. This allows for easier satisfaction of non-aerodynamic constraints, but it is difficult to directly target aerodynamic quantities. Significant user expertise is also required to identify the most relevant geometric parameters and to make effective changes to the airfoil shape.
+    In the direct manual method (or ``geometric design'' method, using parlance from XFoil), an engineer formulates an airfoil shape directly and modifies this iteratively by hand. Aerodynamic analysis is performed by any code that will perform the forward problem (geometry $\rightarrow$ aerodynamics), such as XFoil, MSES \cite{mses}, or any RANS-based CFD code \cite{adler_cfd_2022}. This allows for easier satisfaction of non-aerodynamic constraints. However, it is predictably more difficult to directly target aerodynamic quantities. Significant user expertise is also required to identify the most relevant geometric parameters and to make effective changes to the airfoil shape.
 
-    In the optimization approach, a parameterized airfoil shape is optimized to minimize a cost function and satisfy specified constraints. At first glance, this appears to be an automation of the direct manual method. However, Drela and others note the surprising difficulty of posing the correct optimization problem \cite{drela_pros_1998, kroo_multidisciplinary_1997}, so this approach requires just as much (if not more) human expertise than the direct manual method -- though that is not to say it is without benefits. As stated by Drela \cite{drela_pros_1998}, optimization-based airfoil design ``is still an iterative cut-and-try undertaking. But compared to [direct] techniques, the cutting-and-trying is not on the geometry, but rather on the precise formulation of the optimization problem.'' To support this, Drela gives compelling case studies of how airfoil design optimization can go awry in the absence of user review and care. Some codes, like the LINDOP \cite{mses} optimization routine coupled with XFoil, alleviate this somewhat by using a hybrid of the direct and optimization approaches: update directions are computed by an optimizer, but the actual changes are reviewed and implemented by a human between iterations. Despite the potential challenges of this optimization-based airfoil design approach, it offers compelling benefits: resulting airfoil performance can equal that of airfoils by an expert \cite{drela_pros_1998}, particularly on problems with unique or otherwise non-intuitive constraints. This optimization process also has the potential to require orders of magnitude less engineering time, and it provides a systematic and disciplined approach that is especially suited to the most challenging design problems \cite{he2019robust}.
+    In the optimization approach, a parameterized airfoil shape is optimized to minimize a cost function and satisfy specified constraints (which may be both aerodynamic and non-aerodynamic). At first glance, this appears to be an automation of the direct manual method. However, Drela and others note the surprising difficulty of posing the correct optimization problem \cite{drela_pros_1998, kroo_multidisciplinary_1997}, so this approach often requires just as much (if not more) human expertise than the direct manual method. As stated by Drela \cite{drela_pros_1998}, optimization-based airfoil design ``is still an iterative cut-and-try undertaking. But compared to [direct] techniques, the cutting-and-trying is not on the geometry, but rather on the precise formulation of the optimization problem.'' To support this, Drela gives compelling case studies of how airfoil design optimization can go awry in the absence of user review and care.\footnote{Some codes, like LINDOP \cite{mses}, alleviate this somewhat by using a hybrid of the direct and optimization approaches: update directions are computed by an optimizer, but the actual changes are reviewed and implemented by a human between iterations.}However, despite these cautionary notes, the optimization-based airfoil design approach also offers compelling benefits: resulting airfoil performance can equal that of airfoils by an expert \cite{drela_pros_1998}, particularly on problems with unique or otherwise non-intuitive constraints. This optimization process can also require orders of magnitude less engineering time, and it provides a systematic and disciplined approach that is especially suited to the most challenging design problems \cite{he2019robust}.
 
-    In all of these methods, some form of a computational tool for airfoil aerodynamics analysis is required. For subsonic airfoils, the gold standard of such tools is XFoil \cite{drela_xfoil_1989}. XFoil is more accurate than RANS-CFD-based tools \cite{morgado2016xfoil} in this regime, yet it has a computational cost that is roughly 1,000x lower -- a testament to the power of its modeling approach, which strongly-couples integral boundary layer and potential flow methods. A complete description of this modeling approach is available in Drela's \textit{Aerodynamics of Viscous Fluids} \cite{drela_aerodynamics_2019}, and in recent state-of-the-art work by Zhang \cite{zhang_threedimensional_2022, zhang_nonparametric_2017}. However, despite the many strengths of XFoil, it has several attributes that make it less-than-ideal for directly driving numerical optimization studies. Among these:
+    In all of these methods, some form of a computational tool for airfoil aerodynamics analysis is required. For subsonic airfoils, the gold standard of such tools is XFoil \cite{drela_xfoil_1989}. Morgado et al. find that XFoil is more accurate than RANS-CFD-based tools in this regime \cite{morgado2016xfoil}, yet it has a computational cost that is roughly 1,000x lower -- a testament to the power of its modeling approach, which strongly-couples integral boundary layer and potential flow methods. A complete description of this modeling approach is available in Drela's \textit{Aerodynamics of Viscous Fluids} \cite{drela_aerodynamics_2019}, and in recent state-of-the-art work by Zhang \cite{zhang_threedimensional_2022, zhang_nonparametric_2017}. However, despite XFoil's many strengths, it has several attributes that make it less-than-ideal for directly driving numerical optimization studies \cite{adler_cfd_2022}. Among these:
 
     \begin{itemize}
         \item XFoil is not guaranteed to produce a solution. When an ``ambitious'' calculation is attempted, XFoil often fails to provide a converged solution; the unconverged result often has wildly-diverging values and is effectively unusable. In some cases, calculations can lead to infinite loops or process crashes due to unhandled exceptions. While this is acceptable in certain applications (e.g., manual direct analysis), it is generally unacceptable for use in numerical optimization. Instead, optimization strongly benefits from a robust analysis tool that always produces a result, even if that result has degraded accuracy; this allows the analysis to steer the optimizer back towards the design space of reasonable airfoils \cite{he2019robust}. A particularly useful attribute is when the model is deliberately made to be slightly pessimistic (e.g., overestimate drag) in regions of the design space with high uncertainty, adding further optimization pressure towards reasonable designs with low performance uncertainty.
@@ -87,7 +105,7 @@
             \item More generally, design optimization is not the only application that strongly benefits from an aerodynamics analysis tool that always produces an answer. Other examples where a non-answer, infinite loop, or crashed process are unacceptable include real-time control (e.g., as an aerodynamic model for a model-predictive controller onboard an aircraft) and flight simulation.
         \end{itemize}
         \item XFoil solutions are not necessarily unique, and slightly different solutions can be obtained for the same analysis problem (airfoil shape, angle of attack, and Reynolds and Mach numbers). In practice, this manifests as an effective hysteresis depending on whether angle of attack is swept up or down. This flow non-uniqueness is in fact a real physical\footnote{For example, flow over an airfoil may separate as its angle of attack increases past $12\degree$, but it may not fully reattach until the angle of attack descends back to below $11\degree$} effect \cite{jameson_airfoils_1991, kuzmin2012non, he2019robust}. However, this non-uniqueness can be exceptionally problematic for numerical optimization, as an infinitesimal change in an input parameter can result in the solution jumping to a different Newton basis of attraction. Therefore, there is no limit to how sensitive performance can be to input parameters (which hampers techniques like finite-differencing for gradient-based optimization).
-        \item XFoil solutions are non-smooth\footnote{precisely, they are $C^0$ continuous but not $C^1$ continuous} with respect to input parameters, which makes it fundamentally incompatible with gradient-based optimization. Interestingly, this is a consequence of how laminar-turbulent transition is handled by XFoil's integral boundary layer solver. This solve requires the use of laminar and turbulent boundary layer \emph{closure models}, which are curve-fitted functions that yield various necessary quantities ($H^*$, $c_f$, $c_\mathcal{D}$, etc.) of the von Karman integral momentum and kinetic energy equations as a function of the two values that parameterize the boundary layer ($H$, $\Rey_\theta$). The laminar and turbulent versions of these functions differ. XFoil implements a cut-cell approach on the transitioning interval, which restores $C^0$-continuity (i.e., transition won't truly ``jump'' from one node to another discretely); however, a sharp change in gradient occurs whenever an individual node switches its equation from laminar to turbulent. Adler et al. provide a graphical depiction of this phenomenon \cite{adler_cfd_2022}.
+        \item XFoil solutions are non-smooth\footnote{precisely, they are $C^0$ continuous but not $C^1$ continuous} with respect to input parameters, which makes it fundamentally incompatible with gradient-based optimization. (Any attempt to directly optimize XFoil results with gradient-based methods invariably results in premature stopping at a local minima.) Interestingly, this is a consequence of how laminar-turbulent transition is handled by XFoil's integral boundary layer solver. This solve requires the use of laminar and turbulent boundary layer \emph{closure models}, which are curve-fitted functions that yield various necessary quantities ($H^*$, $c_f$, $c_\mathcal{D}$, etc.) of the von Karman integral momentum and kinetic energy equations as a function of the two values that parameterize the boundary layer ($H$, $\Rey_\theta$). The laminar and turbulent versions of these functions differ. XFoil implements a cut-cell approach on the transitioning interval, which restores $C^0$-continuity (i.e., transition won't truly ``jump'' from one node to another discretely); however, a sharp change in gradient occurs whenever an individual node switches its equation from laminar to turbulent. Adler et al. provide a graphical depiction of this phenomenon \cite{adler_cfd_2022}.
         \item Most interfaces between an optimizer and XFoil communicate through a series of text files (i.e., hard disk), rather than by sharing data in memory (i.e., RAM). Given the quick speed of an individual XFoil run, this input-output overhead imposes a significant performance penalty. While this programming-language-agnostic interface is arguably one of the reasons for XFoil's long-enduring popularity, it comes at the cost of runtime performance if the tool is to be used in a high-throughput setting (e.g., for design optimization).
     \end{itemize}
 
@@ -96,16 +114,18 @@
     % TODO write about other physics-informed ML approaches, webfoil?
 
 
-    \section{NeuralFoil Tool Description}
+    \section{NeuralFoil Tool Description and Methdology}
 
     \subsection{Overview}
 
-    NeuralFoil is a tool for rapid aerodynamics analysis of airfoils, similar to XFoil \cite{drela_xfoil_1989}. Fundamentally, NeuralFoil consists of physics-informed neural networks trained on tens of millions of XFoil runs, with appropriate physics-based constraints structurally embedded into the model architecture. NeuralFoil focuses on estimating bulk quantities (e.g., lift and drag forces) rather than flow-field quantities (e.g., pressure distribution), as the former are most directly relevant to conceptual aircraft design. A more precise list of inputs and outputs to NeuralFoil is given in Figure \ref{fig:neuralfoil_io}.
+    % Fundamentally, NeuralFoil consists of physics-informed neural networks trained on tens of millions of XFoil runs, with appropriate physics-based constraints structurally embedded into the model architecture. NeuralFoil focuses on estimating bulk quantities (e.g., lift and drag forces) rather than flow-field quantities (e.g., pressure distribution), as the former are most directly relevant to conceptual aircraft design.
+
+    NeuralFoil is a tool for rapid aerodynamics analysis of airfoils, similar in purpose to the end-user as XFoil \cite{drela_xfoil_1989}. A precise list of inputs and outputs to NeuralFoil is given in Figure \ref{fig:neuralfoil_io}.
 
     \begin{figure}[H]
         \centering
         \begin{tikzpicture}[
-            node distance=1 cm and 1 cm,
+            node distance=0.7 cm and 0.7 cm,
             auto,
             box/.style={
                 rectangle,
@@ -113,7 +133,7 @@
                 draw=#1!50!black,
                 fill=#1!20,
                 thick,
-                text width=5cm,
+                text width=6cm,
                 align=center,
                 minimum height=1cm
             },
@@ -127,25 +147,35 @@
                 \begin{itemize}
                     \item Airfoil shape, parameterized as described in Section \ref{sec:airfoil-parameterization}
                     \item Angle of attack $\alpha$
-                    \item Reynolds number $\Rey$
+                    \item Reynolds number $\Rey_c$
                     \item Mach number $\Mi$
+                    \item Freestream turbulence $\Ncr$
+                    \item Forced trips $x_{\rm tr, top} / c$, $x_{\rm tr, bot} / c$ (optional)
                     \item Control surfaces (both hinge points and deflection angles)
                 \end{itemize}
             };
 
-            \node[box=mydarkseagreen, right=of inputs, text width=3cm] (neuralfoil) {
+            \node[box=mydarkseagreen, right=of inputs, text width=2.5cm] (neuralfoil) {
                 \textbf{NeuralFoil}
             };
 
             \node[box=mydodgerblue, right=of neuralfoil] (outputs) {
                 \textbf{Outputs}
                 \begin{itemize}
-                    \item Lift coefficient $C_L$
-                    \item Drag coefficient $C_D$
-                    \item Moment coefficient $C_M$
-                    \item Maximum overspeed $u_{\rm max} / u_\infty$
-                    \item Upper-surface transition location $x_{\rm tr,top}/c$
-                    \item Lower-surface transition location $x_{\rm tr,bot}/c$
+                    \item Bulk outputs (scalars):
+                    \begin{itemize}
+                        \item Lift coefficient $C_L$
+                        \item Drag coefficient $C_D$
+                        \item Moment coefficient $C_M$
+                        \item Critical Mach number $\Mcr$
+                        \item Upper- and lower-surface turbulent transition locations
+                    \end{itemize}
+                    \item Detailed outputs (vectors):
+                    \begin{itemize}
+                        \item BL Momentum thickness $\theta$
+                        \item BL shape factor $H$
+                        \item BL edge-velocity distribution\footnote{This contains identical information as the surface pressure distribution, under thin-shear-layer assumptions \cite{drela_xfoil_1989}} $u_e/u_\infty$
+                    \end{itemize}
                 \end{itemize}
             };
 
@@ -157,95 +187,224 @@
         \label{fig:neuralfoil_io}
     \end{figure}
 
-    NeuralFoil has a mathematical form that is fully explicit\footnote{meaning no iterative solvers are used} and guaranteed to produce a unique solution with a bounded amount of computational effort for any input. Reasonable aerodynamics estimates can be expected:
+    \noindent Reasonable aerodynamics estimates can be expected:
     \begin{itemize}
-        \item For any practical airfoil shape that can be analyzed with XFoil\footnote{only single-element airfoils are allowed}, including modifications for trailing-edge control deflections up to reasonable deflections (e.g., $\pm 25\degree$)
+        \item For any practical airfoil shape that can be analyzed with XFoil\footnote{only single-element airfoils are allowed}, including modifications for trailing-edge control surface deflections up to substantial deflections (e.g., $\pm 40\degree$)
         \item Across the $360\degree$ angle of attack range, by leveraging analytical post-stall models regressed from high-$\alpha$ wind tunnel data by Truong \cite{truong_analytical_2020}
-        \item At any practical Reynolds number ($10^2$ to $10^9$) with physically-sensible extrapolation even beyond these ranges (e.g., Stokes flow limit)
-        \item At subsonic and low-transonic Mach numbers, from zero to slightly above the drag-divergent Mach number
+        \item Across the range of Reynolds numbers associated with practical external aerodynamics flows ($10^2$ to $10^9$), with physically-sensible extrapolation even beyond this range (e.g., Stokes flow limit)
+        \item At subsonic and low-transonic Mach numbers, ranging from zero to slightly above the drag-divergent Mach number
     \end{itemize}
 
-    NeuralFoil is implemented as an open-source lightweight Python package with minimal dependencies (only NumPy \cite{harris_array_2020} for the actual aerodynamic modeling), allowing easy installation across a variety of platforms.
+    \noindent NeuralFoil has a mathematical form that is fully explicit (i.e., no iterative solvers are used; there is no value-dependent code execution). This guarantees that a deterministic result is returned in bounded computational time and without any need for initial guesses. As discussed in Section TODO, this also makes compatability with automatic differentiation frameworks much more straightforward, as the computational graph is static for any input. At a high level, the mathematical model within NeuralFoil consists of the following main steps:
 
-    \subsection{Airfoil Geometry Parameterization}
+    \begin{enumerate}
+        \item \textbf{Pre-solve}: Converts the user-supplied airfoil shape into the required parameterization (including any control surfaces, which are made part of the airfoil geometry as described in Section \ref{sec:control-surfaces})
+%        \item Temporary restriction to the incompressible flow case (i.e., input Mach is set aside for now; addressed later)
+        \item \textbf{Encoding}: Transforms all inputs (except Mach number, which is treated later) into an appropriate input vector space for the neural network. This is performed using prescribed functions based on domain knowledge.
+        \item \textbf{Learned Model}: A learned neural network maps from this latent vector space to another latent vector space.
+        \item \textbf{Decoding}: Transforms the outputs of this neural network back into the space of user-facing outputs. This is also performed using prescribed functions based on domain knowledge.
+        \item \textbf{Uncertainty quantification, model fusion, and extrapolation}: Based on the neural network's self-reported trustworthiness (via a process described in Section \ref{sec:uq}), the network's results are merged with analytical models for airfoil behavior in massively-separated flow conditions.
+        \item \textbf{Compressibility correction}: The solution is corrected for non-zero Mach numbers using analytical methods, as described in Section \ref{sec:compressibility}.
+    \end{enumerate}
+
+    \noindent In the following sections, we will describe each of these steps in more detail.
+
+    \subsection{Pre-Solve}
     \label{sec:airfoil-parameterization}
 
-    A user can specify input airfoil in many different forms -- for example, as an array of $(x, y)$ coordinates, as a standard \texttt{*.dat} file, or as an Airfoil-class object within the AeroSandbox aircraft design optimization framework \cite{sharpe_aerosandbox_2021}.
+    \subsubsection{Airfoil Geometry Parameterization}
 
-    However, underneath this interface layer, the actual airfoil geometry given to NeuralFoil's neural networks is parameterized as an 8-parameter-per-side CST (Kulfan) parameterization, with Kulfan's added leading-edge-modification (LEM) and trailing-edge thickness parameter \cite{kulfan_universal_2008, kulfan_modification_2020}. This gives a total of 18 parameters (corresponding to linear modes) to describe a given airfoil shape, which are illustrated in Figure \ref{fig:neuralfoil_parameterization}. This parameterization was chosen as Masters \cite{masters_geometric_2017} shows that this is one of the most parameter-efficient representations of airfoil shape and flexible enough to represent essentially all practical airfoil shapes. Kulfan's parameterization is strongly related to an orthogonal polynomial decomposition using Bernstein polynomials, which allows for its geometric flexibility. Moreover, this formulation, is linear and relatively interpretable, and is already common in existing aerospace tools such as OpenVSP \cite{mcdonald_open_2022}. Conversion of user-specified airfoils to this format for NeuralFoil to use is automatically and efficiently handled as a least-squares fitting problem.
+    NeuralFoil accepts user-specified airfoil shapes in a variety of common formats -- for example, as an array of $(x, y)$ coordinates, as a standard coordinate-array \texttt{*.dat} file, as a series of CST parameters, or as an Airfoil-class object within the AeroSandbox aircraft design optimization framework \cite{sharpe_aerosandbox_2021}.
+
+    Underneath this interface layer, NeuralFoil converts this specified airfoil geometry to an 8-parameter-per-side CST (Kulfan) parameterization, including Kulfan's added leading-edge-modification (LEM) and trailing-edge thickness parameter \cite{kulfan_universal_2008, kulfan_modification_2020}. This gives a total of 18 parameters to describe a given airfoil shape, which are illustrated in Figure \ref{fig:neuralfoil_parameterization}. This parameterization family was chosen due to work by Masters \cite{masters_geometric_2017} and others, which shows that this is one of the most parameter-efficient representations of airfoil shape. Kulfan's parameterization is strongly related to an orthogonal polynomial decomposition using Bernstein polynomials. Because of this, the format is interpretable: it is a linear combination of mode shapes, each of which is roughly locally-supported\footnote{this contrasts with approaches such as taking an SVD over a standard airfoil database, which creates less-interpretable mode shapes}. Another benefit of the CST parameterization is interoperability, as it is commonly implemented in existing aerospace tools such as OpenVSP \cite{mcdonald_open_2022}.
+
+    The CST parameterization allows for varying numbers of degrees of freedom. An 18-parameter representation was chosen based on the work of Masters \cite{masters_geometric_2017}, which shows that error in aerodynamic force prediction decreases substantially near this threshold. Thus, this parameterization strikes an acceptable balance between parameterization error and dimensionality. The 18-parameter representation also corresponds to one of the initially-proposed discretization levels proposed by Kulfan \cite{kulfan_universal_2008} (labeled in this work as ``BPO8''), so this parameterization is a natural choice for compatibility with existing airfoil design tools.
+
+    Conversion of user-specified airfoils to this format for NeuralFoil to use is automatically and efficiently handled as a least-squares fitting problem.
 
     \begin{figure}[h]
         \centering
         \adjustbox{trim=0cm 1.5cm 0cm 0cm}{
             \includesvg[width=0.8\textwidth]{../../media/kulfan_parameterization_illustration.svg}
         }
-        \caption{Geometry input parameterization used by NeuralFoil. Parameterization is an 18-parameter CST (Kulfan) parameterization. Each colored line in the figure represents a mode shape associated with one of these parameters; modes are linearly combined to form the airfoil shape.}
+        \caption{Geometry input parameterization used by NeuralFoil. Parameterization is an 18-parameter CST (Kulfan) parameterization \cite{kulfan_universal_2008, kulfan_modification_2020, masters_geometric_2017}. Each colored line in the figure represents a mode shape associated with one of these parameters; modes are linearly combined to form the airfoil shape.}
         \label{fig:neuralfoil_parameterization}
     \end{figure}
 
-    \subsection{Model Architecture}
+    \subsubsection{Control Surfaces}
+    \label{sec:control-surfaces}
 
-    At a high level, the mathematical model within NeuralFoil consists the following main steps:
+    Control surfaces are handled as a degenerate problem by re-normalizing the deflected airfoil shape. This is illustrated in Figure \ref{fig:control_surface_decomposition}. In step 1, an example airfoil is given. In step 2, a user-specified control surface deflection is applied. In step 3, the airfoil is re-normalized by applying the necessary similarity transformation (rotation, translation, and scaling) such that the leading-edge and trailing-edge locations are placed at their standard $(0, 0)$ and $(1, 0)$ locations in chord-normalized airfoil coordinates. The geometric rotation required for this re-normalization is later applied as a change in the effective angle of attack, $\Delta\alpha$. For consistency, the scaling factor required for this operation is also later used to scale the input Reynolds number appropriately, though the effect of this Reynolds scaling is typically minor. Finally, The resulting pitching moment must also be adjusted to account for shifting of the force center due to translation during re-normalization.
 
-    \begin{enumerate}
-        \item Conversion of user airfoil shape into the required parameterization (including any control surfaces, which are made part of the airfoil geometry as described in Section \ref{sec:control-surfaces})
-        \item Temporary restriction to the incompressible flow case (i.e., input Mach is set aside for now; addressed later)
-        \item Transformation of user-facing inputs into an appropriate input vector space for the neural network
-        \item A neural network that maps from this vector space to another vector space
-        \item Transformation of this neural network output space back into the user-facing outputs
-        \item Compressibility correction, which is described in Section \ref{sec:compressibility}
-    \end{enumerate}
+    \begin{figure}[h]
+        \centering
+        \includesvg[width=\textwidth]{../../studies/control_surface_decomposition.svg}
+        \caption{Illustration of the automatic procedure for handling control surface deflections in NeuralFoil.}
+        \label{fig:control_surface_decomposition}
+    \end{figure}
 
-    The intermediate vector spaces described above are carefully parameterized such that relevant functions are closer-to-linear (and hence vastly easier for a neural network to learn) in these spaces than in the original user input and output spaces. Effectively, this is feature engineering using domain-specific knowledge, which is known to substantially increase model accuracy and parameter efficiency.
+    Also visible in Figure \ref{fig:control_surface_decomposition} is the geometric effect of restricting the airfoil shape to the space of CST-parameterized airfoils, which is performed along with the re-normalization step between steps 2 and 3. The effect of this is that the sharp corners associated with the control surface deflection are smoothed out, which is a consequence of the smooth mode shapes associated with the CST parameterization. The rationale behind accepting this loss of fidelity here is that the control surface deflection invariably causes a turbulent transition at the deflection point on the suction side, regardless of whether the sharp or smoothed geometry is used. Because the turbulent boundary layer that follows the hinge is less sensitive to the pressure distribution (and hence, airfoil shape), the loss of geometric accuracy is less significant. Nevertheless, some loss of aerodynamic accuracy is to be expected.
 
-    For example, the user-facing input space (shown in Figure \ref{fig:neuralfoil_io}) is transformed into the following space, which is effectively what is seen by the neural network:
+    To quantify this loss of accuracy, Figure \ref{fig:control_surface_accuracy} shows airfoil aerodynamics results obtained by both NeuralFoil and XFoil for various control surface deflections. Notably, reasonably close agreement is seen even for control surface deflections as aggressive as $\pm40 \degree$.
+
+    \begin{figure}[H]
+        \centering
+        \includesvg[width=\textwidth]{../../studies/control_surface_accuracy.svg}        \caption{Accuracy of NeuralFoil on an airfoil with large control surface deflections. Here, we show aerodynamics results from both NeuralFoil and XFoil on a NACA0012 airfoil at $\Rey_c = 10^6$ and $\alpha = 0\degree$, with varying control surface deflections on a trailing-edge flap hinged at $x/c=0.70$.}
+        \label{fig:control_surface_accuracy}
+    \end{figure}
+
+    \subsection{Encoding, Learned Model Architecture, and Decoding}
+
+    After geometry parameterization, NeuralFoil transforms the user-facing inputs and outputs shown in Figure \ref{fig:neuralfoil_io} into intermediate vector spaces (latent spaces) that are more amenable to learning by a neural network. These latent spaces are carefully parameterized such that learned model has a close-to-affine mapping of inputs to outputs. Effectively, this is feature engineering using domain-specific knowledge.
+
+    This encoding/decoding scheme has two major effects. First, it substantially increases model's parameter efficiency\footnote{i.e., test-set accuracy, relative to the number of parameters (which represent model complexity and computational cost)}, since the training data has fewer nonlinearities in this latent space. Secondly, the combination of encoding functions, model architecture, and decoding functions can be used to guarantee physically-sound extrapolation beyond the dataset \cite{xu_how_2021}. An example that illustrates both of these effects is the encoding of both the $\Rey_c$ input and the $C_D$ output into logspace. This means that an affine model in the latent space corresponds to a power-law $C_D(\Rey_c)$ model in user-facing space, which is a relationship supported by physical theory for both laminar and turbulent flows (e.g., Falkner-Skan and Schlichting boundary layer models \cite{drela_aerodynamics_2019}).
+
+    \subsubsection{Encoding}
+
+    The user-facing input space (shown in Figure \ref{fig:neuralfoil_io}) is transformed into the following input latent space, which is effectively what is seen by the neural network:
 
     \begin{equation}
-        x_{\rm in,net} = \begin{bmatrix}
-                             4 \sin(\alpha)                                 \\
-                             20 \sin^2(\alpha)    \\
-                             (\ln(\Rey) - 12.5) / 2 \\
-                             (\text{Kulfan surface mode strengths}) \cdot 5             \\
-                             (\text{Kulfan leading-edge weight}) \cdot 5    \\
-                             (\text{trailing-edge thickness}) \cdot 100     \\
-        \end{bmatrix}
+        z_{\rm in} = \text{Affine}\left( \begin{bmatrix}
+                                             \text{Airfoil shape (18 parameters)} \\
+                                             \sin(2 \alpha)                       \\
+                                             \sin^2(\alpha)                       \\
+                                             \cos(\alpha)                         \\
+                                             \ln(\Rey_c)                          \\
+                                             \Ncr                                 \\
+                                             x_{\rm tr, top, forced}              \\
+                                             x_{\rm tr, bot, forced}              \\
+        \end{bmatrix} \right)
+        %label
+        \label{eq:encoding}
     \end{equation}
 
-    \noindent These quantities are physically-supported by closed form aerodynamic models, such as thin-airfoil theory before application of the small-angle limit, post-stall models by Truong \cite{truong_analytical_2020}, power-law dependency on Reynolds number stemming from Blasius and Falkner-Skan relations \cite{drela_aerodynamics_2019}, etc. Moreover, linear scaling factors are applied to all parameters such that their range of inputs are roughly on the order of magnitude of 1. This improves the stability of the neural network training process, and it improves the performance of the weight-decay-based regularization strategy that is later used during training to improve generalizability (described in Section \ref{sec:training-process}).
+    The resulting $z_{\rm in}$ is 25-dimensional. Note that the inputs described in Equation \ref{eq:encoding} also undergo a simple elementwise affine transformation. This transformation is such that the distribution of typical inputs in the latent space has a mean of roughly zero and a standard deviation of roughly one\footnote{This normalization is performed on the basis of the training data, described later in Section TODO}. Scaling and shift factors are available in the open-source codebase, for the interested reader. The purpose of this transformation is to improve the stability of the neural network training process, as well as to improve the performance of the weight-decay-based regularization strategy that is later used during training to improve generalization (described in Section \ref{sec:training-process}).
 
-    NeuralFoil offers eight different deep neural network models, which offer a tradeoff between accuracy and computational cost. This tradeoff is implemented as differences in the number and size of hidden layers. Table \ref{tab:model-sizes} lists the different models, along with their number of hidden layers and neurons per hidden layer.
+    In addition to the previously-discussed log-space transformation of Reynolds number, some nonlinear transformations on the angle of attack $\alpha$ are present and merit discussion as well. Encoding of angle of attack into a purely-trigonometric representation embeds the periodic nature of the problem into the model architecture. For example, model evaluation at $\alpha=0\degree$ and $\alpha=360\degree$ are structurally identical, as these are encoded to the same location in the input latent space. The $\sin(2\alpha)$ and $\sin^2\alpha$ terms are directly proportional to common post-stall analytical models of lift and drag, respectively (such as those by Hoerner and Truong \cite{hoerner_fluiddynamic_1992, truong_analytical_2020}). The goal of this representation is to improve generalization performance in massively-separated flow conditions, where training data is scarce.
 
-    \begin{table}
+    \subsubsection{Learned Model Architecture}
+    \label{sec:learned-model-architecture}
+
+    After encoding inputs into an input latent space, NeuralFoil processes these inputs through a feedforward neural network (i.e., multilayer perceptron). NeuralFoil offers eight different deep neural network models, which offer a tradeoff between accuracy and computational cost. This tradeoff is implemented as differences in the number and size of hidden layers, which are detailed in Table \ref{tab:model-sizes} for each model.
+
+    \begin{table}[H]
         \centering
-        \caption{Neural network models offered in NeuralFoil.}
+        \caption{Neural network model sizes offered in NeuralFoil, offering a trade between accuracy and speed.}
         \label{tab:model-sizes}
         \begin{tabular}{lll}
             \toprule
-            Model        & Hidden Layers & Neurons per Hidden Layer \\ \midrule
-            ``xxsmall''  & 2             & 32                       \\
-            ``xsmall''   & 3             & 32                       \\
-            ``small''    & 3             & 48                       \\
-            ``medium''   & 4             & 64                       \\
-            ``large''    & 4             & 128                      \\
-            ``xlarge''   & 4             & 256                      \\
-            ``xxlarge''  & 5             & 256                      \\
-            ``xxxlarge'' & 5             & 512                      \\
+            Model        & Hidden Layers & Neurons per Hidden Layer (width) \\ \midrule
+            ``xxsmall''  & 1             & 48                               \\
+            ``xsmall''   & 2             & 48                               \\
+            ``small''    & 2             & 64                               \\
+            ``medium''   & 3             & 64                               \\
+            ``large''    & 3             & 128                              \\
+            ``xlarge''   & 4             & 128                              \\
+            ``xxlarge''  & 4             & 256                              \\
+            ``xxxlarge'' & 5             & 512                              \\
             \bottomrule
         \end{tabular}
     \end{table}
 
-    Each layer is a fully-connected linear layer. The activation function applied between each layer is a hyperbolic tangent function, which is chosen because the resulting model is then infinitely smooth ($C^\infty$-continuous) and hence much more amenable to later gradient-based design optimization.
+    Each layer is a fully-connected linear layer. The activation function applied between each layer is the Swish function\footnote{sometimes written with an optional parameter $\beta$, which we set as $\beta=1$}, defined as $\sigma(x)=x / (1 + e^{-x})$. Compared to typical machine learning scenarios, the choice of activation function here has surprising importance, due to the desired properties of the resulting model. The Swish activation function is smooth ($C^\infty$-continuous), which makes the resulting neural network a smooth function as well. By preserving this continuity, NeuralFoil is made much more amenable to later gradient-based design optimization.
 
-    \subsubsection{Handling of Control Surface Deflections}
-    \label{sec:control-surfaces}
+    Likewise, the asymptotic behavior of the Swish function has key implications. Networks with activation functions that asymptote to piecewise-linear functions with differing positive and negative slope (e.g., Swish, ReLU, LeakyReLU, Softplus) have fundamentally different extrapolation properties than networks with activation functions that asymptote to a constant (e.g., Sigmoid, Tanh). The former creates networks that asymptote to locally-affine functions, while the latter creates networks that asymptote to locally-constant functions. This observation about network extrapolation properties, discussed in greater detail by Xu et al. \cite{xu_how_2021}, forms part of the justification for the latent space encodings described in the previous section where affine extrapolation is physically-consistent. Other activation functions were also considered. For example, the Softplus activation function meets many of the aforementioned criteria, but here it was abandoned in favor of Swish because networks with the latter achieved slightly better generalization performance.
 
-    <Work complete, section to be written.>
+    Considerations during training of this network are discussed in Section \ref{sec:training-process}.
 
     \subsubsection{Embedding of Angle of Attack Symmetry}
 
-    <Work complete, section to be written; uses methods from Zhang \cite{zhang_threedimensional_2022}>
+    A key step during neural network evaluation (applied both during training and inference) is the embedding of physics symmetry with respect to angle of attack. The rational behind this symmetry can be intuitively explained with the aid of illustrations in Figure \ref{fig:alpha_symmetry}. Here, we consider a generic cambered airfoil at some angle of attack, as well as its ``image scenario'' consisting of the flipped airfoil at a flipped angle of attack. The flow physics in these two scenarios should be exactly equal and opposite, which will not generally be the case unless this is enforced. To enforce this symmetry, NeuralFoil computes the neural network output for both the original and flipped airfoil, and then merges the results. Outputs that exhibit even symmetry (e.g., $C_D$) are averaged, while outputs that exhibit odd symmetry (e.g., $C_L$, $C_M$) are subtracted. More details about this approach to embedding symmetries and invariants into neural networks are discussed in recent work by Zhang \cite{zhang_threedimensional_2022}.
 
-    \subsubsection{Fusion of Post-Stall Models}
+    \begin{figure}[H]
+        \centering
+        \includesvg{../../studies/alpha_symmetry_image.svg}
+        \caption{Illustration of the ``image'' approach used to structurally embed symmetry with respect to angle of attack in NeuralFoil.}
+        \label{fig:alpha_symmetry}
+    \end{figure}
+
+    This symmetry embedding has important impacts for end-use cases of NeuralFoil. For example, when NeuralFoil analyzes a symmetric airfoil at $\alpha=0\degree$, it will always yield a lift coefficient and pitching moment of \textit{exactly} zero\footnote{to within machine precision, with differences only due to compensated summation algorithms during matrix multiplication}, and upper- and lower-surface transition locations will also be exactly equal. This exactness would not be the case if other common methods, such as data duplication to learn physics symmetries, were used. A practical case where error in this symmetry would be particularly noticeable is on an aircraft's vertical stabilizer. Here, flows around symmetric airfoils at zero local incidence are common, and any error in this symmetry would lead to a nonzero net yaw moment on the aircraft.
+
+    \subsubsection{Decoding}
+
+    The raw result of the learned model is another latent-space vector, which is then transformed back into the user-facing output space. This decoding process is broadly motivated by the same considerations as the encoding process, where the goal is to embed physical intuition into the architecture. The output latent space consists of the following vector:
+
+    \begin{equation}
+        z_{\rm out} = \text{Affine}\left( \begin{bmatrix}
+                                              \text{Analysis Confidence}               \\
+                                              C_L                                      \\
+                                              \ln(C_D)                                 \\
+                                              C_M                                      \\
+                                              x_{\rm tr, top}                          \\
+                                              x_{\rm tr, bot}                          \\
+                                              \ln(\Rey_\theta) \text{ at 64 locations} \\
+                                              \ln(H) \text{ at 64 locations}           \\
+                                              u_e/u_\infty \text{ at 64 locations}     \\
+        \end{bmatrix} \right)
+        \label{eq:decoding}
+    \end{equation}
+
+    The output latent space has 195 dimensions, and, similar to the input latent space, undergoes an elementwise affine transformation to normalize the distribution of typical outputs. The ``analysis confidence'' output described in Equation \ref{eq:decoding} deserves special attention and is discussed in Section \ref{sec:uq}.
+
+    The boundary layer outputs in Equation \ref{eq:decoding} are computed at 64 locations along the airfoil surface, which are evenly spaced in the normalized $x$-coordinate on the top and bottom surfaces. These data points are conceptually similar to physical sensors, as they are effectively a discrete projection of the actual boundary layer flow, which is a continuous function of surface coordinate $s$. The spacing of these discrete ``sensors'' was chosen on the basis of a compressed sensing study, the results of which are shown in Figure \ref{fig:optimal_sensor_placement}. In short, this study aimed to determine ``optimal sensor placement'' for airfoil boundary layer data: where should one place 64 discrete sensors on an airfoil to minimize the error when reconstructing the boundary layer data? Data for this study was generated from XFoil via the same process detailed in Section \ref{sec:training-data}, and compressed sensor placement was performed using methods described by de Silva et al. \cite{de_Silva2021}
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}[t]{0.49\textwidth}
+            \centering
+            \includesvg[width=\textwidth]{../../training/gen2_architecture/optimal_sensor_placement/optimal_sensors_theta.svg}
+            \caption{Optimal sensor placement for minimum-error $\theta(s)$ reconstruction.}
+        \end{subfigure}
+        \begin{subfigure}[t]{0.49\textwidth}
+            \centering
+            \includesvg[width=\textwidth]{../../training/gen2_architecture/optimal_sensor_placement/optimal_sensors_H.svg}
+            \caption{Optimal sensor placement for minimum-error $H(s)$ reconstruction.}
+        \end{subfigure}
+        \caption{Results from a compressed sensing study to determine optimal discrete locations to track boundary layer data for minimal reconstruction error.}
+        \label{fig:optimal_sensor_placement}
+    \end{figure}
+
+    The results in Figure \ref{fig:optimal_sensor_placement} show that accurate reconstruction of the momentum thickness $\theta(s)$ is best achieved by roughly-uniform sensor placement. Interestingly, the optimal placement for the shape factor $H(s)$ is not uniform, but rather is concentrated near the leading edge. Since $H$ closely relates to laminar/turbulent behavior and transition location, this result is physically intuitive: small changes in $H$ near the leading edge have disproportionate impact on the downstream flow.
+
+    \subsection{Uncertainty Quantification, Model Fusion, and Extrapolation}
+    \label{sec:uq}
+
+    The ``analysis confidence'' output detailed in Equation \ref{eq:decoding} can be loosely interpreted as a representation of NeuralFoil's self-reported model uncertainty. Quantitatively, this output is trained on binary features corresponding to whether an XFoil analysis with these input conditions converged. In effect, this is a classification problem on whether the surrogate's underlying model returns trustworthy answers near a given point in the input space. The raw network output is a logit, which is then transformed into a confidence score in the range $(0, 1)$ using a logistic function. Example results of this ``analysis confidence'' metric are shown and discussed in Section \ref{sec:uq_results}.
+
+    Presenting the user with a measure of analysis confidence has several real-world benefits. First, it gives the user direct feedback on when the result of a requested analysis should be trusted. Surrogate models, especially those created with machine learning, tend to lose accuracy when extrapolating beyond the training data. Despite the physics constraints embedded in the model architecture, NeuralFoil is still subject to this limitation in certain extrapolation cases. Ordinarily, detecting when a model is extrapolating is difficult. The confidence score can be used to flag these cases, such that a user might cross-check with a higher-fidelity model or pursue a less-uncertain design. Second, the confidence score can be used as a direct constraint during aerodynamic shape optimization driven by NeuralFoil. This enables a form of robust optimization where results are guaranteed to be within the region of the input space where the surrogate model is trustworthy.
+
+    Learning this ``analysis confidence'' binary classifier with no priors or physics knowledge presents a problem, however. Without such modifications, there is no guarantee that the model will extrapolate towards ``untrustworthiness'' (i.e., low analysis confidence) when far from the training data distribution. To enforce this behavior, the analysis confidence logit (i.e., logarithm of odds-ratio) are modified during both training and inference. The added term is the negative squared Mahalanobis distance\footnote{essentially, the Euclidian norm of the multidimensional generalization of the z-score} of the query point with respect to the training data distribution:
+
+    \begin{equation}
+        \text{Analysis Confidence} = \sigma
+        \left[
+        \left(\text{Raw Logit}\right) -
+        \left( \vec{z}_{\rm in} - \vec\mu \right) ^ T
+         S ^{-1}
+        \left( \vec{z}_{\rm in} - \vec\mu \right)
+        \right]
+        \label{eq:uq}
+    \end{equation}
+
+    \begin{eqexpl}[30mm]
+        \item{Analysis Confidence} The final output of the analysis confidence model, in the range $(0, 1)$
+        \item{$\sigma$} The logistic function, defined as $\sigma(x) = 1 / (1 + e^{-x})$
+        \item{$\vec\mu$} The mean of the training data distribution in the input latent space
+        \item{Raw Logit} The raw output of the neural network, before adding the Mahalanobis distance term
+        \item{$S$} The covariance matrix of the training data distribution in the input latent space
+        \item{$\vec{z}_{\rm in}$} The query point in the input latent space
+    \end{eqexpl}
+
+    Because the covariance matrix of the training data is positive-definite, the correction term is guaranteed to asymptote to $-\infty$ as the query point moves away from the training data in any direction. By contrast, the raw logit is structurally guaranteed to extrapolate to a locally-affine function, as previous discussed in Section \ref{sec:learned-model-architecture}. Therefore, this modification guarantees that the analysis confidence tends to zero far from the training data distribution. Because this modification is included at both train and inference time, this modification has minimal effect on the model's performance \textit{within} the training data distribution, and only serves to embed desirable extrapolation properties when \textit{outside} the distribution.
+
+    Another benefit of this modification is that it tends to make level sets of the analysis confidence more convex, since the modification is a quadratic form with positive-definite Hessian\footnote{directly proportional to the inverse of the covariance matrix}. By regularizing the analysis confidence to be ``more convex'', this modification ultimately leads to better convergence in downstream gradient-based optimization problems that use the analysis confidence as a constraint.
+
+    The weighting of this Mahalanobis distance term could be varied, depending on how willing the developer of a neural surrogate is to allow the surrogate to extrapolate beyond the training distribution. In the case of NeuralFoil, a unit weighting (as shown in Equation \ref{eq:uq}) was chosen and appears to strike a good balance between extrapolation correctness and amount of added nonlinearity. However, more broadly, this tradeoff forms an interesting area of further research in neural surrogates with self-reported trust metrics.
+
+    Based on the analysis confidence of this learned model, NeuralFoil fuses its attached-flow results with empirical models for massively-separated (post-stall) flow conditions. In particular, NeuralFoil uses the analytical post-stall models regressed by Truong \cite{truong_analytical_2020} to provide a more accurate prediction in these conditions. Example results
+
+
+%    \subsubsection{Fusion of Post-Stall Models}
 
     <Work complete, section to be written; uses methods from Truong \cite{truong_analytical_2020}>
 
@@ -330,6 +489,9 @@
 
     % TODO asymmetric CD penalty
 
+
+    \section{Results and Discussion}
+
     \subsection{Model Performance}
 
     \subsubsection{Sample Validation of NeuralFoil Accuracy vs. XFoil}
@@ -352,31 +514,43 @@
 
     \begin{table}[h]
         \begin{centering}
-        \caption{Performance comparison of NeuralFoil (``NF'') physics-informed machine learning models versus XFoil in terms of accuracy (treating XFoil as a ground truth) and speed. Runtime speeds are measured on an AMD Ryzen 7 5800H laptop CPU.}
-        \label{tab:neuralfoil_performance}
+            \caption{Performance comparison of NeuralFoil (``NF'') physics-informed machine learning models versus XFoil in terms of accuracy (treating XFoil as a ground truth) and speed. Runtime speeds are measured on an AMD Ryzen 7 5800H laptop CPU.}
+            \label{tab:neuralfoil_performance}
 
-        \begin{adjustbox}{width=\textwidth}
+            \begin{adjustbox}{width=\textwidth}
 
-            \begin{tblr}{
-                width=\textwidth,
-                colspec={m{2.2cm} | m{2cm} m{2cm} m{2cm} m{2cm} | m{2cm} m{2cm}},
-                row{1}={font=\bfseries},
+                \begin{tblr}{
+                    width=\textwidth,
+                    colspec={m{2.2cm} | m{2cm} m{2cm} m{2cm} m{2cm} | m{2cm} m{2cm}},
+                    row{1}={font=\bfseries},
 %            column{1}={font=\bfseries},
-            }
-\toprule
-\multicolumn{1}{c}{\textbf{Aerodynamics Model}} & \multicolumn{4}{c}{\textbf{Mean Absolute Error (MAE) of Given Metric,}\\ \textbf{on the Test Dataset, with respect to XFoil}} & \multicolumn{2}{c}{\textbf{Computational Cost to Run}} \\
- & \begin{tabular}[c]{@{}l@{}}Lift Coeff.\\ $C_L$\end{tabular} & \begin{tabular}[c]{@{}l@{}}Fractional\\Drag Coeff.\\ $\ln(C_D)\ ^{\dagger}$ \end{tabular} & \begin{tabular}[c]{@{}l@{}}Moment Coeff.\\ $C_M$\end{tabular} & \begin{tabular}[c]{@{}l@{}}Transition\\Locations\\ $x_{tr}/c$\end{tabular} & \begin{tabular}[c]{@{}l@{}}Runtime\\ (1 run)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Total Runtime\\ (100,000 runs)\end{tabular} \\ \midrule
-NF ``xxsmall'' & 0.040 & 0.078 & 0.007 & 0.044 & 4 ms & 0.85 sec \\
-NF ``xsmall'' & 0.030 & 0.057 & 0.005 & 0.033 & 4 ms & 0.96 sec \\
-NF ``small'' & 0.027 & 0.050 & 0.005 & 0.027 & 5 ms & 1.08 sec \\
-NF ``medium'' & 0.020 & 0.039 & 0.003 & 0.020 & 5 ms & 1.29 sec \\
-NF ``large'' & 0.016 & 0.030 & 0.003 & 0.014 & 8 ms & 2.23 sec \\
-NF ``xlarge'' & 0.013 & 0.024 & 0.002 & 0.010 & 13 ms & 4.21 sec \\
-NF ``xxlarge'' & 0.012 & 0.022 & 0.002 & 0.009 & 16 ms & 5.16 sec \\
-NF ``xxxlarge'' & 0.012 & 0.020 & 0.002 & 0.007 & 56 ms & 13.6 sec \\
-XFoil & 0 & 0 & 0 & 0 & 73 ms & 42 min \\ \bottomrule
-            \end{tblr}
-        \end{adjustbox}
+                }
+                    \toprule
+                    \multicolumn{1}{c}{\textbf{Aerodynamics Model}} & \multicolumn{4}{c}{\textbf{Mean Absolute Error (MAE) of Given Metric,} \\ \textbf{on the Test Dataset, with respect to XFoil}} & \multicolumn{2}{c}{\textbf{Computational Cost to Run}} \\
+                    & \begin{tabular}[c]{@{}l@{}}
+                          Lift Coeff.\\ $C_L$
+                    \end{tabular} & \begin{tabular}[c]{@{}l@{}}
+                                        Fractional\\Drag Coeff.\\ $\ln(C_D)\ ^{\dagger}$
+                    \end{tabular} & \begin{tabular}[c]{@{}l@{}}
+                                        Moment Coeff.\\ $C_M$
+                    \end{tabular} & \begin{tabular}[c]{@{}l@{}}
+                                        Transition\\Locations\\ $x_{tr}/c$
+                    \end{tabular}  & \begin{tabular}[c]{@{}l@{}}
+                                         Runtime\\ (1 run)
+                    \end{tabular}   & \begin{tabular}[c]{@{}l@{}}
+                                          Total Runtime\\ (100,000 runs)
+                    \end{tabular}    \\ \midrule
+                    NF ``xxsmall''   & 0.040 & 0.078 & 0.007 & 0.044 & 4 ms  & 0.85 sec \\
+                    NF ``xsmall''    & 0.030 & 0.057 & 0.005 & 0.033 & 4 ms  & 0.96 sec \\
+                    NF ``small''   & 0.027 & 0.050 & 0.005 & 0.027 & 5 ms & 1.08 sec \\
+                    NF ``medium''  & 0.020 & 0.039 & 0.003 & 0.020 & 5 ms & 1.29 sec \\
+                    NF ``large'' & 0.016 & 0.030 & 0.003 & 0.014 & 8 ms & 2.23 sec \\
+                    NF ``xlarge''           & 0.013     & 0.024     & 0.002     & 0.010     & 13 ms & 4.21 sec   \\
+                    NF ``xxlarge''           & 0.012     & 0.022     & 0.002     & 0.009     & 16 ms & 5.16 sec   \\
+                    NF ``xxxlarge''           & 0.012     & 0.020     & 0.002     & 0.007     & 56 ms & 13.6 sec   \\
+                    XFoil           & 0     & 0     & 0     & 0     & 73 ms & 42 min   \\ \bottomrule
+                \end{tblr}
+            \end{adjustbox}
         \end{centering}
         $^{\dagger}$ The deviation of $\ln(C_D)$ can be thought of as ``the typical relative error in $C_D$''. \\
 
@@ -391,6 +565,9 @@ XFoil & 0 & 0 & 0 & 0 & 73 ms & 42 min \\ \bottomrule
 %        \end{adjustbox}
 
     \end{table}
+
+    \subsection{Self-Reported Uncertainty Quantification}
+    \label{sec:uq_results}
 
     \subsection{Sample Validation on Transonic Case}
     \label{sec:validation_transonic}
@@ -469,15 +646,19 @@ XFoil & 0 & 0 & 0 & 0 & 73 ms & 42 min \\ \bottomrule
     Nevertheless, the strength of NeuralFoil-powered optimization is that it allows one to generate optimized airfoils that are remarkably similar to expert-designed airfoils in mere seconds. This optimization capability is more-than-adequate for conceptual aircraft design, and it provides an excellent starting point for expert-guided airfoil design refinement.
 
 
-    \section{Reproducibility Statement}
+    \section{Computational Reproducibility Statement}
 
-    All source code used in this paper is publicly available at \url{https://github.com/peterdsharpe/neuralfoil}. NeuralFoil itself is best accessed through the open-source AeroSandbox aircraft design optimization framework \cite{sharpe_aerosandbox_2021}; this provides some of the advanced features (e.g., $360\degree$ angle of attack, transonic effects, and control surface deflections) described in this work that are not yet available in the standalone NeuralFoil package.
+    NeuralFoil is implemented as an open-source lightweight Python package with minimal dependencies (only NumPy \cite{harris_array_2020} for the actual aerodynamic modeling), allowing easy installation across a variety of platforms.
+
+    All source code used in this paper is publicly available at \url{https://github.com/peterdsharpe/neuralfoil}. Training data is available upon request with the corresponding author. NeuralFoil itself is best accessed through the open-source AeroSandbox aircraft design optimization framework \cite{sharpe_aerosandbox_2021}; this provides some of the advanced features (e.g., $360\degree$ angle of attack, transonic effects, and control surface deflections) described in this work that are not yet available in the standalone NeuralFoil package.
 
 
     \section{Conclusion}
     \label{sec:conclusion}
 
-    In this work, we have introduced NeuralFoil, a physics-informed machine learning tool for airfoil aerodynamics analysis trained on an extensive dataset of XFoil analyses. NeuralFoil offers improved computational efficiency and optimization-friendliness while maintaining accuracy comparable to XFoil. Its ability to handle a wide range of practical airfoil shapes, angles of attack, Reynolds numbers, and Mach numbers up to low transonic conditions makes it a versatile tool in aerodynamic analysis.
+    In this work, we introduce NeuralFoil, a physics-informed machine learning tool for airfoil aerodynamics analysis trained on an extensive dataset of XFoil analyses. NeuralFoil offers improved computational efficiency and optimization-friendliness while maintaining accuracy comparable to XFoil. Its ability to handle a wide range of practical airfoil shapes, angles of attack, Reynolds numbers, and Mach numbers up to low transonic conditions makes it a versatile tool in aerodynamic analysis.
+
+    % TODO future work: multielement airfoils
 
     The accuracy of NeuralFoil with respect to XFoil is demonstrated across test cases, with particular focus on airfoils that NeuralFoil was not trained on (i.e., out-of-distribution). Much of the accuracy achieved here is due to the embedding of domain-specific physics knowledge into the model architecture, which increases the parameter-efficiency and generalizability of the resulting model. Also presented in this work is an application of NeuralFoil to airfoil design optimization for the MIT Daedalus human-powered aircraft, where it quickly produces designs close in performance and shape to expert-crafted airfoils. This showcases NeuralFoil's potential for rapid, accurate airfoil design optimization and iterative design processes.
 
