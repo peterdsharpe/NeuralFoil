@@ -1,4 +1,4 @@
-from neuralfoil.gen2_architecture.main import (
+from neuralfoil.gen2_5_architecture.main import (
     get_aero_from_kulfan_parameters,
     get_aero_from_airfoil,
     get_aero_from_coordinates,
