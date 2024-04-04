@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List
+from typing import Union
 import numpy as np
 from scipy import interpolate, ndimage
 import matplotlib.pyplot as plt
@@ -13,26 +13,26 @@ import aerosandbox.tools.pretty_plots as p
 # get dictionary key where value is highest
 # log_file = max(log_files, key=log_files.get)
 
-log_file_ids = {
-    "xxsmall" : "log.log-25362570",
-    "xsmall"  : "log.log-25362571",
-    "small"   : "log.log-25362572",
-    "medium"  : "log.log-25362575",
-    "large"   : "log.log-25362579",
-    "xlarge"  : "log.log-25362580",
-    "xxlarge" : "log.log-25362581",
-    "xxxlarge": "log.log-25362584",
-}
-# log_file_ids = {
-#     "1e-6": "log.log-25362440",
-#     "1e-5": "log.log-25362441",
-#     "3e-5": "log.log-25362442",
-#     "1e-4": "log.log-25362443",
-#     "3e-4": "log.log-25362444",
-#     "1e-3": "log.log-25362445",
-#     "1e-2": "log.log-25362448",
-#     "1e-1": "log.log-25362449",
+# log_file_ids = { # Gen 2.0
+#     "xxsmall" : "log.log-25362570",
+#     "xsmall"  : "log.log-25362571",
+#     "small"   : "log.log-25362572",
+#     "medium"  : "log.log-25362575",
+#     "large"   : "log.log-25362579",
+#     "xlarge"  : "log.log-25362580",
+#     "xxlarge" : "log.log-25362581",
+#     "xxxlarge": "log.log-25362584",
 # }
+log_file_ids = {  # Gen 2.5
+    "xxsmall": ["log.log-25540774", "log.log-25584785"],
+    "xsmall" : ["log.log-25542972", "log.log-25584790"],
+    "small"  : "log.log-25542974",
+    "medium" : "log.log-25542980",
+    "large"   : "log.log-25542983",
+    "xlarge"  : "log.log-25542989",
+    "xxlarge" : "log.log-25542993",
+    "xxxlarge": "log.log-25543001",
+}
 
 fig, ax = plt.subplots(
     ncols=int(np.ceil(len(log_file_ids) / 2)),
@@ -43,14 +43,13 @@ fig, ax = plt.subplots(
 )
 ax_f = ax.flatten()
 
-for i, (title, log_file) in enumerate(log_file_ids.items()):
 
-    with open(Path(__file__).parent / log_file, "r", encoding="utf8") as f:
+def load_log_file(filename) -> dict[str, np.ndarray]:
+    with open(filename, "r", encoding="utf8") as f:
         lines = f.readlines()
 
-
-    def parse_line(row):
-        kvs: List[str] = row.split("|")
+    def parse_line(row: str) -> Union[dict[str, float], None]:
+        kvs: list[str] = row.split("|")
         if len(kvs) != 9:
             return None
 
@@ -58,7 +57,6 @@ for i, (title, log_file) in enumerate(log_file_ids.items()):
             kv.split(":")[0].strip(): float(kv.split(":")[1])
             for kv in kvs
         }
-
 
     data = {}
 
@@ -71,7 +69,25 @@ for i, (title, log_file) in enumerate(log_file_ids.items()):
                         data[k] = []
                     data[k].append(v)
 
-    data = {k: np.array(v) for k, v in data.items()}
+    return {k: np.array(v) for k, v in data.items()}
+
+
+for i, (title, log_file_value) in enumerate(log_file_ids.items()):
+
+    if isinstance(log_file_value, str):
+        log_file_list = [log_file_value]
+    else:
+        log_file_list = log_file_value
+
+    datas = [
+        load_log_file(Path(__file__).parent / log_file)
+        for log_file in log_file_list
+    ]
+
+    data = {
+        k: np.concatenate([d[k] for d in datas])
+        for k in datas[0].keys()
+    }
 
     plt.sca(ax_f[i])
 
@@ -82,6 +98,7 @@ for i, (title, log_file) in enumerate(log_file_ids.items()):
             markersize=5,
             alpha=0.9,
             markeredgewidth=0,
+            linewidth=1
         )
 
         # plt.plot(
@@ -92,7 +109,7 @@ for i, (title, log_file) in enumerate(log_file_ids.items()):
 
     plt.yscale('log')
     # plt.ylim(2e-3, 2e-2)
-    plt.title(f"{title}, {log_file}\nCD {np.median(data['ln_CD'][-10:]):.4f}")
+    plt.title(f"{title}\nCD {np.median(data['ln_CD'][-10:]):.4f}")
 
 p.show_plot(f"Training Progress", "Epoch", "Loss")
 
