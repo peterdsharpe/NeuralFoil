@@ -6,7 +6,7 @@ from pathlib import Path
 from matplotlib.colors import LinearSegmentedColormap
 from tqdm import tqdm
 
-af = asb.Airfoil(name="HALE_03", coordinates=Path(__file__).parent / "assets" / "hale_03mod.dat")
+af = asb.Airfoil(name="HALE_03", coordinates=Path(__file__).parent / "assets" / "hale_03mod.dat").to_kulfan_airfoil()
 alphas_xfoil = np.linspace(-5, 15, 50)
 alphas_nf = np.linspace(-6, 17, 300)
 Re_values_to_test = [1e4, 8e4, 2e5, 1e6, 1e8]
@@ -19,7 +19,7 @@ aeros["xfoil"] = [
         airfoil=af,
         Re=Re,
         timeout=30,
-        xfoil_repanel=False,
+        # xfoil_repanel=False,
         max_iter=100,
     ).alpha(alphas_xfoil)
     for Re in tqdm(Re_values_to_test, desc="XFoil")
@@ -79,7 +79,8 @@ for i, (Re, color) in enumerate(zip(Re_values_to_test, colors)):
         aeros["xfoil"][i]["CL"],
         linestyle=":",
         color=p.adjust_lightness(color, 0.4),
-        alpha=1
+        alpha=1,
+        zorder=5,
     )
 
 
@@ -100,7 +101,7 @@ for i, (Re, color) in enumerate(zip(Re_values_to_test, colors)):
     )
 
 plt.annotate(
-    text="Note the log-scale on $C_D$, which is unconventional - it's\nthe only way to keep it readable given the wide range.",
+    text="Note the log-scale on $C_D$, which is unconventional - this\nis used to keep $C_D$ readable given the wide range.",
     xy=(0.01, 0.01),
     xycoords="figure fraction",
     ha="left",
