@@ -6,7 +6,7 @@ from pathlib import Path
 from matplotlib.colors import LinearSegmentedColormap
 from tqdm import tqdm
 
-af = asb.Airfoil(name="HALE_03", coordinates=Path(__file__).parent / "assets" / "hale_03mod.dat")
+af = asb.Airfoil(name="HALE_03", coordinates=Path(__file__).parent / "assets" / "hale_03mod.dat").to_kulfan_airfoil()
 alphas_xfoil = np.linspace(-5, 15, 50)
 alphas_nf = np.linspace(-6, 17, 300)
 Re_values_to_test = [1e4, 8e4, 2e5, 1e6, 1e8]
@@ -19,7 +19,7 @@ aeros["xfoil"] = [
         airfoil=af,
         Re=Re,
         timeout=30,
-        xfoil_repanel=False,
+        # xfoil_repanel=False,
         max_iter=100,
     ).alpha(alphas_xfoil)
     for Re in tqdm(Re_values_to_test, desc="XFoil")
@@ -70,34 +70,34 @@ for i, (Re, color) in enumerate(zip(Re_values_to_test, colors)):
         #     color=color,
         #     alpha=transparency,
         # )
-        p.plot_color_by_value(
+        lines, sm, cbar = p.plot_color_by_value(
             nf_aero["CD"],
             nf_aero["CL"],
             c=nf_aero["analysis_confidence"],
             clim=(0.8, 1),
-            colorbar=Re == Re_values_to_test[-1],
-            colorbar_label="Analysis Confidence" if Re == Re_values_to_test[-1] else None,
             # cmap="turbo_r",
             # cmap="Spectral",
-            cmap="rainbow_r",
-            # cmap=LinearSegmentedColormap.from_list(
-            #     "custom_cmap",
-            #     colors=[
-            #         p.adjust_lightness("orange", 1.2),
-            #         p.adjust_lightness("gray", 1.0),
-            #         p.adjust_lightness("dodgerblue", 0.8),
-            #     ]
-            # ),
+            # cmap="rainbow_r",
+            cmap=LinearSegmentedColormap.from_list(
+                "custom_cmap",
+                colors=[
+                    p.adjust_lightness("orange", 1.2),
+                    # p.adjust_lightness("gray", 1.0),
+                    p.adjust_lightness("darkseagreen", 0.9),
+                    p.adjust_lightness("dodgerblue", 0.6),
+                ]
+            ),
             alpha=transparency,
-            zorder=4,
+            zorder=6,
         )
 
     xfoil_line2d, = plt.plot(
         aeros["xfoil"][i]["CD"],
         aeros["xfoil"][i]["CL"],
-        linestyle=":",
-        color=p.adjust_lightness(color, 0.4),
-        alpha=1
+        linestyle=(0, (1, 1.5)), linewidth=2.2,
+        # ".", markeredgewidth=0, markersize=4, alpha=0.8,
+        color="k",
+        zorder=5,
     )
 
 
@@ -118,8 +118,15 @@ for i, (Re, color) in enumerate(zip(Re_values_to_test, colors)):
         ha="left", va="center", fontsize=10
     )
 
+plt.colorbar(
+    sm,
+    ax=plt.gca(),
+    label="Analysis Confidence",
+    pad=0.063,
+)
+
 plt.annotate(
-    text="Note the log-scale on $C_D$, which is unconventional - it's\nthe only way to keep it readable given the wide range.",
+    text="Note the log-scale on $C_D$, which is unconventional - this\nis used to keep $C_D$ readable given the wide range.",
     xy=(0.01, 0.01),
     xycoords="figure fraction",
     ha="left",
@@ -131,7 +138,11 @@ plt.annotate(
 from matplotlib.lines import Line2D
 
 legend_handles = [
-    Line2D([], [], color="k", linestyle=xfoil_line2d.get_linestyle(), label="XFoil (ground truth)"),
+    Line2D([], [], color="k",
+           # linestyle=xfoil_line2d.get_linestyle(),
+           linestyle=(0, (1, 1.5)), linewidth=2.2,
+           label="XFoil (ground truth)"
+           ),
     *[
         Line2D([], [], color=color, linestyle=linestyle, label=f"NF \"{model_size}\"")
         for model_size, linestyle, color in zip(nf_model_sizes, nf_linestyles, colors)

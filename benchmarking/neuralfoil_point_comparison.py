@@ -45,7 +45,7 @@ for model_size in nf_model_sizes:
 import matplotlib.pyplot as plt
 import aerosandbox.tools.pretty_plots as p
 
-fig, ax = plt.subplots(figsize=(8,5))
+fig, ax = plt.subplots(figsize=(7, 5))
 plt.xscale('log')
 
 cmap = LinearSegmentedColormap.from_list(
@@ -77,12 +77,11 @@ for i, (Re, color) in enumerate(zip(Re_values_to_test, colors)):
     xfoil_line2d, = plt.plot(
         aeros["xfoil"][i]["CD"],
         aeros["xfoil"][i]["CL"],
-        linestyle=":",
+        linestyle=(0, (1, 1.5)), linewidth=2.2,
+        # ".", markeredgewidth=0, markersize=4, alpha=0.8,
         color=p.adjust_lightness(color, 0.4),
-        alpha=1,
         zorder=5,
     )
-
 
     annotate_x = np.max(np.array([
         aero[i]["CD"][-1]
@@ -113,7 +112,11 @@ plt.annotate(
 from matplotlib.lines import Line2D
 
 legend_handles = [
-    Line2D([], [], color="k", linestyle=xfoil_line2d.get_linestyle(), label="XFoil (ground truth)"),
+    Line2D([], [], color="k",
+           # linestyle=xfoil_line2d.get_linestyle(),
+           linestyle=(0, (1, 1.5)), linewidth=2.2,
+           label="XFoil (ground truth)"
+           ),
     *[
         Line2D([], [], color=color, linestyle=linestyle, label=f"NF \"{model_size}\"")
         for model_size, linestyle, color in zip(nf_model_sizes, nf_linestyles, colors)
@@ -161,8 +164,7 @@ afax.set_xlim(-0.05, 1.05)
 afax.set_ylim(-0.05, 0.28)
 afax.set_aspect("equal", adjustable='box')
 
-
-plt.suptitle("Comparison of $C_L$-$C_D$ Polar for NeuralFoil vs. XFoil", fontsize=16,y=0.94)
+plt.suptitle("Comparison of $C_L$-$C_D$ Polar for NeuralFoil vs. XFoil", fontsize=16, y=0.94)
 plt.title(f"On {af.name} Airfoil (out-of-sample)", fontsize=12, alpha=0.7)
 
 plt.xlabel("Drag Coefficient $C_D$")
