@@ -39,7 +39,7 @@ fig, ax = plt.subplots(
     nrows=2,
     figsize=(12, 8),
     sharex=True,
-    sharey=True,
+    # sharey=True,
 )
 ax_f = ax.flatten()
 
@@ -106,7 +106,7 @@ for i, (title, log_file_value) in enumerate(log_file_ids.items()):
         #     color=lines[0].get_color(), alpha=0.7,
         #     label=key, zorder=4
         # )
-
+    plt.ylim(*np.array([0.99, 1.01]) * data["Test Loss"][-1])
     plt.yscale('log')
     # plt.ylim(2e-3, 2e-2)
     plt.title(f"{title}\nCD {np.median(data['ln_CD'][-10:]):.4f}")

@@ -9,7 +9,7 @@ Re = 1e6
 
 for model_size in ["xxsmall", "xsmall", "small", "medium", "large", "xlarge", "xxlarge", "xxxlarge"]:
 
-    n_runs = 1
+    n_runs = 100000
 
 
     def func():
@@ -22,29 +22,16 @@ for model_size in ["xxsmall", "xsmall", "small", "medium", "large", "xlarge", "x
         )
 
 
-    time_total, _ = time_function(func, desired_runtime=0.2)
+    time_total, _ = time_function(func, desired_runtime=1)
     print(model_size, time_total)
 
-def func():
-    alpha = np.linspace(0, 10, 200)
-    np.random.shuffle(alpha)
-    xf = asb.XFoil(
-        airfoil=airfoil,
-        Re=Re
-    ).alpha(alpha)
-    
-time_total, _ = time_function(func)
-print("XFoil", time_total)
-
-from neuralfoil.CL_linear_regression import get_CL
-
-def func():
-    alpha = np.linspace(0, 10, 1)
-    get_CL(
-        airfoil=airfoil,
-        alpha=alpha,
-        Re=Re
-    )
-
-time_total, _ = time_function(func)
-print("CL Regression", time_total)
+# def func():
+#     alpha = np.linspace(0, 10, 200)
+#     np.random.shuffle(alpha)
+#     xf = asb.XFoil(
+#         airfoil=airfoil,
+#         Re=Re
+#     ).alpha(alpha)
+#
+# time_total, _ = time_function(func)
+# print("XFoil", time_total)

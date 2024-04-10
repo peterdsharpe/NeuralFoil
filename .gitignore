@@ -288,3 +288,11 @@ TSWLatexianTemp*
 
 # xwatermark package
 *.xwm
+/paper/cover_letter.txt
+/studies/poststall/drag.jpg
+/studies/poststall/lift.jpg
+/studies/poststall/moment.jpg
+/studies/poststall/source_info.txt
+/studies/poststall/wpd_project_drag.tar
+/studies/poststall/wpd_project_lift.tar
+/studies/poststall/wpd_project_moment.tar
