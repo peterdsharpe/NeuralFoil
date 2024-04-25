@@ -37,7 +37,6 @@ training_data.zip
 # *.pdf
 
 ## User Files
-main.pdf
 .idea/
 .vscode/
 *.pyc
