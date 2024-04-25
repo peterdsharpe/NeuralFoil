@@ -28,7 +28,7 @@ pip install neuralfoil
 
 **[For example usage of NeuralFoil, see the AeroSandbox tutorials](https://github.com/peterdsharpe/AeroSandbox/tree/master/tutorial/06%20-%20Aerodynamics/02%20-%20AeroSandbox%202D%20Aerodynamics%20Tools).**
 
-**[For extended technical details and validation studies, see the pre-print of the NeuralFoil paper](./paper/out/main.pdf).**
+**[For extended technical details and validation studies, see the pre-print of the NeuralFoil paper](./paper/out/main.pdf).** [Citation information is available here](#citing-neuralfoil).
 
 ## Overview
 
