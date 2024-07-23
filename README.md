@@ -200,7 +200,7 @@ Why not use a neural network trained on RANS CFD instead?
 
 Why not use a neural network trained on wind tunnel data?
 
-> This is a super-cool idea, and I'd love to see someone try it! My guess is that you'd need some kind of morphing wing section (and a way of precisely measuring the shape) in order to get enough data samples to "span" the airfoil design space. Then, you'd just let the wing section sit in the wind tunnel for a few days morphing itself around to collect data, then train a model on that. This would be really awesome, someone should do it!
+> This is a super-cool idea, and I'd love to see someone try it! My guess is that you'd need some kind of morphing wing section (and a way of precisely measuring the shape) in order to get enough data samples to "span" the airfoil design space. Then, you'd just let the wing section sit in the wind tunnel for a few days morphing itself around in millions of permutations to collect data, then train a model on that. Would be pretty cool stuff!
 
 What's the underlying neural network architecture used in NeuralFoil?
 
