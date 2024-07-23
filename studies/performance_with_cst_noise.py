@@ -104,6 +104,16 @@ for waf, noise in tuple(zip(wiggly_airfoils, relative_noises))[::5]:
     afax.set_ylim(-0.28, 0.28)
     afax.set_aspect("equal", adjustable="box")
 
+plt.annotate(
+    text="\"Relative Noise Magnitude\" is the (scale of the added noise) / (median CST weight magnitude).",
+    xy=(0.02, 0.02),
+    xycoords="figure fraction",
+    ha="left",
+    color='gray',
+    fontsize=9
+)
+
+
 p.show_plot(
     title="Effect of CST Noise on NeuralFoil Performance",
     xlabel="Relative Noise Magnitude [%]",
