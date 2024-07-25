@@ -146,8 +146,6 @@ To run models, NeuralFoil currently requires minimal dependencies:
 * [NumPy](https://numpy.org/)
 * [AeroSandbox](https://github.com/peterdsharpe/AeroSandbox) 4.0.10+
 
-Currently, NeuralFoil only uses AeroSandbox for airfoil geometry parameterization (i.e., converting from a set of points to a CST parameterization, which is solved as an optimization problem)—the actual math is implemented in pure NumPy. Recent progress on this CST parameterization-fitting problem has allowed it to be recast as a least-squares problem, which is potentially amenable to a pure-NumPy implementation. That being said, AeroSandbox provides a bunch of nice peripheral utilities (e.g., geometry manipulation, visualization, etc.), so it's a nice dependency to have anyway. However, if you'd like to work on a pure-NumPy implementation, open an issue and let me know!
-
 ## Geometry Parameterization and Training Data
 
 #### Geometry Parameterization
