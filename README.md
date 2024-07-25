@@ -111,9 +111,21 @@ This table details both of these considerations. The first few columns show the 
 
 > † The deviation of $\ln(C_D)$ can be thought of as "the typical relative error in $C_D$". For example, if the mean absolute error ("MAE", or $L^1$ norm) of $\ln(C_D)$ is 0.020, you can think of it as "typically, drag is accurate to within 2.0% of XFoil." Note that this doesn't necessarily mean that NeuralFoil is *less* accurate than XFoil - although XFoil is quite accurate, it is clearly not a perfect "ground truth" in all cases (see $Re=\mathrm{90k}$ in the [figure above](#clcd-polar)). So, NeuralFoil's true accuracy compared to experiment may differ (in either direction) from the numbers in this table.
 
+A better way to look at this tradeoff against XFoil is to assess speedup *while controlling for equivalent accuracy*. (After all, [it is usually trivial to get a speedup if you don't care about accuracy](https://x.com/shoyer/status/1362301955243057154).) This is shown in the plot below, where we vary the accuracy "knobs" for both XFoil and NeuralFoil - discretization resolution for XFoil, and model size for NeuralFoil. As shown here, NeuralFoil achieves a ~8x speedup over XFoil for a given level of accuracy, if a single analysis is run. For batched analyses, the vectorization advantage of NeuralFoil can result in speedups of nearly 1,000x at the same accuracy. More details about this benchmark setup are available in the NeuralFoil [whitepaper](./paper/out/main.pdf).
+
+![Speed-accuracy trade against XFoil](./studies/speed_vs_xfoil_at_constant_accuracy/speed_vs_accuracy_tradeoff.svg)
+
 Based on these performance numbers, you can select the right tradeoff between accuracy and computational cost for your application. In general, I recommend starting with the ["large"](#overview) model and adjusting from there.
 
 In addition to accuracy vs. speed, another consideration when choosing the right model is what you're trying to use NeuralFoil for. Larger models will be more complicated ("less parsimonious," as the math kids would say), which means that they may have more "wiggles" in their outputs as they track XFoil's physics more closely. This might be undesirable for gradient-based optimization. On the other hand, larger models will be able to capture a wider range of airfoils (e.g., nonsensical, weirdly-shaped airfoils that might be seen mid-optimization), so larger models could have a benefit in that sense. If you try a specific application and have better/worse results with a specific model, let me know by opening a GitHub issue!
+
+## Airfoil Shape Optimization using NeuralFoil
+
+NeuralFoil can be used for airfoil shape optimization, in conjunction with [AeroSandbox](https://www.github.com/peterdsharpe/AeroSandbox). An example airfoil design optimization result is given in the NeuralFoil [whitepaper](./paper/out/main.pdf), where we optimize an airfoil shape for a human-powered aircraft application. This is a drag-minimization problem, subject to lift and pitching moment constraints, and manufacturing limits. 
+
+![daedalus_optimization.svg](./paper/TeX/figures/daedalus_optimization.svg)
+
+Here, NeuralFoil achieves performance equal to expert-designed airfoils. The entire optimization process takes roughly 30 seconds on a PC; optimization studies with a lower NeuralFoil `model_size` value can run as quick as half a second. Notably, if the problem formulation is well-posed, NeuralFoil will not "over-optimize" to achieve a solution that performs well at on-design conditions but very poorly when off-design. Compared to optimization by simple [wrapping of XFoil](https://github.com/montagdude/Xoptfoil) with a gradient-based optimizer, the resulting airfoils achieve better aerodynamic performance due to the [ragged nature of XFoil's gradients](https://websites.umich.edu/~mdolaboratory/pdf/Adler2022c.pdf). (Also, NeuralFoil-based optimization is much faster.)
 
 ## Extended Features (transonics, post-stall, control surface deflections)
 
