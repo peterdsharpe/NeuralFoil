@@ -72,12 +72,13 @@ aero = nf.get_aero_from_coordinates(  # You can use xy airfoil coordinates as an
     Re=5e6,
 )
 
+import aerosandbox as asb  # `pip install aerosandbox`
 aero = nf.get_aero_from_airfoil(  # You can use AeroSandbox airfoils as an entry point
-    airfoil=asb.Airfoil("naca4412"),  # `import aerosandbox as asb`, any UIUC or NACA airfoil name works
+    airfoil=asb.Airfoil("naca4412"),  # any UIUC or NACA airfoil name works
     alpha=5, Re=5e6,
 )
 
-# `aero` is a dictionary with keys: ["CL", "CD", "CM", "Cpmin", "Top_Xtr", "Bot_Xtr"]
+# `aero` is a dictionary with keys: ["analysis_confidence", "CL", "CD", "CM", "Top_Xtr", "Bot_Xtr", ...]
 ```
 
 ## Performance
