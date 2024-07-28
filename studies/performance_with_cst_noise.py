@@ -1,6 +1,7 @@
 import aerosandbox as asb
 import aerosandbox.numpy as np
 import neuralfoil as nf
+from tqdm import tqdm
 
 af = asb.KulfanAirfoil("naca0012")
 
@@ -17,22 +18,30 @@ def get_airfoil_with_wiggly_noise(relative_noise: float) -> asb.KulfanAirfoil:
     return asb.KulfanAirfoil(
         name=f"{af.name} + Wiggly Noise of {relative_noise * .2:%}",
         lower_weights=af.lower_weights + noise * wiggle_basis_vector,
-        upper_weights=af.upper_weights + noise * wiggle_basis_vector,
+        upper_weights=af.upper_weights - noise * wiggle_basis_vector,
         leading_edge_weight=af.leading_edge_weight,
         TE_thickness=af.TE_thickness,
     )
 
 
-relative_noises = np.linspace(0, 1, 21)
+relative_noises = np.linspace(0, 2, 101)
 wiggly_airfoils = get_airfoil_with_wiggly_noise(relative_noises)
-nf_aeros = [waf.get_aero_from_neuralfoil(alpha=5, Re=1e6) for waf in wiggly_airfoils]
+nf_aeros = [
+    waf.get_aero_from_neuralfoil(
+        alpha=5,
+        Re=1e6,
+        model_size="xxxlarge",
+    )
+    for waf in wiggly_airfoils
+]
 xf_aeros = [
     asb.XFoil(
         airfoil=waf,
         Re=1e6,
         mach=0,
+        timeout=3,
     ).alpha(5)
-    for waf in wiggly_airfoils
+    for waf in tqdm(wiggly_airfoils, desc="XFoil")
 ]
 
 ### Below is just plotting code
@@ -42,8 +51,12 @@ import aerosandbox.tools.pretty_plots as p
 
 fig, ax = plt.subplots(2, 1)
 
-ax[0].plot(relative_noises, [aero["CD"] for aero in nf_aeros], label=f"NeuralFoil")
-ax[0].plot(relative_noises, [aero["CD"] for aero in xf_aeros], label=f"XFoil")
+nf_cd = [aero["CD"] for aero in nf_aeros]
+xf_cd = [aero["CD"] for aero in xf_aeros]
+xf_cd = [float(cd[0]) if len(cd) == 1 else np.nan for cd in xf_cd]
+
+ax[0].plot(relative_noises, nf_cd, label=f'NeuralFoil "xxxlarge"', zorder=5)
+ax[0].plot(relative_noises, xf_cd, ".k", label=f"XFoil (ground truth)")
 ax[0].set_ylabel("$C_D$")
 ax[0].legend()
 
@@ -52,6 +65,34 @@ ax[1].plot(
     [aero["analysis_confidence"] for aero in nf_aeros],
 )
 ax[1].set_ylabel("NeuralFoil\nAnalysis\nConfidence")
+plt.annotate(
+    text="Nose becomes too sharp;\nphysics assumptions starting to break.",
+    xy=(0.72, 0.4),
+    xytext=(0.9, 0.7),
+    xycoords="data",
+    fontsize=8,
+    arrowprops={
+        "color"     : "k",
+        "width"     : 0.25,
+        "headwidth" : 4,
+        "headlength": 6,
+    }
+)
+
+plt.annotate(
+    text="Airfoil becomes self-intersecting;\nanalysis confidence\neffectively goes to zero.",
+    xy=(1.2, 0.05),
+    xytext=(1.3, 0.30),
+    xycoords="data",
+    fontsize=8,
+    arrowprops={
+        "color"     : "k",
+        "width"     : 0.25,
+        "headwidth" : 4,
+        "headlength": 6,
+    }
+)
+
 
 for a in ax:
     a.xaxis.set_major_formatter(p.mpl.ticker.PercentFormatter(xmax=1))
@@ -59,7 +100,9 @@ for a in ax:
 plt.tight_layout(rect=[0.05, 0.1, 1, 0.93], h_pad=2)
 
 # Draw the airfoils
-for waf, noise in tuple(zip(wiggly_airfoils, relative_noises))[::5]:
+draw_indices = np.round(np.linspace(0, len(wiggly_airfoils) - 1, 8)).astype(int)
+
+for waf, noise in tuple(zip(wiggly_airfoils[draw_indices], relative_noises[draw_indices])):
     # Gets the figure-coordinates of the data point on ax[2]
     x, y = ax[1].transData.transform([noise, 0])
     display_center = np.array(
@@ -90,6 +133,7 @@ for waf, noise in tuple(zip(wiggly_airfoils, relative_noises))[::5]:
         ],
         zorder=10,
     )
+    waf = waf.rotate(np.radians(-5))
     afax.fill(
         waf.x(),
         waf.y(),
@@ -105,12 +149,12 @@ for waf, noise in tuple(zip(wiggly_airfoils, relative_noises))[::5]:
     afax.set_aspect("equal", adjustable="box")
 
 plt.annotate(
-    text="\"Relative Noise Magnitude\" is the (scale of the added noise) / (median CST weight magnitude).",
+    text='"Relative Noise Magnitude" is the (scale of the added noise) / (median CST weight magnitude).',
     xy=(0.02, 0.02),
     xycoords="figure fraction",
     ha="left",
-    color='gray',
-    fontsize=9
+    color="gray",
+    fontsize=9,
 )
 
 
