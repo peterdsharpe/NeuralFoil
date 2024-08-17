@@ -26,6 +26,10 @@ NeuralFoil aims to be lightweight, with [minimal dependencies](#dependencies-que
 pip install neuralfoil
 ```
 
+![input-output diagram](./media/io_diagram/neuralfoil_io.png)
+
+([The above figure is an excerpt from the author's PhD thesis; see here for a link](#citing-neuralfoil))
+
 **[For example usage of NeuralFoil, see the AeroSandbox tutorials](https://github.com/peterdsharpe/AeroSandbox/tree/master/tutorial/06%20-%20Aerodynamics/02%20-%20AeroSandbox%202D%20Aerodynamics%20Tools).**
 
 **[For extended technical details and validation studies, see the pre-print of the NeuralFoil paper](./paper/out/main.pdf).** [Citation information is available here](#citing-neuralfoil).
@@ -236,7 +240,9 @@ NeuralFoil is licensed under the MIT license. Please see the [LICENSE](LICENSE.t
 
 ## Citing NeuralFoil
 
-If you use NeuralFoil in your research, please cite it as follows:
+If you use NeuralFoil in your research, please cite:
+
+Both the tool itself (this repository):
 
 ```
 @misc{neuralfoil,
@@ -248,3 +254,18 @@ If you use NeuralFoil in your research, please cite it as follows:
   howpublished = {\url{https://github.com/peterdsharpe/NeuralFoil}},
 }
 ```
+
+And [the author's PhD thesis](https://github.com/peterdsharpe/AeroSandbox/blob/master/tutorial/sharpe-pds-phd-AeroAstro-2024-thesis.pdf), which serves as the primary documentation for the tool:
+
+```bibtex
+@phdthesis{aerosandbox_phd_thesis,
+   title = {Accelerating Practical Engineering Design Optimization with Computational Graph Transformations},
+   author = {Sharpe, Peter D.},
+   school = {Massachusetts Institute of Technology}, 
+   year = {2024},
+}
+```
+
+
+
+More information is also available in the author's PhD thesis, which is available 
