@@ -55,7 +55,7 @@ setup(
     python_requires='>=3.7',
     install_requires=[
         'numpy >= 1',
-        'aerosandbox >= 4.2.4'
+        'aerosandbox >= 4.2.4, <4.3.0'
     ],
     extras_require={
         "training": [
