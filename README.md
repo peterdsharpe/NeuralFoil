@@ -255,7 +255,7 @@ Both the tool itself (this repository):
 }
 ```
 
-And [the author's PhD thesis](https://github.com/peterdsharpe/AeroSandbox/blob/master/tutorial/sharpe-pds-phd-AeroAstro-2024-thesis.pdf), which serves as the primary documentation for the tool:
+And [the author's PhD thesis](https://github.com/peterdsharpe/AeroSandbox/blob/master/tutorial/sharpe-pds-phd-AeroAstro-2024-thesis.pdf), which has a full chapter that serves as the primary long-form documentation for the tool:
 
 ```bibtex
 @phdthesis{aerosandbox_phd_thesis,
