@@ -244,7 +244,7 @@ If you use NeuralFoil in your research, please cite:
 
 Both the tool itself (this repository):
 
-```
+```bibtex
 @misc{neuralfoil,
   author = {Peter Sharpe},
   title = {{NeuralFoil}: An airfoil aerodynamics analysis tool using physics-informed machine learning},
