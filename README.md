@@ -265,7 +265,3 @@ And [the author's PhD thesis](https://github.com/peterdsharpe/AeroSandbox/blob/m
    year = {2024},
 }
 ```
-
-
-
-More information is also available in the author's PhD thesis, which is available 
