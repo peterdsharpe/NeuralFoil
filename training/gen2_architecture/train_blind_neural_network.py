@@ -236,7 +236,7 @@ if __name__ == '__main__':
 
     n_batches_per_epoch = len(train_loader)
 
-    num_epochs = 100000000
+    num_epochs = 10 ** 9  # Effectively loop until manually stopped
     for epoch in range(num_epochs):
         # Put the model in training mode
         net.train()
