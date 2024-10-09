@@ -221,14 +221,14 @@ What's the underlying neural network architecture used in NeuralFoil?
 
 > To be written, but it is essentially a feed-forward neural network with a varying number of total layers and layer width depending on model size. Layer counts and widths were [determined through extensive trial and error](./training/supercloud_job_id_notes.log), in conjunction with observed test- and train-loss values. All layers are dense (fully connected, with weights and biases). All activation functions between layers are $\tanh$, to preserve $C^\infty$-continuity. The number of layers and layer width are as follows:
 > 
-> * xxsmall:  2 layers,  32 wide.
-> * xsmall:   3 layers,  32 wide.
-> * small:    3 layers,  48 wide.
-> * medium:   4 layers,  64 wide.
-> * large:    4 layers, 128 wide.
-> * xlarge:   4 layers, 256 wide.
-> * xxlarge:  5 layers, 256 wide.
-> * xxxlarge: 5 layers, 512 wide.
+> * xxsmall:&nbsp;&nbsp;2 layers,  32 wide.
+> * xsmall:&nbsp;&nbsp;&nbsp;3 layers,  32 wide.
+> * small:&nbsp;&nbsp;&nbsp;&nbsp;3 layers,  48 wide.
+> * medium:&nbsp;&nbsp;&nbsp;4 layers,  64 wide.
+> * large:&nbsp;&nbsp;&nbsp;&nbsp;4 layers, 128 wide.
+> * xlarge:&nbsp;&nbsp;&nbsp;4 layers, 256 wide.
+> * xxlarge:&nbsp;&nbsp;5 layers, 256 wide.
+> * xxxlarge:&nbsp;5 layers, 512 wide.
 
 ## Acknowledgements
 
