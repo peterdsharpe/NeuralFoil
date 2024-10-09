@@ -114,7 +114,7 @@ This table details both of these considerations. The first few columns show the 
 
 <table><thead><tr><th>Aerodynamics Model</th><th colspan="4">Mean Absolute Error (MAE) of Given Metric, on the Test Dataset, with respect to XFoil</th><th colspan="2">Computational Cost to Run</th></tr></thead><tbody><tr><td></td><td>Lift Coeff.<br>$C_L$</td><td>Fractional Drag Coeff.<br>$\ln(C_D)$&nbsp;&nbsp;&nbsp;†</td><td>Moment Coeff.<br>$C_M$</td><td>Transition Locations<br>$x_{tr}/c$</td><td>Runtime<br>(1 run)</td><td>Total Runtime<br>(100,000 runs)</td></tr><tr><td>NF "xxsmall"</td><td>0.040</td><td>0.078</td><td>0.007</td><td>0.044</td><td>4 ms</td><td>0.85 sec</td></tr><tr><td>NF "xsmall"</td><td>0.030</td><td>0.057</td><td>0.005</td><td>0.033</td><td>4 ms</td><td>0.96 sec</td></tr><tr><td>NF "small"</td><td>0.027</td><td>0.050</td><td>0.005</td><td>0.027</td><td>5 ms</td><td>1.08 sec</td></tr><tr><td>NF "medium"</td><td>0.020</td><td>0.039</td><td>0.003</td><td>0.020</td><td>5 ms</td><td>1.29 sec</td></tr><tr><td>NF "large"</td><td>0.016</td><td>0.030</td><td>0.003</td><td>0.014</td><td>8 ms</td><td>2.23 sec</td></tr><tr><td>NF "xlarge"</td><td>0.013</td><td>0.024</td><td>0.002</td><td>0.010</td><td>13 ms</td><td>4.21 sec</td></tr><tr><td>NF "xxlarge"</td><td>0.012</td><td>0.022</td><td>0.002</td><td>0.009</td><td>16 ms</td><td>5.16 sec</td></tr><tr><td>NF "xxxlarge"</td><td>0.012</td><td>0.020</td><td>0.002</td><td>0.007</td><td>56 ms</td><td>13.6 sec</td></tr><tr><td>XFoil</td><td>0</td><td>0</td><td>0</td><td>0</td><td>73 ms</td><td>42 min</td></tr></tbody></table>
 
-> † The deviation of $\ln(C_D)$ can be thought of as "the typical relative error in $C_D$". For example, if the mean absolute error ("MAE", or $L^1$ norm) of $\ln(C_D)$ is 0.020, you can think of it as "typically, drag is accurate to within 2.0% of XFoil." Note that this doesn't necessarily mean that NeuralFoil is *less* accurate than XFoil - although XFoil is quite accurate, it is clearly not a perfect "ground truth" in all cases (see $Re=\mathrm{90k}$ in the [figure above](#clcd-polar)). So, NeuralFoil's true accuracy compared to experiment may differ (in either direction) from the numbers in this table.
+> † The deviation of $\ln(C_D)$ can be thought of as "the typical relative error in $C_D$". For example, if the mean absolute error ("MAE", or $L^1$ norm) of $\ln(C_D)$ is 0.020, you can think of it as "typically, drag is accurate to within 2.0% of XFoil." Note that this doesn't necessarily mean that NeuralFoil is *less* accurate than XFoil - although XFoil is quite accurate, it is clearly not a perfect "ground truth" in all cases (see $Re=\mathrm{80k}$ in the [figure above](#clcd-polar)). So, NeuralFoil's true accuracy compared to experiment may differ (in either direction) from the numbers in this table.
 
 A better way to look at this tradeoff against XFoil is to assess speedup *while controlling for equivalent accuracy*. (After all, [it is usually trivial to get a speedup if you don't care about accuracy](https://x.com/shoyer/status/1362301955243057154).) This is shown in the plot below, where we vary the accuracy "knobs" for both XFoil and NeuralFoil - discretization resolution for XFoil, and model size for NeuralFoil. As shown here, NeuralFoil achieves a ~8x speedup over XFoil for a given level of accuracy, if a single analysis is run. For batched analyses, the vectorization advantage of NeuralFoil can result in speedups of nearly 1,000x at the same accuracy. More details about this benchmark setup are available in the NeuralFoil [whitepaper](./paper/out/main.pdf).
 
@@ -221,14 +221,14 @@ What's the underlying neural network architecture used in NeuralFoil?
 
 > To be written, but it is essentially a feed-forward neural network with a varying number of total layers and layer width depending on model size. Layer counts and widths were [determined through extensive trial and error](./training/supercloud_job_id_notes.log), in conjunction with observed test- and train-loss values. All layers are dense (fully connected, with weights and biases). All activation functions between layers are $\tanh$, to preserve $C^\infty$-continuity. The number of layers and layer width are as follows:
 > 
-> * xxsmall: 2 layers,  32 wide.
-> * xsmall:  3 layers,  32 wide.
-> * small:   3 layers,  48 wide.
-> * medium:  4 layers,  64 wide.
-> * large:   4 layers, 128 wide.
-> * xlarge:  4 layers, 256 wide.
-> * xxlarge: 5 layers, 256 wide.
-> * xxxlarge:5 layers, 512 wide.
+> * xxsmall:&nbsp;&nbsp;&nbsp;2 layers,  32 wide.
+> * xsmall:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 layers,  32 wide.
+> * small:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 layers,  48 wide.
+> * medium:&nbsp;&nbsp;4 layers,  64 wide.
+> * large:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4 layers, 128 wide.
+> * xlarge:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4 layers, 256 wide.
+> * xxlarge:&nbsp;&nbsp;&nbsp;5 layers, 256 wide.
+> * xxxlarge:&nbsp;5 layers, 512 wide.
 
 ## Acknowledgements
 
