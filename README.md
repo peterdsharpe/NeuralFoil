@@ -229,7 +229,7 @@ Why not use a neural network trained on wind tunnel data?
 
 What's the underlying neural network architecture used in NeuralFoil?
 
-> Surprisingly basic - the NN core itself is a simple MLP with a varying number of total layers and layer width depending on model size. Layer counts and widths were [determined through extensive trial and error](./training/supercloud_job_id_notes.log), in conjunction with observed test- and train-loss values. All layers are dense (fully connected, with weights and biases). All activation functions between layers are $\tanh$, to preserve $C^\infty$-continuity. The number of layers and layer width are as follows:
+> Surprisingly basic - when all the peripherals are stripped away, the learned core itself is a simple MLP with a varying number of total layers and layer width depending on model size. Layer counts and widths were [determined through extensive trial and error](./training/supercloud_job_id_notes.log), in conjunction with observed test- and train-loss values. All layers are dense (fully connected, with weights and biases). All activation functions between layers are $\tanh$, to preserve $C^\infty$-continuity. The number of layers and layer width are as follows:
 > 
 > * xxsmall: 2 layers,  32 wide.
 > * xsmall:  3 layers,  32 wide.
