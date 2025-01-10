@@ -105,7 +105,7 @@ NeuralFoil also [has the benefit of smoothing out XFoil's "jagged" predictions](
 	<img src="./benchmarking/neuralfoil_point_comparison_with_analysis_confidence.svg" width="1000" />
 </p>
 
-Due to domain knowledge embedded into its architecture, NeuralFoil is unusually capable of accurate generalization well beyond its training data. For example, the figure below shows that NeuralFoil can accurately predict aerodynamics on airfoils with extreme control surface deflections - despite the fact that none of NeuralFoil's training samples have any deflected control surfaces. More details on this benchmark setup are available in the [NeuralFoil whitepaper](./paper/out/main.pdf).
+Due to domain knowledge embedded into its architecture, NeuralFoil is unusually capable of accurate generalization well beyond its training data. For example, the figure below shows that NeuralFoil can accurately predict aerodynamics on airfoils with extreme control surface deflections - despite the fact that none of NeuralFoil's training samples have deflected control surfaces. More details on this benchmark setup are available in the [NeuralFoil whitepaper](./paper/out/main.pdf).
 
 <p align="center">
     <img src="./studies/control_surface_accuracy.svg" width="700" />
