@@ -18,7 +18,7 @@ For aerodynamics experts: NeuralFoil will also give you fine-grained boundary la
 
 A unique feature of NeuralFoil is that every analysis will also return an `"analysis_confidence"` output, measures uncertainty. This is especially useful for design optimization, where constraining this uncertainty parameter will help ensure your designs are [robust to small changes in shape and flow conditions.](https://web.mit.edu/drela/OldFiles/Public/papers/Pros_Cons_Airfoil_Optimization.pdf)
 
-NeuralFoil is [~10x faster than XFoil for a single analysis, and ~1000x faster for multipoint analysis](#speed-accuracy), all with [minimal loss in accuracy compared to XFoil](#accuracy). Due to the wide variety of training data and the embedding of several physics-based invariants, [this accuracy is seen even on out-of-sample airfoils](#accuracy) (i.e., airfoils it wasn't trained on). It also has [many nice features](#xfoil-benefit-question) (e.g., smoothness, vectorization, all in Python+NumPy) that make it much easier to use.
+NeuralFoil is [~10x faster than XFoil for a single analysis, and ~1000x faster for multipoint analysis](#speed), all with [minimal loss in accuracy compared to XFoil](#accuracy). Due to the wide variety of training data and the embedding of several physics-based invariants, [this accuracy is seen even on out-of-sample airfoils](#accuracy) (i.e., airfoils it wasn't trained on). It also has [many nice features](#xfoil-benefit-question) (e.g., smoothness, vectorization, all in Python+NumPy) that make it much easier to use.
 
 NeuralFoil aims to be lightweight, with [minimal dependencies](#dependencies-question) and a [tight, efficient, and easily-understood code-base](./neuralfoil/gen1_architecture) (less than 500 lines of user-facing code).
 
@@ -105,7 +105,13 @@ NeuralFoil also [has the benefit of smoothing out XFoil's "jagged" predictions](
 	<img src="./benchmarking/neuralfoil_point_comparison_with_analysis_confidence.svg" width="1000" />
 </p>
 
-### Speed-Accuracy
+Due to domain knowledge embedded into its architecture, NeuralFoil is unusually capable of generalizing accurately well beyond its training data. For example, the figure below shows that NeuralFoil can accurately predict aerodynamics on airfoils with extreme control surface deflections - despite the fact that none of NeuralFoil's training samples have any deflected control surfaces. More details on this benchmark setup are available in the [NeuralFoil whitepaper](./paper/out/main.pdf).
+
+<p align="center">
+    <img src="./studies/control_surface_accuracy.svg" width="1000" />
+</p>
+
+### Speed
 
 In the table below, we quantify the performance of the NeuralFoil ("NF") models with respect to XFoil more precisely. At a basic level, we care about two things:
 
@@ -118,7 +124,7 @@ This table details both of these considerations. The first few columns show the 
 
 > † The deviation of $\ln(C_D)$ can be thought of as "the typical relative error in $C_D$". For example, if the mean absolute error ("MAE", or $L^1$ norm) of $\ln(C_D)$ is 0.020, you can think of it as "typically, drag is accurate to within 2.0% of XFoil." Note that this doesn't necessarily mean that NeuralFoil is *less* accurate than XFoil - although XFoil is quite accurate, it is clearly not a perfect "ground truth" in all cases (see $Re=\mathrm{90k}$ in the [figure above](#clcd-polar)). So, NeuralFoil's true accuracy compared to experiment may differ (in either direction) from the numbers in this table.
 
-A better way to look at this tradeoff against XFoil is to assess speedup *while controlling for equivalent accuracy*. (After all, [it is usually trivial to get a speedup if you don't care about accuracy - just use a coarser discretization](https://x.com/shoyer/status/1362301955243057154).) This is shown in the plot below, where we vary the accuracy "knobs" for both XFoil and NeuralFoil - discretization resolution for XFoil, and model size for NeuralFoil. As shown here, NeuralFoil achieves a ~8x speedup over XFoil for a given level of accuracy, if a single analysis is run. For batched analyses, the vectorization advantage of NeuralFoil can result in speedups of nearly 1,000x at the same accuracy. More details about this benchmark setup are available in the NeuralFoil [whitepaper](./paper/out/main.pdf).
+A better way to look at this tradeoff against XFoil is to assess speedup *while controlling for equivalent accuracy*. (After all, [it is usually trivial to get a speedup if you don't care about accuracy - just use a coarser discretization](https://x.com/shoyer/status/1362301955243057154).) This is shown in the plot below, where we vary the accuracy "knobs" for both XFoil and NeuralFoil - discretization resolution for XFoil, and model size for NeuralFoil. As shown here, NeuralFoil achieves a ~8x speedup over XFoil for a given level of accuracy, if a single analysis is run. For batched analyses, the vectorization advantage of NeuralFoil can result in speedups of nearly 1,000x at the same accuracy. More details on this benchmark setup are available in the [NeuralFoil whitepaper](./paper/out/main.pdf).
 
 ![Speed-accuracy trade against XFoil](./studies/speed_vs_xfoil_at_constant_accuracy/speed_vs_accuracy_tradeoff.svg)
 
