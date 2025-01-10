@@ -196,7 +196,7 @@ To be written, but in the meantime [see here](https://github.com/peterdsharpe/Ne
 
 Will NeuralFoil be integrated directly into [AeroSandbox](https://github.com/peterdsharpe/AeroSandbox)?
 
-> Yes, absolutely. However, the goal is to keep this NeuralFoil repository also available as a stand-alone module, if desired. This simplifies dependencies for people using NeuralFoil in other applications (e.g., flight simulation, real-time control on embedded systems, etc.), and makes it easier if someone wanted to port NeuralFoil to another language (e.g., C++, for use on an Arduino).
+> [It already is](#extended-features-transonics-post-stall-control-surface-deflections)! In fact, NeuralFoil's advanced features are only available through its AeroSandbox interface ([demo](https://github.com/peterdsharpe/AeroSandbox/blob/master/tutorial/06%20-%20Aerodynamics/02%20-%20AeroSandbox%202D%20Aerodynamics%20Tools/01%20-%20NeuralFoil.ipynb)). However, the goal is to *also* keep this NeuralFoil repository available as a small stand-alone module, if desired. This simplifies dependencies for people using NeuralFoil in non-design applications (e.g., flight simulation, real-time control on embedded systems, etc.), and makes it easier if someone wants to port NeuralFoil to another language.
 
 <a name="xfoil-benefit-question"></a>
 Why not just use XFoil directly?
@@ -225,11 +225,11 @@ Why not use a neural network trained on RANS CFD instead?
 
 Why not use a neural network trained on wind tunnel data?
 
-> This is a super-cool idea, and I'd love to see someone try it! My guess is that you'd need some kind of morphing wing section (and a way of precisely measuring the shape) in order to get enough data samples to "span" the airfoil design space. Then, you'd just let the wing section sit in the wind tunnel for a few days morphing itself around in millions of permutations to collect data, then train a model on that. Would be pretty cool stuff!
+> This is a super-cool idea, and I'd love to see someone try it! My guess is that you'd need some kind of morphing wing section (and a way of precisely measuring the shape) in order to get enough data samples to "span" the airfoil design space. Then, you'd just let the wing section sit in the wind tunnel for a few days morphing itself around in millions of permutations to collect data, then train a model on that. Would be pretty cool!
 
 What's the underlying neural network architecture used in NeuralFoil?
 
-> To be written, but it is essentially a feed-forward neural network with a varying number of total layers and layer width depending on model size. Layer counts and widths were [determined through extensive trial and error](./training/supercloud_job_id_notes.log), in conjunction with observed test- and train-loss values. All layers are dense (fully connected, with weights and biases). All activation functions between layers are $\tanh$, to preserve $C^\infty$-continuity. The number of layers and layer width are as follows:
+> Surprisingly basic - the NN core itself is a simple MLP with a varying number of total layers and layer width depending on model size. Layer counts and widths were [determined through extensive trial and error](./training/supercloud_job_id_notes.log), in conjunction with observed test- and train-loss values. All layers are dense (fully connected, with weights and biases). All activation functions between layers are $\tanh$, to preserve $C^\infty$-continuity. The number of layers and layer width are as follows:
 > 
 > * xxsmall: 2 layers,  32 wide.
 > * xsmall:  3 layers,  32 wide.
@@ -239,6 +239,8 @@ What's the underlying neural network architecture used in NeuralFoil?
 > * xlarge:  4 layers, 256 wide.
 > * xxlarge: 5 layers, 256 wide.
 > * xxxlarge:5 layers, 512 wide.
+>
+> The domain knowledge embedding (the "physics-informed" part) happens primarily in a) encoding/decoding latent space choices, b) symmetry embedding, and c) how the model dynamically fuses a learned model and an empirical model, depending on the uncertainty of the learned model. ([To dispel a misconception that is common even among ML practitioners, "physics informed machine learning" describes far beyond just PINNs - see Steve Brunton's taxonomy here](https://youtu.be/JoFW2uSd3Uo).) NeuralFoil is an interesting case study about how sophisticated ML architectures (e.g., neural operators, GNNs) or loss function crafting (e.g., PINNs) are not always the only or best ways to embed physics domain knowledge into a model. In fact, simple strategies can often yield compelling tradeoffs, as measured by speed vs. accuracy vs. data efficiency vs. generalizability.
 
 ## Acknowledgements
 
