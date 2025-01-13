@@ -168,7 +168,7 @@ As a user, you can give an airfoil in many different formats—for example, as a
 The airfoil shape fed into NeuralFoil's neural networks is in the form of an 8-parameter-per-side CST (Kulfan) parameterization, with Kulfan's added leading-edge-modification (LEM) and trailing-edge thickness parameter. This gives a total of (8 * 2 + 1 + 1) = 18 parameters to describe a given airfoil shape.
 
 <p align="center">
-    <img src="./media/kulfan_parameterization_illustration.svg" width="1000" />
+    <img src="./media/kulfan_parameterization_illustration.svg" width="700" />
 </p>
 
 For more details on this parameterization, or why it is a good choice, read:
