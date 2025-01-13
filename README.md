@@ -12,17 +12,13 @@ by [Peter Sharpe](https://peterdsharpe.github.io) (<pds [at] mit [dot] edu>)
 
 -----
 
-NeuralFoil is a tool for rapid aerodynamics analysis of airfoils, similar to [XFoil](https://web.mit.edu/drela/Public/web/xfoil/). Under the hood, NeuralFoil consists of physics-informed neural networks trained on [tens of millions of XFoil runs](#geometry-parameterization-and-training-data).
+**NeuralFoil** is a tool for rapid aerodynamics analysis of airfoils, similar to [XFoil](https://web.mit.edu/drela/Public/web/xfoil/). NeuralFoil is [a hybrid of physics-informed machine learning techniques and analytical models, leveraging domain knowledge](./paper/out/main.pdf). Its learned core is trained on [tens of millions of XFoil runs](#geometry-parameterization-and-training-data).
 
-NeuralFoil is available here as a pure Python+NumPy standalone, but it is also [available within AeroSandbox](#extended-features-transonics-post-stall-control-surface-deflections), which extends it with many more advanced features. Using the AeroSandbox extension, NeuralFoil can give you **viscous, compressible airfoil aerodynamics for (nearly) any airfoil, with control surface deflections, across $360^\circ$ angle of attack, at any Reynolds number, all nearly instantly** (~5 milliseconds). And, it's guaranteed to return an answer (no non-convergence issues), it's vectorized, and it's $C^\infty$-continuous (critical for gradient-based optimization). 
+NeuralFoil is available here as a pure Python+NumPy standalone, but it is also [available within AeroSandbox](#extended-features-transonics-post-stall-control-surface-deflections), which extends it with advanced features. With this extension, NeuralFoil can give you **viscous, compressible airfoil aerodynamics for (nearly) any airfoil, with control surface deflections, across $360^\circ$ angle of attack, at any Reynolds number, all very quickly** (~5 milliseconds). And, it's guaranteed to return an answer (no non-convergence issues), it's vectorized, and it's $C^\infty$-continuous (critical for gradient-based optimization). For aerodynamics experts: NeuralFoil will also give you fine-grained boundary layer control ($N_{\rm crit}$, forced trips) and information ($\theta$, $H$, $u_e/V_\infty$, and pressure distributions).
 
-For aerodynamics experts: NeuralFoil will also give you fine-grained boundary layer control ($N_{\rm crit}$, forced trips) and inspection results ($\theta$, $H$, $u_e/V_\infty$, and pressure distributions).
+A unique feature is that NeuralFoil also assesses its own trustworthiness, yielding an [`"analysis_confidence"`](#accuracy) output: queries where flow is sensitive or strongly out-of-distribution are flagged. This is especially useful for design optimization, where [constraining this uncertainty metric](https://github.com/peterdsharpe/AeroSandbox/blob/master/tutorial/06%20-%20Aerodynamics/02%20-%20AeroSandbox%202D%20Aerodynamics%20Tools/02%20-%20NeuralFoil%20Optimization.ipynb) ensures designs are practical: [robust to small changes in shape and flow conditions.](https://web.mit.edu/drela/OldFiles/Public/papers/Pros_Cons_Airfoil_Optimization.pdf)
 
-A unique feature of NeuralFoil is that every analysis will also return an `"analysis_confidence"` output, measures uncertainty. This is especially useful for design optimization, where constraining this uncertainty parameter will help ensure your designs are [robust to small changes in shape and flow conditions.](https://web.mit.edu/drela/OldFiles/Public/papers/Pros_Cons_Airfoil_Optimization.pdf)
-
-NeuralFoil is [~10x faster than XFoil for a single analysis, and ~1000x faster for multipoint analysis](#speed), all with [minimal loss in accuracy compared to XFoil](#accuracy). Due to the wide variety of training data and the embedding of several physics-based invariants, [this accuracy is seen even on out-of-sample airfoils](#accuracy) (i.e., airfoils it wasn't trained on). It also has [many nice features](#xfoil-benefit-question) (e.g., smoothness, vectorization, all in Python+NumPy) that make it much easier to use.
-
-NeuralFoil aims to be lightweight, with [minimal dependencies](#dependencies-question) and a [tight, efficient, and easily-understood code-base](./neuralfoil/gen1_architecture) (less than 500 lines of user-facing code).
+NeuralFoil is [~10x faster than XFoil for a single analysis, and ~1000x faster for multipoint analysis](#speed), all with [minimal loss in accuracy compared to XFoil](#accuracy). Due to the diversity of training data and the embedding of several physics-based invariants, [this accuracy is seen even on out-of-distribution airfoils](#accuracy) (i.e., airfoils it wasn't trained on). More comparisons to XFoil are [here](#xfoil-benefit-question). NeuralFoil aims to be lightweight, with [minimal dependencies](#dependencies-question) and a [small and easily-understood code-base](./neuralfoil/gen2_5_architecture/main.py) (<500 lines of user-facing code).
 
 ```
 pip install neuralfoil
@@ -30,11 +26,11 @@ pip install neuralfoil
 
 ![input-output diagram](./media/io_diagram/neuralfoil_io.png)
 
-([The above figure is an excerpt from the author's PhD thesis; see here for a link](#citing-neuralfoil))
+(The above figure is an excerpt from the [author's PhD thesis](#citing-neuralfoil))
 
-**[For example usage of NeuralFoil, see the AeroSandbox tutorials](https://github.com/peterdsharpe/AeroSandbox/tree/master/tutorial/06%20-%20Aerodynamics/02%20-%20AeroSandbox%202D%20Aerodynamics%20Tools).**
+**[For example usage of NeuralFoil, see here](https://github.com/peterdsharpe/AeroSandbox/tree/master/tutorial/06%20-%20Aerodynamics/02%20-%20AeroSandbox%202D%20Aerodynamics%20Tools).**
 
-**[For extended technical details and validation studies, see the pre-print of the NeuralFoil paper](./paper/out/main.pdf).** [Citation information is available here](#citing-neuralfoil).
+**[For more technical details, validation cases, and case studies, see the pre-print of the NeuralFoil paper](./paper/out/main.pdf).** ([Citation info here](#citing-neuralfoil)).
 
 ## Overview
 
@@ -254,7 +250,7 @@ NeuralFoil is licensed under the MIT license. Please see the [LICENSE](LICENSE.t
 
 If you use NeuralFoil in your research, please cite:
 
-Both the tool itself (this repository):
+Both the tool itself (this repository), which includes the [pre-print publication](./paper/out/main.pdf):
 
 ```bibtex
 @misc{neuralfoil,
@@ -267,7 +263,7 @@ Both the tool itself (this repository):
 }
 ```
 
-And [the author's PhD thesis](https://github.com/peterdsharpe/AeroSandbox/blob/master/tutorial/sharpe-pds-phd-AeroAstro-2024-thesis.pdf), which has a full chapter that serves as the primary long-form documentation for the tool:
+And [the author's PhD thesis](https://dspace.mit.edu/handle/1721.1/157809), which has an extended chapter that serves as the primary long-form documentation for the tool:
 
 ```bibtex
 @phdthesis{aerosandbox_phd_thesis,
