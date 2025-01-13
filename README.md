@@ -244,7 +244,7 @@ NeuralFoil was trained on MIT Supercloud, a high-performance computing cluster o
 
 ## License
 
-NeuralFoil is licensed under the MIT license. Please see the [LICENSE](LICENSE.txt) file for details.
+NeuralFoil is licensed under [the MIT license](LICENSE.txt).
 
 ## Citing NeuralFoil
 
