@@ -146,6 +146,8 @@ For more sophisticated airfoil aerodynamics calculations, consider using NeuralF
 * **Post-stall aerodynamics** (i.e., truly 360 degree range of $\alpha$). This is useful for applications like wind turbine blades or propeller roots, where the airfoil may be operating at high angles of attack.
 * **Control surface deflections**. Currently only trailing-edge control surface deflections are supported in AeroSandbox's NeuralFoil interface.
 
+Validation cases for all three features are given in the [NeuralFoil whitepaper](./paper/out/main.pdf).
+
 ## Installation
 
 [Install from PyPI](https://pypi.org/project/NeuralFoil/) with `pip install neuralfoil`.
