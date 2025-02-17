@@ -93,7 +93,7 @@ airfoils_and_colors = {
     "Initial Guess"           : (initial_guess_airfoil, "dimgray"),
     "NeuralFoil-Optimized"    : (optimized_airfoil, "blue"),
     "XFoil-Optimized"         :
-    (asb.Airfoil(coordinates=f"./assets/drela_opt6_90_dof.dat").to_kulfan_airfoil(), "darkgreen"),
+    (asb.Airfoil(coordinates="./assets/drela_opt6_90_dof.dat").to_kulfan_airfoil(), "darkgreen"),
     "Expert-Designed (DAE-11)": (asb.Airfoil("dae11"), "red"),
 }
 
@@ -133,7 +133,7 @@ ax[0].set_ylabel("$y/c$")
 ax[0].axis('equal')
 
 ax[1].legend(fontsize=11, loc="lower right", ncol=len(airfoils_and_colors) // 2)
-ax[1].set_title(f"Aerodynamic Polars (analyzed with XFoil, $\\mathrm{{Re}}=500\\mathrm{{k}}$)")
+ax[1].set_title("Aerodynamic Polars (analyzed with XFoil, $\\mathrm{Re}=500\\mathrm{k}$)")
 ax[1].set_xlabel("Drag Coefficient $C_D$")
 ax[1].set_ylabel("Lift\nCoefficient\n$C_L$")
 ax[1].set_xlim(0, 0.02)
