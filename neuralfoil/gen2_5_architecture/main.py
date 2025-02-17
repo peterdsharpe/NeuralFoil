@@ -329,6 +329,20 @@ def get_aero_from_airfoil(
     xtr_lower: Union[float, np.ndarray] = 1.0,
     model_size="large",
 ) -> Dict[str, Union[float, np.ndarray]]:
+    """
+    Computes aerodynamic coefficients and boundary layer parameters for an aerodynamics case.
+
+    Geometry is defined by an Airfoil object. Essentially, this function is a higher level of abstraction
+    around `get_aero_from_kulfan_parameters()`.
+
+    Args:
+        airfoil: An Airfoil or KulfanAirfoil object using AeroSandbox.
+
+        For other arguments, see `get_aero_from_kulfan_parameters()`.
+
+    Returns: A dictionary with outputs. See `get_aero_from_kulfan_parameters()` for details.
+
+    """
 
     ### Normalize the inputs and evaluate
     normalization_outputs = airfoil.normalize(return_dict=True)
@@ -371,6 +385,23 @@ def get_aero_from_coordinates(
     xtr_lower: Union[float, np.ndarray] = 1.0,
     model_size="large",
 ):
+    """
+    Computes aerodynamic coefficients and boundary layer parameters for an aerodynamics case.
+
+    Geometry is defined by a set of (x, y) coordinates. Essentially, this function is a higher level of
+    abstraction around `get_aero_from_kulfan_parameters()`.
+
+    Args:
+
+        coordinates: A numpy array of shape (N_points, 2) with the x and y coordinates of the airfoil.
+        Should be ordered in standard Selig format (i.e., starting from the upper-surface trailing edge,
+        going around the airfoil in a counterclockwise direction, ending at the lower-surface trailing edge).
+
+        For other arguments, see `get_aero_from_kulfan_parameters()`.
+
+    Returns: A dictionary with outputs. See `get_aero_from_kulfan_parameters()` for details.
+
+    """
     return get_aero_from_airfoil(
         airfoil=asb.Airfoil(coordinates=coordinates),
         alpha=alpha,
@@ -391,6 +422,21 @@ def get_aero_from_dat_file(
     xtr_lower: Union[float, np.ndarray] = 1.0,
     model_size="large",
 ):
+    """
+    Computes aerodynamic coefficients and boundary layer parameters for an aerodynamics case.
+
+    Geometry is defined by a set of (x, y) coordinates in a .dat file. Essentially, this function is a
+    higher level of abstraction around `get_aero_from_kulfan_parameters()`.
+
+    Args:
+
+        filename: A string with the path to the standard Selig-formatted .dat file defining an airfoil shape.
+
+        For other arguments, see `get_aero_from_kulfan_parameters()`.
+
+    Returns: A dictionary with outputs. See `get_aero_from_kulfan_parameters()` for details.
+
+    """
     with open(filename, "r") as f:
         raw_text = f.readlines()
 
