@@ -296,6 +296,9 @@ def get_aero_from_dat_file(
     filename,
     alpha: Union[float, np.ndarray],
     Re: Union[float, np.ndarray],
+    n_crit: Union[float, np.ndarray] = 9.0,
+    xtr_upper: Union[float, np.ndarray] = 1.0,
+    xtr_lower: Union[float, np.ndarray] = 1.0,
     model_size="large",
 ):
     with open(filename, "r") as f:
@@ -309,6 +312,9 @@ def get_aero_from_dat_file(
         coordinates=get_coordinates_from_raw_dat(raw_text=raw_text),
         alpha=alpha,
         Re=Re,
+        n_crit=n_crit,
+        xtr_upper=xtr_upper,
+        xtr_lower=xtr_lower,
         model_size=model_size,
     )
 
