@@ -3,7 +3,7 @@ import aerosandbox.numpy as np
 from typing import Optional
 from tqdm import tqdm
 from dataclasses import dataclass, field
-from functools import cached_property, lru_cache
+from functools import cached_property
 
 init_guess_af = asb.KulfanAirfoil("naca0012")
 
