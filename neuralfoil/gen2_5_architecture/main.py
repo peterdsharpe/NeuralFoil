@@ -1,25 +1,38 @@
 import aerosandbox as asb
 import aerosandbox.numpy as np
-from typing import Union, Dict, Set, List
+from typing import Union, Dict, Set, List, Iterable
 from pathlib import Path
+import re
 from neuralfoil.gen2_5_architecture._basic_data_type import Data
 
-npz_file_directory = Path(__file__).parent / "nn_weights_and_biases"
+nn_weights_dir = Path(__file__).parent / "nn_weights_and_biases"
 
 bl_x_points = Data.bl_x_points
 
 
-def _sigmoid(x):
+def _sigmoid(x: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
     return 1 / (1 + np.exp(-x))
 
 
-def _inverse_sigmoid(x):
+def _inverse_sigmoid(x: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
     return -np.log(1 / x - 1)
 
+### For speed, pre-loads parameters with statistics about the training distribution
+# Includes the mean, covariance, and inverse covariance of training data in the input latent space (25-dim)
+_scaled_input_distribution = dict(np.load(nn_weights_dir / "scaled_input_distribution.npz"))
+_scaled_input_distribution["N_inputs"]: int = len(_scaled_input_distribution["mean_inputs_scaled"])
 
-_scaled_input_distribution = dict(np.load(npz_file_directory / "scaled_input_distribution.npz"))
-_scaled_input_distribution["N_inputs"] = len(_scaled_input_distribution["mean_inputs_scaled"])
-
+### For speed, pre-loads the neural network weights and biases
+_nn_parameter_files: Iterable[Path] = nn_weights_dir.glob("nn-*.npz")
+_allowable_model_sizes: set[str] = set([
+    # regex parse to "large", "medium", "small", etc.
+    re.search(r"nn-(.*).npz", str(path)).group(1)
+    for path in _nn_parameter_files
+])
+_nn_parameters: dict[str, dict[str, np.ndarray]] = {
+    model_size: dict(np.load(nn_weights_dir / f"nn-{model_size}.npz"))
+    for model_size in _allowable_model_sizes
+}
 
 def _squared_mahalanobis_distance(x):
     d = _scaled_input_distribution
@@ -32,22 +45,20 @@ def _squared_mahalanobis_distance(x):
 
 
 def get_aero_from_kulfan_parameters(
-        kulfan_parameters: Dict[str, Union[float, np.ndarray]],
+        kulfan_parameters: dict[str, Union[float, np.ndarray]],
         alpha: Union[float, np.ndarray],
         Re: Union[float, np.ndarray],
         n_crit: Union[float, np.ndarray] = 9.0,
         xtr_upper: Union[float, np.ndarray] = 1.0,
         xtr_lower: Union[float, np.ndarray] = 1.0,
         model_size="large"
-) -> Dict[str, Union[float, np.ndarray]]:
-
-    ### Load the neural network parameters
-    filename = npz_file_directory / f"nn-{model_size}.npz"
-    if not filename.exists():
-        raise FileNotFoundError(
-            f"Could not find the neural network file {filename}, which contains the weights and biases.")
-
-    data: Dict[str, np.ndarray] = np.load(filename)
+) -> dict[str, Union[float, np.ndarray]]:
+    ### Validate inputs
+    if model_size not in _allowable_model_sizes:
+        raise ValueError(
+            f"Invalid {model_size=}. Must be one of {_allowable_model_sizes}."
+        )
+    nn_params: dict[str, np.ndarray] = _nn_parameters[model_size]
 
     ### Prepare the inputs for the neural network
     input_rows: List[Union[float, np.ndarray]] = [
@@ -80,7 +91,7 @@ def get_aero_from_kulfan_parameters(
     for i, row in enumerate(input_rows):
         input_rows[i] = np.ones(N_cases) * row
 
-    x = np.stack(input_rows, axis=1)  # N_cases x N_inputs
+    x = np.stack(input_rows, axis=1)  # shape: (N_cases, N_inputs)
     ##### Evaluate the neural network
 
     ### First, determine what the structure of the neural network is (i.e., how many layers it has) by looking at the keys.
@@ -88,30 +99,33 @@ def get_aero_from_kulfan_parameters(
     try:
         layer_indices: Set[int] = set([
             int(key.split(".")[1])
-            for key in data.keys()
+            for key in nn_params.keys()
         ])
     except TypeError:
         raise ValueError(
             f"Got an unexpected neural network file format.\n"
             f"Dictionary keys should be strings of the form 'net.0.weight', 'net.0.bias', 'net.2.weight', etc.'.\n"
-            f"Instead, got keys of the form {data.keys()}.\n"
+            f"Instead, got keys of the form {nn_params.keys()}.\n"
         )
     layer_indices: List[int] = sorted(list(layer_indices))
 
     ### Now, set up evaluation of the basic neural network.
-    def net(x: np.ndarray):
+    def net(x: np.ndarray) -> np.ndarray:
         """
         Evaluates the raw network (taking in scaled inputs and returning scaled outputs).
-        Input `x` dims: N_cases x N_inputs
-        Output `y` dims: N_cases x N_outputs
+
+        Works in the input and output latent spaces.
+
+        Input `x` shape: (N_cases, N_inputs)
+        Output `y` shape: (N_cases, N_outputs)
         """
         x = np.transpose(x)
         layer_indices_to_iterate = layer_indices.copy()
 
         while len(layer_indices_to_iterate) != 0:
             i = layer_indices_to_iterate.pop(0)
-            w = data[f"net.{i}.weight"]
-            b = data[f"net.{i}.bias"]
+            w = nn_params[f"net.{i}.weight"]
+            b = nn_params[f"net.{i}.bias"]
             x = w @ x + np.reshape(b, (-1, 1))
 
             if len(layer_indices_to_iterate) != 0:  # Don't apply the activation function on the last layer
