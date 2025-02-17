@@ -31,7 +31,7 @@ _scaled_input_distribution["N_inputs"]: int = len(
 _nn_parameter_files: Iterable[Path] = nn_weights_dir.glob("nn-*.npz")
 _allowable_model_sizes: set[str] = set(
     [
-        # regex parse to "large", "medium", "small", etc.
+        # regex parse, which results in the strings "large", "medium", "small", etc.
         re.search(r"nn-(.*).npz", str(path)).group(1)
         for path in _nn_parameter_files
     ]
