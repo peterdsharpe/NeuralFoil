@@ -255,23 +255,18 @@ Could you make NeuralFoil more accurate, relative to XFoil, by a) increasing the
 
 > Yes. *But you don't want to make it more accurate*—and not for any of the reasons that ML engineers would typically cite (slower runtime or increased data requirements). This may sound puzzling, so let's unpack this.
 >
-NeuralFoil's true goal is to serve as a *useful tool* for practical aerospace engineers to design airfoils that physically work well in real-world applications—you should be able to take a NeuralFoil airfoil, actually go fly it, and get similar performance.
-> 
-> On its highest-offered accuracy setting ("xxxlarge"), NeuralFoil's error in drag prediction  against XFoil is currently roughly 0.38%
-> 
-> As stated by Mark Drela (MIT; author of XFoil) in personal correspondence about NeuralFoil:
+> NeuralFoil's true goal is to serve as a *useful tool* for practical aerospace engineers to design airfoils that physically work well in real-world applications—you should be able to take a NeuralFoil airfoil, actually go fly it, and get similar performance. Critically, this goal is different than just accuracy alone. As stated by Mark Drela (MIT; author of XFoil) in personal correspondence about NeuralFoil:
 > 
 > > The reason why the NeuralFoil-optimized airfoil does not exhibit the 
-point-optimization problem seen in the Pros&Cons paper is likely because 
+point-optimization problem seen in the Pros & Cons paper is likely because 
 of its smaller geometry design space. The small separation-bubble sized bumps
 which cause the problem cannot appear in this space. **In practice, this is 
-likely a nice feature and not a bug.**  Might want to mention this because 
+likely a nice feature and not a bug.**  [You] might want to mention this because 
 it's not obvious.
 > 
-> A second reason not to try to increase accuracy further is that, although XFoil is quite accurate, 0.38\% drag error is well below the "noise floor" of what XFoil can reliably capture, due to modeling assumptions. So, further decreasing NeuralFoil's surrogate modeling error below 0.38\% may make for attractive metrics, but the actual accuracy with respect to reality (and hence, the *practical* utility) will not meaningfully improve.
+> On its highest-offered accuracy setting ("xxxlarge"), NeuralFoil's error in drag prediction  against XFoil is currently roughly 0.38%. A second reason not to try to increase accuracy further is that, although XFoil is quite accurate, 0.38\% drag error is well below the "noise floor" of what XFoil can reliably capture, due to modeling assumptions. So, further decreasing NeuralFoil's surrogate modeling error below 0.38\% may make for attractive metrics, but the actual accuracy with respect to reality (and hence, the *practical* utility) will not meaningfully improve.
 > 
-> A third reason is that, as you increase the neural network size, you increase the risk of overfitting to
-> XFoil's inherent non-smoothness. We specifically do not want this, as the airfoil design optimization case study shows that XFoil's non-smoothness can be a significant problem for gradient-based optimization. Limiting the parameter count essentially low-pass filters the learned mapping, which is desirable. 
+> A third reason is that, as you increase the neural network size, you increase the risk of overfitting to XFoil's inherent non-smoothness. We specifically do not want this, as the airfoil design optimization case study shows that XFoil's non-smoothness can be a significant problem for gradient-based optimization. Limiting the parameter count essentially low-pass filters the learned mapping, which is desirable. 
 
 ## Acknowledgements
 
