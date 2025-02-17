@@ -205,7 +205,8 @@ class Data():
                 append_empty_data()
                 continue
 
-            interp = lambda x, y: interpolate.PchipInterpolator(x, y, extrapolate=True)(cls.bl_x_points)
+            def interp(x: np.ndarray, y: np.ndarray) -> np.ndarray:
+                return interpolate.PchipInterpolator(x, y, extrapolate=True)(cls.bl_x_points)
 
             try:
                 training_datas.append(

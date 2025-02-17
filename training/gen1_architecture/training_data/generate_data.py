@@ -81,7 +81,8 @@ def worker(csv_actor):
         # # Send the result to the actor for writing to the CSV
         # ray.get(csv_actor.append_row.remote(result))
 
-        rand_airfoil = lambda: np.random.choice(UIUC_airfoils)
+        def rand_airfoil() -> asb.Airfoil:
+            return np.random.choice(UIUC_airfoils)
 
         af: asb.Airfoil = rand_airfoil().blend_with_another_airfoil(
             rand_airfoil(),

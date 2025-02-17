@@ -51,7 +51,8 @@ for model_size in ["xxsmall", "xsmall", "small", "medium", "large", "xlarge", "x
     )
 
     fig, ax = plt.subplots()
-    inv_sigmoid = lambda x: np.log(x / (1 - x))
+    def inv_sigmoid(x: float | np.ndarray) -> float | np.ndarray:
+        return np.log(x / (1 - x))
 
     p.contour(
         T, C,

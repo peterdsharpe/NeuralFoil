@@ -59,10 +59,8 @@ opti.subject_to([
     optimized_airfoil.local_thickness() > 0
 ])
 
-get_wiggliness = lambda af: sum([
-    np.sum(np.diff(np.diff(array)) ** 2)
-    for array in [af.lower_weights, af.upper_weights]
-])
+def get_wiggliness(af: asb.KulfanAirfoil) -> float:
+    return sum([np.sum(np.diff(np.diff(array)) ** 2) for array in [af.lower_weights, af.upper_weights]])
 
 opti.subject_to(
     get_wiggliness(optimized_airfoil) < 2 * get_wiggliness(initial_guess_airfoil)
