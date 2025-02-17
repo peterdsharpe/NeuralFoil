@@ -1,6 +1,6 @@
 import aerosandbox as asb
 import aerosandbox.numpy as np
-from training_data.load_data import df_train, df_test, weights, kulfan_cols, aero_input_cols, aero_output_cols, all_cols
+from training_data.load_data import df_train, df_test, weights, kulfan_cols, aero_input_cols
 
 
 def model(x, p):

@@ -4,7 +4,6 @@ import aerosandbox as asb
 import aerosandbox.numpy as np
 from typing import List
 import time
-import os
 from _basic_high_dim_data_type import Data
 
 print("Initializing Ray...")

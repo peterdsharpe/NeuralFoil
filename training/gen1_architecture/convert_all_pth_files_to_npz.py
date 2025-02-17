@@ -8,7 +8,7 @@ for pth_file in Path(__file__).parent.glob("*.pth"):
     npz_file = pth_file.with_suffix(".npz")
     if npz_file.exists():
         if overwrite is None:
-            overwrite = input(f"Overwrite NumPy files? [y/n]")
+            overwrite = input("Overwrite NumPy files? [y/n]")
         if overwrite.lower() != "y":
             continue
 

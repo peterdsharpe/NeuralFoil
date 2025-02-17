@@ -1,8 +1,5 @@
 import aerosandbox as asb
-import aerosandbox.numpy as np
-from dataclasses import dataclass, field
-from typing import Union, Sequence, List, Any
-from scipy import interpolate
+from dataclasses import dataclass
 from neuralfoil.gen2_architecture._basic_data_type import (
     Data as LowDimData,
     compute_optimal_x_points

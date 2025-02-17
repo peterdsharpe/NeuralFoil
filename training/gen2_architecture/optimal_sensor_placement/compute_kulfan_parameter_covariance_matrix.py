@@ -1,4 +1,4 @@
-from load_data import df, Data
+from load_data import df
 import aerosandbox as asb
 import numpy as np
 

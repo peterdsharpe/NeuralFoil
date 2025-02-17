@@ -1,6 +1,5 @@
-import numpy as np
 from pathlib import Path
-import sys, os
+import sys
 
 sys.path.append(str(Path(__file__).parent))
 from training_data.load_data import (
@@ -13,9 +12,6 @@ from training_data.load_data import (
 )
 import torch
 from torch.utils.data import TensorDataset, DataLoader
-import polars as pl
-from typing import List
-from tqdm import tqdm
 
 N_inputs = len(df_train_inputs_scaled.columns)
 N_outputs = len(df_train_outputs_scaled.columns)
@@ -134,7 +130,7 @@ if __name__ == '__main__':
         print("No existing model found, starting fresh.")
 
     # Define the data loader
-    print(f"Preparing data...")
+    print("Preparing data...")
 
     batch_size = 256
     train_inputs = torch.tensor(
@@ -232,7 +228,7 @@ if __name__ == '__main__':
 
 
     # raise Exception
-    print(f"Training...")
+    print("Training...")
 
     n_batches_per_epoch = len(train_loader)
 
@@ -311,7 +307,7 @@ if __name__ == '__main__':
             )
         )
         loss_argsort = torch.argsort(test_loss_components, descending=True)
-        print(f"Loss contributors: ")
+        print("Loss contributors: ")
         for i in loss_argsort[:10]:
             print(f"\t{df_train_outputs_scaled.columns[i]:25}: {test_loss_components[i].item():.6g}")
 

@@ -30,8 +30,8 @@ if not os.path.exists(datafile):
             ["CL", "CD", "CM", "Cpmin", "Top_Xtr", "Bot_Xtr"] +
             [f"kulfan_lower_{i}" for i in range(n_weights_per_side)] +
             [f"kulfan_upper_{i}" for i in range(n_weights_per_side)] +
-            [f"kulfan_TE_thickness"] +
-            [f"kulfan_LE_weight"]
+            ["kulfan_TE_thickness"] +
+            ["kulfan_LE_weight"]
         )
 
 

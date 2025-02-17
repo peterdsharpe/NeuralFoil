@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List
 import numpy as np
-from scipy import interpolate, ndimage
+from scipy import ndimage
 
 log_files = {
     f.name: int(f.suffix.split("-")[-1])

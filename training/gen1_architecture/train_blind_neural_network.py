@@ -1,14 +1,12 @@
-import aerosandbox as asb
 import aerosandbox.numpy as np
 from pathlib import Path
-import sys, os
+import sys
 
 sys.path.append(str(Path(__file__).parent.parent))
-from training_data.load_data import df_train, df_test, weights, kulfan_cols, aero_input_cols, aero_output_cols, all_cols
+from training_data.load_data import df_train, df_test
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 import polars as pl
-from typing import List
 
 
 def convert_dataframe_to_inputs_outputs(df):
@@ -133,7 +131,7 @@ if __name__ == '__main__':
     )
 
     # Define the data loader
-    print(f"Preparing data...")
+    print("Preparing data...")
 
     batch_size = 512
     train_inputs = torch.tensor(
@@ -166,7 +164,7 @@ if __name__ == '__main__':
     )
 
     # raise Exception
-    print(f"Training...")
+    print("Training...")
 
     n_batches_per_epoch = len(train_loader)
     loss_weights = loss_weights.to(device)

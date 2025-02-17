@@ -4,7 +4,6 @@ import aerosandbox as asb
 import aerosandbox.numpy as np
 from typing import List
 import time
-import os
 from neuralfoil.gen2_architecture._basic_data_type import Data
 
 print("Initializing Ray...")

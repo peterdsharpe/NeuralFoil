@@ -1,7 +1,6 @@
 from pathlib import Path
 from typing import Union
 import numpy as np
-from scipy import interpolate, ndimage
 import matplotlib.pyplot as plt
 import aerosandbox.tools.pretty_plots as p
 
@@ -111,7 +110,7 @@ for i, (title, log_file_value) in enumerate(log_file_ids.items()):
     # plt.ylim(2e-3, 2e-2)
     plt.title(f"{title}\nCD {np.median(data['ln_CD'][-10:]):.4f}")
 
-p.show_plot(f"Training Progress", "Epoch", "Loss")
+p.show_plot("Training Progress", "Epoch", "Loss")
 
 # print(np.exp(ndimage.gaussian_filter1d(np.log(data[key]), sigma=10)[-1]))
 # from pprint import pprint

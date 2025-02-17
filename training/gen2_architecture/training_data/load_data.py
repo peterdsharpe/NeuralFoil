@@ -1,8 +1,7 @@
-import aerosandbox as asb
 import aerosandbox.numpy as np
 import polars as pl
 from pathlib import Path
-import sys, os
+import sys
 
 sys.path.append(str(Path(__file__).parent))
 
