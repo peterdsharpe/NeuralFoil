@@ -1,8 +1,5 @@
 import aerosandbox as asb
 import aerosandbox.numpy as np
-import pandas as pd
-from tqdm import tqdm
-from aerosandbox.tools.code_benchmarking import Timer
 
 Thickness, Camber, Re = np.meshgrid(
     np.arange(0.08, 0.161, 0.01),
