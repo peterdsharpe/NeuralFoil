@@ -54,7 +54,7 @@ setup(
     packages=[
         "neuralfoil"
     ],  # find_packages(exclude=['docs', 'media', 'examples', 'studies'])
-    python_requires=">=3.7",
+    python_requires=">=3.9",
     install_requires=["numpy >= 1", "aerosandbox >= 4.2.4, <4.3.0"],
     extras_require={
         "training": ["torch", "ray", "polars", "tqdm"],
