@@ -1,3 +1,14 @@
+"""
+This file and class is exclusively used for NeuralFoil training, not inference.
+
+It is kept here so that the training routines and the inference routines dynamically import from the same
+file. This can be used to later change various training parameters (e.g., the resolution of the Kulfan
+parameterization, or the spacing of x-points for boundary layer resolution), and have the inference scripts
+automatically adjust to that.
+
+End users need not worry about this file.
+"""
+
 import warnings
 import aerosandbox as asb
 import aerosandbox.numpy as np
