@@ -1,6 +1,5 @@
 import aerosandbox as asb
 import aerosandbox.numpy as np
-import neuralfoil as nf
 from tqdm import tqdm
 
 af = asb.KulfanAirfoil("naca0012")
@@ -55,8 +54,8 @@ nf_cd = [aero["CD"] for aero in nf_aeros]
 xf_cd = [aero["CD"] for aero in xf_aeros]
 xf_cd = [float(cd[0]) if len(cd) == 1 else np.nan for cd in xf_cd]
 
-ax[0].plot(relative_noises, nf_cd, label=f'NeuralFoil "xxxlarge"', zorder=5)
-ax[0].plot(relative_noises, xf_cd, ".k", label=f"XFoil (ground truth)")
+ax[0].plot(relative_noises, nf_cd, label='NeuralFoil "xxxlarge"', zorder=5)
+ax[0].plot(relative_noises, xf_cd, ".k", label="XFoil (ground truth)")
 ax[0].set_ylabel("$C_D$")
 ax[0].legend()
 

@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import aerosandbox.tools.pretty_plots as p
-import aerosandbox as asb
 import aerosandbox.numpy as np
 
 lims = np.array([-1, 1]) * 100

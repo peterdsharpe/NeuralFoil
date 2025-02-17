@@ -1,5 +1,4 @@
 import aerosandbox as asb
-import aerosandbox.numpy as np
 
 
 initial_guess_airfoil = asb.KulfanAirfoil("naca0012")

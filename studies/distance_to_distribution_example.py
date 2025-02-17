@@ -1,5 +1,4 @@
 import aerosandbox.numpy as np
-from scipy import stats
 
 
 def vector_2d(mag, angle_deg):

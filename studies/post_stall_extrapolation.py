@@ -2,7 +2,6 @@ import aerosandbox as asb
 import aerosandbox.numpy as np
 import matplotlib.pyplot as plt
 import aerosandbox.tools.pretty_plots as p
-from tqdm import tqdm
 import aerosandbox.tools.webplotdigitizer_reader as wr
 from pathlib import Path
 
