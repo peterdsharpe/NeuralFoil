@@ -164,7 +164,7 @@ afax.set_xlim(-0.05, 1.05)
 afax.set_ylim(-0.05, 0.28)
 afax.set_aspect("equal", adjustable='box')
 
-plt.suptitle("Comparison of $C_L$-$C_D$ Polar for NeuralFoil vs. XFoil", fontsize=16, y=0.94)
+plt.suptitle("Comparison of $C_L$-$C_D$ Polar for NeuralFoil vs. XFoil", fontsize=16)
 plt.title(f"On {af.name} Airfoil (out-of-sample)", fontsize=12, alpha=0.7)
 
 plt.xlabel("Drag Coefficient $C_D$")
