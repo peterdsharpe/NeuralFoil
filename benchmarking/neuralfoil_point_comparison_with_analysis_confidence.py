@@ -6,7 +6,9 @@ from pathlib import Path
 from matplotlib.colors import LinearSegmentedColormap
 from tqdm import tqdm
 
-af = asb.Airfoil(name="HALE_03", coordinates=Path(__file__).parent / "assets" / "hale_03mod.dat").to_kulfan_airfoil()
+af = asb.Airfoil(
+    name="HALE_03", coordinates=Path(__file__).parent / "assets" / "hale_03mod.dat"
+).to_kulfan_airfoil()
 alphas_xfoil = np.linspace(-5, 15, 50)
 alphas_nf = np.linspace(-6, 17, 300)
 Re_values_to_test = [1e4, 8e4, 2e5, 1e6, 1e8]
@@ -25,35 +27,27 @@ aeros["xfoil"] = [
     for Re in tqdm(Re_values_to_test, desc="XFoil")
 ]
 
-nf_model_sizes = [
-    "xxxlarge"
-]
+nf_model_sizes = ["xxxlarge"]
 nf_linestyles = ["-"]
 xfoil_linestyle = "k:"
 
 for model_size in nf_model_sizes:
     aeros[model_size] = [
-        get_aero_from_airfoil(
-            airfoil=af,
-            alpha=alphas_nf,
-            Re=Re,
-            model_size=model_size
-        )
+        get_aero_from_airfoil(airfoil=af, alpha=alphas_nf, Re=Re, model_size=model_size)
         for Re in tqdm(Re_values_to_test, desc=f"NeuralFoil {model_size}")
     ]
 
 import matplotlib.pyplot as plt
 import aerosandbox.tools.pretty_plots as p
 
-fig, ax = plt.subplots(figsize=(7,5))
-plt.xscale('log')
+fig, ax = plt.subplots(figsize=(7, 5))
+plt.xscale("log")
 
 cmap = LinearSegmentedColormap.from_list(
     "custom_cmap",
     colors=[
-        p.adjust_lightness(c, 0.8) for c in
-        ["orange", "darkseagreen", "dodgerblue"]
-    ]
+        p.adjust_lightness(c, 0.8) for c in ["orange", "darkseagreen", "dodgerblue"]
+    ],
 )
 colors = cmap(np.linspace(0, 1, len(Re_values_to_test)))
 transparency = 0.7
@@ -85,37 +79,33 @@ for i, (Re, color) in enumerate(zip(Re_values_to_test, colors)):
                     # p.adjust_lightness("gray", 1.0),
                     p.adjust_lightness("darkseagreen", 0.9),
                     p.adjust_lightness("dodgerblue", 0.6),
-                ]
+                ],
             ),
             alpha=transparency,
             zorder=6,
         )
 
-    xfoil_line2d, = plt.plot(
+    (xfoil_line2d,) = plt.plot(
         aeros["xfoil"][i]["CD"],
         aeros["xfoil"][i]["CL"],
-        linestyle=(0, (1, 1.5)), linewidth=2.2,
+        linestyle=(0, (1, 1.5)),
+        linewidth=2.2,
         # ".", markeredgewidth=0, markersize=4, alpha=0.8,
         color="k",
         zorder=5,
     )
 
-
-    annotate_x = np.max(np.array([
-        aero[i]["CD"][-1]
-        for aero in aeros.values()
-    ]))
-    annotate_y = np.median(np.array([
-        aero[i]["CL"][-1]
-        for aero in aeros.values()
-    ]))
+    annotate_x = np.max(np.array([aero[i]["CD"][-1] for aero in aeros.values()]))
+    annotate_y = np.median(np.array([aero[i]["CL"][-1] for aero in aeros.values()]))
 
     plt.annotate(
         f" ${{\\rm Re}} = \\mathrm{{{eng_string(Re)}}}$",
         xy=(annotate_x, annotate_y),
         # color=p.adjust_lightness(color, 0.8),
         color="k",
-        ha="left", va="center", fontsize=10
+        ha="left",
+        va="center",
+        fontsize=10,
     )
 
 plt.colorbar(
@@ -132,21 +122,25 @@ plt.annotate(
     ha="left",
     va="bottom",
     fontsize=8,
-    alpha=0.5
+    alpha=0.5,
 )
 
 from matplotlib.lines import Line2D
 
 legend_handles = [
-    Line2D([], [], color="k",
-           # linestyle=xfoil_line2d.get_linestyle(),
-           linestyle=(0, (1, 1.5)), linewidth=2.2,
-           label="XFoil (ground truth)"
-           ),
+    Line2D(
+        [],
+        [],
+        color="k",
+        # linestyle=xfoil_line2d.get_linestyle(),
+        linestyle=(0, (1, 1.5)),
+        linewidth=2.2,
+        label="XFoil (ground truth)",
+    ),
     *[
-        Line2D([], [], color=color, linestyle=linestyle, label=f"NF \"{model_size}\"")
+        Line2D([], [], color=color, linestyle=linestyle, label=f'NF "{model_size}"')
         for model_size, linestyle, color in zip(nf_model_sizes, nf_linestyles, colors)
-    ]
+    ],
 ]
 
 for h in legend_handles:
@@ -156,10 +150,12 @@ plt.legend(
     handles=legend_handles,
     title="Analysis Method",
     # loc=(0.8, 0.15),
-    loc='lower left',
+    loc="lower left",
     # bbox_to_anchor=(0.5, 0., 0.5, 0.5),
     fontsize=11,
-    labelspacing=0.3, columnspacing=1.5, handletextpad=0.4,
+    labelspacing=0.3,
+    columnspacing=1.5,
+    handletextpad=0.4,
     framealpha=0.8,
 )
 
@@ -168,8 +164,7 @@ plt.ylim(bottom=-0.8)
 
 afax = ax.inset_axes([0.76, 0.802, 0.23, 0.23])
 afax.fill(
-    af.x(), af.y(),
-    facecolor=(0, 0, 0, 0.2), linewidth=1, edgecolor=(0, 0, 0, 0.7)
+    af.x(), af.y(), facecolor=(0, 0, 0, 0.2), linewidth=1, edgecolor=(0, 0, 0, 0.7)
 )
 afax.annotate(
     text=f"{af.name} Airfoil",
@@ -178,7 +173,7 @@ afax.annotate(
     ha="center",
     va="bottom",
     fontsize=10,
-    alpha=0.7
+    alpha=0.7,
 )
 
 afax.grid(False)
@@ -188,7 +183,7 @@ afax.set_yticks([])
 afax.set_facecolor((1, 1, 1, 0.5))
 afax.set_xlim(-0.05, 1.05)
 afax.set_ylim(-0.05, 0.28)
-afax.set_aspect("equal", adjustable='box')
+afax.set_aspect("equal", adjustable="box")
 
 
 plt.suptitle("Comparison of $C_L$-$C_D$ Polar for NeuralFoil vs. XFoil", fontsize=16)
@@ -202,7 +197,7 @@ p.show_plot(
     legend=False,
     savefig="neuralfoil_point_comparison_with_analysis_confidence.svg",
     savefig_transparent=False,
-    rotate_axis_labels=False
+    rotate_axis_labels=False,
 )
 
 # p.plot_color_by_value(

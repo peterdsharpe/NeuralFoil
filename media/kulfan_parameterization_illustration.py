@@ -6,7 +6,8 @@ af = asb.Airfoil("dae11")
 N = 8
 
 from aerosandbox.geometry.airfoil.airfoil_families import (
-    get_kulfan_parameters, get_kulfan_coordinates
+    get_kulfan_parameters,
+    get_kulfan_coordinates,
 )
 
 kulfan_parameters = get_kulfan_parameters(
@@ -17,20 +18,19 @@ kulfan_parameters = get_kulfan_parameters(
 import matplotlib.pyplot as plt
 import aerosandbox.tools.pretty_plots as p
 
-fig, ax = plt.subplots(2, 1, figsize=(5.5,5))
+fig, ax = plt.subplots(2, 1, figsize=(5.5, 5))
 
 # cmap = plt.get_cmap('turbo')
 
 from matplotlib.colors import LinearSegmentedColormap
-colors = ["orange", "darkseagreen", "dodgerblue"]#[::-1]
+
+colors = ["orange", "darkseagreen", "dodgerblue"]  # [::-1]
 cmap = LinearSegmentedColormap.from_list("custom_cmap", colors)
 
-cmap_samples_nondim = np.linspace(
-    0, 1, 2 * N + 1
-)
+cmap_samples_nondim = np.linspace(0, 1, 2 * N + 1)
 upper_colors = cmap(cmap_samples_nondim[:N])
 neutral_color = cmap(cmap_samples_nondim[N])
-lower_colors = cmap(cmap_samples_nondim[N + 1:])
+lower_colors = cmap(cmap_samples_nondim[N + 1 :])
 
 alpha = 0.7
 
@@ -46,7 +46,8 @@ for i in range(N):
             leading_edge_weight=kulfan_parameters["leading_edge_weight"],
             TE_thickness=kulfan_parameters["TE_thickness"],
         ).T,
-        color=upper_colors[i], alpha=alpha,
+        color=upper_colors[i],
+        alpha=alpha,
     )
 
 for i in range(N):
@@ -57,7 +58,8 @@ for i in range(N):
             leading_edge_weight=kulfan_parameters["leading_edge_weight"],
             TE_thickness=kulfan_parameters["TE_thickness"],
         ).T,
-        color=lower_colors[i], alpha=alpha,
+        color=lower_colors[i],
+        alpha=alpha,
     )
 
 
@@ -68,7 +70,8 @@ ax[1].plot(
         leading_edge_weight=kulfan_parameters["leading_edge_weight"] + 1,
         TE_thickness=kulfan_parameters["TE_thickness"],
     ).T,
-    color=cmap(1.), alpha=alpha,
+    color=cmap(1.0),
+    alpha=alpha,
 )
 
 ax[1].plot(
@@ -78,7 +81,8 @@ ax[1].plot(
         leading_edge_weight=kulfan_parameters["leading_edge_weight"],
         TE_thickness=kulfan_parameters["TE_thickness"] + 0.2,
     ).T,
-    color=cmap(0.), alpha=alpha,
+    color=cmap(0.0),
+    alpha=alpha,
 )
 
 for a in ax:
@@ -91,8 +95,8 @@ ax[0].set_title("Top- and Bottom-Surface Modes (16)")
 ax[1].set_title("Leading-Edge-Modification (LEM) and Trailing Edge (TE) Modes")
 
 # plt.axis('off')
-ax[0].axis('off')
-ax[1].axis('off')
+ax[0].axis("off")
+ax[1].axis("off")
 
 p.show_plot(
     "NeuralFoil Airfoil Shape Parameterization (18 parameters)",

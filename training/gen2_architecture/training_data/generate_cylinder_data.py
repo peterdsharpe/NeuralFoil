@@ -33,7 +33,7 @@ def append_row(row: List[float]):
 
     row = [float_to_str(item) for item in row]
 
-    with open(datafile, 'a', newline='') as file:
+    with open(datafile, "a", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(row)
 
@@ -47,10 +47,7 @@ def make_cylinder(N=320):
 
     cylinder = asb.Airfoil(
         name="Cylinder",
-        coordinates=np.stack([
-            0.5 + 0.5 * np.cos(theta),
-            0.5 * np.sin(theta)
-        ], axis=1)
+        coordinates=np.stack([0.5 + 0.5 * np.cos(theta), 0.5 * np.sin(theta)], axis=1),
     )
     cylinder = cylinder.to_kulfan_airfoil()
 
@@ -70,6 +67,7 @@ def make_cylinder(N=320):
 # # plt.show()
 # p.set_ticks(2, 1)
 # p.show_plot("Cylinder Airfoil Parameter Distributions", set_ticks=False)
+
 
 def make_data():
 
@@ -91,16 +89,16 @@ def make_data():
         xtr_lower=xtr_lower,
         analysis_confidence=0.1,
         af_outputs={
-            "CL"     : 0,
-            "CD"     : Cd_cylinder(
+            "CL": 0,
+            "CD": Cd_cylinder(
                 Re_D=Re,
                 mach=mach,
                 include_mach_effects=mach != 0,
             ),
-            "CM"     : 0,
+            "CM": 0,
             "Top_Xtr": np.nan,
             "Bot_Xtr": np.nan,
-        }
+        },
     )
 
 

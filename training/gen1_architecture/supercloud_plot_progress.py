@@ -4,8 +4,7 @@ import numpy as np
 from scipy import ndimage
 
 log_files = {
-    f.name: int(f.suffix.split("-")[-1])
-    for f in Path(__file__).parent.glob("*.log-*")
+    f.name: int(f.suffix.split("-")[-1]) for f in Path(__file__).parent.glob("*.log-*")
 }
 
 # get dictionary key where value is highest
@@ -23,15 +22,14 @@ log_file = "log.log-23296446"
 with open(Path(__file__).parent / log_file, "r", encoding="utf8") as f:
     lines = f.readlines()
 
+
 def parse_line(row):
     kvs: List[str] = row.split("|")
     if len(kvs) != 9:
         return None
 
-    return {
-        kv.split(":")[0].strip(): float(kv.split(":")[1])
-        for kv in kvs
-    }
+    return {kv.split(":")[0].strip(): float(kv.split(":")[1]) for kv in kvs}
+
 
 data = {}
 
@@ -61,14 +59,17 @@ for key in ["Train Loss", "Test Loss"]:
 
     plt.plot(
         np.exp(ndimage.gaussian_filter1d(np.log(data[key]), sigma=2)),
-        color=lines[0].get_color(), alpha=0.7,
-        label=key, zorder=4
+        color=lines[0].get_color(),
+        alpha=0.7,
+        label=key,
+        zorder=4,
     )
 
-plt.yscale('log')
+plt.yscale("log")
 plt.ylim(2e-3, 2e-2)
 p.show_plot(f"Training Progress ({log_file})", "Epoch", "Loss")
 
 print(np.exp(ndimage.gaussian_filter1d(np.log(data[key]), sigma=10)[-1]))
 from pprint import pprint
+
 pprint({k: v[-1] for k, v in data.items()})

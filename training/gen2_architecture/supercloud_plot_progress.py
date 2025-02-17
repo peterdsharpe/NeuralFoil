@@ -24,12 +24,12 @@ import aerosandbox.tools.pretty_plots as p
 # }
 log_file_ids = {  # Gen 2.5
     "xxsmall": ["log.log-25540774", "log.log-25584785"],
-    "xsmall" : ["log.log-25542972", "log.log-25584790"],
-    "small"  : "log.log-25542974",
-    "medium" : "log.log-25542980",
-    "large"   : "log.log-25542983",
-    "xlarge"  : "log.log-25542989",
-    "xxlarge" : "log.log-25542993",
+    "xsmall": ["log.log-25542972", "log.log-25584790"],
+    "small": "log.log-25542974",
+    "medium": "log.log-25542980",
+    "large": "log.log-25542983",
+    "xlarge": "log.log-25542989",
+    "xxlarge": "log.log-25542993",
     "xxxlarge": "log.log-25543001",
 }
 
@@ -52,10 +52,7 @@ def load_log_file(filename) -> dict[str, np.ndarray]:
         if len(kvs) != 9:
             return None
 
-        return {
-            kv.split(":")[0].strip(): float(kv.split(":")[1])
-            for kv in kvs
-        }
+        return {kv.split(":")[0].strip(): float(kv.split(":")[1]) for kv in kvs}
 
     data = {}
 
@@ -79,25 +76,16 @@ for i, (title, log_file_value) in enumerate(log_file_ids.items()):
         log_file_list = log_file_value
 
     datas = [
-        load_log_file(Path(__file__).parent / log_file)
-        for log_file in log_file_list
+        load_log_file(Path(__file__).parent / log_file) for log_file in log_file_list
     ]
 
-    data = {
-        k: np.concatenate([d[k] for d in datas])
-        for k in datas[0].keys()
-    }
+    data = {k: np.concatenate([d[k] for d in datas]) for k in datas[0].keys()}
 
     plt.sca(ax_f[i])
 
     for key in ["Train Loss", "Test Loss"]:
         lines = plt.plot(
-            data[key],
-            "-",
-            markersize=5,
-            alpha=0.9,
-            markeredgewidth=0,
-            linewidth=1
+            data[key], "-", markersize=5, alpha=0.9, markeredgewidth=0, linewidth=1
         )
 
         # plt.plot(
@@ -106,7 +94,7 @@ for i, (title, log_file_value) in enumerate(log_file_ids.items()):
         #     label=key, zorder=4
         # )
     plt.ylim(*np.array([0.99, 1.01]) * data["Test Loss"][-1])
-    plt.yscale('log')
+    plt.yscale("log")
     # plt.ylim(2e-3, 2e-2)
     plt.title(f"{title}\nCD {np.median(data['ln_CD'][-10:]):.4f}")
 

@@ -8,7 +8,7 @@ initial_guess_airfoil.name = "Initial Guess (NACA0012)"
 opti = asb.Opti()
 
 Re = 1e6
-mach=0
+mach = 0
 
 af = asb.KulfanAirfoil(
     name="Optimized",
@@ -30,11 +30,7 @@ af = asb.KulfanAirfoil(
     TE_thickness=0,
 )
 
-alpha = opti.variable(
-    init_guess=5,
-    lower_bound=-30,
-    upper_bound=30
-)
+alpha = opti.variable(init_guess=5, lower_bound=-30, upper_bound=30)
 
 aero = af.get_aero_from_neuralfoil(
     alpha=alpha,
@@ -46,15 +42,17 @@ aero = af.get_aero_from_neuralfoil(
 x_near_TE = np.linspace(0.9, 1, 11)
 t_min_near_TE = np.tand(10) * (1 - x_near_TE)
 
-opti.subject_to([
-    aero["analysis_confidence"] > 0.95,
-    aero["CM"] == 0,
-    # aero["CL"] == 1.0,
-    af.LE_radius() > 0.01,
-    af.local_thickness() > 0,
-    af.local_thickness(x_over_c=x_near_TE) > t_min_near_TE,
-    af.max_thickness() > 0.1,
-])
+opti.subject_to(
+    [
+        aero["analysis_confidence"] > 0.95,
+        aero["CM"] == 0,
+        # aero["CL"] == 1.0,
+        af.LE_radius() > 0.01,
+        af.local_thickness() > 0,
+        af.local_thickness(x_over_c=x_near_TE) > t_min_near_TE,
+        af.max_thickness() > 0.1,
+    ]
+)
 # opti.minimize(aero["CD"] / aero["analysis_confidence"])
 opti.maximize(aero["CL"] / aero["CD"])
 
@@ -63,7 +61,7 @@ sol = opti.solve(
     options={
         # "ipopt.mu_strategy": 'monotone',
         # "ipopt.start_with_resto": 'yes'
-    }
+    },
 )
 
 af = sol(af)

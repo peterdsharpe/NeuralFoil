@@ -14,7 +14,6 @@ for pth_file in Path(__file__).parent.glob("*.pth"):
 
     print(f"Converting {pth_file} to {npz_file}")
     state_dict = torch.load(pth_file)
-    np.savez_compressed(npz_file, **{
-        key: value.cpu().numpy()
-        for key, value in state_dict.items()
-    })
+    np.savez_compressed(
+        npz_file, **{key: value.cpu().numpy() for key, value in state_dict.items()}
+    )

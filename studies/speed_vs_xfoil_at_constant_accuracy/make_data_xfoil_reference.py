@@ -17,17 +17,25 @@ for i in tqdm(range(len(afs))):
     out["time"] = t.toc()
     outputs.append(out)
 
-df = pd.DataFrame({
-    "camber"   : camber_f,
-    "thickness": thickness_f,
-    "Re"       : Re_f,
-    **{
-        k: np.concatenate([
-            np.atleast_1d(outputs[i][k]) if len(np.atleast_1d(outputs[i][k])) != 0 else np.array([np.nan])
-            for i in range(len(afs))
-        ])
-        for k in outputs[0].keys()
+df = pd.DataFrame(
+    {
+        "camber": camber_f,
+        "thickness": thickness_f,
+        "Re": Re_f,
+        **{
+            k: np.concatenate(
+                [
+                    (
+                        np.atleast_1d(outputs[i][k])
+                        if len(np.atleast_1d(outputs[i][k])) != 0
+                        else np.array([np.nan])
+                    )
+                    for i in range(len(afs))
+                ]
+            )
+            for k in outputs[0].keys()
+        },
     }
-})
+)
 
 df.to_csv("data/reference_data.csv")

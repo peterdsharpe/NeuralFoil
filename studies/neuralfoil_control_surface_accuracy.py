@@ -12,10 +12,7 @@ Re = 1e6
 xf_deflections = np.linspace(*deflection_range, 21)
 xf_aeros = [
     asb.XFoil(
-        airfoil=af.add_control_surface(
-            deflection=d,
-            hinge_point_x=hinge_point_x
-        ),
+        airfoil=af.add_control_surface(deflection=d, hinge_point_x=hinge_point_x),
         Re=Re,
     ).alpha(0)
     for d in tqdm(xf_deflections)
@@ -23,8 +20,7 @@ xf_aeros = [
 nf_deflections = np.linspace(*deflection_range, 61)
 nf_aeros = [
     af.add_control_surface(
-        deflection=d,
-        hinge_point_x=hinge_point_x
+        deflection=d, hinge_point_x=hinge_point_x
     ).get_aero_from_neuralfoil(
         alpha=0,
         Re=Re,
@@ -41,10 +37,7 @@ def plot(ax, title, field):
     plt.ylabel(title)
     plt.plot(
         xf_deflections,
-        [
-            a[field][0] if len(a[field]) != 0 else np.nan
-         for a in xf_aeros
-        ],
+        [a[field][0] if len(a[field]) != 0 else np.nan for a in xf_aeros],
         ".",
         color="k",
         zorder=4,
@@ -64,7 +57,7 @@ plt.xlabel("\nControl Surface Deflection (°)")
 ax[0].legend(
     ["XFoil", "NeuralFoil"],
     # loc="upper left",
-    ncols=2
+    ncols=2,
 )
 ax[1].set_ylim(bottom=0)
 
@@ -78,18 +71,22 @@ ax[1].set_ylim(bottom=0)
 p.show_plot(show=False)
 for deg in [0, 20, 40, 60]:
     # Gets the figure-coordinates of the data point on ax[2]
-    x, y = ax[2].transData.transform(
-        [deg, 0]
-    )
+    x, y = ax[2].transData.transform([deg, 0])
 
-    display_center = np.array([
-        ax[2].transData.transform([deg, 0])[0],
-        ax[2].transAxes.transform([0, 0])[1] - 70
-    ])
-    display_size = np.array([
-        fig.transFigure.transform([0.1, 0])[0] - fig.transFigure.transform([0, 0])[0],
-        fig.transFigure.transform([0, 0.1])[1] - fig.transFigure.transform([0, 0])[1]
-    ])
+    display_center = np.array(
+        [
+            ax[2].transData.transform([deg, 0])[0],
+            ax[2].transAxes.transform([0, 0])[1] - 70,
+        ]
+    )
+    display_size = np.array(
+        [
+            fig.transFigure.transform([0.1, 0])[0]
+            - fig.transFigure.transform([0, 0])[0],
+            fig.transFigure.transform([0, 0.1])[1]
+            - fig.transFigure.transform([0, 0])[1],
+        ]
+    )
     display_lowerleft = display_center - display_size / 2
     display_upperright = display_center + display_size / 2
     fig_lowerleft = fig.transFigure.inverted().transform(display_lowerleft)
@@ -100,29 +97,23 @@ for deg in [0, 20, 40, 60]:
             fig_lowerleft[0],
             fig_lowerleft[1],
             fig_upperright[0] - fig_lowerleft[0],
-            fig_upperright[1] - fig_lowerleft[1]
+            fig_upperright[1] - fig_lowerleft[1],
         ],
-        zorder=10
+        zorder=10,
     )
-    afd = af.add_control_surface(
-        deflection=deg,
-        hinge_point_x=hinge_point_x
-    )
+    afd = af.add_control_surface(deflection=deg, hinge_point_x=hinge_point_x)
     afax.fill(
         afd.x(),
         afd.y(),
         facecolor=(0, 0, 0, 0.2),
         linewidth=1,
-        edgecolor=(0, 0, 0, 0.7)
+        edgecolor=(0, 0, 0, 0.7),
     )
     afax.grid(False)
     afax.axis("off")
 
     afax.set_xlim(-0.05, 1.05)
     afax.set_ylim(-0.28, 0.28)
-    afax.set_aspect("equal", adjustable='box')
+    afax.set_aspect("equal", adjustable="box")
 
-p.show_plot(
-    tight_layout=False,
-    savefig="control_surface_accuracy.svg"
-)
+p.show_plot(tight_layout=False, savefig="control_surface_accuracy.svg")

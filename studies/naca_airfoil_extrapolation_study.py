@@ -18,44 +18,54 @@ def make_airfoil(max_thickness, max_camber):
     return asb.KulfanAirfoil(
         lower_weights=camber_mode * max_camber - thickness_mode * max_thickness,
         upper_weights=camber_mode * max_camber + thickness_mode * max_thickness,
-        leading_edge_weight=le_camber_mode * max_camber
+        leading_edge_weight=le_camber_mode * max_camber,
     )
 
 
 ### Make a contour plot
 # model_size = "xxsmall"
 
-for model_size in ["xxsmall", "xsmall", "small", "medium", "large", "xlarge", "xxlarge", "xxxlarge"]:
+for model_size in [
+    "xxsmall",
+    "xsmall",
+    "small",
+    "medium",
+    "large",
+    "xlarge",
+    "xxlarge",
+    "xxxlarge",
+]:
 
-    t, c = (
-        np.linspace(-0, 1, 200) * 0.3,
-        np.linspace(0, 1, 200) * 0.3
-    )
+    t, c = (np.linspace(-0, 1, 200) * 0.3, np.linspace(0, 1, 200) * 0.3)
     T, C = np.meshgrid(t, c)
     t_f, c_f = T.flatten(), C.flatten()
 
     aeros = nf.get_aero_from_kulfan_parameters(
         kulfan_parameters=dict(
             lower_weights=(
-                    camber_mode.reshape(-1, 1) * c_f.reshape(1, -1)
-                    - thickness_mode.reshape(-1, 1) * t_f.reshape(1, -1)),
+                camber_mode.reshape(-1, 1) * c_f.reshape(1, -1)
+                - thickness_mode.reshape(-1, 1) * t_f.reshape(1, -1)
+            ),
             upper_weights=(
-                    camber_mode.reshape(-1, 1) * c_f.reshape(1, -1)
-                    + thickness_mode.reshape(-1, 1) * t_f.reshape(1, -1)),
+                camber_mode.reshape(-1, 1) * c_f.reshape(1, -1)
+                + thickness_mode.reshape(-1, 1) * t_f.reshape(1, -1)
+            ),
             leading_edge_weight=le_camber_mode * c_f,
             TE_thickness=0,
         ),
         alpha=5,
         Re=1e6,
-        model_size=model_size
+        model_size=model_size,
     )
 
     fig, ax = plt.subplots()
+
     def inv_sigmoid(x: float | np.ndarray) -> float | np.ndarray:
         return np.log(x / (1 - x))
 
     p.contour(
-        T, C,
+        T,
+        C,
         aeros["analysis_confidence"].reshape(T.shape),
         # np.log(aeros["CD"]).reshape(T.shape),
         levels=100,
@@ -65,7 +75,7 @@ for model_size in ["xxsmall", "xsmall", "small", "medium", "large", "xlarge", "x
             alpha=0.2,
         ),
         colorbar_label="Analysis Confidence",
-        cmap="viridis"
+        cmap="viridis",
     )
     plt.clim(0.75, 1)
     p.show_plot(

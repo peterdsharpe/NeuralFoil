@@ -7,20 +7,24 @@ airfoil = asb.Airfoil("dae11")
 airfoil = airfoil.repanel().normalize()
 Re = 1e6
 
-for model_size in ["xxsmall", "xsmall", "small", "medium", "large", "xlarge", "xxlarge", "xxxlarge"]:
+for model_size in [
+    "xxsmall",
+    "xsmall",
+    "small",
+    "medium",
+    "large",
+    "xlarge",
+    "xxlarge",
+    "xxxlarge",
+]:
 
     n_runs = 100000
-
 
     def func():
         alpha = np.linspace(0, 10, n_runs)
         get_aero_from_airfoil(
-            airfoil=airfoil,
-            alpha=alpha,
-            Re=Re,
-            model_size=model_size
+            airfoil=airfoil, alpha=alpha, Re=Re, model_size=model_size
         )
-
 
     time_total, _ = time_function(func, desired_runtime=1)
     print(model_size, time_total)

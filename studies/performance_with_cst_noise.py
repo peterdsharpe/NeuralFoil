@@ -71,11 +71,11 @@ plt.annotate(
     xycoords="data",
     fontsize=8,
     arrowprops={
-        "color"     : "k",
-        "width"     : 0.25,
-        "headwidth" : 4,
+        "color": "k",
+        "width": 0.25,
+        "headwidth": 4,
         "headlength": 6,
-    }
+    },
 )
 
 plt.annotate(
@@ -85,11 +85,11 @@ plt.annotate(
     xycoords="data",
     fontsize=8,
     arrowprops={
-        "color"     : "k",
-        "width"     : 0.25,
-        "headwidth" : 4,
+        "color": "k",
+        "width": 0.25,
+        "headwidth": 4,
         "headlength": 6,
-    }
+    },
 )
 
 
@@ -101,7 +101,9 @@ plt.tight_layout(rect=[0.05, 0.1, 1, 0.93], h_pad=2)
 # Draw the airfoils
 draw_indices = np.round(np.linspace(0, len(wiggly_airfoils) - 1, 8)).astype(int)
 
-for waf, noise in tuple(zip(wiggly_airfoils[draw_indices], relative_noises[draw_indices])):
+for waf, noise in tuple(
+    zip(wiggly_airfoils[draw_indices], relative_noises[draw_indices])
+):
     # Gets the figure-coordinates of the data point on ax[2]
     x, y = ax[1].transData.transform([noise, 0])
     display_center = np.array(

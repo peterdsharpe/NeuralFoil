@@ -4,10 +4,10 @@ import aerosandbox.tools.pretty_plots as p
 
 
 def draw(
-        ax,
-        airfoil,
-        alpha,
-        title="",
+    ax,
+    airfoil,
+    alpha,
+    title="",
 ):
     plt.sca(ax)
     plt.fill(
@@ -15,9 +15,9 @@ def draw(
         airfoil.y(),
         facecolor=(0, 0, 0, 0.2),
         linewidth=1,
-        edgecolor=(0, 0, 0, 0.7)
+        edgecolor=(0, 0, 0, 0.7),
     )
-    plt.axis('equal')
+    plt.axis("equal")
     # plt.axis('off')
     plt.text(
         0.5,
@@ -28,12 +28,7 @@ def draw(
         va="top",
         fontsize=8,
         color="black",
-        bbox=dict(
-            facecolor='white',
-            edgecolor='black',
-            boxstyle='round,pad=0.2'
-        )
-
+        bbox=dict(facecolor="white", edgecolor="black", boxstyle="round,pad=0.2"),
     )
     plt.title(title, fontsize=10)
 
@@ -43,10 +38,12 @@ af1 = af0.scale(1, -1)
 d = af1.normalize(return_dict=True)
 af2 = d["airfoil"].to_kulfan_airfoil()
 
-fig, ax = plt.subplots(1, 2,
-                       figsize=(4, 2.0),
-                       # sharey=True
-                       )
+fig, ax = plt.subplots(
+    1,
+    2,
+    figsize=(4, 2.0),
+    # sharey=True
+)
 Re0 = 1e6
 draw(ax[0], af0, 5, title="Original Airfoil")
 draw(ax[1], af1, -5, title="Image Airfoil")
@@ -83,7 +80,4 @@ plt.tight_layout()
 #
 # )
 
-p.show_plot(
-    tight_layout=False,
-    savefig="alpha_symmetry_image.svg"
-)
+p.show_plot(tight_layout=False, savefig="alpha_symmetry_image.svg")

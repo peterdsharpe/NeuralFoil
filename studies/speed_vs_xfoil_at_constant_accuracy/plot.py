@@ -24,7 +24,16 @@ for file in data.glob("nf_*.csv"):
     nf_data[model_size] = pd.read_csv(file)
 nf_data = {  # Sorts the dictionary
     k: nf_data[k]
-    for k in ["xxsmall", "xsmall", "small", "medium", "large", "xlarge", "xxlarge", "xxxlarge"]
+    for k in [
+        "xxsmall",
+        "xsmall",
+        "small",
+        "medium",
+        "large",
+        "xlarge",
+        "xxlarge",
+        "xxxlarge",
+    ]
 }
 
 # Load Vectorized NeuralFoil data
@@ -34,7 +43,16 @@ for file in data.glob("vect_nf_*.csv"):
     vect_nf_data[model_size] = pd.read_csv(file)
 vect_nf_data = {  # Sorts the dictionary
     k: vect_nf_data[k]
-    for k in ["xxsmall", "xsmall", "small", "medium", "large", "xlarge", "xxlarge", "xxxlarge"]
+    for k in [
+        "xxsmall",
+        "xsmall",
+        "small",
+        "medium",
+        "large",
+        "xlarge",
+        "xxlarge",
+        "xxxlarge",
+    ]
 }
 
 
@@ -44,10 +62,11 @@ def parse_data_time_and_error(data: pd.DataFrame) -> tuple[float, float]:
     return error, runtime
 
 
-def parse_data_series_time_and_error(data: dict[Any, pd.DataFrame]) -> tuple[np.ndarray, np.ndarray]:
+def parse_data_series_time_and_error(
+    data: dict[Any, pd.DataFrame]
+) -> tuple[np.ndarray, np.ndarray]:
     outs: list[tuple[float, float]] = [
-        parse_data_time_and_error(df)
-        for df in data.values()
+        parse_data_time_and_error(df) for df in data.values()
     ]
     errors, runtimes = zip(*outs)
     return errors, runtimes
@@ -55,27 +74,29 @@ def parse_data_series_time_and_error(data: dict[Any, pd.DataFrame]) -> tuple[np.
 
 fig, ax = plt.subplots(figsize=(6.5, 4.5))
 
-xf_line, = plt.plot(
+(xf_line,) = plt.plot(
     *parse_data_series_time_and_error(xfoil_data),
     "o-",
-    label="XFoil", color="k",
+    label="XFoil",
+    color="k",
 )
-nf_line, = plt.plot(
+(nf_line,) = plt.plot(
     *parse_data_series_time_and_error(nf_data),
     "s-",
     label="NeuralFoil (naïve looping)",
-    color="C0"
+    color="C0",
 )
-vect_nf_line, = plt.plot(
+(vect_nf_line,) = plt.plot(
     *parse_data_series_time_and_error(vect_nf_data),
     "^-",
     label="NeuralFoil (vectorized)",
-    color="C1"
+    color="C1",
 )
+
 
 # Do annotations
 def anno(
-        **kwargs,
+    **kwargs,
 ):
     defaults = dict(
         xytext=(0, 20),
@@ -87,13 +108,14 @@ def anno(
         alpha=0.6,
         arrowprops={
             "arrowstyle": "->",
-            "color"     : "k",
-            "alpha"     : 0.35,
-            "shrinkA"   : 0,
-            "shrinkB"   : 5
-        }
+            "color": "k",
+            "alpha": 0.35,
+            "shrinkA": 0,
+            "shrinkB": 5,
+        },
     )
     plt.annotate(**{**defaults, **kwargs})
+
 
 anno(
     text="$N_{\\rm points}=260$",
@@ -108,25 +130,27 @@ anno(
     va="top",
 )
 anno(
-    text="\"xxxlarge\"",
+    text='"xxxlarge"',
     xy=nf_line.get_xydata()[-1],
     xytext=(-10, -15),
-    va="top", ha="right",
+    va="top",
+    ha="right",
 )
 anno(
-    text="\"xxsmall\"",
+    text='"xxsmall"',
     xy=nf_line.get_xydata()[0],
     xytext=(0, -20),
     va="top",
 )
 anno(
-    text="\"xxxlarge\"",
+    text='"xxxlarge"',
     xy=vect_nf_line.get_xydata()[-1],
     xytext=(-10, -15),
-    va="top", ha="right",
+    va="top",
+    ha="right",
 )
 anno(
-    text="\"xxsmall\"",
+    text='"xxsmall"',
     xy=vect_nf_line.get_xydata()[0],
     xytext=(0, 20),
     va="bottom",
@@ -149,7 +173,7 @@ p.show_plot(
     "Mean Relative Error of Drag Coefficient $C_D$ [%]",
     "Runtime per Case [sec]",
     set_ticks=False,
-    savefig="speed_vs_accuracy_tradeoff.svg"
+    savefig="speed_vs_accuracy_tradeoff.svg",
 )
 
 # for N, df in xfoil_data.items():

@@ -32,10 +32,12 @@ def patience_runtime_sample(patience=50, max_trials=1000):
 
 @numba.njit
 def patience_runtime_distribution(n_samples=1000, patience=50, max_trials=1000):
-    return np.array([
-        patience_runtime_sample(patience=patience, max_trials=max_trials)
-        for _ in range(n_samples)
-    ])
+    return np.array(
+        [
+            patience_runtime_sample(patience=patience, max_trials=max_trials)
+            for _ in range(n_samples)
+        ]
+    )
 
 
 import matplotlib.pyplot as plt
@@ -47,11 +49,5 @@ d = patience_runtime_distribution(
     patience=50,
     max_trials=1000,
 )
-p.sns.histplot(d,
-               discrete=True
-               )
-p.show_plot(
-    "Patience runtime distribution",
-    "Number of trials",
-    "Frequency"
-)
+p.sns.histplot(d, discrete=True)
+p.show_plot("Patience runtime distribution", "Number of trials", "Frequency")

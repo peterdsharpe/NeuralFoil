@@ -15,15 +15,20 @@ airfoil_database = [
 ]
 
 ### Compute the covariance matrix of airfoil shape parameters, for better data generation later
-kulfans_database = np.stack([
-    np.concatenate([
-        airfoil.upper_weights,
-        airfoil.lower_weights,
-        np.atleast_1d(airfoil.leading_edge_weight),
-        np.atleast_1d(airfoil.TE_thickness)
-    ])
-    for airfoil in airfoil_database
-], axis=0)
+kulfans_database = np.stack(
+    [
+        np.concatenate(
+            [
+                airfoil.upper_weights,
+                airfoil.lower_weights,
+                np.atleast_1d(airfoil.leading_edge_weight),
+                np.atleast_1d(airfoil.TE_thickness),
+            ]
+        )
+        for airfoil in airfoil_database
+    ],
+    axis=0,
+)
 mean_database = np.mean(kulfans_database, axis=0)
 cov_database = np.cov(kulfans_database, rowvar=False)
 
@@ -57,7 +62,7 @@ class CSVActor:
 
         row = [self.float_to_str(item) for item in row]
 
-        with open(self.filename, 'a', newline='') as file:
+        with open(self.filename, "a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow(row)
 
@@ -70,43 +75,46 @@ def worker(csv_actor):
 
         slices = np.random.rand(n_airfoils_to_combine - 1)
         slices = np.sort(slices)
-        slices = np.concatenate([
-            [0],
-            slices,
-            [1]
-        ])
-        weights = np.diff(slices) # result is N random numbers in [0, 1] that sum to 1
+        slices = np.concatenate([[0], slices, [1]])
+        weights = np.diff(slices)  # result is N random numbers in [0, 1] that sum to 1
 
-        parent_airfoils = np.random.choice(airfoil_database, size=n_airfoils_to_combine, replace=True)
+        parent_airfoils = np.random.choice(
+            airfoil_database, size=n_airfoils_to_combine, replace=True
+        )
 
         af = asb.KulfanAirfoil(
             name="Reconstructed Airfoil",
             upper_weights=np.dot(
                 weights,
                 [parent_airfoil.upper_weights for parent_airfoil in parent_airfoils],
-                manual=True
+                manual=True,
             ),
             lower_weights=np.dot(
                 weights,
                 [parent_airfoil.lower_weights for parent_airfoil in parent_airfoils],
-                manual=True
+                manual=True,
             ),
             leading_edge_weight=np.dot(
                 weights,
-                [parent_airfoil.leading_edge_weight for parent_airfoil in parent_airfoils],
-                manual=True
+                [
+                    parent_airfoil.leading_edge_weight
+                    for parent_airfoil in parent_airfoils
+                ],
+                manual=True,
             ),
             TE_thickness=np.dot(
                 weights,
                 [parent_airfoil.TE_thickness for parent_airfoil in parent_airfoils],
-                manual=True
-            )
+                manual=True,
+            ),
         )
 
         af = af.scale(1, np.random.lognormal(0, 0.25))
 
         deviations = np.random.multivariate_normal(
-            np.zeros_like(mean_database), # Not including, since we already have a linear combo of 3 airfoils
+            np.zeros_like(
+                mean_database
+            ),  # Not including, since we already have a linear combo of 3 airfoils
             cov_database,
         )
 
@@ -119,7 +127,11 @@ def worker(csv_actor):
         # if not af.as_shapely_polygon().is_valid:
         #     continue
 
-        alphas = np.linspace(-15, 15, 7) + np.random.uniform(-2.5, 2.5) + 2.5 * np.random.randn()
+        alphas = (
+            np.linspace(-15, 15, 7)
+            + np.random.uniform(-2.5, 2.5)
+            + 2.5 * np.random.randn()
+        )
         Re = float(10 ** (5.5 + 1.5 * np.random.randn()))
 
         n_crit = np.random.uniform(0, 18)
@@ -142,15 +154,14 @@ def worker(csv_actor):
             xtr_lower=xtr_lower,
             timeout=30,
             max_iter=200,
-            xfoil_command="/home/gridsan/pds/NeuralFoil/training/gen2_architecture/training_data/xfoil_supercloud"
+            xfoil_command="/home/gridsan/pds/NeuralFoil/training/gen2_architecture/training_data/xfoil_supercloud",
         )
 
         for data in datas:
             csv_actor.append_row(data.to_vector())
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     pool = mp.Pool(mp.cpu_count())
     n_procs = mp.cpu_count()
     print(f"Running on {n_procs} processes.")

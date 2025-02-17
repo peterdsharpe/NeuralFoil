@@ -27,6 +27,7 @@ class State:
         - "CD" (drag coefficient)
         - "CM" (moment coefficient)
     """
+
     af: asb.KulfanAirfoil
     alpha: float = 0.0
     Re: float = 1e6
@@ -134,21 +135,21 @@ class State:
 
     def blend_with(self, other: "State", blend_fraction: float) -> "State":
         return State(
-            af=self.af.blend_with_another_airfoil(other.af, blend_fraction=blend_fraction),
+            af=self.af.blend_with_another_airfoil(
+                other.af, blend_fraction=blend_fraction
+            ),
             alpha=self.alpha * (1 - blend_fraction) + other.alpha * blend_fraction,
             Re=self.Re * (1 - blend_fraction) + other.Re * blend_fraction,
             mach=self.mach * (1 - blend_fraction) + other.mach * blend_fraction,
         )
+
 
 s1 = State(af=asb.KulfanAirfoil("dae11"), alpha=2)
 s2 = State(af=asb.KulfanAirfoil("dae11"), alpha=5)
 
 blend_fractions = np.linspace(0, 1, 600)
 
-s = [
-    s1.blend_with(s2, blend_fraction=f)
-    for f in blend_fractions
-]
+s = [s1.blend_with(s2, blend_fraction=f) for f in blend_fractions]
 
 for state in tqdm(s):
     state.force_precompute()
@@ -164,10 +165,12 @@ ax.plot(
 )
 ax.plot(
     blend_fractions,
-    np.array([
-        float(state.aero_xf["CD"]) if len(state.aero_xf["CD"]) == 1 else np.nan
-        for state in s
-    ]),
+    np.array(
+        [
+            float(state.aero_xf["CD"]) if len(state.aero_xf["CD"]) == 1 else np.nan
+            for state in s
+        ]
+    ),
     label="XFoil",
 )
 

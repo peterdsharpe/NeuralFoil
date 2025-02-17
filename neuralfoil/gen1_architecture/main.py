@@ -7,17 +7,18 @@ npz_file_directory = Path(__file__).parent / "nn_weights_and_biases"
 
 
 def get_aero_from_kulfan_parameters(
-        kulfan_parameters: Dict[str, Union[float, np.ndarray]],
-        alpha: Union[float, np.ndarray],
-        Re: Union[float, np.ndarray],
-        model_size="large"
+    kulfan_parameters: Dict[str, Union[float, np.ndarray]],
+    alpha: Union[float, np.ndarray],
+    Re: Union[float, np.ndarray],
+    model_size="large",
 ) -> Dict[str, Union[float, np.ndarray]]:
 
     ### Load the neural network parameters
     filename = npz_file_directory / f"nn-{model_size}.npz"
     if not filename.exists():
         raise FileNotFoundError(
-            f"Could not find the neural network file {filename}, which contains the weights and biases.")
+            f"Could not find the neural network file {filename}, which contains the weights and biases."
+        )
 
     data: Dict[str, np.ndarray] = np.load(filename)
 
@@ -54,10 +55,7 @@ def get_aero_from_kulfan_parameters(
     ### First, determine what the structure of the neural network is (i.e., how many layers it has) by looking at the keys.
     # These keys come from the dictionary of saved weights/biases for the specified neural network.
     try:
-        layer_indices: Set[int] = set([
-            int(key.split(".")[1])
-            for key in data.keys()
-        ])
+        layer_indices: Set[int] = set([int(key.split(".")[1]) for key in data.keys()])
     except TypeError:
         raise ValueError(
             f"Got an unexpected neural network file format.\n"
@@ -76,7 +74,9 @@ def get_aero_from_kulfan_parameters(
             b = data[f"net.{i}.bias"]
             x = w @ x + np.reshape(b, (-1, 1))
 
-            if len(layer_indices_to_iterate) != 0:  # Don't apply the activation function on the last layer
+            if (
+                len(layer_indices_to_iterate) != 0
+            ):  # Don't apply the activation function on the last layer
                 x = np.tanh(x)
 
         return x
@@ -106,9 +106,11 @@ def get_aero_from_kulfan_parameters(
     ### The resulting outputs will also be flipped, so we need to flip them back to their normal orientation
     y_flipped[0, :] *= -1  # CL
     y_flipped[2, :] *= -1  # CM
-    temp = y_flipped[4, :] + 0.  # This is here to help swap the top / bottom Xtr (transition x) values
+    temp = (
+        y_flipped[4, :] + 0.0
+    )  # This is here to help swap the top / bottom Xtr (transition x) values
     # Adding the 0. is a hack to force a memory-copy of the array to be made in a way that's array-backend-agnostic.
-    y_flipped[4, :] = y_flipped[5,:]  # Replace top Xtr with bottom Xtr
+    y_flipped[4, :] = y_flipped[5, :]  # Replace top Xtr with bottom Xtr
     y_flipped[5, :] = temp  # Replace bottom Xtr with top Xtr
 
     ### Then, average the two outputs to get the "symmetric" result
@@ -116,10 +118,10 @@ def get_aero_from_kulfan_parameters(
 
     # Unpack the neural network outputs
     results = {
-        "CL"     : y[0, :],
-        "CD"     : np.exp(y[1, :] - 4),
-        "CM"     : y[2, :] / 20,
-        "Cpmin"  : 1 - y[3, :] ** 2,
+        "CL": y[0, :],
+        "CD": np.exp(y[1, :] - 4),
+        "CM": y[2, :] / 20,
+        "Cpmin": 1 - y[3, :] ** 2,
         "Top_Xtr": y[4, :],
         "Bot_Xtr": y[5, :],
     }
@@ -127,10 +129,10 @@ def get_aero_from_kulfan_parameters(
 
 
 def get_aero_from_airfoil(
-        airfoil: asb.Airfoil,
-        alpha: Union[float, np.ndarray],
-        Re: Union[float, np.ndarray],
-        model_size="large",
+    airfoil: asb.Airfoil,
+    alpha: Union[float, np.ndarray],
+    Re: Union[float, np.ndarray],
+    model_size="large",
 ) -> Dict[str, Union[float, np.ndarray]]:
 
     airfoil_normalization = airfoil.normalize(return_dict=True)
@@ -138,53 +140,53 @@ def get_aero_from_airfoil(
     from aerosandbox.geometry.airfoil.airfoil_families import get_kulfan_parameters
 
     kulfan_parameters = get_kulfan_parameters(
-        airfoil_normalization["airfoil"].coordinates,
-        n_weights_per_side=8
+        airfoil_normalization["airfoil"].coordinates, n_weights_per_side=8
     )
 
     return get_aero_from_kulfan_parameters(
         kulfan_parameters=kulfan_parameters,
         alpha=alpha + airfoil_normalization["rotation_angle"],
         Re=Re / airfoil_normalization["scale_factor"],
-        model_size=model_size
+        model_size=model_size,
     )
 
 
 def get_aero_from_coordinates(
-        coordinates: np.ndarray,
-        alpha: Union[float, np.ndarray],
-        Re: Union[float, np.ndarray],
-        model_size="large",
+    coordinates: np.ndarray,
+    alpha: Union[float, np.ndarray],
+    Re: Union[float, np.ndarray],
+    model_size="large",
 ):
     return get_aero_from_airfoil(
-        airfoil=asb.Airfoil(
-            coordinates=coordinates
-        ),
+        airfoil=asb.Airfoil(coordinates=coordinates),
         alpha=alpha,
         Re=Re,
-        model_size=model_size
+        model_size=model_size,
     )
 
 
 def get_aero_from_dat_file(
-        filename,
-        alpha: Union[float, np.ndarray],
-        Re: Union[float, np.ndarray],
-        model_size="large",
+    filename,
+    alpha: Union[float, np.ndarray],
+    Re: Union[float, np.ndarray],
+    model_size="large",
 ):
     with open(filename, "r") as f:
         raw_text = f.readlines()
 
-    from aerosandbox.geometry.airfoil.airfoil_families import get_coordinates_from_raw_dat
+    from aerosandbox.geometry.airfoil.airfoil_families import (
+        get_coordinates_from_raw_dat,
+    )
+
     return get_aero_from_coordinates(
         coordinates=get_coordinates_from_raw_dat(raw_text=raw_text),
         alpha=alpha,
         Re=Re,
-        model_size=model_size
+        model_size=model_size,
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     airfoil = asb.Airfoil("dae11").repanel().normalize()
     # airfoil = asb.Airfoil("naca0012").add_control_surface(10, hinge_point_x=0.5)
@@ -194,23 +196,26 @@ if __name__ == '__main__':
 
     aeros = {}
 
-    model_sizes = ["xxsmall", "xsmall", "small", "medium", "large", "xlarge", "xxlarge", "xxxlarge"]
+    model_sizes = [
+        "xxsmall",
+        "xsmall",
+        "small",
+        "medium",
+        "large",
+        "xlarge",
+        "xxlarge",
+        "xxxlarge",
+    ]
 
     for model_size in model_sizes:
         aeros[f"NF-{model_size}"] = get_aero_from_airfoil(
-            airfoil=airfoil,
-            alpha=alpha,
-            Re=Re,
-            model_size=model_size
+            airfoil=airfoil, alpha=alpha, Re=Re, model_size=model_size
         )
 
     if False:
 
         aeros["XFoil"] = asb.XFoil(
-            airfoil=airfoil,
-            Re=Re,
-            max_iter=20,
-            xfoil_repanel=True
+            airfoil=airfoil, Re=Re, max_iter=20, xfoil_repanel=True
         ).alpha(alpha)
 
     import matplotlib.pyplot as plt
@@ -220,9 +225,7 @@ if __name__ == '__main__':
     for label, aero in aeros.items():
         if "xfoil" in label.lower():
             a = aero["alpha"]
-            kwargs = dict(
-                color="k"
-            )
+            kwargs = dict(color="k")
         else:
             a = alpha
             kwargs = dict(
@@ -251,6 +254,6 @@ if __name__ == '__main__':
 
     from aerosandbox.tools.string_formatting import eng_string
 
-    plt.suptitle(f"\"{airfoil.name}\" Airfoil at $Re_c = \\mathrm{{{eng_string(Re)}}}$")
+    plt.suptitle(f'"{airfoil.name}" Airfoil at $Re_c = \\mathrm{{{eng_string(Re)}}}$')
 
     p.show_plot()

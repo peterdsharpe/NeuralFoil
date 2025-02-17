@@ -42,17 +42,23 @@ def plot(ax, title, field):
     plt.plot(
         xf_aero["alpha"],
         xf_aero[field],
-        ".", label="XFoil",
-        color="k", alpha=0.7,
-        zorder=4, markeredgewidth=0,
+        ".",
+        label="XFoil",
+        color="k",
+        alpha=0.7,
+        zorder=4,
+        markeredgewidth=0,
     )
 
     plt.plot(
         naca_data[field]["data"][:, 0],
         naca_data[field]["data"][:, 1],
-        "x", label="Experiment",
-        color="k", alpha=0.7,
-        zorder=4, markersize=5,
+        "x",
+        label="Experiment",
+        color="k",
+        alpha=0.7,
+        zorder=4,
+        markersize=5,
     )
 
     plt.plot(
@@ -126,5 +132,5 @@ p.show_plot(
     set_ticks=False,
     legend=False,
     tight_layout=False,
-    savefig="post_stall_extrapolation.svg"
+    savefig="post_stall_extrapolation.svg",
 )

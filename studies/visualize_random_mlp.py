@@ -4,31 +4,25 @@ import aerosandbox.numpy as np
 
 lims = np.array([-1, 1]) * 100
 
-x, y = (
-    np.linspace(*lims, 500),
-    np.linspace(*lims, 500)
-)
+x, y = (np.linspace(*lims, 500), np.linspace(*lims, 500))
 X, Y = np.meshgrid(x, y)
 
 np.random.seed(170)
 n_hidden_layers = 5
 n_hidden_units = 50
 
-W = [
-        np.random.randn(n_hidden_units, 2) / np.sqrt(2)
-    ] + [
+W = (
+    [np.random.randn(n_hidden_units, 2) / np.sqrt(2)]
+    + [
         np.random.randn(n_hidden_units, n_hidden_units) / np.sqrt(n_hidden_units)
         for _ in range(n_hidden_layers - 1)
-    ] + [
-        np.random.randn(1, n_hidden_units) / np.sqrt(n_hidden_units)
     ]
+    + [np.random.randn(1, n_hidden_units) / np.sqrt(n_hidden_units)]
+)
 
-b = [
-        np.random.randn(n_hidden_units)
-        for _ in range(n_hidden_layers)
-    ] + [
-        np.random.randn(1)
-    ]
+b = [np.random.randn(n_hidden_units) for _ in range(n_hidden_layers)] + [
+    np.random.randn(1)
+]
 
 
 def net(x):
@@ -56,7 +50,9 @@ Z = net(np.vstack([X.flatten(), Y.flatten()])).reshape(X.shape)
 
 fig, ax = plt.subplots()
 p.contour(
-    X, Y, Z,
+    X,
+    Y,
+    Z,
     levels=50,
     linelabels=False,
 )

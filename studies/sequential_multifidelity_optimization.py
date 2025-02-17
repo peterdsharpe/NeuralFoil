@@ -10,15 +10,13 @@ class State(NamedTuple):
     alpha: float
     aero: dict = None
 
-state = State(
-    af=asb.KulfanAirfoil("naca0012"),
-    alpha=5
-)
+
+state = State(af=asb.KulfanAirfoil("naca0012"), alpha=5)
 
 
 def optimize(
-        state: State,
-        model_size: str,
+    state: State,
+    model_size: str,
 ) -> State:
     opti = asb.Opti()
 
@@ -42,11 +40,7 @@ def optimize(
         TE_thickness=state.af.TE_thickness,
     )
 
-    alpha = opti.variable(
-        init_guess=state.alpha,
-        lower_bound=-30,
-        upper_bound=30
-    )
+    alpha = opti.variable(init_guess=state.alpha, lower_bound=-30, upper_bound=30)
 
     aero = af.get_aero_from_neuralfoil(
         alpha=alpha,
@@ -55,10 +49,7 @@ def optimize(
         model_size=model_size,
     )
 
-    opti.subject_to([
-        aero["analysis_confidence"] > 0.95,
-        af.local_thickness() > 0
-    ])
+    opti.subject_to([aero["analysis_confidence"] > 0.95, af.local_thickness() > 0])
     opti.maximize(aero["CL"] / aero["CD"])
 
     sol = opti.solve(behavior_on_failure="return_last", verbose=False)
@@ -69,11 +60,8 @@ def optimize(
     print(f"CL/CD (XFoil): {xf_aero['CL'] / xf_aero['CD']}")
     sol(af).draw()
 
-    return State(
-        af=sol(af),
-        alpha=sol(alpha),
-        aero=sol(aero)
-    )
+    return State(af=sol(af), alpha=sol(alpha), aero=sol(aero))
+
 
 state = optimize(state, model_size="small")
 state = optimize(state, model_size="medium")
@@ -84,7 +72,7 @@ state = optimize(state, model_size="xxxlarge")
 
 af = state.af
 alpha = state.alpha
-aero= state.aero
+aero = state.aero
 
 print(f"Re: {Re}")
 print(f"alpha: {alpha}")

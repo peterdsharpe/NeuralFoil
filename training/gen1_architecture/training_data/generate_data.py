@@ -2,7 +2,10 @@ import ray
 import csv
 import aerosandbox as asb
 import aerosandbox.numpy as np
-from aerosandbox.geometry.airfoil.airfoil_families import get_kulfan_parameters, get_kulfan_coordinates
+from aerosandbox.geometry.airfoil.airfoil_families import (
+    get_kulfan_parameters,
+    get_kulfan_coordinates,
+)
 from typing import List
 import time
 import os
@@ -18,20 +21,21 @@ airfoil_database_path = asb._asb_root / "geometry" / "airfoil" / "airfoil_databa
 
 UIUC_airfoils = [
     asb.Airfoil(name=filename.stem).normalize()
-    for filename in airfoil_database_path.iterdir() if filename.suffix == ".dat"
+    for filename in airfoil_database_path.iterdir()
+    if filename.suffix == ".dat"
 ]
 
 if not os.path.exists(datafile):
-    with open(datafile, 'w+', newline='') as f:
+    with open(datafile, "w+", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(
-            ["alpha"] +
-            ["Re"] +
-            ["CL", "CD", "CM", "Cpmin", "Top_Xtr", "Bot_Xtr"] +
-            [f"kulfan_lower_{i}" for i in range(n_weights_per_side)] +
-            [f"kulfan_upper_{i}" for i in range(n_weights_per_side)] +
-            ["kulfan_TE_thickness"] +
-            ["kulfan_LE_weight"]
+            ["alpha"]
+            + ["Re"]
+            + ["CL", "CD", "CM", "Cpmin", "Top_Xtr", "Bot_Xtr"]
+            + [f"kulfan_lower_{i}" for i in range(n_weights_per_side)]
+            + [f"kulfan_upper_{i}" for i in range(n_weights_per_side)]
+            + ["kulfan_TE_thickness"]
+            + ["kulfan_LE_weight"]
         )
 
 
@@ -62,7 +66,7 @@ class CSVActor:
 
         row = [self.float_to_str(item) for item in row]
 
-        with open(self.filename, 'a', newline='') as file:
+        with open(self.filename, "a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow(row)
 
@@ -84,12 +88,10 @@ def worker(csv_actor):
         def rand_airfoil() -> asb.Airfoil:
             return np.random.choice(UIUC_airfoils)
 
-        af: asb.Airfoil = rand_airfoil().blend_with_another_airfoil(
-            rand_airfoil(),
-            blend_fraction=np.random.rand()
-        ).blend_with_another_airfoil(
-            rand_airfoil(),
-            blend_fraction=np.random.rand()
+        af: asb.Airfoil = (
+            rand_airfoil()
+            .blend_with_another_airfoil(rand_airfoil(), blend_fraction=np.random.rand())
+            .blend_with_another_airfoil(rand_airfoil(), blend_fraction=np.random.rand())
         )
 
         af = af.scale(1, np.random.lognormal(0, 0.15))
@@ -116,15 +118,15 @@ def worker(csv_actor):
 
         af = asb.Airfoil(
             name="Reconstructed Airfoil",
-            coordinates=get_kulfan_coordinates(
-                **kulfan_params
-            )
+            coordinates=get_kulfan_coordinates(**kulfan_params),
         )
 
         if not af.as_shapely_polygon().is_valid:
             continue
 
-        alphas = np.linspace(-10, 10, 5) + np.random.uniform(-2.5, 2.5) + np.random.randn()
+        alphas = (
+            np.linspace(-10, 10, 5) + np.random.uniform(-2.5, 2.5) + np.random.randn()
+        )
         Re = float(10 ** (5.5 + np.random.randn()))
         xf = asb.XFoil(
             airfoil=af,
@@ -138,15 +140,18 @@ def worker(csv_actor):
         except FileNotFoundError:
             continue
 
-        for i, alpha in enumerate(aero['alpha']):
+        for i, alpha in enumerate(aero["alpha"]):
             numbers = (
-                    [alpha] +
-                    [Re] +
-                    [aero[key][i] for key in ("CL", "CD", "CM", "Cpmin", "Top_Xtr", "Bot_Xtr")] +
-                    list(kulfan_params["lower_weights"]) +
-                    list(kulfan_params["upper_weights"]) +
-                    [kulfan_params["TE_thickness"]] +
-                    [kulfan_params["leading_edge_weight"]]
+                [alpha]
+                + [Re]
+                + [
+                    aero[key][i]
+                    for key in ("CL", "CD", "CM", "Cpmin", "Top_Xtr", "Bot_Xtr")
+                ]
+                + list(kulfan_params["lower_weights"])
+                + list(kulfan_params["upper_weights"])
+                + [kulfan_params["TE_thickness"]]
+                + [kulfan_params["leading_edge_weight"]]
             )
             ray.get(csv_actor.append_row.remote(numbers))
 

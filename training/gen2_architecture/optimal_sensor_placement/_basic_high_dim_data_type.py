@@ -2,7 +2,7 @@ import aerosandbox as asb
 from dataclasses import dataclass
 from neuralfoil.gen2_architecture._basic_data_type import (
     Data as LowDimData,
-    compute_optimal_x_points
+    compute_optimal_x_points,
 )
 
 
@@ -13,7 +13,7 @@ class Data(LowDimData):
     bl_x_points = compute_optimal_x_points(n_points=N)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     af = asb.Airfoil("ag41d-02r").normalize().to_kulfan_airfoil()
 
     datas = Data.from_xfoil(

@@ -5,31 +5,31 @@ from pathlib import Path
 
 ### Describe the data we're expecting, in terms of what columns (cols) we want to see.
 aero_input_cols = [
-    'alpha',
-    'Re',
+    "alpha",
+    "Re",
 ]
 
 aero_output_cols = [
-    'CL',
-    'CD',
-    'CM',
-    'Cpmin',
-    'Top_Xtr',
-    'Bot_Xtr',
+    "CL",
+    "CD",
+    "CM",
+    "Cpmin",
+    "Top_Xtr",
+    "Bot_Xtr",
 ]
 
-kulfan_lower_cols = [
-    f"kulfan_lower_{i}" for i in range(8)
-]
+kulfan_lower_cols = [f"kulfan_lower_{i}" for i in range(8)]
 
-kulfan_upper_cols = [
-    f"kulfan_upper_{i}" for i in range(8)
-]
+kulfan_upper_cols = [f"kulfan_upper_{i}" for i in range(8)]
 
-kulfan_cols = kulfan_lower_cols + kulfan_upper_cols + [
-    "kulfan_TE_thickness",
-    "kulfan_LE_weight",
-]
+kulfan_cols = (
+    kulfan_lower_cols
+    + kulfan_upper_cols
+    + [
+        "kulfan_TE_thickness",
+        "kulfan_LE_weight",
+    ]
+)
 
 all_cols = aero_input_cols + aero_output_cols + kulfan_cols
 
@@ -39,15 +39,9 @@ data_directory = Path(__file__).parent
 
 dfs_list = []
 
-for  csv_file in data_directory.glob("*.csv"):
+for csv_file in data_directory.glob("*.csv"):
     print(f"Reading {csv_file}...")
-    dfs_list.append(pl.read_csv(
-        csv_file,
-        dtypes={
-            col: pl.Float32
-            for col in all_cols
-        }
-    ))
+    dfs_list.append(pl.read_csv(csv_file, dtypes={col: pl.Float32 for col in all_cols}))
 
 df = pl.concat(dfs_list)
 
@@ -88,15 +82,10 @@ df = pl.concat(dfs_list)
 # df = pl.concat([df_original, df_flipped])
 
 ### Drop all rows with CD <= 0
-df = df.filter(pl.col('CD') > 0)
+df = df.filter(pl.col("CD") > 0)
 
 ### Shuffle the dataset, and compute some basic statistics
-df = df.sample(
-    fraction=1,
-    with_replacement=False,
-    shuffle=True,
-    seed=0
-)
+df = df.sample(fraction=1, with_replacement=False, shuffle=True, seed=0)
 
 print("Dataset:")
 print(df)
@@ -112,7 +101,7 @@ df_test = df[test_train_split_index:]
 def get_weight(row: pl.Series):
     alpha_center = 4
     alpha_width = 8
-    return np.exp(-((row["alpha"] - alpha_center) / alpha_width) ** 2)
+    return np.exp(-(((row["alpha"] - alpha_center) / alpha_width) ** 2))
 
 
 weights = get_weight(df_train)
@@ -127,10 +116,11 @@ def make_airfoil(row_index, df=df):
         LE_weight=float(row["kulfan_LE_weight"].to_numpy()),
     )
     from aerosandbox.geometry.airfoil.airfoil_families import get_kulfan_coordinates
+
     coordinates = get_kulfan_coordinates(**kulfan_params)
 
     return asb.Airfoil(coordinates=coordinates)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     make_airfoil(-20).draw()
