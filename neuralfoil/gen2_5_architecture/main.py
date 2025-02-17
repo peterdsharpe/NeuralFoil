@@ -42,7 +42,17 @@ _nn_parameters: dict[str, dict[str, np.ndarray]] = {
 }
 
 
-def _squared_mahalanobis_distance(x):
+def _squared_mahalanobis_distance(x: np.ndarray) -> np.ndarray:
+    """
+    Computes the squared Mahalanobis distance of a set of points from the training data.
+
+    Args:
+        x: Query point in the input latent space. Shape: (N_cases, N_inputs)
+            For non-vectorized queries, N_cases=1.
+
+    Returns:
+        The squared Mahalanobis distance. Shape: (N_cases,)
+    """
     d = _scaled_input_distribution
     mean = np.reshape(d["mean_inputs_scaled"], (1, -1))
     x_minus_mean = (x.T - mean.T).T
@@ -58,6 +68,86 @@ def get_aero_from_kulfan_parameters(
     xtr_lower: Union[float, np.ndarray] = 1.0,
     model_size="large",
 ) -> dict[str, Union[float, np.ndarray]]:
+    """
+    Computes aerodynamic coefficients and boundary layer parameters for an aerodynamics case.
+
+    Args:
+
+        kulfan_parameters: The Kulfan (CST) parameters for the airfoil. Should be a dictionary with the
+        following keys:
+
+            - "lower_weights": np.ndarray of shape (8,) with the weights for the lower CST coefficients.
+            From the leading edge to the trailing edge.
+
+            - "upper_weights": np.ndarray of shape (8,) with the weights for the upper CST coefficients.
+            From the leading edge to the trailing edge.
+
+            - "leading_edge_weight": float with the weight for the leading edge thickness.
+
+            - "TE_thickness": float with the trailing edge thickness.
+
+            All can be vectorized by appending a leading dimension to all arrays.
+
+        alpha: Angle of attack in degrees.
+
+        Re: Reynolds number.
+
+        n_crit: Critical amplification factor for natural turbulent transition. Guidelines, from XFoil manual:
+            situation                Ncrit
+            -----------------        -----
+            sailplane                12-14
+            motorglider              11-13
+            clean wind tunnel        10-12
+            average wind tunnel        9     <=  standard "e^9 method"
+            dirty wind tunnel         4-8
+
+        xtr_upper: Forced transition location on the upper surface, as a fraction of chord (x/c). 1.0
+        allows fully natural transition.
+
+        xtr_lower: Forced transition location on the lower surface, as a fraction of chord (x/c). 1.0
+        allows fully natural transition.
+
+        model_size: The size of the neural network to use. Must be one of:
+            - "xxsmall"
+            - "xsmall"
+            - "small"
+            - "medium"
+            - "large"
+            - "xlarge"
+            - "xxlarge"
+            - "xxxlarge"
+            Results in a speed-accuracy tradeoff. The larger the model, the more accurate the results, but the slower
+            the computation. The default is "large".
+
+    Returns: A dictionary with the following keys:
+
+        - "analysis_confidence": Confidence of the neural network in its prediction. A value of 1.0 indicates high
+        confidence, while a value of 0.0 indicates low confidence.
+
+        - "CL": Lift coefficient.
+
+        - "CD": Drag coefficient.
+
+        - "CM": Moment coefficient.
+
+        - "Top_Xtr": Transition location on the upper surface, as a fraction of chord (x/c).
+
+        - "Bot_Xtr": Transition location on the lower surface, as a fraction of chord (x/c).
+
+        - "upper_bl_theta_i": Angle of attack of the boundary layer at the i-th panel on the upper surface, in degrees.
+
+        - "upper_bl_H_i": Displacement thickness of the boundary layer at the i-th panel on the upper surface.
+
+        - "upper_bl_ue/vinf_i": Ratio of the edge velocity to the freestream velocity at the i-th panel on the upper surface.
+
+        - "lower_bl_theta_i": Angle of attack of the boundary layer at the i-th panel on the lower surface, in degrees.
+
+        - "lower_bl_H_i": Displacement thickness of the boundary layer at the i-th panel on the lower surface.
+
+        - "lower_bl_ue/vinf_i": Ratio of the edge velocity to the freestream velocity at the i-th panel on the lower surface.
+
+        All values are returned as numpy arrays, possibly vectorized if the inputs are vectorized.
+    """
     ### Validate inputs
     if model_size not in _allowable_model_sizes:
         raise ValueError(
