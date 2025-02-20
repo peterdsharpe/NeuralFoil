@@ -200,6 +200,8 @@ with documentation [here](https://aerosandbox.readthedocs.io/en/master/autoapi/a
 
 To be written, but in the meantime [see here](https://github.com/peterdsharpe/NeuralFoil/tree/master/training) for details on the [synthetic data generation](https://github.com/peterdsharpe/NeuralFoil/tree/master/training/gen2_architecture/training_data) and [training processes](https://github.com/peterdsharpe/NeuralFoil/blob/master/training/gen2_architecture/train_blind_neural_network.py). Training data is not (yet) uploaded to GitHub, but will be soon - need to set up Git LFS, as it's many gigabytes. Contact me if you need it sooner.
 
+Full details on the training data and test/train split are available in the [NeuralFoil whitepaper](./paper/out/main.pdf).
+
 ## FAQs
 
 Will NeuralFoil be integrated directly into [AeroSandbox](https://github.com/peterdsharpe/AeroSandbox)?
