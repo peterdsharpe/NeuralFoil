@@ -7,15 +7,22 @@ from neuralfoil.gen2_5_architecture._basic_data_type import Data
 
 nn_weights_dir = Path(__file__).parent / "nn_weights_and_biases"
 
+# These are the x-coordinates on the top and bottom surfaces of the airfoil where detailed boundary layer data is computed.
+# It is made externally-accessible (`nf.bl_x_points`) in case you want to use it dynamically.
 bl_x_points = Data.bl_x_points
+
+# Here, we compute a small epsilon value, which is used later to clip values to suppress overflow.
+# This looks a bit complicated below, but it's basically
+_zero, _one, _inf = [np.array(x) for x in [0, 1, np.inf]]
+_eps: float = (
+    np.maximum(np.nextafter(_zero, _one), 1 / np.nextafter(_inf, _zero)) * 10
+)  # Adds a bit of padding, to be safe.
+_ln_eps: float = np.log(_eps)
 
 
 def _sigmoid(x: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+    x = np.clip(x, _ln_eps, -_ln_eps)  # Clip to suppress overflow
     return 1 / (1 + np.exp(-x))
-
-
-def _inverse_sigmoid(x: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-    return -np.log(1 / x - 1)
 
 
 ### For speed, pre-loads parameters with statistics about the training distribution
@@ -347,7 +354,8 @@ def get_aero_from_airfoil(
     ### Normalize the inputs and evaluate
     normalization_outputs = airfoil.normalize(return_dict=True)
     normalized_airfoil = normalization_outputs["airfoil"].to_kulfan_airfoil(
-        n_weights_per_side=8, normalize_coordinates=False  # No need to redo this
+        n_weights_per_side=8,
+        normalize_coordinates=False,  # No need to redo this
     )
     delta_alpha = normalization_outputs["rotation_angle"]  # degrees
     x_translation_LE = normalization_outputs["x_translation"]
@@ -456,7 +464,6 @@ def get_aero_from_dat_file(
 
 
 if __name__ == "__main__":
-
     airfoil = asb.Airfoil("dae11").repanel().normalize()
     # airfoil = asb.Airfoil("naca0050")
     # airfoil = asb.Airfoil("naca0012").add_control_surface(10, hinge_point_x=0.5)
@@ -476,7 +483,6 @@ if __name__ == "__main__":
         )
 
     if True:
-
         aeros["XFoil"] = asb.XFoil(
             airfoil=airfoil, Re=Re, max_iter=20, xfoil_repanel=True
         ).alpha(alpha)
