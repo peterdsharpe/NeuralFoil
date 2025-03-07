@@ -1,10 +1,6 @@
 import aerosandbox.numpy as np
 import polars as pl
 from pathlib import Path
-import sys
-
-sys.path.append(str(Path(__file__).parent))
-
 from neuralfoil._basic_data_type import Data
 
 cols = Data.get_vector_column_names()
@@ -17,7 +13,7 @@ raw_dfs = {}
 for csv_file in data_directory.glob("data*.csv"):
     print(f"Reading {csv_file}...")
     raw_dfs[csv_file.stem] = pl.read_csv(
-        csv_file, has_header=False, dtypes={col: pl.Float32 for col in cols}
+        csv_file, has_header=False, schema_overrides={col: pl.Float32 for col in cols}
     )
     print(f"\t{len(raw_dfs[csv_file.stem])} rows")
 

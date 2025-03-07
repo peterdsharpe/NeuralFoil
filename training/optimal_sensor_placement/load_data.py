@@ -1,10 +1,6 @@
 import aerosandbox.numpy as np
 import polars as pl
 from pathlib import Path
-import sys
-
-sys.path.append(str(Path(__file__).parent))
-
 from _basic_high_dim_data_type import Data
 
 cols = Data.get_vector_column_names()
