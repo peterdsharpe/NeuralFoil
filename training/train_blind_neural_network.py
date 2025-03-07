@@ -1,7 +1,4 @@
 from pathlib import Path
-import sys
-
-sys.path.append(str(Path(__file__).parent))
 from training_data.load_data import (
     df_train_inputs_scaled,
     df_train_outputs_scaled,
