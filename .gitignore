@@ -10,8 +10,6 @@ __pycache__/
 .ipynb_checkpoints
 svg-inkscape/
 ~*.*
-*.csv
-training_data.zip
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
