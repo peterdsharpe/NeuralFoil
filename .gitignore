@@ -10,6 +10,7 @@ __pycache__/
 .ipynb_checkpoints
 svg-inkscape/
 ~*.*
+*.csv
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
