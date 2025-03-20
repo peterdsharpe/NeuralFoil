@@ -1,6 +1,6 @@
-%\usepackage{lgrind}
-\usepackage{cmap}
-\usepackage[T1]{fontenc}
+% \usepackage{lgrind}
+% \usepackage{cmap}
+% \usepackage[T1]{fontenc}
 
 \usepackage{microtype}
 \usepackage{amsmath}
@@ -10,7 +10,7 @@
 \usepackage{graphicx}
 \usepackage{pgf}
 \usepackage{float}
-\usepackage{optidef}
+% \usepackage{optidef}
 \usepackage{ifdraft}
 \usepackage[hyphens]{url}
 \usepackage{hyperref}
@@ -29,27 +29,46 @@
 \usepackage{siunitx}
 \sisetup{}
 
+\usepackage{longtable}
 \usepackage{tabularx}
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{tablefootnote}
 \usepackage{tabularray}
 \UseTblrLibrary{booktabs}
+\UseTblrLibrary{counter}
 
-\usepackage{mdframed}
-\newmdenv[
-    topline=false,
-    bottomline=false,
-    skipabove=\topsep,
-    skipbelow=\topsep,
-    innerleftmargin=30pt,
-    innerrightmargin=30pt,
-    backgroundcolor=black!5
-]{example}
+% \usepackage{mdframed}
+% \newmdenv[
+%     topline=false,
+%     bottomline=false,
+%     skipabove=\topsep,
+%     skipbelow=\topsep,
+%     innerleftmargin=30pt,
+%     innerrightmargin=30pt,
+%     backgroundcolor=black!5
+% ]{example}
 
-%\usepackage{fontspec}
-%\setmonofont{Source Code Pro}
-%\setmainfont{TeX Gyre Pagella}
+% \usepackage{fontspec}
+% \usepackage{mathspec}
+%\setmathsfont(Digits,Latin,Greek)[Numbers={Proportional}]{EB Garamond}
+% \setmathrm{EB Garamond}
+
+\widowpenalty=300
+\clubpenalty=300
+\interfootnotelinepenalty=10000
+\tolerance=9999
+\emergencystretch=10pt
+\hyphenpenalty=1000
+\exhyphenpenalty=100
+
+% \defaultfontfeatures{Mapping=tex-text}
+% \newfontfamily{\smallcaps}[RawFeature={+c2sc,+scmp}]{EB Garamond}
+% \setromanfont[Numbers={Proportional}, Ligatures={Common}]{EB Garamond}
+% \setsansfont[Scale=MatchLowercase, BoldFont={Lato Bold}]{Lato Regular}
+% \setmonofont[Scale=MatchLowercase]{Source Code Pro}
+
+
 
 \usepackage{tikz}
 \usetikzlibrary{positioning}
@@ -63,13 +82,33 @@
     math mode=false
 }
 
-\usepackage[outputdir=../out,final=true]{minted}
-\PassOptionsToPackage{table,xcdraw}{xcolor}
+% \usepackage{minted}
+% \usemintedstyle{pastie}
+% %\usemintedstyle{jupyter_python}
+% %\usemintedstyle{rainbow_dash}
+% %\usemintedstyle{colorful}
+% \setminted{
+%     frame=lines,
+%     framesep=2mm,
+% %    numbers=left,
+%     fontsize=\footnotesize,
+% %    fontsize=\scriptsize,
+%     autogobble=true,
+%     baselinestretch=1.15,
+%     breaklines,
+%     linenos,
+%     highlightcolor=cyan!15,
+% }
+% \setmintedinline{
+%     breaklines
+% }
+
+% \PassOptionsToPackage{table,xcdraw}{xcolor}
 \usepackage{xcolor}
 
-\definecolor{c1}{HTML}{64ACBE}
-\definecolor{c2}{HTML}{EE442F}
-\definecolor{c3}{HTML}{601A4A}
+% \definecolor{c1}{HTML}{64ACBE}
+% \definecolor{c2}{HTML}{EE442F}
+% \definecolor{c3}{HTML}{601A4A}
 
 \definecolor{myorange}{RGB}{255, 165, 0}
 \definecolor{mydarkseagreen}{RGB}{143, 188, 143}
@@ -79,30 +118,14 @@
 \colorlet{m}{yellow!20!white}
 \colorlet{g}{green!18!white}
 
-\renewcommand{\theFancyVerbLine}{\sffamily
-    \textcolor[rgb]{0.8,0.8,0.8}{\scriptsize\oldstylenums{\arabic{FancyVerbLine}}}
-}
-\usemintedstyle{pastie}
-%\usemintedstyle{jupyter_python}
-%\usemintedstyle{rainbow_dash}
-%\usemintedstyle{colorful}
-\setminted{
-    frame=lines,
-    framesep=2mm,
-%    numbers=left,
-    fontsize=\footnotesize,
-    autogobble=true,
-    baselinestretch=1.15,
-    breaklines
-}
-\setmintedinline{
-    breaklines
-}
+
+% \renewcommand{\theFancyVerbLine}{\sffamily
+%     \textcolor[rgb]{0.8,0.8,0.8}{\scriptsize\oldstylenums{\arabic{FancyVerbLine}}}
+% }
+
 
 \usepackage{titlesec}
 %\newcommand{\sectionbreak}{\clearpage}
-
-\usepackage{enumitem}
 
 \usepackage{caption}
 \captionsetup[table]{skip=6pt}
@@ -113,19 +136,17 @@
 
 \usepackage[titletoc,title]{appendix}
 
-%\usepackage{geometry}
-%\geometry{
-%    letterpaper,
-%    left=1.0in,
-%    right=1.0in,
-%    top=1.0in,
-%    bottom=1.0in
-%}
+% \usepackage{geometry}
+% \geometry{
+%     letterpaper,
+%     left=1.0in,
+%     right=1.0in,
+%     top=1.0in,
+%     bottom=1.0in
+% }
 
-\usepackage{longtable}
-
-%\usepackage{setspace}
-%\setstretch{1.25}
+% \usepackage{setspace}
+% \setstretch{2}
 
 \usepackage[inkscapearea=page]{svg}
 
@@ -133,6 +154,29 @@
 
 \usepackage{afterpage}
 \usepackage[section]{placeins}
+
+\usepackage{nth}
+
+%\usepackage{titling}
+% \usepackage[palatino,nogrey]{quotchap}
+% \definecolor{chaptergrey}{HTML}{64ACBE}
+
+
+\usepackage{xstring}
+
+% \makeatletter
+%     \patchcmd{\@makechapterhead}{\thechapter}{%
+%      \IfSubStr{ABCDEFGHIJKLMNOPQRSTUVWXYZ}{\thechapter}{\appname\,\thechapter}{\chapname\,\thechapter}
+%     }
+% \makeatother
+
+% \newcommand{\appname}{{\fontfamily{phv}\fontsize{22pt}{26pt}\selectfont\raisebox{1em}{\textcolor{gray}{Appendix}}}} % set the appendix name <<<<<<<<<<<
+% \newcommand{\chapname}{{\fontfamily{phv}\fontsize{22pt}{26pt}\selectfont\raisebox{1em}{\textcolor{gray}{\chaptername}}}} % set the chapter name <<<<<<<<<<<
+
+\usepackage{authblk}
+
+\usepackage{todonotes}
+\setuptodonotes{inline,backgroundcolor=yellow!20,prepend,caption={TODO}}
 
 \newcommand{\Rey}{\rm Re}
 \newcommand{\M}{\rm M}
