@@ -73,7 +73,7 @@ def get_aero_from_kulfan_parameters(
     n_crit: Union[float, np.ndarray] = 9.0,
     xtr_upper: Union[float, np.ndarray] = 1.0,
     xtr_lower: Union[float, np.ndarray] = 1.0,
-    model_size="large",
+    model_size="xlarge",
 ) -> dict[str, Union[float, np.ndarray]]:
     """
     Computes aerodynamic coefficients and boundary layer parameters for an aerodynamics case.
@@ -334,7 +334,7 @@ def get_aero_from_airfoil(
     n_crit: Union[float, np.ndarray] = 9.0,
     xtr_upper: Union[float, np.ndarray] = 1.0,
     xtr_lower: Union[float, np.ndarray] = 1.0,
-    model_size="large",
+    model_size="xlarge",
 ) -> Dict[str, Union[float, np.ndarray]]:
     """
     Computes aerodynamic coefficients and boundary layer parameters for an aerodynamics case.
@@ -428,7 +428,7 @@ def get_aero_from_dat_file(
     n_crit: Union[float, np.ndarray] = 9.0,
     xtr_upper: Union[float, np.ndarray] = 1.0,
     xtr_lower: Union[float, np.ndarray] = 1.0,
-    model_size="large",
+    model_size="xlarge",
 ):
     """
     Computes aerodynamic coefficients and boundary layer parameters for an aerodynamics case.
