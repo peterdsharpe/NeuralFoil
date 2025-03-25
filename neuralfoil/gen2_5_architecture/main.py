@@ -21,7 +21,7 @@ _ln_eps: float = np.log(_eps)
 
 
 def _sigmoid(x: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-    x = np.clip(x, _ln_eps, -_ln_eps)  # Clip to suppress overflow
+    x = np.clip(x, -_ln_eps, _ln_eps)  # Clip to suppress overflow
     return 1 / (1 + np.exp(-x))
 
 
