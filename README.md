@@ -268,7 +268,7 @@ it's not obvious.
 
 ## Acknowledgements
 
-NeuralFoil was trained on MIT Supercloud, a high-performance computing cluster operated by the MIT Lincoln Laboratory Supercomputing Center (LLSC).
+NeuralFoil was trained on [MIT Supercloud](https://supercloud.mit.edu/), a high-performance computing cluster operated by the MIT Lincoln Laboratory Supercomputing Center (LLSC).
 
 ## License
 
