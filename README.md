@@ -251,7 +251,7 @@ What's the underlying neural network architecture used in NeuralFoil? In what se
 
 Could you make NeuralFoil more accurate, relative to XFoil, by a) increasing the shape parameterization dimensionality or b) increasing the neural network size?
 
-> Yes. *But you don't want to make it more accurate*—and not for any of the reasons that ML engineers would typically cite (slower runtime or increased data requirements). This may sound puzzling, so let's unpack this.
+> Yes. *But you probably don't actually want to make it more accurate*—and not for any of the reasons that ML engineers would typically cite (slower runtime or increased data requirements). This may sound puzzling, so let's unpack this.
 >
 > NeuralFoil's true goal is to serve as a *useful tool* for practical aerospace engineers to design airfoils that physically work well in real-world applications—you should be able to take a NeuralFoil airfoil, actually go fly it, and get similar performance. Critically, this goal is different than just accuracy alone. As stated by Mark Drela (MIT; author of XFoil) in personal correspondence about NeuralFoil:
 > 
