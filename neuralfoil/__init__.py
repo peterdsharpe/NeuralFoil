@@ -6,4 +6,4 @@ from neuralfoil.main import (
     bl_x_points,
 )
 
-__version__ = "0.3.1"
+__version__ = "0.3.2"
