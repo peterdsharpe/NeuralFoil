@@ -13,10 +13,7 @@ bl_x_points = Data.bl_x_points
 
 # Here, we compute a small epsilon value, which is used later to clip values to suppress overflow.
 # This looks a bit complicated below, but it's basically just a dynamic way to avoid explicitly referring to float bit-widths.
-_zero, _one, _inf = [np.array(x) for x in [0, 1, np.inf]]
-_eps: float = (
-    np.maximum(np.nextafter(_zero, _one), 1 / np.nextafter(_inf, _zero)) * 10
-)  # Adds a bit of padding, to be safe.
+_eps: float = 10 / np.finfo(np.array(1.0).dtype).max
 _ln_eps: float = np.log(_eps)
 
 
