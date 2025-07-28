@@ -186,7 +186,7 @@ The airfoil shape fed into NeuralFoil's neural networks is in the form of an 8-p
 For more details on this parameterization, or why it is a good choice, read:
 
 - [D. A. Masters, "Geometric Comparison of Aerofoil Shape Parameterization Methods", AIAA Journal, 2017.](https://arc.aiaa.org/doi/pdf/10.2514/1.J054943)
-- The seminal paper on the CST (Kulfan) parameterization technique: [Brenda Kulfan, "Universal Parametric Geometry Representation Method"](http://mx1.brendakulfan.com/docs/CST6.pdf)
+- The seminal paper on the CST (Kulfan) parameterization technique: [Brenda Kulfan, "Universal Parametric Geometry Representation Method"](https://www.brendakulfan.com/research)
 
 To convert between airfoil coordinates and the CST parameterization, use the following functions:
 
