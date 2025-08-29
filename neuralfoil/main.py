@@ -22,7 +22,7 @@ def _sigmoid(x: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
     return 1 / (1 + np.exp(-x))
 
 
-### For speed, pre-loads parameters with statistics about the training distribution
+### Pre-load parameters with statistics about the training distribution
 # Includes the mean, covariance, and inverse covariance of training data in the input latent space (25-dim)
 _scaled_input_distribution = dict(
     np.load(nn_weights_dir / "scaled_input_distribution.npz")
@@ -64,14 +64,14 @@ def _squared_mahalanobis_distance(x: np.ndarray) -> np.ndarray:
 
 
 def get_aero_from_kulfan_parameters(
-    kulfan_parameters: dict[str, Union[float, np.ndarray]],
-    alpha: Union[float, np.ndarray],
-    Re: Union[float, np.ndarray],
-    n_crit: Union[float, np.ndarray] = 9.0,
-    xtr_upper: Union[float, np.ndarray] = 1.0,
-    xtr_lower: Union[float, np.ndarray] = 1.0,
-    model_size="xlarge",
-) -> dict[str, Union[float, np.ndarray]]:
+    kulfan_parameters: dict[str, float | np.ndarray],
+    alpha: float | np.ndarray,
+    Re: float | np.ndarray,
+    n_crit: float | np.ndarray = 9.0,
+    xtr_upper: float | np.ndarray = 1.0,
+    xtr_lower: float | np.ndarray = 1.0,
+    model_size: str = "xlarge",
+) -> dict[str, float | np.ndarray]:
     """
     Computes aerodynamic coefficients and boundary layer parameters for an aerodynamics case.
 
@@ -169,7 +169,7 @@ def get_aero_from_kulfan_parameters(
         np.cosd(alpha),
         1 - np.cosd(alpha) ** 2,
         (np.log(Re) - 12.5) / 3.5,
-        # No mach
+        # No mach parameter in this version
         (n_crit - 9) / 4.5,
         xtr_upper,
         xtr_lower,
@@ -196,7 +196,7 @@ def get_aero_from_kulfan_parameters(
     ### First, determine what the structure of the neural network is (i.e., how many layers it has) by looking at the keys.
     # These keys come from the dictionary of saved weights/biases for the specified neural network.
     try:
-        layer_indices: Set[int] = set(
+        layer_indices: set[int] = set(
             [int(key.split(".")[1]) for key in nn_params.keys()]
         )
     except TypeError:
@@ -205,7 +205,7 @@ def get_aero_from_kulfan_parameters(
             f"Dictionary keys should be strings of the form 'net.0.weight', 'net.0.bias', 'net.2.weight', etc.'.\n"
             f"Instead, got keys of the form {nn_params.keys()}.\n"
         )
-    layer_indices: List[int] = sorted(list(layer_indices))
+    layer_indices: list[int] = sorted(list(layer_indices))
 
     ### Now, set up evaluation of the basic neural network.
     def net(x: np.ndarray) -> np.ndarray:
@@ -286,7 +286,7 @@ def get_aero_from_kulfan_parameters(
     y_fused[:, 4] = np.clip(y_fused[:, 4], 0, 1)  # Top_Xtr
     y_fused[:, 5] = np.clip(y_fused[:, 5], 0, 1)  # Bot_Xtr
 
-    ### Unpack outputs
+    ### Unpack outputs with proper scaling
     analysis_confidence = y_fused[:, 0]
     CL = y_fused[:, 1] / 2
     CD = np.exp((y_fused[:, 2] - 2) * 2)
@@ -325,14 +325,14 @@ def get_aero_from_kulfan_parameters(
 
 
 def get_aero_from_airfoil(
-    airfoil: Union[asb.Airfoil, asb.KulfanAirfoil],
-    alpha: Union[float, np.ndarray],
-    Re: Union[float, np.ndarray],
-    n_crit: Union[float, np.ndarray] = 9.0,
-    xtr_upper: Union[float, np.ndarray] = 1.0,
-    xtr_lower: Union[float, np.ndarray] = 1.0,
-    model_size="xlarge",
-) -> Dict[str, Union[float, np.ndarray]]:
+    airfoil: asb.Airfoil | asb.KulfanAirfoil,
+    alpha: float | np.ndarray,
+    Re: float | np.ndarray,
+    n_crit: float | np.ndarray = 9.0,
+    xtr_upper: float | np.ndarray = 1.0,
+    xtr_lower: float | np.ndarray = 1.0,
+    model_size: str = "xlarge",
+) -> dict[str, float | np.ndarray]:
     """
     Computes aerodynamic coefficients and boundary layer parameters for an aerodynamics case.
 
@@ -360,9 +360,9 @@ def get_aero_from_airfoil(
     scale = normalization_outputs["scale_factor"]
 
     x_translation_qc = (
-        -x_translation_LE + 0.25 * (1 / scale * np.cosd(delta_alpha)) - 0.25
+        -x_translation_LE + 0.25 * (1.0 / scale * np.cosd(delta_alpha)) - 0.25
     )
-    y_translation_qc = -y_translation_LE + 0.25 * (1 / scale * np.sind(-delta_alpha))
+    y_translation_qc = -y_translation_LE + 0.25 * (1.0 / scale * np.sind(-delta_alpha))
 
     raw_aero = get_aero_from_kulfan_parameters(
         kulfan_parameters=normalized_airfoil.kulfan_parameters,
@@ -383,13 +383,13 @@ def get_aero_from_airfoil(
 
 def get_aero_from_coordinates(
     coordinates: np.ndarray,
-    alpha: Union[float, np.ndarray],
-    Re: Union[float, np.ndarray],
-    n_crit: Union[float, np.ndarray] = 9.0,
-    xtr_upper: Union[float, np.ndarray] = 1.0,
-    xtr_lower: Union[float, np.ndarray] = 1.0,
-    model_size="large",
-):
+    alpha: float | np.ndarray,
+    Re: float | np.ndarray,
+    n_crit: float | np.ndarray = 9.0,
+    xtr_upper: float | np.ndarray = 1.0,
+    xtr_lower: float | np.ndarray = 1.0,
+    model_size: str = "xlarge",
+) -> dict[str, float | np.ndarray]:
     """
     Computes aerodynamic coefficients and boundary layer parameters for an aerodynamics case.
 
@@ -419,14 +419,14 @@ def get_aero_from_coordinates(
 
 
 def get_aero_from_dat_file(
-    filename,
-    alpha: Union[float, np.ndarray],
-    Re: Union[float, np.ndarray],
-    n_crit: Union[float, np.ndarray] = 9.0,
-    xtr_upper: Union[float, np.ndarray] = 1.0,
-    xtr_lower: Union[float, np.ndarray] = 1.0,
-    model_size="xlarge",
-):
+    filename: str | Path,
+    alpha: float | np.ndarray,
+    Re: float | np.ndarray,
+    n_crit: float | np.ndarray = 9.0,
+    xtr_upper: float | np.ndarray = 1.0,
+    xtr_lower: float | np.ndarray = 1.0,
+    model_size: str = "xlarge",
+) -> dict[str, float | np.ndarray]:
     """
     Computes aerodynamic coefficients and boundary layer parameters for an aerodynamics case.
 
