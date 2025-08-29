@@ -86,7 +86,7 @@ def get_aero_from_kulfan_parameters(
             - "upper_weights": np.ndarray of shape (8,) with the weights for the upper CST coefficients.
             From the leading edge to the trailing edge.
 
-            - "leading_edge_weight": float with the weight for the leading edge thickness.
+            - "leading_edge_weight": float with the weight for the leading edge modification.
 
             - "TE_thickness": float with the trailing edge thickness.
 
