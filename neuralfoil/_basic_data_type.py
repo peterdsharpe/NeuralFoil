@@ -17,48 +17,23 @@ from typing import Union, Sequence, List, Any, Dict
 from scipy import interpolate
 
 
-def compute_optimal_x_points(
-    n_points,
-):
-    # theta = np.arccos(1 - 2 * x)
-    # delta_Cp_thin_airfoil_theory = 4 / np.tan(theta)
-    # desired_spacing = 1 / delta_Cp_thin_airfoil_theory
-    # spacing_function = integral(desired_spacing, x) # rescaled to (0, 1)
-
-    # thin_airfoil_theory_spacing_function = lambda x: (
-    #                                                          -np.sqrt((1 - x) * x)
-    #                                                          - 0.5 * np.arcsin(1 - 2 * x)
-    #                                                  ) / (np.pi / 2) + 0.5
-    #
-    # uniform_spacing_function = lambda x: x
-    #
-    # return (
-    #         thin_airfoil_theory_spacing_function(np.linspace(0, 1, n_points)) +
-    #         uniform_spacing_function(np.sinspace(0, 1, n_points))
-    # ) / 2
+def compute_optimal_x_points(n_points: int) -> np.ndarray:
+    """
+    Compute optimal x-coordinates for boundary layer evaluation points.
+    
+    Creates evenly spaced points between 0 and 1, avoiding the exact edges.
+    
+    Args:
+        n_points: Number of points to generate.
+        
+    Returns:
+        Array of x-coordinates of shape (n_points,).
+    """
     s = np.linspace(0, 1, n_points + 1)
     return (s[1:] + s[:-1]) / 2
 
 
-# def compute_optimal_x_points(
-#         n_points: int = 24,
-# ):
-#     # theta = np.arccos(1 - 2 * x)
-#     # delta_Cp_thin_airfoil_theory = 4 / np.tan(theta)
-#     # desired_spacing = 1 / delta_Cp_thin_airfoil_theory
-#     # spacing_function = integral(desired_spacing, x) # rescaled to (0, 1)
-#
-#     thin_airfoil_theory_spacing_function = lambda x: (
-#                                                              -np.sqrt((1 - x) * x)
-#                                                              - 0.5 * np.arcsin(1 - 2 * x)
-#                                                      ) / (np.pi / 2) + 0.5
-#
-#     uniform_spacing_function = lambda x: x
-#
-#     return (
-#             thin_airfoil_theory_spacing_function(np.linspace(0, 1, n_points)) +
-#             uniform_spacing_function(np.sinspace(0, 1, n_points))
-#     ) / 2
+
 
 
 @dataclass
@@ -75,7 +50,8 @@ class Data:
     bl_x_points = compute_optimal_x_points(n_points=N)
 
     analysis_confidence: float  # Nominally 0 (no confidence) to 1 (high confidence)
-    af_outputs: Dict[str, Any] = field(
+
+    af_outputs: dict[str, Any] = field(
         default_factory=lambda: {
             "CL": np.nan,
             "CD": np.nan,
@@ -84,14 +60,14 @@ class Data:
             "Bot_Xtr": np.nan,
         }
     )
-    upper_bl_outputs: Dict[str, Any] = field(
+    upper_bl_outputs: dict[str, Any] = field(
         default_factory=lambda: {
             "theta": np.nan * np.ones_like(Data.bl_x_points),
             "H": np.nan * np.ones_like(Data.bl_x_points),
             "ue/vinf": np.nan * np.ones_like(Data.bl_x_points),
         }
-    )  # theta, H, ue/vinf
-    lower_bl_outputs: Dict[str, Any] = field(
+    )
+    lower_bl_outputs: dict[str, Any] = field(
         default_factory=lambda: {
             "theta": np.nan * np.ones_like(Data.bl_x_points),
             "H": np.nan * np.ones_like(Data.bl_x_points),
@@ -100,7 +76,8 @@ class Data:
     )  # theta, H, ue/vinf
 
     @property
-    def inputs(self):
+    def inputs(self) -> dict[str, Any]:
+        """Get a dictionary of all input parameters."""
         return {
             "airfoil": self.airfoil,
             "alpha": self.alpha,
@@ -112,7 +89,8 @@ class Data:
         }
 
     @property
-    def outputs(self):
+    def outputs(self) -> dict[str, Any]:
+        """Get a dictionary of all output parameters."""
         return {
             "analysis_confidence": self.analysis_confidence,
             "af_outputs": self.af_outputs,
@@ -123,17 +101,35 @@ class Data:
     @classmethod
     def from_xfoil(
         cls,
-        airfoil: Union[asb.Airfoil, asb.KulfanAirfoil],
-        alphas: Union[float, Sequence[float]],
+        airfoil: asb.Airfoil | asb.KulfanAirfoil,
+        alphas: float | Sequence[float],
         Re: float,
         mach: float,
         n_crit: float,
         xtr_upper: float,
         xtr_lower: float,
-        timeout=5,
-        max_iter=100,
+        timeout: float | int = 5,
+        max_iter: int = 100,
         xfoil_command: str = "xfoil",
-    ) -> List["Data"]:
+    ) -> list["Data"]:
+        """
+        Create Data instances by running XFoil analysis.
+        
+        Args:
+            airfoil: Airfoil geometry to analyze.
+            alphas: Angle(s) of attack to analyze.
+            Re: Reynolds number.
+            mach: Mach number.
+            n_crit: Critical amplification factor.
+            xtr_upper: Upper surface forced transition location.
+            xtr_lower: Lower surface forced transition location.
+            timeout: XFoil timeout in seconds.
+            max_iter: Maximum iterations for XFoil.
+            xfoil_command: Path to XFoil executable.
+            
+        Returns:
+            List of Data instances, one per requested alpha.
+        """
         airfoil = airfoil.normalize().to_kulfan_airfoil()
 
         alphas = np.atleast_1d(alphas)
@@ -201,14 +197,14 @@ class Data:
                 ]
                 lower_bl_data = bl_data.iloc[np.flatnonzero(dx > 0)[0] :, :]
             except IndexError as e:  # If the boundary layer data is too short
-                print(e)
+                warnings.warn(f"Boundary layer data too short for alpha={alpha}: {e}")
                 append_empty_data()
                 continue
 
             if (
                 len(upper_bl_data) <= 4 or len(lower_bl_data) <= 4
             ):  # If the boundary layer data is too short
-                print("BL data too short")
+                warnings.warn(f"Boundary layer data too short for alpha={alpha}")
                 append_empty_data()
                 continue
 
@@ -252,13 +248,19 @@ class Data:
                     )
                 )
             except ValueError as e:
-                print(e)
+                warnings.warn(f"Failed to interpolate boundary layer data for alpha={alpha}: {e}")
                 append_empty_data()
                 continue
 
         return training_datas
 
-    def to_vector(self) -> np.ndarray:  # dtype: float32
+    def to_vector(self) -> np.ndarray:
+        """
+        Convert Data instance to a flat vector representation.
+        
+        Returns:
+            1D array containing all data fields concatenated.
+        """
         items = [
             self.airfoil.upper_weights,
             self.airfoil.lower_weights,
@@ -290,9 +292,22 @@ class Data:
 
     @classmethod
     def from_vector(cls, vector: np.ndarray) -> "Data":
+        """
+        Create a Data instance from a flat vector representation.
+        
+        Args:
+            vector: 1D array containing all data fields concatenated.
+            
+        Returns:
+            Data instance reconstructed from the vector.
+            
+        Raises:
+            ValueError: If vector length doesn't match expected size.
+        """
         i = 0
 
-        def pop(n):
+        def pop(n: int) -> np.ndarray:
+            """Extract n elements from vector starting at position i."""
             nonlocal i
             result = vector[i : i + n]
             i += n
@@ -348,7 +363,8 @@ class Data:
         )
 
     @classmethod
-    def get_vector_input_column_names(cls):
+    def get_vector_input_column_names(cls) -> list[str]:
+        """Get column names for input portion of vector representation."""
         return [
             *[f"kulfan_upper_{i}" for i in range(8)],
             *[f"kulfan_lower_{i}" for i in range(8)],
@@ -363,7 +379,8 @@ class Data:
         ]
 
     @classmethod
-    def get_vector_output_column_names(cls):
+    def get_vector_output_column_names(cls) -> list[str]:
+        """Get column names for output portion of vector representation."""
         return [
             "analysis_confidence",
             "CL",
@@ -380,12 +397,22 @@ class Data:
         ]
 
     @classmethod
-    def get_vector_column_names(cls):
+    def get_vector_column_names(cls) -> list[str]:
+        """Get all column names for vector representation."""
         return (
             cls.get_vector_input_column_names() + cls.get_vector_output_column_names()
         )
 
     def __eq__(self, other: "Data") -> bool:
+        """
+        Check equality between two Data instances.
+        
+        Args:
+            other: Another Data instance to compare with.
+            
+        Returns:
+            True if the two instances are equal within floating point tolerance.
+        """
         v1 = self.to_vector()
         v2 = other.to_vector()
 
@@ -409,7 +436,13 @@ class Data:
             rtol=np.finfo(np.float32).eps * 10,
         )
 
-    def validate_vector_format(self):
+    def validate_vector_format(self) -> None:
+        """
+        Validate that vector conversion is reversible.
+        
+        Raises:
+            AssertionError: If to_vector/from_vector conversion is not reversible.
+        """
         assert self == Data.from_vector(self.to_vector())
 
 
