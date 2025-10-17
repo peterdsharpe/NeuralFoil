@@ -9,7 +9,7 @@ by [Peter Sharpe](https://peterdsharpe.github.io) (<pds [at] mit [dot] edu>)
 [![Build Status](https://github.com/peterdsharpe/NeuralFoil/workflows/Tests/badge.svg)](https://github.com/peterdsharpe/NeuralFoil/actions/workflows/run-pytest.yml)
 [![PyPI](https://img.shields.io/pypi/v/neuralfoil)](https://pypi.org/project/NeuralFoil/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-g.svg)](https://opensource.org/licenses/MIT)
-
+[![arXiv](https://img.shields.io/badge/arXiv-2503.16323-b31b1b.svg)](https://arxiv.org/abs/2503.16323)
 -----
 
 **NeuralFoil** is a tool for rapid aerodynamics analysis of airfoils, similar to [XFoil](https://web.mit.edu/drela/Public/web/xfoil/). NeuralFoil is [a hybrid of physics-informed machine learning techniques and analytical models, leveraging domain knowledge](./paper/out/main.pdf). Its learned core is trained on [tens of millions of XFoil runs](#geometry-parameterization-and-training-data).
