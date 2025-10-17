@@ -138,15 +138,15 @@ def get_aero_from_kulfan_parameters(
 
         - "Bot_Xtr": Transition location on the lower surface, as a fraction of chord (x/c).
 
-        - "upper_bl_theta_i": Angle of attack of the boundary layer at the i-th panel on the upper surface, in degrees.
+        - "upper_bl_theta_i": Momentum thickness of the boundary layer at the i-th panel on the upper surface, in chord-normalized length units.
 
-        - "upper_bl_H_i": Displacement thickness of the boundary layer at the i-th panel on the upper surface.
+        - "upper_bl_H_i": Shape factor of the boundary layer at the i-th panel on the upper surface.
 
         - "upper_bl_ue/vinf_i": Ratio of the edge velocity to the freestream velocity at the i-th panel on the upper surface.
 
-        - "lower_bl_theta_i": Angle of attack of the boundary layer at the i-th panel on the lower surface, in degrees.
+        - "lower_bl_theta_i": Momentum thickness of the boundary layer at the i-th panel on the lower surface, in chord-normalized length units.
 
-        - "lower_bl_H_i": Displacement thickness of the boundary layer at the i-th panel on the lower surface.
+        - "lower_bl_H_i": Shape factor of the boundary layer at the i-th panel on the lower surface.
 
         - "lower_bl_ue/vinf_i": Ratio of the edge velocity to the freestream velocity at the i-th panel on the lower surface.
 
