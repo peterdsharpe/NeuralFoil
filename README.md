@@ -9,12 +9,12 @@ by [Peter Sharpe](https://peterdsharpe.github.io) (<pds [at] mit [dot] edu>)
 [![Build Status](https://github.com/peterdsharpe/NeuralFoil/workflows/Tests/badge.svg)](https://github.com/peterdsharpe/NeuralFoil/actions/workflows/run-pytest.yml)
 [![PyPI](https://img.shields.io/pypi/v/neuralfoil)](https://pypi.org/project/NeuralFoil/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-g.svg)](https://opensource.org/licenses/MIT)
-
+[![arXiv](https://img.shields.io/badge/arXiv-2503.16323-b31b1b.svg)](https://arxiv.org/abs/2503.16323)
 -----
 
 **NeuralFoil** is a tool for rapid aerodynamics analysis of airfoils, similar to [XFoil](https://web.mit.edu/drela/Public/web/xfoil/). NeuralFoil is [a hybrid of physics-informed machine learning techniques and analytical models, leveraging domain knowledge](./paper/out/main.pdf). Its learned core is trained on [nearly 8 million XFoil runs](#geometry-parameterization-and-training-data).
 
-NeuralFoil is available here as a pure Python+NumPy standalone, but it is also [available within AeroSandbox](#extended-features-transonics-post-stall-control-surface-deflections), which extends it with advanced features. With this extension, NeuralFoil can give you **viscous, compressible airfoil aerodynamics for (nearly) any airfoil, with control surface deflections, across $360^\circ$ angle of attack, at any Reynolds number, all very quickly** (~5 milliseconds). And, it's guaranteed to return an answer (no non-convergence issues), it's vectorized, and it's $C^\infty$-continuous (critical for gradient-based optimization). For aerodynamics experts: NeuralFoil will also give you fine-grained boundary layer control ($N_{\rm crit}$, forced trips) and information ($\theta$, $H$, $u_e/V_\infty$, and pressure distributions).
+NeuralFoil is available here as a pure Python+NumPy standalone (trained in PyTorch, runtime-executed in NumPy), but it is also [available within AeroSandbox](#extended-features-transonics-post-stall-control-surface-deflections), which extends it with advanced features. With this extension, NeuralFoil can give you **viscous, compressible airfoil aerodynamics for (nearly) any airfoil, with control surface deflections, across $360^\circ$ angle of attack, at any Reynolds number, all very quickly** (~5 milliseconds). And, it's guaranteed to return an answer (no non-convergence issues), it's vectorized, and it's $C^\infty$-continuous (critical for gradient-based optimization). For aerodynamics experts: NeuralFoil will also give you fine-grained boundary layer control ($N_{\rm crit}$, forced trips) and information ($\theta$, $H$, $u_e/V_\infty$, and pressure distributions).
 
 A unique feature is that NeuralFoil also assesses its own trustworthiness, yielding an [`"analysis_confidence"`](#accuracy) output: queries where flow is sensitive or strongly out-of-distribution are flagged. This is especially useful for design optimization, where [constraining this uncertainty metric](https://github.com/peterdsharpe/AeroSandbox/blob/master/tutorial/06%20-%20Aerodynamics/02%20-%20AeroSandbox%202D%20Aerodynamics%20Tools/02%20-%20NeuralFoil%20Optimization.ipynb) ensures designs are [robust to small changes in shape and flow conditions.](https://web.mit.edu/drela/OldFiles/Public/papers/Pros_Cons_Airfoil_Optimization.pdf)
 
@@ -184,7 +184,7 @@ The airfoil shape fed into NeuralFoil's neural networks is in the form of an 8-p
 For more details on this parameterization, or why it is a good choice, read:
 
 - [D. A. Masters, "Geometric Comparison of Aerofoil Shape Parameterization Methods", AIAA Journal, 2017.](https://arc.aiaa.org/doi/pdf/10.2514/1.J054943)
-- The seminal paper on the CST (Kulfan) parameterization technique: [Brenda Kulfan, "Universal Parametric Geometry Representation Method"](http://mx1.brendakulfan.com/docs/CST6.pdf)
+- The seminal paper on the CST (Kulfan) parameterization technique: [Brenda Kulfan, "Universal Parametric Geometry Representation Method"](https://www.brendakulfan.com/research)
 
 To convert between airfoil coordinates and the CST parameterization, use the following functions:
 
@@ -246,6 +246,8 @@ What's the underlying neural network architecture used in NeuralFoil? In what se
 > * xxxlarge: 6 hidden layers, 512 wide.
 >
 > The domain knowledge embedding (the "physics-informed" part) happens primarily in a) encoding/decoding latent space choices, b) symmetry embedding, and c) how the model dynamically fuses a learned model and an empirical model, depending on the uncertainty of the learned model. NeuralFoil is "physics-informed", but notably not a [PINN](https://en.wikipedia.org/wiki/Physics-informed_neural_networks). ([To dispel a common misconception, "physics informed machine learning" is an umbrella term that extends far beyond just PINNs - see Steve Brunton's taxonomy here](https://youtu.be/JoFW2uSd3Uo).) NeuralFoil is an interesting case study about how full-field learning using sophisticated ML architectures (e.g., PINNs, neural operators, CNNs/GNNs) is not always the only or best way to embed physics domain knowledge into a model. In fact, simple strategies can often yield compelling tradeoffs, as measured by speed, accuracy, data efficiency, and generalizability.
+>
+> Spiritually, NeuralFoil's performance is perhaps ~75% attributable to classical fluid dynamics knowledge embedded into the architecture, and 25% due to the learned core.
 
 Could you make NeuralFoil more accurate, relative to XFoil, by a) increasing the shape parameterization dimensionality or b) increasing the neural network size?
 
