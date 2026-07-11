@@ -278,7 +278,21 @@ NeuralFoil is licensed under [the MIT license](LICENSE.txt).
 
 If you use NeuralFoil in your research, please cite:
 
-Both the tool itself (this repository), which includes the [pre-print publication](./paper/out/main.pdf):
+The NeuralFoil paper ([arXiv:2503.16323](https://arxiv.org/abs/2503.16323)):
+
+```bibtex
+@misc{neuralfoil_paper,
+  title = {{NeuralFoil}: An Airfoil Aerodynamics Analysis Tool Using Physics-Informed Machine Learning},
+  author = {Peter Sharpe and R. John Hansman},
+  year = {2025},
+  eprint = {2503.16323},
+  archivePrefix = {arXiv},
+  primaryClass = {physics.flu-dyn},
+  url = {https://arxiv.org/abs/2503.16323},
+}
+```
+
+The tool itself (this repository):
 
 ```bibtex
 @misc{neuralfoil,
