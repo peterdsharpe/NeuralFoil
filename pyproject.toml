@@ -80,6 +80,7 @@ packages = ["neuralfoil"]
 [tool.hatch.build.targets.sdist]
 include = [
     "/neuralfoil",
+    "/tests",
     "/pyproject.toml",
     "/README.md",
     "/LICENSE.txt",
