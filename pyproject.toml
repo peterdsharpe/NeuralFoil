@@ -1,0 +1,78 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "NeuralFoil"
+version = "0.3.3"
+description = "NeuralFoil is an airfoil aerodynamics analysis tool using physics-informed machine learning, in pure Python/NumPy."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Peter Sharpe", email = "pds@mit.edu" }
+]
+keywords = [
+    "python",
+    "machine learning",
+    "analysis",
+    "optimization",
+    "aerospace",
+    "airplane",
+    "cfd",
+    "aircraft",
+    "hydrodynamics",
+    "aerodynamics",
+    "sailing",
+    "propeller",
+    "airfoil",
+    "xfoil",
+    "design",
+    "mdo",
+    "mdao",
+    "physics informed neural network",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Physics",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+
+dependencies = [
+    "numpy>=1",
+    "aerosandbox>=4.2.4,<4.3.0",
+]
+
+[project.optional-dependencies]
+training = [
+    "torch",
+    "ray",
+    "polars",
+    "tqdm",
+]
+test = [
+    "pytest",
+    "nbval",
+]
+docs = [
+    "sphinx",
+    "furo",
+    "sphinx-autoapi",
+]
+
+[project.urls]
+Source = "https://github.com/peterdsharpe/NeuralFoil"
+"Bug Reports" = "https://github.com/peterdsharpe/NeuralFoil/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["neuralfoil"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/neuralfoil",
+    "/pyproject.toml",
+    "/README.md",
+    "/LICENSE.txt",
+]

@@ -1,5 +1,6 @@
 ### Peter's Template template
 dist/
+build/
 NeuralFoil.egg-info/
 .idea/
 __pycache__/

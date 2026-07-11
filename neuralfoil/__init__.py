@@ -6,4 +6,9 @@ from neuralfoil.main import (
     bl_x_points,
 )
 
-__version__ = "0.3.2"
+try:
+    from importlib.metadata import version
+
+    __version__ = version("NeuralFoil")
+except Exception:
+    __version__ = "unknown"
