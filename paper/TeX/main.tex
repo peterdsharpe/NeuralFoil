@@ -340,7 +340,7 @@ The raw result of the learned model is another latent-space vector, which is the
     \label{eq:decoding}
 \end{equation}
 
-The output latent space has 195 dimensions, and, similar to the input latent space, undergoes an elementwise affine transformation to normalize the distribution of typical outputs. The ``analysis confidence'' output described in Equation \ref{eq:decoding} deserves special attention and is discussed in Section \ref{sec:uq}.
+The output latent space has 198 dimensions, and, similar to the input latent space, undergoes an elementwise affine transformation to normalize the distribution of typical outputs. The ``analysis confidence'' output described in Equation \ref{eq:decoding} deserves special attention and is discussed in Section \ref{sec:uq}.
 
 The boundary layer outputs in Equation \ref{eq:decoding} are computed at 64 locations along the airfoil surface, which are evenly spaced in the normalized $x$-coordinate on the top and bottom surfaces. These data points are conceptually similar to physical sensors, as they are effectively a discrete projection of the actual boundary layer flow, which itself is a continuous function of the surface coordinate $s$. The spacing of these discrete ``sensors'' was chosen on the basis of a compressed sensing study, the results of which are shown in Figure \ref{fig:optimal_sensor_placement}. In short, this study aimed to determine ``optimal sensor placement'' for airfoil boundary layer data: where should one place 64 discrete sensors on an airfoil to minimize the error when reconstructing the boundary layer data? Data for this study was generated from XFoil via the same process detailed in Section \ref{sec:training-data}. Compressed sensor placement was performed using approximate QR-factorization-based methods described by de Silva et al. \cite{de_Silva2021}
 
@@ -375,9 +375,11 @@ Learning this ``analysis confidence'' binary classifier with no priors or physic
     \text{Analysis Confidence} = \sigma
     \left(
     \left(\text{Raw Logit}\right) -
-    \left( \vec{z}_{\rm in} - \vec\mu \right) ^ T
-    S ^{-1}
-    \left( \vec{z}_{\rm in} - \vec\mu \right)
+    \frac{
+        \left( \vec{z}_{\rm in} - \vec\mu \right) ^ T
+        S ^{-1}
+        \left( \vec{z}_{\rm in} - \vec\mu \right)
+    }{2 N_{\rm in}}
     \right)
     \label{eq:uq}
 \end{equation}
@@ -389,13 +391,14 @@ Learning this ``analysis confidence'' binary classifier with no priors or physic
     \item{Raw Logit} The raw output of the neural network, before adding the Mahalanobis distance term
     \item{$S$} The covariance matrix of the training data distribution in the input latent space
     \item{$\vec{z}_{\rm in}$} The query point in the input latent space
+    \item{$N_{\rm in}$} The dimensionality of the input latent space (here, 25)
 \end{eqexpl}
 
 Because the covariance matrix of the training data is positive-definite, the correction term is guaranteed to asymptote to $-\infty$ as the query point moves away from the training data in any direction. By contrast, the raw logit is structurally guaranteed to extrapolate to a locally-affine function, as previous discussed in Section \ref{sec:learned-model-architecture}. Therefore, this modification guarantees that the analysis confidence tends to zero far from the training data distribution. Because this modification is included at both train and inference time, this modification has minimal effect on the model's performance \textit{within} the training data distribution, and only serves to embed desirable extrapolation properties when \textit{outside} the distribution.
 
 Another benefit of this modification is that it tends to make level sets of the analysis confidence more convex, since the modification is a quadratic form with a positive-definite Hessian\footnote{directly proportional to the inverse of the covariance matrix}. By regularizing the analysis confidence to be ``more convex'', this modification ultimately leads to better convergence in downstream gradient-based optimization problems that use the analysis confidence as a constraint.
 
-The weighting of this Mahalanobis distance term could be varied, depending on how willing the developer of a neural surrogate is to allow the surrogate to extrapolate beyond the training distribution. In the case of NeuralFoil, a unit weighting (as shown in Equation \ref{eq:uq}) was chosen and appears to strike a good balance between extrapolation correctness and the amount of added nonlinearity. However, more broadly, this tradeoff forms an interesting area of further research in neural surrogates with self-reported trust metrics.
+The weighting of this Mahalanobis distance term could be varied, depending on how willing the developer of a neural surrogate is to allow the surrogate to extrapolate beyond the training distribution. In the case of NeuralFoil, a weighting of $1 / (2 N_{\rm in})$ (as shown in Equation \ref{eq:uq}) was chosen and appears to strike a good balance between extrapolation correctness and the amount of added nonlinearity. This normalization keeps the correction term small for in-distribution queries: because the expected squared Mahalanobis distance of samples drawn from the training distribution is $N_{\rm in}$, the correction term contributes only $-0.5$ to the logit in expectation. However, more broadly, this tradeoff forms an interesting area of further research in neural surrogates with self-reported trust metrics.
 
 Based on the analysis confidence of this learned model, NeuralFoil fuses its attached-flow results with empirical models for massively-separated (post-stall) flow conditions. Specifically, NeuralFoil uses the analytical post-stall models regressed by Truong \cite{truongAnalyticalModelAirfoil2020} to provide a more accurate prediction in these conditions. Example results showing this post-stall model fusion are given in Figure \ref{fig:post_stall_extrapolation}.
 
@@ -470,7 +473,7 @@ Synthetic training data was generated by running XFoil on randomly-generated air
     \item First, three parent airfoils are randomly selected from an airfoil database\footnote{This database consists of 2,174 airfoils, which are drawn from a variety of sources (most notably, the UIUC airfoil database \cite{uiuc_airfoil_database} and TraCFoil database \cite{etiembleTraCFoilFreePack2023}) and manually cleaned. The database is publicly available via AeroSandbox \cite{sharpeAeroSandboxDifferentiableFramework2021}.}, and converted to the Kulfan geometry parameterization. Three random weights are drawn, and the airfoils are merged into one based on these weights. This procedure effectively ensures that each training airfoil is derived from a unique combination of three parent airfoils.
     \item To increase the diversity of training data, several further modifications are applied:
           \begin{itemize}
-              \item The thickness is randomly scaled by a factor drawn from $\operatorname{Lognormal}(\mu=0,\ \sigma=0.15)$.
+              \item The thickness is randomly scaled by a factor drawn from $\operatorname{Lognormal}(\mu=0,\ \sigma=0.25)$.
               \item The airfoil's Kulfan parameters are perturbed by a random vector drawn from a multivariate normal distribution. The mean and covariance of this distribution are taken from the sample statistics of the airfoil database.
           \end{itemize}
     \item Flow conditions are randomly selected. Angle of attack $\alpha$ is drawn from the sum of a uniform and normal distribution, and Reynolds number $\Rey_c$ is drawn from a log-normal distribution. Distributional statistics for these variables and transition criteria are given in Table \ref{tab:flow_conditions}.
