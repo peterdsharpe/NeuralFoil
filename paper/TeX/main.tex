@@ -281,7 +281,7 @@ The freestream Mach number is a notable omission from the input latent space, an
 \subsubsection{Learned Model Architecture}
 \label{sec:learned-model-architecture}
 
-After encoding inputs into an input latent space, NeuralFoil processes these inputs through a feedforward neural network (i.e., a multilayer perceptron). NeuralFoil offers eight different deep neural network models, which offer a tradeoff between accuracy and computational cost. This tradeoff is implemented as differences in the number and size of hidden layers, which are detailed in Table \ref{tab:model-sizes} for each model.
+After encoding inputs into an input latent space, NeuralFoil processes these inputs through a feedforward neural network (i.e., a multilayer perceptron). NeuralFoil offers eight different deep neural network models, which offer a tradeoff between accuracy and computational cost. This tradeoff is implemented as differences in the number and size of hidden layers, which are detailed in Table \ref{tab:model-sizes} for each model. Here, the hidden layer count includes every layer of neurons between the input and output latent vectors.
 
 \begin{table}[H]
     \centering
@@ -290,14 +290,14 @@ After encoding inputs into an input latent space, NeuralFoil processes these inp
     \begin{tabular}{lll}
         \toprule
         Model        & Hidden Layers & Neurons per Hidden Layer (width) \\ \midrule
-        ``xxsmall''  & 1             & 48                               \\
-        ``xsmall''   & 2             & 48                               \\
-        ``small''    & 2             & 64                               \\
-        ``medium''   & 3             & 64                               \\
-        ``large''    & 3             & 128                              \\
-        ``xlarge''   & 4             & 128                              \\
-        ``xxlarge''  & 4             & 256                              \\
-        ``xxxlarge'' & 5             & 512                              \\
+        ``xxsmall''  & 2             & 48                               \\
+        ``xsmall''   & 3             & 48                               \\
+        ``small''    & 3             & 64                               \\
+        ``medium''   & 4             & 64                               \\
+        ``large''    & 4             & 128                              \\
+        ``xlarge''   & 5             & 128                              \\
+        ``xxlarge''  & 5             & 256                              \\
+        ``xxxlarge'' & 6             & 512                              \\
         \bottomrule
     \end{tabular}
 \end{table}

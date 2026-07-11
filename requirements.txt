@@ -1,6 +1,0 @@
-numpy~=1.26.4
-aerosandbox~=4.2.5
-torch~=2.4.0
-ray[default]~=2.8.1
-polars~=0.18.15
-tqdm~=4.65.0

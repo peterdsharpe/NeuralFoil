@@ -14,7 +14,7 @@ N_inputs = len(df_train_inputs_scaled.columns)
 N_outputs = len(df_train_outputs_scaled.columns)
 
 cache_file = Path(__file__).parent / "nn-xxxlarge.pth"
-n_hidden_layers = 5
+n_hidden_layers = 5  # Counts only the width-to-width blocks; the total number of hidden neuron layers is n_hidden_layers + 1 (due to the input-to-width layer).
 width = 512
 print("Cache file: ", cache_file)
 
