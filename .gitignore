@@ -2,6 +2,11 @@
 dist/
 build/
 NeuralFoil.egg-info/
+
+# Training checkpoints are local/ephemeral; only exported release artifacts
+# (neuralfoil/nn_weights_and_biases/*.npz) are committed. See training/export.py.
+*.pth
+training/*.npz
 .idea/
 __pycache__/
 *.pkl
