@@ -2,6 +2,7 @@ import aerosandbox as asb
 import aerosandbox.numpy as np
 from collections.abc import Iterable
 from pathlib import Path
+from neuralfoil import _core
 from neuralfoil._basic_data_type import Data
 
 nn_weights_dir = Path(__file__).parent / "nn_weights_and_biases"
@@ -10,25 +11,10 @@ nn_weights_dir = Path(__file__).parent / "nn_weights_and_biases"
 # It is made externally-accessible (`nf.bl_x_points`) in case you want to use it dynamically.
 bl_x_points = Data.bl_x_points
 
-# Here, we compute a small epsilon value, which is used later to clip values to suppress overflow.
-# This looks a bit complicated below, but it's basically just a dynamic way to avoid explicitly referring to float bit-widths.
-_eps: float = 10 / np.finfo(np.array(1.0).dtype).max
-_ln_eps: float = np.log(_eps)
-
-
-def _sigmoid(x: float | np.ndarray) -> float | np.ndarray:
-    """Numerically-stable logistic function, with inputs clipped to suppress overflow."""
-    x = np.clip(x, _ln_eps, -_ln_eps)
-    return 1 / (1 + np.exp(-x))
-
-
 ### Pre-load parameters with statistics about the training distribution
 # Includes the mean, covariance, and inverse covariance of training data in the input latent space (25-dim)
 _scaled_input_distribution = dict(
     np.load(nn_weights_dir / "scaled_input_distribution.npz")
-)
-_scaled_input_distribution["N_inputs"] = len(
-    _scaled_input_distribution["mean_inputs_scaled"]
 )
 
 ### For speed, pre-loads the neural network weights and biases
@@ -42,23 +28,6 @@ _nn_parameters: dict[str, dict[str, np.ndarray]] = {
     model_size: dict(np.load(nn_weights_dir / f"nn-{model_size}.npz"))
     for model_size in _allowable_model_sizes
 }
-
-
-def _squared_mahalanobis_distance(x: np.ndarray) -> np.ndarray:
-    """
-    Computes the squared Mahalanobis distance of a set of points from the training data.
-
-    Args:
-        x: Query point in the input latent space. Shape: (N_cases, N_inputs)
-            For non-vectorized queries, N_cases=1.
-
-    Returns:
-        The squared Mahalanobis distance. Shape: (N_cases,)
-    """
-    d = _scaled_input_distribution
-    mean = np.reshape(d["mean_inputs_scaled"], (1, -1))
-    x_minus_mean = (x.T - mean.T).T
-    return np.sum(x_minus_mean @ d["inv_cov_inputs_scaled"] * x_minus_mean, axis=1)
 
 
 def get_aero_from_kulfan_parameters(
@@ -167,21 +136,15 @@ def get_aero_from_kulfan_parameters(
                 f"`aerosandbox.Airfoil.to_kulfan_airfoil(n_weights_per_side=8)`)."
             )
 
-    ### Prepare the inputs for the neural network
-    input_rows: list[float | np.ndarray] = [
-        *[kulfan_parameters["upper_weights"][i] for i in range(8)],
-        *[kulfan_parameters["lower_weights"][i] for i in range(8)],
-        kulfan_parameters["leading_edge_weight"],
-        kulfan_parameters["TE_thickness"] * 50,
-        np.sind(2 * alpha),
-        np.cosd(alpha),
-        1 - np.cosd(alpha) ** 2,
-        (np.log(Re) - 12.5) / 3.5,
-        # No mach parameter in this version
-        (n_crit - 9) / 4.5,
-        xtr_upper,
-        xtr_lower,
-    ]
+    ### Prepare the inputs for the neural network (see neuralfoil/_spec.py for the latent space definition)
+    input_rows: list[float | np.ndarray] = _core.encode_inputs(
+        kulfan_parameters=kulfan_parameters,
+        alpha=alpha,
+        Re=Re,
+        n_crit=n_crit,
+        xtr_upper=xtr_upper,
+        xtr_lower=xtr_lower,
+    )
 
     ### Handle the vectorization, where here we figure out how many cases the user wants to run
     N_cases = 1  # TODO rework this with np.atleast1d
@@ -214,121 +177,22 @@ def get_aero_from_kulfan_parameters(
             f"Instead, got keys of the form {nn_params.keys()}.\n"
         ) from e
 
-    ### Now, set up evaluation of the basic neural network.
-    def net(x: np.ndarray) -> np.ndarray:
-        """
-        Evaluates the raw network (taking in scaled inputs and returning scaled outputs).
+    layer_weights_and_biases = [
+        (nn_params[f"net.{i}.weight"], nn_params[f"net.{i}.bias"])
+        for i in layer_indices
+    ]
 
-        Works in the input and output latent spaces.
-
-        Input `x` shape: (N_cases, N_inputs)
-        Output `y` shape: (N_cases, N_outputs)
-        """
-        x = np.transpose(x)
-        layer_indices_to_iterate = layer_indices.copy()
-
-        while len(layer_indices_to_iterate) != 0:
-            i = layer_indices_to_iterate.pop(0)
-            w = nn_params[f"net.{i}.weight"]
-            b = nn_params[f"net.{i}.bias"]
-            x = w @ x + np.reshape(b, (-1, 1))
-
-            if (
-                len(layer_indices_to_iterate) != 0
-            ):  # Don't apply the activation function on the last layer
-                x = np.swish(x)
-        x = np.transpose(x)
-        return x
-
-    y = net(x)  # N_outputs x N_cases
-    y[:, 0] = y[:, 0] - _squared_mahalanobis_distance(x) / (
-        2 * _scaled_input_distribution["N_inputs"]
+    ### Evaluate the model.
+    # This implementation (including the structural embedding of the alpha-flip
+    # symmetry) is shared verbatim with the training code; see neuralfoil/_core.py.
+    y_fused = _core.evaluate_fused(
+        x,
+        layer_weights_and_biases=layer_weights_and_biases,
+        input_distribution=_scaled_input_distribution,
     )
-    # This was baked into training in order to ensure the network asymptotes to zero analysis confidence far away from the training data.
 
-    ### Then, flip the inputs and evaluate the network again.
-    # The goal here is to embed the invariant of "symmetry across alpha" into the network evaluation.
-    # (This was also performed during training, so the network is "intended" to be evaluated this way.)
-
-    x_flipped = (
-        x + 0.0
-    )  # This is an array-api-agnostic way to force a memory copy of the array to be made.
-    x_flipped[:, :8] = (
-        x[:, 8:16] * -1
-    )  # switch kulfan_lower with a flipped kulfan_upper
-    x_flipped[:, 8:16] = (
-        x[:, :8] * -1
-    )  # switch kulfan_upper with a flipped kulfan_lower
-    x_flipped[:, 16] = -1 * x[:, 16]  # flip kulfan_LE_weight
-    x_flipped[:, 18] = -1 * x[:, 18]  # flip sin(2a)
-    x_flipped[:, 23] = x[:, 24]  # flip xtr_upper with xtr_lower
-    x_flipped[:, 24] = x[:, 23]  # flip xtr_lower with xtr_upper
-
-    y_flipped = net(x_flipped)
-    y_flipped[:, 0] = y_flipped[:, 0] - _squared_mahalanobis_distance(x_flipped) / (
-        2 * _scaled_input_distribution["N_inputs"]
-    )
-    # This was baked into training in order to ensure the network asymptotes to zero analysis confidence far away from the training data.
-
-    ### The resulting outputs will also be flipped, so we need to flip them back to their normal orientation
-    y_unflipped = (
-        y_flipped + 0.0
-    )  # This is an array-api-agnostic way to force a memory copy of the array to be made.
-    y_unflipped[:, 1] = y_flipped[:, 1] * -1  # CL
-    y_unflipped[:, 3] = y_flipped[:, 3] * -1  # CM
-    y_unflipped[:, 4] = y_flipped[:, 5]  # switch Top_Xtr with Bot_Xtr
-    y_unflipped[:, 5] = y_flipped[:, 4]  # switch Bot_Xtr with Top_Xtr
-
-    # switch upper and lower Ret, H
-    N = Data.N
-    y_unflipped[:, 6 : 6 + N * 2] = y_flipped[:, 6 + N * 3 : 6 + N * 5]
-    y_unflipped[:, 6 + N * 3 : 6 + N * 5] = y_flipped[:, 6 : 6 + N * 2]
-
-    # switch upper_bl_ue/vinf with lower_bl_ue/vinf
-    y_unflipped[:, 6 + N * 2 : 6 + N * 3] = -1 * y_flipped[:, 6 + N * 5 : 6 + N * 6]
-    y_unflipped[:, 6 + N * 5 : 6 + N * 6] = -1 * y_flipped[:, 6 + N * 2 : 6 + N * 3]
-
-    ### Then, average the two outputs to get the "symmetric" result
-    y_fused = (y + y_unflipped) / 2
-    y_fused[:, 0] = _sigmoid(y_fused[:, 0])  # Analysis confidence, a binary variable
-    y_fused[:, 4] = np.clip(y_fused[:, 4], 0, 1)  # Top_Xtr
-    y_fused[:, 5] = np.clip(y_fused[:, 5], 0, 1)  # Bot_Xtr
-
-    ### Unpack outputs with proper scaling
-    analysis_confidence = y_fused[:, 0]
-    CL = y_fused[:, 1] / 2
-    CD = np.exp((y_fused[:, 2] - 2) * 2)
-    CM = y_fused[:, 3] / 20
-    Top_Xtr = y_fused[:, 4]
-    Bot_Xtr = y_fused[:, 5]
-
-    upper_bl_ue_over_vinf = y_fused[:, 6 + Data.N * 2 : 6 + Data.N * 3]
-    lower_bl_ue_over_vinf = y_fused[:, 6 + Data.N * 5 : 6 + Data.N * 6]
-
-    upper_theta = ((10 ** y_fused[:, 6 : 6 + Data.N]) - 0.1) / (
-        np.abs(upper_bl_ue_over_vinf) * np.reshape(Re, (-1, 1))
-    )
-    upper_H = 2.6 * np.exp(y_fused[:, 6 + Data.N : 6 + Data.N * 2])
-
-    lower_theta = ((10 ** y_fused[:, 6 + Data.N * 3 : 6 + Data.N * 4]) - 0.1) / (
-        np.abs(lower_bl_ue_over_vinf) * np.reshape(Re, (-1, 1))
-    )
-    lower_H = 2.6 * np.exp(y_fused[:, 6 + Data.N * 4 : 6 + Data.N * 5])
-
-    results = {
-        "analysis_confidence": analysis_confidence,
-        "CL": CL,
-        "CD": CD,
-        "CM": CM,
-        "Top_Xtr": Top_Xtr,
-        "Bot_Xtr": Bot_Xtr,
-        **{f"upper_bl_theta_{i}": upper_theta[:, i] for i in range(Data.N)},
-        **{f"upper_bl_H_{i}": upper_H[:, i] for i in range(Data.N)},
-        **{f"upper_bl_ue/vinf_{i}": upper_bl_ue_over_vinf[:, i] for i in range(Data.N)},
-        **{f"lower_bl_theta_{i}": lower_theta[:, i] for i in range(Data.N)},
-        **{f"lower_bl_H_{i}": lower_H[:, i] for i in range(Data.N)},
-        **{f"lower_bl_ue/vinf_{i}": lower_bl_ue_over_vinf[:, i] for i in range(Data.N)},
-    }
+    ### Decode the outputs back into user-facing quantities
+    results = _core.decode_outputs(y_fused, Re)
     return {key: np.reshape(value, -1) for key, value in results.items()}
 
 
