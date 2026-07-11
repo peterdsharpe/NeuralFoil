@@ -89,3 +89,565 @@
     author = {Eppler, Richard},
     year = {1990},
 }
+
+@inproceedings{adlerCFDNotCFD2022,
+  title = {To {{CFD}} or Not to {{CFD}}? {{Comparing RANS}} and Viscous Panel Methods for Airfoil Shape Optimization},
+  booktitle = {Congress of the {{International Council}} of the {{Aeronautical Sciences}} ({{ICAS}} 2022)},
+  author = {Adler, Eytan J and Gray, Alasdair Christison and Martins, Joaquim R.R.A.},
+  year = 2022,
+  month = sep,
+  address = {Stockholm, Sweden},
+  abstract = {As the computational resources available to aerodynamicists increase, so does the number of tools with which they can analyze their designs. The key skill of a good engineer is understanding when each tool produces realistic results. Even if no available tool can capture all relevant physical phenomena, this knowledge allows engineers to alter their designs to account for the missing physics. However, with the increasing use of numerical optimization for aerodynamic shape design, the opportunity for this intuition to shape the design is reduced as the optimizer makes design decisions based purely on numerical results. This makes the choice of analysis method critical. Previous studies have compared panel-based aerodynamic tools and RANS CFD to predict and analyze the key aerodynamic phenomena in different flight conditions. But few, if any, have compared the impact of proper tool selection on the optimal aerodynamic shapes. In this work we show the effect of aerodynamic analysis method selection on the optimal aerodynamic shape and the consequences of choosing one that does not capture the relevant flow physics. In particular, we show that modelling boundary layer transition can produce significantly lower drag designs across almost the entire range of Reynolds numbers at which airfoils are used in practice. Additionally, we find that the simple compressibility correction used in XFOIL is sufficient to produce well performing airfoils for flight Mach numbers up to 0.65, after which point the ability for the flow solver to model shock formation is critical. Our results will provide aerodynamicists with the data and intuition to make informed decisions when selecting analysis methods for optimization.},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\BKD9PI4V\Adler and Gray - To CFD or not to CFD Comparing RANS and viscous p.pdf}
+}
+
+@article{bouhlelScalableGradientEnhanced2020,
+  title = {Scalable Gradient--Enhanced Artificial Neural Networks for Airfoil Shape Design in the Subsonic and Transonic Regimes},
+  author = {Bouhlel, Mohamed Amine and He, Sicheng and Martins, Joaquim R. R. A.},
+  year = 2020,
+  month = apr,
+  journal = {Structural and Multidisciplinary Optimization},
+  volume = {61},
+  number = {4},
+  pages = {1363--1376},
+  issn = {1615-147X, 1615-1488},
+  doi = {10.1007/s00158-020-02488-5},
+  urldate = {2024-04-08},
+  abstract = {Airfoil shape design is one of the most fundamental elements in aircraft design. Existing airfoil design tools require at least a few minutes to analyze a new shape and hours to perform shape optimization. To drastically reduce the computational time of both analysis and design optimization, we use machine learning to create a model of a wide range of possible airfoils at a range of flight conditions, making it possible to perform airfoil design optimization in a few seconds. The machine learning consists of gradient-enhanced artificial neural networks where the gradient information is phased in gradually. This new gradient-enhanced artificial neural network approach is trained to model the aerodynamic force coefficients of airfoils in both subsonic and transonic regimes. The aerodynamics is modeled with Reynolds-averaged Navier--Stokes (RANS)-based computational fluid dynamics (CFD). The proposed approach outperforms an existing airfoil model that uses a mixture of experts technique combined with a gradient-based kriging surrogate model. The approach yields to similar airfoil shape optimization solutions than high-fidelity CFD optimization solutions with a difference of 0.01 count and 0.12 count for Cd in subsonic and transonic regimes, respectively. Airfoil optimization problems are solved in a few seconds (instead of hours using CFD-based optimization), making the design process much more interactive, as demonstrated in the Webfoil airfoil design optimization tool.},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\7Z79RSVU\Bouhlel et al. - 2020 - Scalable gradient–enhanced artificial neural netwo.pdf}
+}
+
+@book{bruntonDataDrivenScience2017,
+  title = {Data {{Driven Science}} \& {{Engineering}}},
+  author = {Brunton, Steven L and Kutz, J Nathan},
+  year = 2017,
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\4JIQ5JL2\Brunton and Kutz - 2017 - Data Driven Science & Engineering.pdf}
+}
+
+@misc{cranmerInterpretableMachineLearning2023,
+  title = {Interpretable {{Machine Learning}} for {{Science}} with {{PySR}} and {{SymbolicRegression}}.Jl},
+  author = {Cranmer, Miles},
+  year = 2023,
+  month = may,
+  number = {arXiv:2305.01582},
+  eprint = {2305.01582},
+  primaryclass = {astro-ph, physics:physics},
+  publisher = {arXiv},
+  urldate = {2023-12-05},
+  abstract = {PySR is an open-source library for practical symbolic regression, a type of machine learning which aims to discover human-interpretable symbolic models. PySR was developed to democratize and popularize symbolic regression for the sciences, and is built on a high-performance distributed back-end, a flexible search algorithm, and interfaces with several deep learning packages. PySR's internal search algorithm is a multi-population evolutionary algorithm, which consists of a unique evolve-simplify-optimize loop, designed for optimization of unknown scalar constants in newly-discovered empirical expressions. PySR's backend is the extremely optimized Julia library SymbolicRegression.jl, which can be used directly from Julia. It is capable of fusing user-defined operators into SIMD kernels at runtime, performing automatic differentiation, and distributing populations of expressions to thousands of cores across a cluster. In describing this software, we also introduce a new benchmark, "EmpiricalBench," to quantify the applicability of symbolic regression algorithms in science. This benchmark measures recovery of historical empirical equations from original and synthetic datasets.},
+  archiveprefix = {arXiv},
+  keywords = {Astrophysics - Instrumentation and Methods for Astrophysics,Computer Science - Machine Learning,Computer Science - Neural and Evolutionary Computing,Computer Science - Symbolic Computation,Physics - Data Analysis Statistics and Probability},
+  file = {C\:\\Users\\psharpe\\Zotero\\storage\\A68GPA7Z\\Cranmer - 2023 - Interpretable Machine Learning for Science with Py.pdf;C\:\\Users\\psharpe\\Zotero\\storage\\C68SVXR2\\2305.html}
+}
+
+@techreport{critzosAerodynamicCharacteristicsNACA1955,
+  type = {Technical {{Note}}},
+  title = {Aerodynamic {{Characteristics}} of {{NACA}} 0012 {{Airfoil Section}} at {{Angles}} of {{Attack}} from 0 to 180},
+  author = {Critzos, Chris C. and Heyson, Harray H. and Boswinkle, Robert W.},
+  year = 1955,
+  month = jan,
+  number = {3361},
+  address = {Washington},
+  institution = {National Advisory Committee for Aeronautics},
+  urldate = {2024-04-04},
+  file = {C:\Users\psharpe\Zotero\storage\J9BGEN6T\ADA377080.pdf}
+}
+
+@book{drelaAerodynamicsViscousFluids2019,
+  title = {Aerodynamics of {{Viscous Fluids}}},
+  author = {Drela, Mark},
+  year = 2019,
+  edition = {Pre-Publication Draft},
+  publisher = {Massachusetts Institute of Technology},
+  address = {Cambridge, Massachusetts},
+  file = {C:\Users\psharpe\Zotero\storage\J2HLCAB6\Drela - 2019 - Aerodynamics of Viscous Fluids-annotated.pdf}
+}
+
+@article{drelaFlightVehicleAerodynamics2013,
+  title = {Flight {{Vehicle Aerodynamics}}},
+  author = {Drela, Mark},
+  year = 2013,
+  pages = {270},
+  issn = {978-0262526449},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\URN4RPWJ\Drela - Flight Vehicle Aerodynamics.pdf}
+}
+
+@article{drelaHumanPoweredFlight1985,
+  title = {Human-{{Powered Flight}}},
+  author = {Drela, Mark and Langford, John S.},
+  year = 1985,
+  month = nov,
+  journal = {Scientific American},
+  volume = {253},
+  number = {5},
+  pages = {144--151},
+  issn = {0036-8733},
+  doi = {10.1038/scientificamerican1185-144},
+  urldate = {2021-10-07},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\DANQW7FZ\Drela and Langford - 1985 - Human-Powered Flight.pdf}
+}
+
+@article{drelaLowReynoldsnumberAirfoilDesign1988,
+  title = {Low-{{Reynolds-number}} Airfoil Design for the {{M}}.{{I}}.{{T}}. {{Daedalus}} Prototype- {{A}} Case Study},
+  author = {Drela, Mark},
+  year = 1988,
+  month = aug,
+  journal = {Journal of Aircraft},
+  volume = {25},
+  number = {8},
+  pages = {724--732},
+  issn = {0021-8669, 1533-3868},
+  doi = {10.2514/3.45650},
+  urldate = {2021-10-07},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\RHFGZME5\Drela - 1988 - Low-Reynolds-number airfoil design for the M.I.T. .pdf}
+}
+
+@inbook{drelaProsConsAirfoil1998,
+  title = {Pros \& {{Cons}} of {{Airfoil Optimization}}},
+  booktitle = {Frontiers of {{Computational Fluid Dynamics}}},
+  author = {Drela, Mark},
+  year = 1998,
+  month = nov,
+  pages = {363--381},
+  publisher = {World Scientific},
+  doi = {10.1142/9789812815774_0019},
+  urldate = {2021-10-07},
+  collaborator = {Caughey, D A and Hafez, M M},
+  isbn = {978-981-02-3707-3 978-981-281-577-4},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\ZBHRQWYA\Drela - 1998 - Pros & Cons of Airfoil Optimization.pdf}
+}
+
+@article{drelaUsersGuideMSES2007,
+  title = {A {{User}}'s {{Guide}} to {{MSES}} 3.05},
+  author = {Drela, Mark},
+  year = 2007,
+  month = jul,
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\8T6TQ4CQ\Drela - A User’s Guide to MSES 3.05.pdf}
+}
+
+@inproceedings{drelaXFOILAnalysisDesign1989,
+  title = {{{XFOIL}}: {{An Analysis}} and {{Design System}} for {{Low Reynolds Number Airfoils}}},
+  shorttitle = {{{XFOIL}}},
+  booktitle = {Low {{Reynolds Number Aerodynamics}}},
+  author = {Drela, Mark},
+  editor = {Brebbia, C. A. and Orszag, S. A. and Mueller, Thomas J.},
+  year = 1989,
+  volume = {54},
+  pages = {1--12},
+  publisher = {Springer},
+  address = {Indiana, USA},
+  doi = {10.1007/978-3-642-84010-4_1},
+  urldate = {2021-10-07},
+  isbn = {978-3-540-51884-6 978-3-642-84010-4},
+  file = {C:\Users\psharpe\Zotero\storage\LRR57ETT\Drela - 1989 - XFOIL An Analysis and Design System for Low Reyno.pdf}
+}
+
+@article{duRapidAirfoilDesign2021,
+  title = {Rapid {{Airfoil Design Optimization}} via {{Neural Network-based Parameterization}} and {{Surrogate Modeling}}},
+  author = {Du, Xiaosong and He, Ping},
+  year = 2021,
+  journal = {Aerospace Science and Technology},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\6V269WUK\Du and He - Rapid Airfoil Design Optimization via Neural Netwo.pdf}
+}
+
+@article{economonSU2OpenSourceSuite2016,
+  title = {{{SU2}}: {{An Open-Source Suite}} for {{Multiphysics Simulation}} and {{Design}}},
+  shorttitle = {{{SU2}}},
+  author = {Economon, Thomas D. and Palacios, Francisco and Copeland, Sean R. and Lukaczyk, Trent W. and Alonso, Juan J.},
+  year = 2016,
+  month = mar,
+  journal = {AIAA Journal},
+  volume = {54},
+  number = {3},
+  pages = {828--846},
+  issn = {0001-1452, 1533-385X},
+  doi = {10.2514/1.J053813},
+  urldate = {2024-04-08},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\3UF9VSAQ\Economon et al. - 2016 - SU2 An Open-Source Suite for Multiphysics Simulat.pdf}
+}
+
+@misc{etiembleTraCFoilFreePack2023,
+  title = {{{TraCFoil}} and {{Free Pack Airfoils}}},
+  author = {Etiemble, {\relax JC}},
+  year = 2023,
+  month = dec
+}
+
+@article{harrisArrayProgrammingNumPy2020,
+  title = {Array Programming with {{NumPy}}},
+  author = {Harris, Charles R. and Millman, K. Jarrod and Van Der Walt, St{\'e}fan J. and Gommers, Ralf and Virtanen, Pauli and Cournapeau, David and Wieser, Eric and Taylor, Julian and Berg, Sebastian and Smith, Nathaniel J. and Kern, Robert and Picus, Matti and Hoyer, Stephan and Van Kerkwijk, Marten H. and Brett, Matthew and Haldane, Allan and Del R{\'i}o, Jaime Fern{\'a}ndez and Wiebe, Mark and Peterson, Pearu and {G{\'e}rard-Marchant}, Pierre and Sheppard, Kevin and Reddy, Tyler and Weckesser, Warren and Abbasi, Hameer and Gohlke, Christoph and Oliphant, Travis E.},
+  year = 2020,
+  month = sep,
+  journal = {Nature},
+  volume = {585},
+  number = {7825},
+  pages = {357--362},
+  issn = {0028-0836, 1476-4687},
+  doi = {10.1038/s41586-020-2649-2},
+  urldate = {2023-12-05},
+  abstract = {Abstract                            Array programming provides a powerful, compact and expressive syntax for accessing, manipulating and operating on data in vectors, matrices and higher-dimensional arrays. NumPy is the primary array programming library for the Python language. It has an essential role in research analysis pipelines in fields as diverse as physics, chemistry, astronomy, geoscience, biology, psychology, materials science, engineering, finance and economics. For example, in astronomy, NumPy was an important part of the software stack used in the discovery of gravitational waves               1               and in the first imaging of a black hole               2               . Here we review how a few fundamental array concepts lead to a simple and powerful programming paradigm for organizing, exploring and analysing scientific data. NumPy is the foundation upon which the scientific Python ecosystem is constructed. It is so pervasive that several projects, targeting audiences with specialized needs, have developed their own NumPy-like interfaces and array objects. Owing to its central position in the ecosystem, NumPy increasingly acts as an interoperability layer between such array computation libraries and, together with its application programming interface (API), provides a flexible framework to support the next decade of scientific and industrial analysis.},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\MFZKYUEH\Harris et al. - 2020 - Array programming with NumPy.pdf}
+}
+
+@book{hoernerFluidDynamicLift1985,
+  title = {Fluid-{{Dynamic Lift}}},
+  shorttitle = {Fluid-Dynamic Lift},
+  author = {Hoerner, Sighard F.},
+  editor = {Borst, Henry V.},
+  year = 1985,
+  edition = {2. ed},
+  publisher = {Hoerner},
+  address = {Albuquerque/N.M},
+  isbn = {9789998831636},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\GHWM9UUW\Hoerner - 1985 - Fluid-Dynamic Lift-annotated.pdf}
+}
+
+@inproceedings{jamesonAirfoilsAdmittingNonunique1991,
+  title = {Airfoils Admitting Non-Unique Solutions of the {{Euler}} Equations},
+  booktitle = {22nd {{Fluid Dynamics}}, {{Plasma Dynamics}} and {{Lasers Conference}}},
+  author = {Jameson, Antony},
+  year = 1991,
+  month = jun,
+  publisher = {{American Institute of Aeronautics and Astronautics}},
+  address = {Honolulu,HI,U.S.A.},
+  doi = {10.2514/6.1991-1625},
+  urldate = {2023-12-04},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\IMXHWFBT\Jameson - 1991 - Airfoils admitting non-unique solutions of the Eul.pdf}
+}
+
+@inproceedings{krooMultidisciplinaryOptimizationApplications1997,
+  title = {Multidisciplinary {{Optimization Applications}} in {{Preliminary Design}} - {{Status}} and {{Directions}}},
+  booktitle = {38th {{Structures}}, {{Structural Dynamics}}, and {{Materials Conference}}},
+  author = {Kroo, Ilan},
+  year = 1997,
+  month = apr,
+  publisher = {{American Institute of Aeronautics and Astronautics}},
+  address = {Kissimmee, Florida},
+  doi = {10.2514/6.1997-1408},
+  urldate = {2023-04-26},
+  abstract = {Multidisciplinary design optimization (MDO) has played an important role in aircraft preliminary design for 30 years, yet it is far from a mature field. This paper discusses the increasingly widespread use of MDO for aircraft design, describing the evolution of computational tools and strategies, and summarizing some current research directions. The objective of this review is not to provide a comprehensive survey of MDO methods and applications, but rather to highlight some interesting aspects that suggest how this field is developing.},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\Q9WAEJP5\Kroo - 1997 - Multidisciplinary optimization applications in pre.pdf}
+}
+
+@misc{kulfanModificationCSTAirfoil2020,
+  title = {Modification of {{CST Airfoil Representation Methodology}}},
+  author = {Kulfan, Brenda},
+  year = 2020,
+  month = aug,
+  publisher = {Unpublished Note},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\TE4I2T4R\Kulfan - Modification of CST Airfoil Representation Methodo.pdf}
+}
+
+@article{kulfanUniversalParametricGeometry2008,
+  title = {Universal {{Parametric Geometry Representation Method}}},
+  author = {Kulfan, Brenda M.},
+  year = 2008,
+  month = jan,
+  journal = {Journal of Aircraft},
+  volume = {45},
+  number = {1},
+  pages = {142--158},
+  issn = {0021-8669, 1533-3868},
+  doi = {10.2514/1.29958},
+  urldate = {2023-11-28},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\UWFUHCFQ\Kulfan - 2008 - Universal Parametric Geometry Representation Metho.pdf}
+}
+
+@article{laitoneNewCompressibilityCorrection1951,
+  title = {New {{Compressibility Correction}} for {{Two-Dimensional Subsonic Flow}}},
+  author = {Laitone, E. V.},
+  year = 1951,
+  month = may,
+  journal = {Journal of the Aeronautical Sciences},
+  volume = {18},
+  number = {5},
+  pages = {350--350},
+  issn = {1936-9956},
+  doi = {10.2514/8.1951},
+  urldate = {2023-12-05},
+  langid = {english}
+}
+
+@inproceedings{langfordDaedalusProjectSummary1989,
+  title = {The {{Daedalus}} Project - {{A}} Summary of Lessons Learned},
+  booktitle = {Aircraft {{Design}} and {{Operations Meeting}}},
+  author = {Langford, John},
+  year = 1989,
+  month = jul,
+  publisher = {{American Institute of Aeronautics and Astronautics}},
+  address = {Seattle,WA,U.S.A.},
+  doi = {10.2514/6.1989-2048},
+  urldate = {2021-10-07},
+  abstract = {In April 1986 a joint MITISmithsonian working group released The Feasibility of a Hurnan-powered Flight Between Creteand the Mainland of Greece. On April 23, 1988 the threeyear program in education and research known as the Daedalus Project culminated with a successful 72 mile flight by the human-powered aircraft Daedalus 88. This paper revisits the feasibility study and updates it based on the experience and data obtained during the conduct of the Project. The paper draws together the most significant research results obtained in the areas of physiology, meteorology, aerodynamics, structures, performance, and stability and control. The paper documents the design characteristics and performance of the Daedalus airframe, as well as the human and financial resources devoted to the Project.},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\G6JCPYUD\Langford - 1989 - The Daedalus project - A summary of lessons learne.pdf}
+}
+
+@techreport{langfordFeasibilityHumanPoweredFlight1986,
+  title = {The {{Feasibility}} of a {{Human-Powered Flight Between Crete}} and the {{Mainland}} of {{Greece}}},
+  author = {Langford, John S.},
+  year = 1986,
+  file = {C\:\\Users\\psharpe\\Zotero\\storage\\3JH68AWA\\Langford - Unknown - (Daedalus Feasibility Study Pt. 2) The Feasibility of a Human-Powered Flight Between Crete and the Mainland of Gree-annotated.pdf;C\:\\Users\\psharpe\\Zotero\\storage\\YZZH8LSB\\Langford - 1986 - (Daedalus Feasibility Study Pt. 1) The Feasibility of a Human-Powered Flight Between Crete and the Mainland of Greece-annotated.pdf}
+}
+
+@article{liuVarianceAdaptiveLearning2019,
+  title = {On the {{Variance}} of the {{Adaptive Learning Rate}} and {{Beyond}}},
+  author = {Liu, Liyuan and Jiang, Haoming and He, Pengcheng and Chen, Weizhu and Liu, Xiaodong and Gao, Jianfeng and Han, Jiawei},
+  year = 2019,
+  publisher = {arXiv},
+  doi = {10.48550/ARXIV.1908.03265},
+  urldate = {2023-12-05},
+  abstract = {The learning rate warmup heuristic achieves remarkable success in stabilizing training, accelerating convergence and improving generalization for adaptive stochastic optimization algorithms like RMSprop and Adam. Here, we study its mechanism in details. Pursuing the theory behind warmup, we identify a problem of the adaptive learning rate (i.e., it has problematically large variance in the early stage), suggest warmup works as a variance reduction technique, and provide both empirical and theoretical evidence to verify our hypothesis. We further propose RAdam, a new variant of Adam, by introducing a term to rectify the variance of the adaptive learning rate. Extensive experimental results on image classification, language modeling, and neural machine translation verify our intuition and demonstrate the effectiveness and robustness of our proposed method. All implementations are available at: https://github.com/LiyuanLucasLiu/RAdam.},
+  copyright = {arXiv.org perpetual, non-exclusive license},
+  keywords = {Computation and Language (cs.CL),FOS: Computer and information sciences,Machine Learning (cs.LG),Machine Learning (stat.ML)}
+}
+
+@incollection{masonTransonicAerodynamicsAirfoils2006,
+  title = {Transonic {{Aerodynamics}} of {{Airfoils}} and {{Wings}}},
+  author = {Mason, W H},
+  year = 2006,
+  month = mar,
+  pages = {24},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\L86NAWFL\Mason - 7. Transonic Aerodynamics of Airfoils and Wings.pdf}
+}
+
+@article{mastersGeometricComparisonAerofoil2017,
+  title = {Geometric {{Comparison}} of {{Aerofoil Shape Parameterization Methods}}},
+  author = {Masters, D. A. and Taylor, N. J. and Rendall, T. C. S. and Allen, C. B. and Poole, D. J.},
+  year = 2017,
+  month = may,
+  journal = {AIAA Journal},
+  volume = {55},
+  number = {5},
+  pages = {1575--1589},
+  issn = {0001-1452, 1533-385X},
+  doi = {10.2514/1.J054943},
+  urldate = {2021-10-07},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\BLGW8V5P\Masters et al. - 2017 - Geometric Comparison of Aerofoil Shape Parameteriz.pdf}
+}
+
+@inproceedings{mcdonaldOpenVehicleSketch2022,
+  title = {Open Vehicle Sketch Pad: {{An}} Open Source Parametric Geometry and Analysis Tool for Conceptual Aircraft Design},
+  booktitle = {{{AIAA SCITECH}} 2022 Forum},
+  author = {McDonald, Robert A. and Gloudemans, James R.},
+  year = 2022,
+  eprint = {https://arc.aiaa.org/doi/pdf/10.2514/6.2022-0004},
+  doi = {10.2514/6.2022-0004},
+  abstract = {View Video Presentation: https://doi.org/10.2514/6.2022-0004.vidOpenVSP is a parametric geometry tool for creating 3D models during the conceptual design process. It supports several engineering analyses and writes out files that can feed many other analysis tools. Over the years, OpenVSP and its predecessors have evolved from something useful for creating a model illustrating an aircraft concept to a geometry and analysis engine at the center of many aircraft design frameworks and workflows. OpenVSP has been widely adopted by established aerospace players including industry, government, and academia as well as innovative startups across the Mach-altitude envelope developing systems from UAV's, eVTOL, civil supersonics, hypersonics, space launch, and small satellites.}
+}
+
+@article{menterCorrelationBasedTransitionModel2006,
+  title = {A {{Correlation-Based Transition Model Using Local Variables}}---{{Part I}}: {{Model Formulation}}},
+  shorttitle = {A {{Correlation-Based Transition Model Using Local Variables}}---{{Part I}}},
+  author = {Menter, Florian and Langtry, {\relax RB} and Likki, S. and Suzen, Y. and Huang, P. and V{\"o}lker, S},
+  year = 2006,
+  month = jul,
+  journal = {ASME J. Turbomach},
+  volume = {128},
+  doi = {10.1115/1.2184352},
+  abstract = {A new correlation-based transition model has been developed, which is based strictly on local variables. As a result, the transition model is compatible with modern computa-tional fluid dynamics (CFD) approaches, such as unstructured grids and massive parallel execution. The model is based on two transport equations, one for intermittency and one for the transition onset criteria in terms of momentum thickness Reynolds number. The proposed transport equations do not attempt to model the physics of the transition pro-cess (unlike, e.g., turbulence models) but form a framework for the implementation of correlation-based models into general-purpose CFD methods. Part I (this part) of this paper gives a detailed description of the mathematical formulation of the model and some of the basic test cases used for model validation, including a two-dimensional turbine blade., pp. 423--434) of the paper details a significant number of test cases that have been used to validate the transition model for turbomachinery and aerodynamic applications. The authors believe that the current for-mulation is a significant step forward in engineering transition modeling, as it allows the combination of correlation-based transition models with general purpose CFD codes.},
+  file = {C:\Users\psharpe\Zotero\storage\ZQWT9FXE\Menter et al. - 2006 - A Correlation-Based Transition Model Using Local V.pdf}
+}
+
+@article{menterOneEquationLocalCorrelationBased2015,
+  title = {A {{One-Equation Local Correlation-Based Transition Model}}},
+  author = {Menter, Florian R. and Smirnov, Pavel E. and Liu, Tao and Avancha, Ravikanth},
+  year = 2015,
+  month = dec,
+  journal = {Flow, Turbulence and Combustion},
+  volume = {95},
+  number = {4},
+  pages = {583--619},
+  issn = {1386-6184, 1573-1987},
+  doi = {10.1007/s10494-015-9622-4},
+  urldate = {2024-04-08},
+  abstract = {A model for the prediction of laminar-turbulent transition processes was formulated. It is based on the LCTM (`Local Correlation-based Transition Modelling') concept, where experimental correlations are being integrated into standard convection-diffusion transport equations using local variables. The starting point for the model was the {$\gamma$} -Re\texttheta{} model already widely used in aerodynamics and turbomachinery CFD applications. Some of the deficiencies of the {$\gamma$} -Re\texttheta{} model, like the lack of Galilean invariance were removed. Furthermore, the Re\texttheta{} equation was avoided and the correlations for transition onset prediction have been significantly simplified. The model has been calibrated against a wide range of Falkner-Skan flows and has been applied to a variety of test cases.},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\Y642FF5I\Menter et al. - 2015 - A One-Equation Local Correlation-Based Transition .pdf}
+}
+
+@article{paszkePyTorchImperativeStyle2019,
+  title = {{{PyTorch}}: {{An Imperative Style}}, {{High-Performance Deep Learning Library}}},
+  shorttitle = {{{PyTorch}}},
+  author = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban and K{\"o}pf, Andreas and Yang, Edward and DeVito, Zach and Raison, Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner, Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith},
+  year = 2019,
+  publisher = {arXiv},
+  doi = {10.48550/ARXIV.1912.01703},
+  urldate = {2023-12-05},
+  abstract = {Deep learning frameworks have often focused on either usability or speed, but not both. PyTorch is a machine learning library that shows that these two goals are in fact compatible: it provides an imperative and Pythonic programming style that supports code as a model, makes debugging easy and is consistent with other popular scientific computing libraries, while remaining efficient and supporting hardware accelerators such as GPUs. In this paper, we detail the principles that drove the implementation of PyTorch and how they are reflected in its architecture. We emphasize that every aspect of PyTorch is a regular Python program under the full control of its user. We also explain how the careful and pragmatic implementation of the key components of its runtime enables them to work together to achieve compelling performance. We demonstrate the efficiency of individual subsystems, as well as the overall speed of PyTorch on several common benchmarks.},
+  copyright = {arXiv.org perpetual, non-exclusive license},
+  keywords = {FOS: Computer and information sciences,Machine Learning (cs.LG),Machine Learning (stat.ML),Mathematical Software (cs.MS)}
+}
+
+@article{pengLearningAerodynamicsNeural2022,
+  title = {Learning Aerodynamics with Neural Network},
+  author = {Peng, Wenhui and Zhang, Yao and Laurendeau, Eric and Desmarais, Michel C.},
+  year = 2022,
+  month = apr,
+  journal = {Scientific Reports},
+  volume = {12},
+  number = {1},
+  pages = {6779},
+  issn = {2045-2322},
+  doi = {10.1038/s41598-022-10737-4},
+  urldate = {2024-04-08},
+  abstract = {Abstract             We propose a neural network (NN) architecture, the Element Spatial Convolution Neural Network (ESCNN), towards the airfoil lift coefficient prediction task. The ESCNN outperforms existing state-of-the-art NNs in terms of prediction accuracy, with two orders of less parameters. We further investigate and explain how the ESCNN succeeds in making accurate predictions with standard convolution layers. We discover that the ESCNN has the ability to extract physical patterns that emerge from aerodynamics, and such patterns are clearly reflected within a layer of the network. We show that the ESCNN is capable of learning the physical laws and equation of aerodynamics from simulation data.},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\NSHDNMW6\Peng et al. - 2022 - Learning aerodynamics with neural network.pdf}
+}
+
+@article{seligHighLiftLowReynolds1997,
+  title = {High-{{Lift Low Reynolds Number Airfoil Design}}},
+  author = {Selig, Michael S. and Guglielmo, James J.},
+  year = 1997,
+  month = jan,
+  journal = {Journal of Aircraft},
+  volume = {34},
+  number = {1},
+  pages = {72--79},
+  issn = {0021-8669, 1533-3868},
+  doi = {10.2514/2.2137},
+  urldate = {2023-12-04},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\IW2XSLN2\Selig and Guglielmo - 1997 - High-Lift Low Reynolds Number Airfoil Design.pdf}
+}
+
+@mastersthesis{sharpeAeroSandboxDifferentiableFramework2021,
+  title = {{{AeroSandbox}}: {{A Differentiable Framework}} for {{Aircraft Design Optimization}}},
+  author = {Sharpe, Peter D.},
+  year = 2021,
+  abstract = {This work presents a new computational framework for conceptual aircraft design called AeroSandbox. This framework leverages modern techniques for automatic differentiation developed in the optimal control and machine learning communities. By combining these efficient gradient calculations with robust optimizers such as IPOPT, multidisciplinary aircraft design problems of practical interest can be solved in seconds. We demonstrate this speed with several canonical aircraft design problems in this work, showing that performance and flexibility equals or exceeds that of state-of-the-art tools in many cases.},
+  langid = {english},
+  school = {Massachusetts Institute of Technology},
+  file = {C:\Users\psharpe\Zotero\storage\MPKF56CL\Sharpe - AeroSandbox A Differentiable Framework for Aircra.pdf}
+}
+
+@inproceedings{sharpeOptimizationApproachMapping2021,
+  title = {An {{Optimization Approach}} to {{Mapping}} the {{Feasible Mission Space}} of a {{High-Altitude Long-Endurance Solar Aircraft}}},
+  booktitle = {{{AIAA AVIATION}} 2021 {{FORUM}}},
+  author = {Sharpe, Peter and Dewald, Annick J. and Hansman, John},
+  year = 2021,
+  month = aug,
+  publisher = {{American Institute of Aeronautics and Astronautics}},
+  address = {VIRTUAL EVENT},
+  doi = {10.2514/6.2021-2451},
+  urldate = {2023-10-23},
+  isbn = {978-1-62410-610-1},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\UWWUVR2N\Sharpe et al. - 2021 - An Optimization Approach to Mapping the Feasible M.pdf}
+}
+
+@inproceedings{sharpeTaileronsAeroelasticStability2023,
+  title = {Tailerons for {{Aeroelastic Stability}} and {{Control}} of {{Flexible Wings}}},
+  booktitle = {{{AIAA AVIATION}} 2023 {{Forum}}},
+  author = {Sharpe, Peter and Ulker, Demet and Drela, Mark},
+  year = 2023,
+  month = jun,
+  publisher = {{American Institute of Aeronautics and Astronautics}},
+  address = {San Diego, CA and Online},
+  doi = {10.2514/6.2023-3951},
+  urldate = {2023-10-23},
+  isbn = {978-1-62410-704-7},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\ZJ7W8NDW\Sharpe et al. - 2023 - Tailerons for Aeroelastic Stability and Control of.pdf}
+}
+
+@incollection{spalartOneequationTurbulenceModel1992,
+  title = {A One-Equation Turbulence Model for Aerodynamic Flows},
+  booktitle = {30th Aerospace Sciences Meeting and Exhibit},
+  author = {Spalart, P. and Allmaras, S.},
+  year = 1992,
+  eprint = {https://arc.aiaa.org/doi/pdf/10.2514/6.1992-439},
+  address = {Reno, Nevada},
+  doi = {10.2514/6.1992-439}
+}
+
+@article{truongAnalyticalModelAirfoil2020,
+  title = {An Analytical Model for Airfoil Aerodynamic Characteristics over the Entire 360{$^\circ$} Angle of Attack Range},
+  author = {Truong, V. K.},
+  year = 2020,
+  month = may,
+  journal = {Journal of Renewable and Sustainable Energy},
+  volume = {12},
+  number = {3},
+  pages = {033303},
+  issn = {1941-7012},
+  doi = {10.1063/1.5126055},
+  urldate = {2021-10-08},
+  abstract = {The design of wind turbines requires rapid and accurate evaluation of aerodynamic loads. High-fidelity methods based on Computational Fluid Dynamics (CFD) are considered as most promising but remain expensive for predictions of aerodynamics. It is still imperative to use low or medium-fidelity methods that depend strongly on the knowledge of 360  polars. Polars can be accurately predicted by wind tunnel measurements or CFD techniques in the range of small values of AoAs up to a couple of degrees beyond the critical angle of stall; this AoA range is denoted by Dms. For higher values of AoAs, in the deep stall regime Dds, 3D effects play an important role and the determination of accurate polars is still challenging. This paper presents a semi-empirical model of force coefficients for both ranges Dms and Dds, with an appropriate transition between the two. For the range Dds, the modeling is based on assuming a nearly flat plate behavior and some symmetry properties for the force coefficients with respect to the angle of attack. The parameters of the model equations are determined from the analysis of selected experiments on airfoils associated with the characteristics of the airfoil geometry. For the range Dms, a modified formulation of the dynamic stall model of Beddoes--Leishman has been proposed. The model has been tested successfully on two airfoils, NACA 643-618 and DU97-W-300. The new approach of elaborating the polars for the whole range of AoAs provides a foundation for the application of a dynamic stall model.},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\48J6ED6Y\Truong - 2020 - An analytical model for airfoil aerodynamic charac.pdf}
+}
+
+@book{wahbaSplineModelsObservational2007,
+  title = {Spline Models for Observational Data},
+  author = {Wahba, Grace},
+  year = 2007,
+  series = {{{CBMS-NSF}} Regional Conference Series in Applied Mathematics},
+  edition = {6. print},
+  number = {59},
+  publisher = {{Society for Industrial and Applied Mathematics}},
+  address = {Philadelphia, Pa},
+  isbn = {978-0-89871-244-5},
+  langid = {english},
+  file = {C:\Users\psharpe\Zotero\storage\KNIER8HQ\Wahba - 2007 - Spline models for observational data.pdf}
+}
+
+@misc{xuHowNeuralNetworks2021,
+  title = {How {{Neural Networks Extrapolate}}: {{From Feedforward}} to {{Graph Neural Networks}}},
+  shorttitle = {How {{Neural Networks Extrapolate}}},
+  author = {Xu, Keyulu and Zhang, Mozhi and Li, Jingling and Du, Simon S. and Kawarabayashi, Ken-ichi and Jegelka, Stefanie},
+  year = 2021,
+  month = mar,
+  number = {arXiv:2009.11848},
+  eprint = {2009.11848},
+  primaryclass = {cs, stat},
+  publisher = {arXiv},
+  urldate = {2024-04-01},
+  abstract = {We study how neural networks trained by gradient descent extrapolate, i.e., what they learn outside the support of the training distribution. Previous works report mixed empirical results when extrapolating with neural networks: while feedforward neural networks, a.k.a. multilayer perceptrons (MLPs), do not extrapolate well in certain simple tasks, Graph Neural Networks (GNNs) -- structured networks with MLP modules -- have shown some success in more complex tasks. Working towards a theoretical explanation, we identify conditions under which MLPs and GNNs extrapolate well. First, we quantify the observation that ReLU MLPs quickly converge to linear functions along any direction from the origin, which implies that ReLU MLPs do not extrapolate most nonlinear functions. But, they can provably learn a linear target function when the training distribution is sufficiently "diverse". Second, in connection to analyzing the successes and limitations of GNNs, these results suggest a hypothesis for which we provide theoretical and empirical evidence: the success of GNNs in extrapolating algorithmic tasks to new data (e.g., larger graphs or edge weights) relies on encoding task-specific non-linearities in the architecture or features. Our theoretical analysis builds on a connection of over-parameterized networks to the neural tangent kernel. Empirically, our theory holds across different training settings.},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Artificial Intelligence,Computer Science - Computer Vision and Pattern Recognition,Computer Science - Machine Learning,Statistics - Machine Learning},
+  file = {C\:\\Users\\psharpe\\Zotero\\storage\\ZCBYPFSA\\Xu et al. - 2021 - How Neural Networks Extrapolate From Feedforward .pdf;C\:\\Users\\psharpe\\Zotero\\storage\\67Y47ZJW\\2009.html}
+}
+
+@phdthesis{zhangNonparametricDiscontinuousGalerkin2017,
+  title = {A {{Non-parametric Discontinuous Galerkin Formulation}} of the {{Integral Boundary Layer Equations}} with {{Strong Viscous}}/{{Inviscid Coupling}}},
+  author = {Zhang, Shun},
+  year = 2017,
+  month = jun,
+  address = {Cambridge, Massachusetts},
+  urldate = {2021-10-07},
+  abstract = {A non-parametric discontinuous Galerkin (DG) finite-element formulation is developed for the integral boundary layer (IBL) equations with strong viscous-inviscid coupling. This DG formulation eliminates the need of explicit curvilinear coordinates in traditional boundary layer solvers, and thus enables application to complex geometries even involving non-smooth features. The usual curvilinear coordinates are replaced by a local Cartesian basis, which is conveniently constructed in the DG finite-element formulation. This formulation is also applicable to the general convection-source type of partial differential equations defined on curved manifolds. Other benefits of DG methods are maintained, including support for high-order solutions and applicability to general unstructured meshes. For robust solution of the coupled IBL equations, a strong viscous-inviscid coupling scheme is also proposed, utilizing a global Newton method. This method provides for flexible and convenient coupling of viscous and inviscid solutions, and is readily extensible to coupling with more disciplines, such as structural analysis. As a precursor to the three-dimensional strongly-coupled IBL method, a two-dimensional IBL solver coupled with a panel method is implemented. Numerical examples are presented to demonstrate the viability and utility of the proposed methodology.},
+  langid = {english},
+  school = {Massachusetts Institute of Technology},
+  file = {C:\Users\psharpe\Zotero\storage\N88JNZAA\Zhang et al. - 2017 - A Non-parametric Discontinuous Galerkin Formulatio.pdf}
+}
+
+@phdthesis{zhangThreedimensionalIntegralBoundary2022,
+  title = {Three-Dimensional {{Integral Boundary Layer Method}} for {{Viscous Aerodynamic Analysis}}},
+  author = {Zhang, Shun},
+  year = 2022,
+  address = {Cambridge, Massachusetts},
+  abstract = {Viscous aerodynamic analysis is crucial for aircraft design in terms of understanding key performance metrics such as drag. However, despite advances in computational fluid dynamics (CFD) in the past few decades, a physics-based three-dimensional (3D) viscous analysis suitable for aircraft preliminary design remains a challenge. To that end, the integral boundary layer (IBL) method is a promising candidate primarily for its superior computational efficiency and aerodynamic design insights, evidenced from its success in existing two-dimensional (2D) applications. This thesis aims to develop a reliable off-the-shelf three-dimensional (3D) IBL method through contributions in both the physical and numerical modeling aspects.},
+  langid = {english},
+  school = {Massachusetts Institute of Technology},
+  file = {C:\Users\psharpe\Zotero\storage\D2QYBFP9\Zhang - Three-dimensional Integral Boundary Layer Method f.pdf}
+}
