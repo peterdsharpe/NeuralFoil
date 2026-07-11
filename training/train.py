@@ -10,6 +10,8 @@ from training_data.load_data import (
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 
+from model import Net
+
 N_inputs = len(df_train_inputs_scaled.columns)
 N_outputs = len(df_train_outputs_scaled.columns)
 
@@ -19,112 +21,15 @@ width = 512
 print("Cache file: ", cache_file)
 
 
-# Define the model
-class Net(torch.nn.Module):
-    def __init__(self, mean_inputs_scaled, cov_inputs_scaled):
-        super().__init__()
-
-        self.mean_inputs_scaled = mean_inputs_scaled
-        self.cov_inputs_scaled = cov_inputs_scaled
-        self.inv_cov_inputs_scaled = torch.inverse(cov_inputs_scaled)
-        self.N_inputs = len(mean_inputs_scaled)
-
-        layers = [
-            torch.nn.Linear(N_inputs, width),
-            torch.nn.SiLU(),
-        ]
-        for i in range(n_hidden_layers):
-            layers += [
-                torch.nn.Linear(width, width),
-                torch.nn.SiLU(),
-            ]
-
-        layers += [
-            torch.nn.Linear(width, N_outputs),
-        ]
-
-        self.net = torch.nn.Sequential(*layers)
-
-    def squared_mahalanobis_distance(self, x: torch.Tensor):
-        return torch.sum(
-            (x - self.mean_inputs_scaled)
-            @ self.inv_cov_inputs_scaled
-            * (x - self.mean_inputs_scaled),
-            dim=1,
-        )
-
-    def forward(self, x: torch.Tensor):
-        ### First, evaluate the network normally
-        y = self.net(x)
-        y[:, 0] = y[:, 0] - self.squared_mahalanobis_distance(x=x) / (2 * N_inputs)
-        ### Add in the squared Mahalanobis distance to the analysis_confidence logit, to ensure it
-        # asymptotes to untrustworthy as the inputs get further from the training data
-
-        ### Then, flip the inputs and evaluate the network again.
-        # The goal here is to embed the invariant of "symmetry across alpha" into the network evaluation.
-
-        x_flipped = x.clone()
-        x_flipped[:, :8] = (
-            -1 * x[:, 8:16]
-        )  # switch kulfan_lower with a flipped kulfan_upper
-        x_flipped[:, 8:16] = (
-            -1 * x[:, :8]
-        )  # switch kulfan_upper with a flipped kulfan_lower
-        x_flipped[:, 16] = -1 * x[:, 16]  # flip kulfan_LE_weight
-        x_flipped[:, 18] = -1 * x[:, 18]  # flip sin(2a)
-        x_flipped[:, 23] = x[:, 24]  # flip xtr_upper with xtr_lower
-        x_flipped[:, 24] = x[:, 23]  # flip xtr_lower with xtr_upper
-
-        y_flipped = self.net(x_flipped)
-        y_flipped[:, 0] = y_flipped[:, 0] - self.squared_mahalanobis_distance(
-            x=x_flipped
-        ) / (2 * N_inputs)
-        ### Add in the squared Mahalanobis distance to the analysis_confidence logit, to ensure it
-        # asymptotes to untrustworthy as the inputs get further from the training data
-
-        ### The resulting outputs will also be flipped, so we need to flip them back to their normal orientation
-        y_unflipped = y_flipped.clone()
-        y_unflipped[:, 1] = y_flipped[:, 1] * -1  # CL
-        y_unflipped[:, 3] = y_flipped[:, 3] * -1  # CM
-        y_unflipped[:, 4] = y_flipped[:, 5]  # switch Top_Xtr with Bot_Xtr
-        y_unflipped[:, 5] = y_flipped[:, 4]  # switch Bot_Xtr with Top_Xtr
-
-        # switch upper and lower Ret, H
-        y_unflipped[:, 6 + 32 * 0 : 6 + 32 * 2] = y_flipped[:, 6 + 32 * 3 : 6 + 32 * 5]
-        y_unflipped[:, 6 + 32 * 2 : 6 + 32 * 3] = (
-            y_flipped[:, 6 + 32 * 5 : 6 + 32 * 6] * -1
-        )  # ue/vinf
-        y_unflipped[:, 6 + 32 * 3 : 6 + 32 * 5] = y_flipped[:, 6 + 32 * 0 : 6 + 32 * 2]
-        y_unflipped[:, 6 + 32 * 5 : 6 + 32 * 6] = (
-            y_flipped[:, 6 + 32 * 2 : 6 + 32 * 3] * -1
-        )  # ue/vinf
-
-        # switch upper_bl_ue/vinf with lower_bl_ue/vinf
-
-        ### Then, average the two outputs to get the "symmetric" result
-        y_fused = (y + y_unflipped) / 2
-        # y_fused[:, 0] = torch.sigmoid(y_fused[:, 0])  # Analysis confidence, a binary variable
-        y_fused[:, 4] = torch.clip(
-            y_fused[:, 4].clone(), 0, 1
-        )  # Top_Xtr clipped to range
-        y_fused[:, 5] = torch.clip(
-            y_fused[:, 5].clone(), 0, 1
-        )  # Bot_Xtr clipped to range
-
-        return y_fused
-
-
 if __name__ == "__main__":
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     print(device)
 
     net = Net(
-        mean_inputs_scaled=torch.tensor(mean_inputs_scaled, dtype=torch.float32).to(
-            device
-        ),
-        cov_inputs_scaled=torch.tensor(cov_inputs_scaled, dtype=torch.float32).to(
-            device
-        ),
+        mean_inputs_scaled=torch.tensor(mean_inputs_scaled, dtype=torch.float32),
+        cov_inputs_scaled=torch.tensor(cov_inputs_scaled, dtype=torch.float32),
+        n_hidden_layers=n_hidden_layers,
+        width=width,
     ).to(device)
 
     # Define the optimizer
