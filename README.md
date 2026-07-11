@@ -234,7 +234,7 @@ Why not use a neural network trained on RANS CFD instead?
 
 What's the underlying neural network architecture used in NeuralFoil? In what sense is it "physics-informed"?
 
-> Surprisingly basic - when all the peripherals are stripped away, the learned core itself is a simple MLP with a varying number of total layers and layer width depending on model size. Layer counts and widths were [determined through extensive trial and error](./training/), in conjunction with observed test- and train-loss values. All layers are dense (fully connected, with weights and biases). All activation functions between layers are Swish (SiLU), to preserve $C^\infty$-continuity. Each network maps the 25-dimensional input latent space to the 198-dimensional output latent space, with hidden layers as follows:
+> Surprisingly basic - when all the peripherals are stripped away, the learned core itself is a simple MLP with a varying number of total layers and layer width depending on model size. Layer counts and widths were [determined through extensive trial and error](https://github.com/peterdsharpe/NeuralFoil/tree/bb8a775199d1dafb5f410e68e027ba6eca1af9bc/training) (training logs preserved in git history at that link), in conjunction with observed test- and train-loss values. All layers are dense (fully connected, with weights and biases). All activation functions between layers are Swish (SiLU), to preserve $C^\infty$-continuity. Each network maps the 25-dimensional input latent space to the 198-dimensional output latent space, with hidden layers as follows:
 > 
 > * xxsmall:  2 hidden layers,  48 wide.
 > * xsmall:   3 hidden layers,  48 wide.
