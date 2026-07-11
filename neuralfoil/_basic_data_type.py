@@ -1,5 +1,5 @@
 """
-This file and class is exclusively used for NeuralFoil training, not inference.
+This file and class are exclusively used for NeuralFoil training, not inference.
 
 It is kept here so that the training routines and the inference routines dynamically import from the same
 file. This can be used to later change various training parameters (e.g., the resolution of the Kulfan
@@ -12,28 +12,28 @@ End users need not worry about this file.
 import warnings
 import aerosandbox as asb
 import aerosandbox.numpy as np
+from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Union, Sequence, List, Any, Dict
+from typing import Any, ClassVar
 from scipy import interpolate
 
 
 def compute_optimal_x_points(n_points: int) -> np.ndarray:
     """
-    Compute optimal x-coordinates for boundary layer evaluation points.
-    
-    Creates evenly spaced points between 0 and 1, avoiding the exact edges.
-    
+    Compute x-coordinates for the boundary layer evaluation points ("sensors").
+
+    Creates evenly spaced midpoints between 0 and 1, avoiding the exact edges.
+    (Uniform spacing is used for simplicity; see the compressed-sensing study in
+    `training/optimal_sensor_placement/` for non-uniform alternatives considered.)
+
     Args:
         n_points: Number of points to generate.
-        
+
     Returns:
         Array of x-coordinates of shape (n_points,).
     """
     s = np.linspace(0, 1, n_points + 1)
     return (s[1:] + s[:-1]) / 2
-
-
-
 
 
 @dataclass
@@ -46,8 +46,8 @@ class Data:
     xtr_upper: float
     xtr_lower: float
 
-    N = 32
-    bl_x_points = compute_optimal_x_points(n_points=N)
+    N: ClassVar[int] = 32  # Number of boundary layer evaluation points per surface
+    bl_x_points: ClassVar[np.ndarray] = compute_optimal_x_points(n_points=N)
 
     analysis_confidence: float  # Nominally 0 (no confidence) to 1 (high confidence)
 
@@ -114,7 +114,7 @@ class Data:
     ) -> list["Data"]:
         """
         Create Data instances by running XFoil analysis.
-        
+
         Args:
             airfoil: Airfoil geometry to analyze.
             alphas: Angle(s) of attack to analyze.
@@ -126,7 +126,7 @@ class Data:
             timeout: XFoil timeout in seconds.
             max_iter: Maximum iterations for XFoil.
             xfoil_command: Path to XFoil executable.
-            
+
         Returns:
             List of Data instances, one per requested alpha.
         """
@@ -153,7 +153,7 @@ class Data:
 
         training_datas = []
 
-        def append_empty_data():
+        def append_empty_data() -> None:
             training_datas.append(
                 cls(
                     airfoil=airfoil.to_kulfan_airfoil(),
@@ -248,7 +248,9 @@ class Data:
                     )
                 )
             except ValueError as e:
-                warnings.warn(f"Failed to interpolate boundary layer data for alpha={alpha}: {e}")
+                warnings.warn(
+                    f"Failed to interpolate boundary layer data for alpha={alpha}: {e}"
+                )
                 append_empty_data()
                 continue
 
@@ -257,7 +259,7 @@ class Data:
     def to_vector(self) -> np.ndarray:
         """
         Convert Data instance to a flat vector representation.
-        
+
         Returns:
             1D array containing all data fields concatenated.
         """
@@ -294,13 +296,13 @@ class Data:
     def from_vector(cls, vector: np.ndarray) -> "Data":
         """
         Create a Data instance from a flat vector representation.
-        
+
         Args:
             vector: 1D array containing all data fields concatenated.
-            
+
         Returns:
             Data instance reconstructed from the vector.
-            
+
         Raises:
             ValueError: If vector length doesn't match expected size.
         """
@@ -406,10 +408,10 @@ class Data:
     def __eq__(self, other: "Data") -> bool:
         """
         Check equality between two Data instances.
-        
+
         Args:
             other: Another Data instance to compare with.
-            
+
         Returns:
             True if the two instances are equal within floating point tolerance.
         """
@@ -429,17 +431,10 @@ class Data:
             ]
         )
 
-        return np.allclose(
-            self.to_vector(),
-            other.to_vector(),
-            atol=0,
-            rtol=np.finfo(np.float32).eps * 10,
-        )
-
     def validate_vector_format(self) -> None:
         """
         Validate that vector conversion is reversible.
-        
+
         Raises:
             AssertionError: If to_vector/from_vector conversion is not reversible.
         """

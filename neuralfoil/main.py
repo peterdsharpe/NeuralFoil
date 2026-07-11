@@ -1,8 +1,7 @@
 import aerosandbox as asb
 import aerosandbox.numpy as np
-from typing import Union, Dict, Set, List, Iterable
+from collections.abc import Iterable
 from pathlib import Path
-import re
 from neuralfoil._basic_data_type import Data
 
 nn_weights_dir = Path(__file__).parent / "nn_weights_and_biases"
@@ -17,8 +16,9 @@ _eps: float = 10 / np.finfo(np.array(1.0).dtype).max
 _ln_eps: float = np.log(_eps)
 
 
-def _sigmoid(x: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-    x = np.clip(x, _ln_eps, -_ln_eps)  # Clip to suppress overflow
+def _sigmoid(x: float | np.ndarray) -> float | np.ndarray:
+    """Numerically-stable logistic function, with inputs clipped to suppress overflow."""
+    x = np.clip(x, _ln_eps, -_ln_eps)
     return 1 / (1 + np.exp(-x))
 
 
@@ -27,19 +27,17 @@ def _sigmoid(x: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
 _scaled_input_distribution = dict(
     np.load(nn_weights_dir / "scaled_input_distribution.npz")
 )
-_scaled_input_distribution["N_inputs"]: int = len(
+_scaled_input_distribution["N_inputs"] = len(
     _scaled_input_distribution["mean_inputs_scaled"]
 )
 
 ### For speed, pre-loads the neural network weights and biases
 _nn_parameter_files: Iterable[Path] = nn_weights_dir.glob("nn-*.npz")
-_allowable_model_sizes: set[str] = set(
-    [
-        # regex parse, which results in the strings "large", "medium", "small", etc.
-        re.search(r"nn-(.*).npz", str(path)).group(1)
-        for path in _nn_parameter_files
-    ]
-)
+_allowable_model_sizes: set[str] = {
+    # Parses filenames like "nn-large.npz" into "large", "medium", "small", etc.
+    path.stem.removeprefix("nn-")
+    for path in _nn_parameter_files
+}
 _nn_parameters: dict[str, dict[str, np.ndarray]] = {
     model_size: dict(np.load(nn_weights_dir / f"nn-{model_size}.npz"))
     for model_size in _allowable_model_sizes
@@ -160,7 +158,7 @@ def get_aero_from_kulfan_parameters(
     nn_params: dict[str, np.ndarray] = _nn_parameters[model_size]
 
     ### Prepare the inputs for the neural network
-    input_rows: List[Union[float, np.ndarray]] = [
+    input_rows: list[float | np.ndarray] = [
         *[kulfan_parameters["upper_weights"][i] for i in range(8)],
         *[kulfan_parameters["lower_weights"][i] for i in range(8)],
         kulfan_parameters["leading_edge_weight"],
@@ -196,16 +194,15 @@ def get_aero_from_kulfan_parameters(
     ### First, determine what the structure of the neural network is (i.e., how many layers it has) by looking at the keys.
     # These keys come from the dictionary of saved weights/biases for the specified neural network.
     try:
-        layer_indices: set[int] = set(
-            [int(key.split(".")[1]) for key in nn_params.keys()]
+        layer_indices: list[int] = sorted(
+            {int(key.split(".")[1]) for key in nn_params.keys()}
         )
-    except TypeError:
+    except (TypeError, ValueError, IndexError) as e:
         raise ValueError(
             f"Got an unexpected neural network file format.\n"
             f"Dictionary keys should be strings of the form 'net.0.weight', 'net.0.bias', 'net.2.weight', etc.'.\n"
             f"Instead, got keys of the form {nn_params.keys()}.\n"
-        )
-    layer_indices: list[int] = sorted(list(layer_indices))
+        ) from e
 
     ### Now, set up evaluation of the basic neural network.
     def net(x: np.ndarray) -> np.ndarray:
