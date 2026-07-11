@@ -121,7 +121,7 @@ def get_aero_from_kulfan_parameters(
             - "xxlarge"
             - "xxxlarge"
             Results in a speed-accuracy tradeoff. The larger the model, the more accurate the results, but the slower
-            the computation. The default is "large".
+            the computation. The default is "xlarge".
 
     Returns: A dictionary with the following keys:
 

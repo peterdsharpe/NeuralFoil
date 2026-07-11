@@ -12,7 +12,7 @@ by [Peter Sharpe](https://peterdsharpe.github.io) (<pds [at] mit [dot] edu>)
 
 -----
 
-**NeuralFoil** is a tool for rapid aerodynamics analysis of airfoils, similar to [XFoil](https://web.mit.edu/drela/Public/web/xfoil/). NeuralFoil is [a hybrid of physics-informed machine learning techniques and analytical models, leveraging domain knowledge](./paper/out/main.pdf). Its learned core is trained on [tens of millions of XFoil runs](#geometry-parameterization-and-training-data).
+**NeuralFoil** is a tool for rapid aerodynamics analysis of airfoils, similar to [XFoil](https://web.mit.edu/drela/Public/web/xfoil/). NeuralFoil is [a hybrid of physics-informed machine learning techniques and analytical models, leveraging domain knowledge](./paper/out/main.pdf). Its learned core is trained on [nearly 8 million XFoil runs](#geometry-parameterization-and-training-data).
 
 NeuralFoil is available here as a pure Python+NumPy standalone, but it is also [available within AeroSandbox](#extended-features-transonics-post-stall-control-surface-deflections), which extends it with advanced features. With this extension, NeuralFoil can give you **viscous, compressible airfoil aerodynamics for (nearly) any airfoil, with control surface deflections, across $360^\circ$ angle of attack, at any Reynolds number, all very quickly** (~5 milliseconds). And, it's guaranteed to return an answer (no non-convergence issues), it's vectorized, and it's $C^\infty$-continuous (critical for gradient-based optimization). For aerodynamics experts: NeuralFoil will also give you fine-grained boundary layer control ($N_{\rm crit}$, forced trips) and information ($\theta$, $H$, $u_e/V_\infty$, and pressure distributions).
 
@@ -53,8 +53,6 @@ NeuralFoil comes with 8 different neural network models, with increasing levels 
 
 This spectrum offers a tradeoff between accuracy and computational cost.
 
-In addition to its neural network models, NeuralFoil also has a bonus "Linear $C_L$ model" that predicts lift coefficient $C_L$ as a purely-affine function of angle of attack $\alpha$ (though it is not affine with respect to the shape variables). This model is well-suited for linear lifting-line or blade-element-method analyses, where the $C_L(\alpha)$ linearity can be used to solve the resulting system of equations "in one shot" as a linear solve, rather than a less-numerically-robust iterative nonlinear solve.
-
 Using NeuralFoil is dead-simple, and also offers several possible "entry points" for inputs. Here's an example showing this:
 
 ```python
@@ -62,7 +60,7 @@ import neuralfoil as nf  # `pip install neuralfoil`
 import numpy as np
 
 aero = nf.get_aero_from_dat_file(  # You can use a .dat file as an entry point
-    dat_file_path="/path/to/my_airfoil_file.dat",
+    filename="/path/to/my_airfoil_file.dat",
     alpha=5,  # Angle of attack [deg]
     Re=5e6,  # Reynolds number [-]
     model_size="xlarge",  # Optionally, specify your model size.
@@ -165,9 +163,9 @@ Validation cases for all three features are given in the [NeuralFoil whitepaper]
 <a name="dependencies-question"></a>
 To run models, NeuralFoil currently requires minimal dependencies:
 
-* Python 3.7+
+* Python 3.10+
 * [NumPy](https://numpy.org/)
-* [AeroSandbox](https://github.com/peterdsharpe/AeroSandbox) 4.0.10+
+* [AeroSandbox](https://github.com/peterdsharpe/AeroSandbox) 4.2.4+
 
 ## Geometry Parameterization and Training Data
 
@@ -198,7 +196,7 @@ with documentation [here](https://aerosandbox.readthedocs.io/en/master/autoapi/a
 
 #### Training Data
 
-To be written, but in the meantime [see here](https://github.com/peterdsharpe/NeuralFoil/tree/master/training) for details on the [synthetic data generation](https://github.com/peterdsharpe/NeuralFoil/tree/master/training/gen2_architecture/training_data) and [training processes](https://github.com/peterdsharpe/NeuralFoil/blob/master/training/gen2_architecture/train_blind_neural_network.py). Training data is not (yet) uploaded to GitHub, but will be soon - need to set up Git LFS, as it's many gigabytes. Contact me if you need it sooner.
+To be written, but in the meantime [see here](https://github.com/peterdsharpe/NeuralFoil/tree/master/training) for details on the [synthetic data generation](https://github.com/peterdsharpe/NeuralFoil/tree/master/training/training_data) and [training processes](https://github.com/peterdsharpe/NeuralFoil/blob/master/training/train.py). Training data is not (yet) uploaded to GitHub, but will be soon - need to set up Git LFS, as it's many gigabytes. Contact me if you need it sooner.
 
 Full details on the training data and test/train split are available in the [NeuralFoil whitepaper](./paper/out/main.pdf).
 
@@ -230,22 +228,22 @@ Why not just use XFoil directly?
 
 Why not use a neural network trained on RANS CFD instead?
 
-> This is a cool idea too, and it has been done (See [Bouhlel, He, and Martins, "Scalable gradient-enhanced artificial..."](https://link.springer.com/article/10.1007/s00158-020-02488-5))! The fundamental challenge here, of course, is the cost of training data. RANS CFD is much more expensive than XFoil, so it's much harder to get sufficient training data to build a neural network that will generalize well out-of-sample. For example, in the linked work by Bouhlel et al., the authors trained a neural network on 42,000 RANS CFD runs (and they were sweeping over Mach as well, so the data becomes even sparser). In contrast, NeuralFoil was trained on tens of millions of XFoil runs. Ultimately, this exposes NeuralFoil to a much larger "span" of the airfoil design space, which is critical for accurate predictions on out-of-sample airfoils.
+> This is a cool idea too, and it has been done (See [Bouhlel, He, and Martins, "Scalable gradient-enhanced artificial..."](https://link.springer.com/article/10.1007/s00158-020-02488-5))! The fundamental challenge here, of course, is the cost of training data. RANS CFD is much more expensive than XFoil, so it's much harder to get sufficient training data to build a neural network that will generalize well out-of-sample. For example, in the linked work by Bouhlel et al., the authors trained a neural network on 42,000 RANS CFD runs (and they were sweeping over Mach as well, so the data becomes even sparser). In contrast, NeuralFoil was trained on nearly 8 million XFoil runs. Ultimately, this exposes NeuralFoil to a much larger "span" of the airfoil design space, which is critical for accurate predictions on out-of-sample airfoils.
 > 
 > One advantage of a RANS CFD approach over the NeuralFoil XFoil approach is, of course, transonic modeling. NeuralFoil attempts to get around this a little bit by estimating $C_{p, min}$, which in turn allows you to estimate the critical Mach number. (For an implementation of that, [see here](#extended-features-transonics-post-stall-control-surface-deflections)) But fundamentally, NeuralFoil is likely less accurate in the transonic range because of this. The tradeoff is that the much larger training data set allows NeuralFoil to be more accurate in the subsonic range, where [XFoil is actually usually more accurate than RANS CFD](https://www.sciencedirect.com/science/article/abs/pii/S1270963816300839).
 
 What's the underlying neural network architecture used in NeuralFoil? In what sense is it "physics-informed"?
 
-> Surprisingly basic - when all the peripherals are stripped away, the learned core itself is a simple MLP with a varying number of total layers and layer width depending on model size. Layer counts and widths were [determined through extensive trial and error](./training/supercloud_job_id_notes.log), in conjunction with observed test- and train-loss values. All layers are dense (fully connected, with weights and biases). All activation functions between layers are $\tanh$, to preserve $C^\infty$-continuity. The number of layers and layer width are as follows:
+> Surprisingly basic - when all the peripherals are stripped away, the learned core itself is a simple MLP with a varying number of total layers and layer width depending on model size. Layer counts and widths were [determined through extensive trial and error](./training/), in conjunction with observed test- and train-loss values. All layers are dense (fully connected, with weights and biases). All activation functions between layers are Swish (SiLU), to preserve $C^\infty$-continuity. Each network maps the 25-dimensional input latent space to the 198-dimensional output latent space, with hidden layers as follows:
 > 
-> * xxsmall: 2 layers,  32 wide.
-> * xsmall:  3 layers,  32 wide.
-> * small:   3 layers,  48 wide.
-> * medium:  4 layers,  64 wide.
-> * large:   4 layers, 128 wide.
-> * xlarge:  4 layers, 256 wide.
-> * xxlarge: 5 layers, 256 wide.
-> * xxxlarge:5 layers, 512 wide.
+> * xxsmall:  2 hidden layers,  48 wide.
+> * xsmall:   3 hidden layers,  48 wide.
+> * small:    3 hidden layers,  64 wide.
+> * medium:   4 hidden layers,  64 wide.
+> * large:    4 hidden layers, 128 wide.
+> * xlarge:   5 hidden layers, 128 wide.
+> * xxlarge:  5 hidden layers, 256 wide.
+> * xxxlarge: 6 hidden layers, 512 wide.
 >
 > The domain knowledge embedding (the "physics-informed" part) happens primarily in a) encoding/decoding latent space choices, b) symmetry embedding, and c) how the model dynamically fuses a learned model and an empirical model, depending on the uncertainty of the learned model. NeuralFoil is "physics-informed", but notably not a [PINN](https://en.wikipedia.org/wiki/Physics-informed_neural_networks). ([To dispel a common misconception, "physics informed machine learning" is an umbrella term that extends far beyond just PINNs - see Steve Brunton's taxonomy here](https://youtu.be/JoFW2uSd3Uo).) NeuralFoil is an interesting case study about how full-field learning using sophisticated ML architectures (e.g., PINNs, neural operators, CNNs/GNNs) is not always the only or best way to embed physics domain knowledge into a model. In fact, simple strategies can often yield compelling tradeoffs, as measured by speed, accuracy, data efficiency, and generalizability.
 
