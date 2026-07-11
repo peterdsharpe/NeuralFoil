@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#pip install -r ../requirements.txt
+# To set up the environment: run `uv sync` from the repo root (training deps are in the dev dependency group)
 # Just run with `sbatch supercloud_train_blind_neural_network.sh`
 
 # Slurm sbatch options

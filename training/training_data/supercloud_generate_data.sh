@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#pip install -r ../requirements.txt
-# Just run with `sbatch supercloud_train_blind_neural_network.sh`
+# To set up the environment: run `uv sync` from the repo root (training deps are in the dev dependency group)
+# Just run with `sbatch supercloud_generate_data.sh`
 
 # Slurm sbatch options
 #SBATCH -o log.log-%j --gres=gpu:volta:1 -c 20

@@ -66,6 +66,16 @@ docs = [
 Source = "https://github.com/peterdsharpe/NeuralFoil"
 "Bug Reports" = "https://github.com/peterdsharpe/NeuralFoil/issues"
 
+[dependency-groups]
+dev = [
+    "torch",
+    "ray",
+    "polars",
+    "tqdm",
+    "pytest",
+    "nbval",
+]
+
 [tool.hatch.build.targets.wheel]
 packages = ["neuralfoil"]
 

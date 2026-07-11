@@ -1715,6 +1715,16 @@ training = [
     { name = "tqdm" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "nbval" },
+    { name = "polars" },
+    { name = "pytest" },
+    { name = "ray" },
+    { name = "torch" },
+    { name = "tqdm" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "aerosandbox", specifier = ">=4.2.4,<4.3.0" },
@@ -1730,6 +1740,16 @@ requires-dist = [
     { name = "tqdm", marker = "extra == 'training'" },
 ]
 provides-extras = ["training", "test", "docs"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "nbval" },
+    { name = "polars" },
+    { name = "pytest" },
+    { name = "ray" },
+    { name = "torch" },
+    { name = "tqdm" },
+]
 
 [[package]]
 name = "numpy"
