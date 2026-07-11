@@ -157,6 +157,16 @@ def get_aero_from_kulfan_parameters(
         )
     nn_params: dict[str, np.ndarray] = _nn_parameters[model_size]
 
+    for key in ("upper_weights", "lower_weights"):
+        n_weights = np.length(kulfan_parameters[key])
+        if n_weights != 8:
+            raise ValueError(
+                f"NeuralFoil's neural networks expect exactly 8 CST weights per side, but "
+                f"`kulfan_parameters[{key!r}]` has {n_weights}. If your airfoil is parameterized "
+                f"with a different CST resolution, refit it with 8 weights per side (e.g., via "
+                f"`aerosandbox.Airfoil.to_kulfan_airfoil(n_weights_per_side=8)`)."
+            )
+
     ### Prepare the inputs for the neural network
     input_rows: list[float | np.ndarray] = [
         *[kulfan_parameters["upper_weights"][i] for i in range(8)],
