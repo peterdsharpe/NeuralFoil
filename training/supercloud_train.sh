@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # To set up the environment: run `uv sync` from the repo root (training deps are in the dev dependency group)
-# Just run with `sbatch supercloud_train_blind_neural_network.sh`
+# Just run with `sbatch supercloud_train.sh`
 
 # Slurm sbatch options
 #SBATCH -o log.log-%j --gres=gpu:volta:1 -c 20
