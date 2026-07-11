@@ -270,12 +270,13 @@ def get_aero_from_kulfan_parameters(
     y_unflipped[:, 5] = y_flipped[:, 4]  # switch Bot_Xtr with Top_Xtr
 
     # switch upper and lower Ret, H
-    y_unflipped[:, 6 : 6 + 32 * 2] = y_flipped[:, 6 + 32 * 3 : 6 + 32 * 5]
-    y_unflipped[:, 6 + 32 * 3 : 6 + 32 * 5] = y_flipped[:, 6 : 6 + 32 * 2]
+    N = Data.N
+    y_unflipped[:, 6 : 6 + N * 2] = y_flipped[:, 6 + N * 3 : 6 + N * 5]
+    y_unflipped[:, 6 + N * 3 : 6 + N * 5] = y_flipped[:, 6 : 6 + N * 2]
 
     # switch upper_bl_ue/vinf with lower_bl_ue/vinf
-    y_unflipped[:, 6 + 32 * 2 : 6 + 32 * 3] = -1 * y_flipped[:, 6 + 32 * 5 : 6 + 32 * 6]
-    y_unflipped[:, 6 + 32 * 5 : 6 + 32 * 6] = -1 * y_flipped[:, 6 + 32 * 2 : 6 + 32 * 3]
+    y_unflipped[:, 6 + N * 2 : 6 + N * 3] = -1 * y_flipped[:, 6 + N * 5 : 6 + N * 6]
+    y_unflipped[:, 6 + N * 5 : 6 + N * 6] = -1 * y_flipped[:, 6 + N * 2 : 6 + N * 3]
 
     ### Then, average the two outputs to get the "symmetric" result
     y_fused = (y + y_unflipped) / 2

@@ -1,5 +1,7 @@
 """
-This file and class are exclusively used for NeuralFoil training, not inference.
+This file and class are primarily used for NeuralFoil training. At inference time, only the class-level
+constants are used (`Data.N` and `Data.bl_x_points`, which define where boundary layer quantities are
+sampled along the airfoil surface).
 
 It is kept here so that the training routines and the inference routines dynamically import from the same
 file. This can be used to later change various training parameters (e.g., the resolution of the Kulfan
