@@ -41,25 +41,20 @@ classifiers = [
 ]
 
 dependencies = [
-    "numpy>=1",
-    "aerosandbox>=4.2.4,<4.3.0",
+    "numpy>=1.26",
+    # 4.2.7 is the first AeroSandbox release compatible with NeuralFoil 0.3.x
+    # (earlier releases pin neuralfoil<0.3.0). Capped below the next minor
+    # because the two packages co-evolve; see AeroSandbox's mirrored cap.
+    "aerosandbox>=4.2.7,<4.3.0",
 ]
 
 [project.optional-dependencies]
-training = [
-    "torch",
-    "ray",
-    "polars",
-    "tqdm",
-]
+# Extras are for consumers of the published package. Training and docs
+# dependencies live in [dependency-groups] instead, since the training code
+# is not shipped in the wheel and is only usable from a repo checkout.
 test = [
-    "pytest",
-    "nbval",
-]
-docs = [
-    "sphinx",
-    "furo",
-    "sphinx-autoapi",
+    "pytest>=7.0",
+    "nbval>=0.10",
 ]
 
 [project.urls]
@@ -67,13 +62,16 @@ Source = "https://github.com/peterdsharpe/NeuralFoil"
 "Bug Reports" = "https://github.com/peterdsharpe/NeuralFoil/issues"
 
 [dependency-groups]
+training = [
+    "torch>=2.0",
+    "ray>=2.7",
+    "polars>=1.0",
+    "tqdm>=4.60",
+]
 dev = [
-    "torch",
-    "ray",
-    "polars",
-    "tqdm",
-    "pytest",
-    "nbval",
+    { include-group = "training" },
+    "pytest>=7.0",
+    "nbval>=0.10",
 ]
 
 [tool.hatch.build.targets.wheel]
