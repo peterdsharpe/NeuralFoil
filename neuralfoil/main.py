@@ -1,8 +1,10 @@
+import json
+
 import aerosandbox as asb
 import aerosandbox.numpy as np
 from collections.abc import Iterable
 from pathlib import Path
-from neuralfoil import _core
+from neuralfoil import _core, _spec
 from neuralfoil._basic_data_type import Data
 
 nn_weights_dir = Path(__file__).parent / "nn_weights_and_biases"
@@ -24,10 +26,17 @@ _allowable_model_sizes: set[str] = {
     path.stem.removeprefix("nn-")
     for path in _nn_parameter_files
 }
-_nn_parameters: dict[str, dict[str, np.ndarray]] = {
-    model_size: dict(np.load(nn_weights_dir / f"nn-{model_size}.npz"))
-    for model_size in _allowable_model_sizes
-}
+_nn_parameters: dict[str, dict[str, np.ndarray]] = {}
+_nn_metadata: dict[str, dict | None] = {}
+for _model_size in _allowable_model_sizes:
+    _params = dict(np.load(nn_weights_dir / f"nn-{_model_size}.npz"))
+    # Release artifacts carry JSON provenance metadata alongside the weights
+    # (written by training/export.py); split it out from the weight arrays.
+    _metadata_raw = _params.pop(_spec.WEIGHTS_METADATA_KEY, None)
+    _nn_metadata[_model_size] = (
+        json.loads(str(_metadata_raw)) if _metadata_raw is not None else None
+    )
+    _nn_parameters[_model_size] = _params
 
 
 def get_aero_from_kulfan_parameters(

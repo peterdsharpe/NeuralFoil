@@ -21,6 +21,10 @@ from neuralfoil._basic_data_type import Data
 
 N = Data.N  # Number of boundary layer sample points per surface
 
+# Key under which release-artifact .npz files store their JSON provenance
+# metadata (written by training/export.py; skipped by the weights loader).
+WEIGHTS_METADATA_KEY = "metadata.json"
+
 ### Scaling constants between user-facing quantities and latent space.
 # These must match the training data preparation exactly; both this module's
 # encode/decode helpers and the training pipeline derive from them.

@@ -10,6 +10,7 @@ from training_data.load_data import (
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 
+from export import export_checkpoint
 from model import Net
 from neuralfoil import _spec
 
@@ -234,3 +235,7 @@ if __name__ == "__main__":
             },
             cache_file,
         )
+        # Keep a current release artifact next to the checkpoint, so no manual
+        # conversion step exists. Promoting it into the package is deliberate:
+        # `python export.py <checkpoint> --install` (see export.py docstring).
+        export_checkpoint(cache_file, cache_file.with_suffix(".npz"))
