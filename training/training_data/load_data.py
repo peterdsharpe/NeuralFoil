@@ -138,71 +138,15 @@ print(df)
 ### Shuffle the training set (deterministically)
 df = df.sample(fraction=1, with_replacement=False, shuffle=True, seed=0)
 
-# Make the scaled datasets
-df_inputs_scaled = pl.DataFrame(
-    {
-        **{f"s_kulfan_upper_{i}": df[f"kulfan_upper_{i}"] for i in range(8)},
-        **{f"s_kulfan_lower_{i}": df[f"kulfan_lower_{i}"] for i in range(8)},
-        "s_kulfan_LE_weight": df["kulfan_LE_weight"],
-        "s_kulfan_TE_thickness": df["kulfan_TE_thickness"] * 50,
-        "s_sin_2a": np.sind(2 * df["alpha"]),
-        "s_cos_a": np.cosd(df["alpha"]),
-        "s_1mcos2_a": 1 - np.cosd(df["alpha"]) ** 2,
-        "s_Re": (np.log(df["Re"]) - 12.5) / 3.5,
-        # No mach
-        "s_n_crit": (df["n_crit"] - 9) / 4.5,
-        "s_xtr_upper": df["xtr_upper"],
-        "s_xtr_lower": df["xtr_lower"],
-    }
-)
+# Make the scaled datasets. The scaling transformations are shared with
+# inference (see neuralfoil/_core.py and neuralfoil/_spec.py), so training
+# targets and inference decoding cannot drift apart.
+from .scaling import scale_inputs, scale_outputs
 
+df_inputs_scaled = scale_inputs(df)
 di = df_inputs_scaled.describe()
 
-df_outputs_scaled = pl.DataFrame(
-    {
-        "s_analysis_confidence": df["analysis_confidence"],
-        "s_CL": 2 * df["CL"],
-        "s_ln_CD": np.log(df["CD"]) / 2 + 2,
-        "s_CM": 20 * df["CM"],
-        "s_Top_Xtr": df["Top_Xtr"],
-        "s_Bot_Xtr": df["Bot_Xtr"],
-        **{
-            f"s_upper_bl_ret_{i}": np.log10(
-                np.abs(df[f"upper_bl_ue/vinf_{i}"])
-                * df[f"upper_bl_theta_{i}"]
-                * df["Re"]
-                + 0.1
-            )
-            for i in range(Data.N)
-        },
-        **{
-            f"s_upper_bl_H_{i}": np.log(df[f"upper_bl_H_{i}"] / 2.6)
-            for i in range(Data.N)
-        },
-        **{
-            f"s_upper_bl_ue/vinf_{i}": df[f"upper_bl_ue/vinf_{i}"]
-            for i in range(Data.N)
-        },
-        **{
-            f"s_lower_bl_ret_{i}": np.log10(
-                np.abs(df[f"lower_bl_ue/vinf_{i}"])
-                * df[f"lower_bl_theta_{i}"]
-                * df["Re"]
-                + 0.1
-            )
-            for i in range(Data.N)
-        },
-        **{
-            f"s_lower_bl_H_{i}": np.log(df[f"lower_bl_H_{i}"] / 2.6)
-            for i in range(Data.N)
-        },
-        **{
-            f"s_lower_bl_ue/vinf_{i}": df[f"lower_bl_ue/vinf_{i}"]
-            for i in range(Data.N)
-        },
-    }
-)
-
+df_outputs_scaled = scale_outputs(df)
 do = df_outputs_scaled.describe([0.01, 0.99])
 
 ### Split the dataset into train and test sets

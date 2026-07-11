@@ -34,6 +34,10 @@ def log(x):
     return torch.log(x)
 
 
+def log10(x):
+    return torch.log10(x)
+
+
 def abs(x):
     return torch.abs(x)
 

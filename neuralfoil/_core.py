@@ -16,7 +16,7 @@ code serves:
   where autograd flows through untouched.
 
 The backend must provide numpy-style: transpose, reshape, concatenate, clip,
-exp, log, abs, sum, sind, cosd, swish, and a ``constant(value, like)`` hook
+exp, log, log10, abs, sum, sind, cosd, swish, and a ``constant(value, like)`` hook
 that converts a NumPy constant to the backend's array type (identity for
 NumPy/CasADi; dtype/device-matching tensor for torch). Arithmetic operators
 (including ``@`` and ``**``) are assumed to work natively on backend arrays.
@@ -68,6 +68,48 @@ def encode_inputs(
         xtr_upper,
         xtr_lower,
     ]
+
+
+def encode_outputs(outputs, Re, backend=_numpy_backend) -> dict:
+    """
+    The inverse of `decode_outputs`: transforms user-facing output quantities
+    into output latent columns. Used to prepare training targets, so that the
+    target scaling and the inference decoding can never drift apart.
+
+    Args:
+        outputs: A mapping from user-facing output names (the
+            `Data.get_vector_output_column_names()` keys) to columns of
+            values. A polars DataFrame of raw training data works directly.
+        Re: Reynolds number column (needed to form the latent
+            momentum-thickness Reynolds number).
+
+    Returns: dict of latent columns, keyed and ordered per `_spec.OUTPUT_COLUMNS`.
+    """
+    latent = {
+        # For training data, this is the binary XFoil-convergence label; the
+        # network's corresponding logit output is trained against it with a
+        # binary-cross-entropy-with-logits loss.
+        "analysis_confidence": outputs["analysis_confidence"],
+        "CL": outputs["CL"] * _spec.CL_SCALE,
+        "ln_CD": backend.log(outputs["CD"]) / _spec.LN_CD_SCALE + _spec.LN_CD_SHIFT,
+        "CM": outputs["CM"] * _spec.CM_SCALE,
+        "Top_Xtr": outputs["Top_Xtr"],
+        "Bot_Xtr": outputs["Bot_Xtr"],
+    }
+    for side in ["upper", "lower"]:
+        for i in range(_spec.N):
+            latent[f"{side}_bl_ret_{i}"] = backend.log10(
+                backend.abs(outputs[f"{side}_bl_ue/vinf_{i}"])
+                * outputs[f"{side}_bl_theta_{i}"]
+                * Re
+                + _spec.RET_OFFSET
+            )
+            latent[f"{side}_bl_H_{i}"] = backend.log(
+                outputs[f"{side}_bl_H_{i}"] / _spec.H_REF
+            )
+            latent[f"{side}_bl_ue/vinf_{i}"] = outputs[f"{side}_bl_ue/vinf_{i}"]
+
+    return {name: latent[name] for name in _spec.OUTPUT_NAMES}
 
 
 def net_forward(x, layer_weights_and_biases: list, backend=_numpy_backend):

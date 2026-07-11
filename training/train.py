@@ -11,6 +11,7 @@ import torch
 from torch.utils.data import TensorDataset, DataLoader
 
 from model import Net
+from neuralfoil import _spec
 
 N_inputs = len(df_train_inputs_scaled.columns)
 N_outputs = len(df_train_outputs_scaled.columns)
@@ -207,9 +208,9 @@ if __name__ == "__main__":
 
         labeled_maes = {
             "analysis_confidence": test_residual_mae[0],
-            "CL": test_residual_mae[1] / 2,
-            "ln_CD": test_residual_mae[2] * 2,
-            "CM": test_residual_mae[3] / 20,
+            "CL": test_residual_mae[1] / _spec.CL_SCALE,
+            "ln_CD": test_residual_mae[2] * _spec.LN_CD_SCALE,
+            "CM": test_residual_mae[3] / _spec.CM_SCALE,
             "Top_Xtr": test_residual_mae[4],
             "Bot_Xtr": test_residual_mae[5],
         }

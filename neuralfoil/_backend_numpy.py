@@ -15,6 +15,7 @@ from aerosandbox.numpy import (  # noqa: F401
     cosd,
     exp,
     log,
+    log10,
     reshape,
     sind,
     sum,
