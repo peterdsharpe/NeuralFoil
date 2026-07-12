@@ -65,6 +65,7 @@ Source = "https://github.com/peterdsharpe/NeuralFoil"
 training = [
     "torch>=2.0",
     "ray>=2.7",
+    "tyro>=0.9",
     "polars>=1.0",
     "tqdm>=4.60",
 ]

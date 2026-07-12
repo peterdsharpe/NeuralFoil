@@ -21,14 +21,15 @@ change in shipped behavior is intentional, so re-pin it):
     uv run python tests/fixtures/generate.py
 """
 
-import argparse
 import datetime
 import json
 import subprocess
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import numpy as np
 import torch
+import tyro
 
 from neuralfoil import _spec
 
@@ -89,31 +90,24 @@ def export_checkpoint(
     return metadata
 
 
+@dataclass
+class Config:
+    checkpoints: tyro.conf.Positional[list[Path]] = field(default_factory=list)
+    """Checkpoint files to export (default: all nn-*.pth in this directory)."""
+
+    install: bool = False
+    """Write artifacts into the package weights directory instead of next to each checkpoint."""
+
+    note: str | None = None
+    """Free-text provenance note to embed in the artifact metadata."""
+
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "checkpoints",
-        nargs="*",
-        type=Path,
-        default=None,
-        help="Checkpoint files to export (default: all nn-*.pth in this directory).",
-    )
-    parser.add_argument(
-        "--install",
-        action="store_true",
-        help=f"Write artifacts into the package ({PACKAGE_WEIGHTS_DIR}) instead of next to each checkpoint.",
-    )
-    parser.add_argument(
-        "--note",
-        type=str,
-        default=None,
-        help="Free-text provenance note to embed in the artifact metadata.",
-    )
-    args = parser.parse_args()
+    args = tyro.cli(Config, description=__doc__)
 
     checkpoints = args.checkpoints or sorted(Path(__file__).parent.glob("nn-*.pth"))
     if not checkpoints:
-        parser.error("No checkpoints given and no nn-*.pth files found here.")
+        raise SystemExit("No checkpoints given and no nn-*.pth files found here.")
 
     for checkpoint_path in checkpoints:
         output_dir = PACKAGE_WEIGHTS_DIR if args.install else checkpoint_path.parent
