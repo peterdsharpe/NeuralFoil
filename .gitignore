@@ -301,3 +301,6 @@ TSWLatexianTemp*
 /studies/poststall/wpd_project_drag.tar
 /studies/poststall/wpd_project_lift.tar
 /studies/poststall/wpd_project_moment.tar
+
+# Local working notes and documents (never published)
+/docs/
