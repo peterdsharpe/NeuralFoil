@@ -19,9 +19,9 @@ def test_column_counts_and_uniqueness():
     assert _spec.N_OUTPUTS == 6 + 6 * _spec.N
     assert len(set(_spec.INPUT_NAMES)) == _spec.N_INPUTS
     assert len(set(_spec.OUTPUT_NAMES)) == _spec.N_OUTPUTS
-    for name, source, sign in _spec.INPUT_COLUMNS + _spec.OUTPUT_COLUMNS:
-        assert source in (_spec.INPUT_NAMES + _spec.OUTPUT_NAMES), name
-        assert sign in (-1.0, 1.0), name
+    for column in _spec.INPUT_COLUMNS + _spec.OUTPUT_COLUMNS:
+        assert column.flip_source in (_spec.INPUT_NAMES + _spec.OUTPUT_NAMES), column.name
+        assert column.flip_sign in (-1.0, 1.0), column.name
 
 
 @pytest.mark.parametrize(

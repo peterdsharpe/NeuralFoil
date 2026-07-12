@@ -15,6 +15,8 @@ symmetry bookkeeping is written exactly once. Flipping is a matrix product
 (NumPy, CasADi, PyTorch) and autograd-safe.
 """
 
+from dataclasses import dataclass
+
 import numpy as np
 
 from neuralfoil._basic_data_type import Data
@@ -41,64 +43,74 @@ H_REF = 2.6  # latent = ln(H / ref)
 RET_OFFSET = 0.1  # latent = log10(|ue/vinf| * theta * Re + offset)
 
 ### Column definitions.
-# Each column is a (name, flip_source, flip_sign) triple: under the alpha-flip
-# symmetry, the column takes the value `flip_sign * latent[flip_source]`.
 # Order matters: it defines the network's input/output vector layout and the
 # column order of the scaled training data.
+
+
+@dataclass(frozen=True, slots=True)
+class Column:
+    """One latent-space column, and its behavior under the alpha-flip symmetry."""
+
+    name: str
+    flip_source: str
+    """Under the alpha-flip, this column takes the value flip_sign * latent[flip_source]."""
+    flip_sign: float
+    """+1 for even symmetry, -1 for odd."""
+
 
 INPUT_COLUMNS = (
     # The flipped airfoil's upper surface is the original's lower surface,
     # mirrored about the chordline (hence the sign flip on CST weights).
-    [(f"kulfan_upper_{i}", f"kulfan_lower_{i}", -1.0) for i in range(8)]
-    + [(f"kulfan_lower_{i}", f"kulfan_upper_{i}", -1.0) for i in range(8)]
+    [Column(f"kulfan_upper_{i}", f"kulfan_lower_{i}", -1.0) for i in range(8)]
+    + [Column(f"kulfan_lower_{i}", f"kulfan_upper_{i}", -1.0) for i in range(8)]
     + [
-        ("kulfan_LE_weight", "kulfan_LE_weight", -1.0),
-        ("kulfan_TE_thickness", "kulfan_TE_thickness", 1.0),
-        ("sin_2a", "sin_2a", -1.0),  # sin(-2a) = -sin(2a)
-        ("cos_a", "cos_a", 1.0),  # cos(-a) = cos(a)
-        ("1mcos2_a", "1mcos2_a", 1.0),  # sin^2(-a) = sin^2(a)
-        ("ln_Re", "ln_Re", 1.0),
-        ("n_crit", "n_crit", 1.0),
-        ("xtr_upper", "xtr_lower", 1.0),
-        ("xtr_lower", "xtr_upper", 1.0),
+        Column("kulfan_LE_weight", "kulfan_LE_weight", -1.0),
+        Column("kulfan_TE_thickness", "kulfan_TE_thickness", 1.0),
+        Column("sin_2a", "sin_2a", -1.0),  # sin(-2a) = -sin(2a)
+        Column("cos_a", "cos_a", 1.0),  # cos(-a) = cos(a)
+        Column("1mcos2_a", "1mcos2_a", 1.0),  # sin^2(-a) = sin^2(a)
+        Column("ln_Re", "ln_Re", 1.0),
+        Column("n_crit", "n_crit", 1.0),
+        Column("xtr_upper", "xtr_lower", 1.0),
+        Column("xtr_lower", "xtr_upper", 1.0),
     ]
 )
 
 OUTPUT_COLUMNS = (
     [
-        ("analysis_confidence", "analysis_confidence", 1.0),  # even
-        ("CL", "CL", -1.0),  # odd
-        ("ln_CD", "ln_CD", 1.0),  # even
-        ("CM", "CM", -1.0),  # odd
-        ("Top_Xtr", "Bot_Xtr", 1.0),  # upper/lower swap
-        ("Bot_Xtr", "Top_Xtr", 1.0),
+        Column("analysis_confidence", "analysis_confidence", 1.0),  # even
+        Column("CL", "CL", -1.0),  # odd
+        Column("ln_CD", "ln_CD", 1.0),  # even
+        Column("CM", "CM", -1.0),  # odd
+        Column("Top_Xtr", "Bot_Xtr", 1.0),  # upper/lower swap
+        Column("Bot_Xtr", "Top_Xtr", 1.0),
     ]
-    + [(f"upper_bl_ret_{i}", f"lower_bl_ret_{i}", 1.0) for i in range(N)]
-    + [(f"upper_bl_H_{i}", f"lower_bl_H_{i}", 1.0) for i in range(N)]
+    + [Column(f"upper_bl_ret_{i}", f"lower_bl_ret_{i}", 1.0) for i in range(N)]
+    + [Column(f"upper_bl_H_{i}", f"lower_bl_H_{i}", 1.0) for i in range(N)]
     # ue/vinf is signed (negative in reversed flow), so it is odd under flip:
-    + [(f"upper_bl_ue/vinf_{i}", f"lower_bl_ue/vinf_{i}", -1.0) for i in range(N)]
-    + [(f"lower_bl_ret_{i}", f"upper_bl_ret_{i}", 1.0) for i in range(N)]
-    + [(f"lower_bl_H_{i}", f"upper_bl_H_{i}", 1.0) for i in range(N)]
-    + [(f"lower_bl_ue/vinf_{i}", f"upper_bl_ue/vinf_{i}", -1.0) for i in range(N)]
+    + [Column(f"upper_bl_ue/vinf_{i}", f"lower_bl_ue/vinf_{i}", -1.0) for i in range(N)]
+    + [Column(f"lower_bl_ret_{i}", f"upper_bl_ret_{i}", 1.0) for i in range(N)]
+    + [Column(f"lower_bl_H_{i}", f"upper_bl_H_{i}", 1.0) for i in range(N)]
+    + [Column(f"lower_bl_ue/vinf_{i}", f"upper_bl_ue/vinf_{i}", -1.0) for i in range(N)]
 )
 
 N_INPUTS = len(INPUT_COLUMNS)  # 25
 N_OUTPUTS = len(OUTPUT_COLUMNS)  # 198
 
-INPUT_NAMES = [name for name, _, _ in INPUT_COLUMNS]
-OUTPUT_NAMES = [name for name, _, _ in OUTPUT_COLUMNS]
+INPUT_NAMES = [column.name for column in INPUT_COLUMNS]
+OUTPUT_NAMES = [column.name for column in OUTPUT_COLUMNS]
 
 
-def _flip_matrix(columns: list[tuple[str, str, float]]) -> np.ndarray:
+def _flip_matrix(columns: list[Column]) -> np.ndarray:
     """
     Builds the signed permutation matrix P for the alpha-flip symmetry,
     such that `latent_flipped = latent @ P` (with latent of shape
     (N_cases, n_columns)).
     """
-    name_to_index = {name: i for i, (name, _, _) in enumerate(columns)}
+    name_to_index = {column.name: i for i, column in enumerate(columns)}
     P = np.zeros((len(columns), len(columns)))
-    for j, (_, flip_source, flip_sign) in enumerate(columns):
-        P[name_to_index[flip_source], j] = flip_sign
+    for j, column in enumerate(columns):
+        P[name_to_index[column.flip_source], j] = column.flip_sign
     return P
 
 
