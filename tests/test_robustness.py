@@ -4,6 +4,7 @@ runs, an answer is always returned (even far outside the training
 distribution), and malformed inputs raise clear errors.
 """
 
+import casadi as ca
 import numpy as np
 import pytest
 
@@ -55,6 +56,22 @@ def test_always_returns_an_answer(alpha, Re):
         assert np.all(np.isfinite(aero[key])), key
     assert 0 <= float(aero["analysis_confidence"][0]) <= 1
     assert float(aero["CD"][0]) > 0
+
+
+def test_mx_reverse_derivatives_are_finite_outside_training_distribution():
+    """A saturated confidence sigmoid must not contaminate MX reverse mode."""
+    alpha = ca.MX.sym("alpha", 8)
+    alpha_values = np.array([0.0, 4.0, 10.0, 15.0, -10.0, -60.0, -120.0, -153.564])
+    cd = nf.get_aero_from_kulfan_parameters(
+        KULFAN, alpha=alpha, Re=1.4e6, model_size="medium"
+    )["CD"]
+    value = ca.Function("value", [alpha], [cd])(alpha_values)
+    reverse = ca.Function(
+        "reverse", [alpha], [ca.jacobian(ca.sum1(cd), alpha)]
+    )(alpha_values)
+
+    assert np.all(np.isfinite(np.asarray(value)))
+    assert np.all(np.isfinite(np.asarray(reverse)))
 
 
 def test_invalid_model_size_raises():
