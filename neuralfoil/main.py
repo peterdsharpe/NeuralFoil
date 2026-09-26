@@ -10,16 +10,9 @@ nn_weights_dir = Path(__file__).parent / "nn_weights_and_biases"
 # It is made externally-accessible (`nf.bl_x_points`) in case you want to use it dynamically.
 bl_x_points = Data.bl_x_points
 
-# Here, we compute a small epsilon value, which is used later to clip values to suppress overflow.
-# This looks a bit complicated below, but it's basically just a dynamic way to avoid explicitly referring to float bit-widths.
-_eps: float = 10 / np.finfo(np.array(1.0).dtype).max
-_ln_eps: float = np.log(_eps)
-
-
 def _sigmoid(x: float | np.ndarray) -> float | np.ndarray:
-    """Numerically-stable logistic function, with inputs clipped to suppress overflow."""
-    x = np.clip(x, _ln_eps, -_ln_eps)
-    return 1 / (1 + np.exp(-x))
+    """Numerically stable logistic function."""
+    return 0.5 * (1 + np.tanh(x / 2))
 
 
 ### Pre-load parameters with statistics about the training distribution
