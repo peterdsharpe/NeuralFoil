@@ -179,19 +179,18 @@ def get_aero_from_kulfan_parameters(
     ### Handle the vectorization, where here we figure out how many cases the user wants to run
     N_cases = 1  # TODO rework this with np.atleast1d
     for row in input_rows:
-        if np.length(row) > 1:
+        row_length = np.length(row)
+        if row_length > 1:
             if N_cases == 1:
-                N_cases = np.length(row)
-            else:
-                if np.length(row) != N_cases:
-                    raise ValueError(
-                        f"The inputs to the neural network must all have the same length. (Conflicting lengths: {N_cases} and {np.length(row)})"
-                    )
+                N_cases = row_length
+            elif row_length != N_cases:
+                raise ValueError(
+                    f"The inputs to the neural network must all have the same length. (Conflicting lengths: {N_cases} and {row_length})"
+                )
 
-    for i, row in enumerate(input_rows):
-        input_rows[i] = np.ones(N_cases) * row
-
-    x = np.stack(input_rows, axis=1)  # shape: (N_cases, N_inputs)
+    # Broadcast every row against one shared array of ones, rather than allocating a new one per row.
+    ones = np.ones(N_cases)
+    x = np.stack([ones * row for row in input_rows], axis=1)  # shape: (N_cases, N_inputs)
     ##### Evaluate the neural network
 
     ### First, determine what the structure of the neural network is (i.e., how many layers it has) by looking at the keys.
@@ -208,6 +207,12 @@ def get_aero_from_kulfan_parameters(
         ) from e
 
     ### Now, set up evaluation of the basic neural network.
+    # Look up the weights and column-shaped biases once, so the layer loop does no per-layer key lookups.
+    layers = [
+        (nn_params[f"net.{i}.weight"], nn_params[f"net.{i}.bias"][:, None])
+        for i in layer_indices
+    ]
+
     def net(x: np.ndarray) -> np.ndarray:
         """
         Evaluates the raw network (taking in scaled inputs and returning scaled outputs).
@@ -218,28 +223,13 @@ def get_aero_from_kulfan_parameters(
         Output `y` shape: (N_cases, N_outputs)
         """
         x = np.transpose(x)
-        layer_indices_to_iterate = layer_indices.copy()
+        for w, b in layers[:-1]:
+            x = np.swish(w @ x + b)
+        w, b = layers[-1]  # Don't apply the activation function on the last layer
+        x = w @ x + b
+        return np.transpose(x)
 
-        while len(layer_indices_to_iterate) != 0:
-            i = layer_indices_to_iterate.pop(0)
-            w = nn_params[f"net.{i}.weight"]
-            b = nn_params[f"net.{i}.bias"]
-            x = w @ x + np.reshape(b, (-1, 1))
-
-            if (
-                len(layer_indices_to_iterate) != 0
-            ):  # Don't apply the activation function on the last layer
-                x = np.swish(x)
-        x = np.transpose(x)
-        return x
-
-    y = net(x)  # N_outputs x N_cases
-    y[:, 0] = y[:, 0] - _squared_mahalanobis_distance(x) / (
-        2 * _scaled_input_distribution["N_inputs"]
-    )
-    # This was baked into training in order to ensure the network asymptotes to zero analysis confidence far away from the training data.
-
-    ### Then, flip the inputs and evaluate the network again.
+    ### Flip the inputs, so that the network can be evaluated on both the original and flipped cases.
     # The goal here is to embed the invariant of "symmetry across alpha" into the network evaluation.
     # (This was also performed during training, so the network is "intended" to be evaluated this way.)
 
@@ -257,11 +247,15 @@ def get_aero_from_kulfan_parameters(
     x_flipped[:, 23] = x[:, 24]  # flip xtr_upper with xtr_lower
     x_flipped[:, 24] = x[:, 23]  # flip xtr_lower with xtr_upper
 
-    y_flipped = net(x_flipped)
-    y_flipped[:, 0] = y_flipped[:, 0] - _squared_mahalanobis_distance(x_flipped) / (
+    # Evaluate both the original and flipped cases in one batched pass, so each layer's weights are only used once.
+    x_both = np.concatenate([x, x_flipped], axis=0)
+    y_both = net(x_both)
+    y_both[:, 0] = y_both[:, 0] - _squared_mahalanobis_distance(x_both) / (
         2 * _scaled_input_distribution["N_inputs"]
     )
     # This was baked into training in order to ensure the network asymptotes to zero analysis confidence far away from the training data.
+    y = y_both[:N_cases, :]
+    y_flipped = y_both[N_cases:, :]
 
     ### The resulting outputs will also be flipped, so we need to flip them back to their normal orientation
     y_unflipped = (
@@ -298,17 +292,19 @@ def get_aero_from_kulfan_parameters(
     upper_bl_ue_over_vinf = y_fused[:, 6 + Data.N * 2 : 6 + Data.N * 3]
     lower_bl_ue_over_vinf = y_fused[:, 6 + Data.N * 5 : 6 + Data.N * 6]
 
+    Re_column = np.reshape(Re, (-1, 1))
     upper_theta = ((10 ** y_fused[:, 6 : 6 + Data.N]) - 0.1) / (
-        np.abs(upper_bl_ue_over_vinf) * np.reshape(Re, (-1, 1))
+        np.abs(upper_bl_ue_over_vinf) * Re_column
     )
     upper_H = 2.6 * np.exp(y_fused[:, 6 + Data.N : 6 + Data.N * 2])
 
     lower_theta = ((10 ** y_fused[:, 6 + Data.N * 3 : 6 + Data.N * 4]) - 0.1) / (
-        np.abs(lower_bl_ue_over_vinf) * np.reshape(Re, (-1, 1))
+        np.abs(lower_bl_ue_over_vinf) * Re_column
     )
     lower_H = 2.6 * np.exp(y_fused[:, 6 + Data.N * 4 : 6 + Data.N * 5])
 
-    results = {
+    # Every value is already a column slice of shape (N_cases,) (or an (N_cases, 1) CasADi column), so no reshape is needed.
+    return {
         "analysis_confidence": analysis_confidence,
         "CL": CL,
         "CD": CD,
@@ -322,7 +318,6 @@ def get_aero_from_kulfan_parameters(
         **{f"lower_bl_H_{i}": lower_H[:, i] for i in range(Data.N)},
         **{f"lower_bl_ue/vinf_{i}": lower_bl_ue_over_vinf[:, i] for i in range(Data.N)},
     }
-    return {key: np.reshape(value, -1) for key, value in results.items()}
 
 
 def get_aero_from_airfoil(
